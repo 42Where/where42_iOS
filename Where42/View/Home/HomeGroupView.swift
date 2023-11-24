@@ -84,9 +84,6 @@ struct HomeGroupView: View {
                             }
                         })
                         .presentationDetents([.height(homeGroupViewModel.modalHeight)])
-                        .onAppear {
-                            UISheetPresentationController.Detent.medium()
-                        }
                 }
             }
         }
