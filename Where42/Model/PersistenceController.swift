@@ -46,10 +46,10 @@ struct PersistenceController {
     }
 
     func CreateUserInfo(context: NSManagedObjectContext) {
-        let userInfo = UserInfomation(context: context)
+//        let userInfo = UserInfomation(context: context)
         // userInfo.name = dhyun
 
-        save(context: context)
+//        save(context: context)
     }
 
     func DeleteUserInfo(userInfo: UserInfomation, context: NSManagedObjectContext) {

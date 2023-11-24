@@ -13,7 +13,6 @@
 		A01551B62AED5AB800B9D271 /* GmarketSansTTFLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01551B32AED5AB800B9D271 /* GmarketSansTTFLight.ttf */; };
 		A01551B72AED5AB800B9D271 /* GmarketSansTTFBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01551B42AED5AB800B9D271 /* GmarketSansTTFBold.ttf */; };
 		A01551BD2AEE401C00B9D271 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01551BC2AEE401C00B9D271 /* SettingView.swift */; };
-		A015F97C2AFCC5BF00C4709B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A015F97B2AFCC5BF00C4709B /* Lottie */; };
 		A019CC462B038DBB007DBA20 /* SelectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A019CC452B038DBB007DBA20 /* SelectingView.swift */; };
 		A019CC482B038E4D007DBA20 /* SelectingFriendInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A019CC472B038E4D007DBA20 /* SelectingFriendInfoView.swift */; };
 		A02101C52AFB21D800CB2FCD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02101C42AFB21D800CB2FCD /* HomeViewModel.swift */; };
@@ -105,7 +104,6 @@
 			files = (
 				A06000842AFD166800CC9A6A /* Kingfisher in Frameworks */,
 				A0371B652AFCB26500CA1F70 /* Alamofire in Frameworks */,
-				A015F97C2AFCC5BF00C4709B /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,7 +314,6 @@
 			name = Where42;
 			packageProductDependencies = (
 				A0371B642AFCB26500CA1F70 /* Alamofire */,
-				A015F97B2AFCC5BF00C4709B /* Lottie */,
 				A06000832AFD166800CC9A6A /* Kingfisher */,
 			);
 			productName = Where42;
@@ -566,6 +563,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -573,6 +571,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dhyun.Where42;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -602,6 +603,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -609,6 +611,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dhyun.Where42;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -666,11 +671,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A015F97B2AFCC5BF00C4709B /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A015F97A2AFCC5BF00C4709B /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
-		};
 		A0371B642AFCB26500CA1F70 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A0371B632AFCB26500CA1F70 /* XCRemoteSwiftPackageReference "Alamofire" */;

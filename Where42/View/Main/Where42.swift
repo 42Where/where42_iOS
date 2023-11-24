@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct Where42: View {
-    init() {
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 40, weight: .bold)], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 40, weight: .bold)], for: .selected)
-        UITabBar.appearance().scrollEdgeAppearance = .init()
-    }
-
     @StateObject var mainViewModel: MainViewModel = .init()
     @StateObject var homeViewModel: HomeViewModel = .init()
 
     @AppStorage("isLogin") var isLogin: Bool = false
+
+    @Environment(\.horizontalSizeClass) var oldSizeClass
 
     var body: some View {
         ZStack {
@@ -30,19 +26,22 @@ struct Where42: View {
                                 Text("⸻")
                             }
                             .tag("Home")
+                            .environment(\.horizontalSizeClass, oldSizeClass)
 
                         SearchView()
                             .tabItem {
-                                Image("Search icon M")
-                                Text("⸻")
+                                VStack {
+                                    Image("Search icon M")
+                                    Text("⸻")
+                                }
                             }
                             .tag("Search")
+                            .environment(\.horizontalSizeClass, oldSizeClass)
                     }
-                    .toolbar(.visible, for: .tabBar)
-                    .toolbarBackground(Color.yellow, for: .tabBar)
+                    .environment(\.horizontalSizeClass, .compact)
 
                     .onAppear(perform: {
-//                        UITabBar.appearance().scrollEdgeAppearance = .init()
+                        UITabBar.appearance().scrollEdgeAppearance = .init()
                     })
                 }
                 .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
@@ -81,7 +80,7 @@ struct Where42: View {
 //    }
 // }
 
- struct Previews2: PreviewProvider {
+struct Previews2: PreviewProvider {
     static var previews: some View {
         Where42()
             .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
@@ -89,4 +88,4 @@ struct Where42: View {
             .environmentObject(MainViewModel())
             .environmentObject(HomeViewModel())
     }
- }
+}
