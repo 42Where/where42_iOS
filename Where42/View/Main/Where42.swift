@@ -81,12 +81,12 @@ struct Where42: View {
 //    }
 // }
 
-// struct Previews2: PreviewProvider {
-//    static var previews: some View {
-//        Where42()
-//            .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
-//            .previewDisplayName("iPad Air 5th")
-//            .environmentObject(MainViewModel())
-//            .environmentObject(HomeViewModel())
-//    }
-// }
+ struct Previews2: PreviewProvider {
+    static var previews: some View {
+        Where42()
+            .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
+            .previewDisplayName("iPad Air 5th")
+            .environmentObject(MainViewModel())
+            .environmentObject(HomeViewModel())
+    }
+ }

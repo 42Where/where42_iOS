@@ -65,6 +65,7 @@ struct SearchView: View {
                 Where42ToolBarContent(isShowSheet: $isShowSheet, isSettingPresenting: false)
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
