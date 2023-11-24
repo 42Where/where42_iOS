@@ -1,0 +1,14 @@
+//
+//  Shared.xcconfig
+//  Where42
+//
+//  Created by 현동호 on 11/17/23.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+OTHER_SWIFT_FLAGS[config=DEBUG][sdk=*] = $(inherited) -DDEBUG
+OTHER_SWIFT_FLAGS[config=ALPHA][sdk=*] = $(inherited) -DALPHA
+OTHER_SWIFT_FLAGS[config=BETA][sdk=*] = $(inherited) -DBETA
+OTHER_SWIFT_FLAGS[config=RELEASE][sdk=*] = $(inherited) -DRELEAS
