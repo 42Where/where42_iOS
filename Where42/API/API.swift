@@ -7,6 +7,12 @@
 
 import Foundation
 
+class API: ObservableObject {
+    enum NetworkError: Error {
+        case invalidHTTPResponse
+    }
+}
+
 // extension Bundle {
 //    var apiKey: String? {
 //        if let filePath = url(forResource: "Environment", withExtension: "plist") {

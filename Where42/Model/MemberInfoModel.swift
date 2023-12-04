@@ -14,10 +14,19 @@ struct MemberInfo: Codable, Hashable {
     var intraName: String?
     var grade: Int?
     var image: String?
-    var comment: String?
-    var inCluster: Bool?
+    var comment: String? {
+        didSet {
+            setComment()
+        }
+    }
+
+    var inCluster: Bool? = false
     var imacLocation: String?
     var customLocation: String?
+
+    static var empty: MemberInfo {
+        MemberInfo(id: 0, intraId: 0, intraName: "Name", grade: 0, image: "https://", comment: "Comment", inCluster: false)
+    }
 
     func getLocation() -> String {
         if customLocation != nil {
@@ -29,8 +38,10 @@ struct MemberInfo: Codable, Hashable {
         }
     }
 
-    func getComment() -> String {
-        return comment ?? "코멘트를 입력해주세요"
+    mutating func setComment() {
+        if comment == nil {
+            comment = "코멘트를 입력해주세요"
+        }
     }
 }
 

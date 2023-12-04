@@ -12,7 +12,7 @@ struct GroupInfo: Hashable {
     var totalNum: Int
     var onlineNum: Int
     var isOpen: Bool
-    var users: [UserInfo] = []
+    var users: [MemberInfo] = []
 
     static var empty: GroupInfo {
         GroupInfo(name: "", totalNum: 0, onlineNum: 0, isOpen: false)

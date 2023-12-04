@@ -9,8 +9,6 @@ import SwiftUI
 
 struct Where42: View {
     init() {
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 40, weight: .bold)], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 40, weight: .bold)], for: .selected)
         UITabBar.appearance().scrollEdgeAppearance = .init()
     }
 

@@ -20,7 +20,7 @@ struct HomeGroupView: View {
                     Section {
                         if group.isOpen && group.totalNum > 0 {
                             ForEach($group.users, id: \.self) { $user in
-                                if !(homeViewModel.isWork && user.location == "퇴근") {
+                                if !(homeViewModel.isWork && user.imacLocation == "퇴근") {
                                     HomeFriendInfoView(userInfo: $user, groupInfo: $group)
                                         .padding(.horizontal)
                                         .padding(.vertical, 1)
