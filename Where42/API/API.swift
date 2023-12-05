@@ -8,8 +8,12 @@
 import Foundation
 
 class API: ObservableObject {
+    let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
+
     enum NetworkError: Error {
         case invalidHTTPResponse
+        case BadRequest
+        case ServerError
     }
 }
 
