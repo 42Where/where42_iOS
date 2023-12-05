@@ -1,0 +1,5 @@
+name: Kingfisher, nameSpecified: Kingfisher, owner: onevcat, version: 7.10.0, source: https://github.com/onevcat/Kingfisher
+
+add-version-numbers: true
+
+LicensePlist Version: 3.25.1

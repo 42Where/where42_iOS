@@ -9,13 +9,13 @@ import Kingfisher
 import SwiftUI
 
 struct HomeInfoView: View {
-    @Binding var userInfo: UserInfo
+    @Binding var memberInfo: MemberInfo
     @Binding var isWork: Bool
     @Binding var isNewGroupAlertPrsent: Bool
 
     var body: some View {
         HStack(spacing: 10) {
-            KFImage(URL(string: userInfo.avatar)!)
+            KFImage(URL(string: memberInfo.image!)!)
                 .resizable()
                 .placeholder {
                     Image("Profile")
@@ -23,18 +23,18 @@ struct HomeInfoView: View {
                         .frame(width: 80, height: 80)
                 }
                 .clipShape(Circle())
-                .overlay(Circle().stroke(.whereDeepPink, lineWidth: userInfo.location != "퇴근" ? 3 : 0))
+                .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
                 .frame(width: 80, height: 80)
                 
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text(userInfo.name)
+                    Text(memberInfo.intraName!)
                         .font(.custom(Font.GmarketBold, size: 20))
                         .foregroundStyle(.whereDeepNavy)
                         
                     HStack(spacing: 4) {
-                        Text(userInfo.location)
-                        if userInfo.location != "퇴근" {
+                        Text(memberInfo.getLocation())
+                        if memberInfo.inCluster == true {
                             Image("Search icon White M")
                                 .resizable()
                                 .frame(width: 18, height: 18)
@@ -43,13 +43,13 @@ struct HomeInfoView: View {
                     .font(.custom(Font.GmarketMedium, size: 15))
                     .padding(5.0)
                     .padding(.horizontal, 2.0)
-                    .background(userInfo.location == "퇴근" ? .white : .whereDeepNavy)
+                    .background(memberInfo.inCluster == true ? .whereDeepNavy : .white)
                     .clipShape(Capsule())
-                    .overlay(userInfo.location == "퇴근" ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
-                    .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
+                    .overlay(memberInfo.inCluster == true ? Capsule().stroke(.whereDeepNavy, lineWidth: 0) : Capsule().stroke(.whereDeepNavy, lineWidth: 1))
+                    .foregroundStyle(memberInfo.inCluster == true ? .white : .whereDeepNavy)
                 }
                     
-                Text(userInfo.comment)
+                Text(memberInfo.comment!)
                     .font(.custom(Font.GmarketMedium, size: 16))
                     .foregroundStyle(.whereMediumNavy)
                     
@@ -95,7 +95,7 @@ struct HomeInfoView: View {
 }
 
 #Preview {
-    HomeInfoView(userInfo: .constant(UserInfo(name: "dhyun", avatar: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", location: "개포 c2r5s6", comment: "안녕하세요")), isWork: .constant(false), isNewGroupAlertPrsent: .constant(false))
+    HomeInfoView(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", imacLocation: "개포 c2r5s6")), isWork: .constant(false), isNewGroupAlertPrsent: .constant(false))
 }
 
 //            AsyncImage(url: URL(string: userInfo.avatar)) { image in

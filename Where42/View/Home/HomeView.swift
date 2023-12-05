@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var mainViewModel: MainViewModel
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
-                    HomeInfoView(userInfo: $homeViewModel.dhyun,
+                    HomeInfoView(memberInfo: $homeViewModel.myInfo,
                                  isWork: $homeViewModel.isWork,
                                  isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
                     
@@ -32,13 +32,14 @@ struct HomeView: View {
                                 Where42ToolBarContent(isShowSheet: $homeViewModel.isShowSettingSheet, isSettingPresenting: true)
                             }
                     }
-                    
                     .refreshable {}
                 }
                 
                 .onAppear {
-//                    homeViewModel.getUserInfo()
                     homeViewModel.countOnlineUsers()
+                }
+                .task {
+                    homeViewModel.getMemberInfo()
                 }
             }
         }

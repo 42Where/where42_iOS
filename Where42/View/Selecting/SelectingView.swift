@@ -14,9 +14,9 @@ struct SelectingView: View {
     @State private var isShowSheet = false
     @State private var name: String = ""
 
-    @State var dhyun: UserInfo = .init(name: "dhyun", avatar: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", location: "퇴근", comment: "안녕하세요~")
+    @State var dhyun: MemberInfo = .init(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", imacLocation: "퇴근")
 
-    private var selectedUser: [UserInfo] = []
+    private var selectedUser: [MemberInfo] = []
 
     var body: some View {
         NavigationView {

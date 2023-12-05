@@ -15,7 +15,7 @@ struct CustomAlert: View {
     @Binding var inputText: String
 
     var leftButtonAction: (() -> Void)?
-    var rightButtonAction: (() -> Void)?
+    var rightButtonAction: (() async -> Void)?
 
     var body: some View {
         ZStack {
@@ -71,7 +71,9 @@ struct CustomAlert: View {
                     }
 
                     Button {
-                        rightButtonAction?()
+                        Task {
+                            await rightButtonAction?()
+                        }
                     } label: {
                         Text("확인")
                             .padding(.horizontal, 6)
