@@ -95,7 +95,7 @@ struct SettingView: View {
                         settingViewModel.isCustomLocationAlertPresent.toggle()
                     }
                     await settingViewModel.UpdateCustomLocation(intraId: homeViewModel.intraId)
-                    homeViewModel.myInfo.customLocation = settingViewModel.newCustomLocation
+                    homeViewModel.myInfo.location = settingViewModel.newLocation
                 }
             }
         }

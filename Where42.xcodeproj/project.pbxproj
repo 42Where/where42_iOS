@@ -25,6 +25,7 @@
 		A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01551BA2AED5E7800B9D271 /* Font.swift */; };
 		A04756722AEEB714000872B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04756712AEEB714000872B9 /* LoginView.swift */; };
 		A04F69842B0C77C800B6EEFF /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04F69832B0C77C800B6EEFF /* PersistenceController.swift */; };
+		A05E269D2B1F401C00FD3E22 /* GroupAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */; };
 		A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06000802AFCFCA800CC9A6A /* MainViewModel.swift */; };
 		A06000842AFD166800CC9A6A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A06000832AFD166800CC9A6A /* Kingfisher */; };
 		A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */; };
@@ -35,6 +36,8 @@
 		A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A090A2952AFD1EF8001A1198 /* CustomAlertModal.swift */; };
 		A06DB6452AFDD9A00021263A /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DB6442AFDD9A00021263A /* SettingViewModel.swift */; };
 		A06DB6472AFDDF6C0021263A /* HomeGruopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DB6462AFDDF6C0021263A /* HomeGruopViewModel.swift */; };
+		A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07518502B218E0E00E1AE7C /* PersonalInfoAgreementView.swift */; };
+		A07518532B219F6F00E1AE7C /* AnimatePlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07518522B219F6F00E1AE7C /* AnimatePlaceholder.swift */; };
 		A0782B832AFCA00A00A7DDDA /* readSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0782B822AFCA00A00A7DDDA /* readSize.swift */; };
 		A0938C432B0C6A0D00367E84 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */; };
 		A0AF34A42AEFA2A60057C996 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AF34A32AEFA2A60057C996 /* LaunchScreenView.swift */; };
@@ -70,6 +73,7 @@
 		A02101D92AFB56BD00CB2FCD /* GroupEditModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditModal.swift; sourceTree = "<group>"; };
 		A04756712AEEB714000872B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A04F69832B0C77C800B6EEFF /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupAPI.swift; sourceTree = "<group>"; };
 		A06000802AFCFCA800CC9A6A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Where42ToolBarContent.swift; sourceTree = "<group>"; };
 		A06BAE972AF8BDDE00DB5A76 /* DeviceName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceName.swift; sourceTree = "<group>"; };
@@ -78,6 +82,8 @@
 		A06BAE9D2AFA2D4100DB5A76 /* HomeFriendInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFriendInfoView.swift; sourceTree = "<group>"; };
 		A06DB6442AFDD9A00021263A /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Where42/ViewModel/SettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A06DB6462AFDDF6C0021263A /* HomeGruopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeGruopViewModel.swift; path = Where42/ViewModel/HomeGruopViewModel.swift; sourceTree = SOURCE_ROOT; };
+		A07518502B218E0E00E1AE7C /* PersonalInfoAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoAgreementView.swift; sourceTree = "<group>"; };
+		A07518522B219F6F00E1AE7C /* AnimatePlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnimatePlaceholder.swift; path = Where42/View/Utils/AnimatePlaceholder.swift; sourceTree = SOURCE_ROOT; };
 		A0782B822AFCA00A00A7DDDA /* readSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = readSize.swift; sourceTree = "<group>"; };
 		A090A2952AFD1EF8001A1198 /* CustomAlertModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertModal.swift; sourceTree = "<group>"; };
 		A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -151,6 +157,7 @@
 				A02101D22AFB25F800CB2FCD /* Main */,
 				A02101CE2AFB25B500CB2FCD /* Home */,
 				A02101D02AFB25DC00CB2FCD /* Login */,
+				A075184F2B217F4D00E1AE7C /* Utils */,
 				A02101CF2AFB25D400CB2FCD /* Search */,
 				A019CC492B038E52007DBA20 /* Selecting */,
 				A02101D12AFB25E600CB2FCD /* Setting */,
@@ -203,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				A04756712AEEB714000872B9 /* LoginView.swift */,
-				A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */,
+				A07518502B218E0E00E1AE7C /* PersonalInfoAgreementView.swift */,
 				A0BBA7052B01E13C00C3A8A0 /* HelpPage.swift */,
 			);
 			path = Login;
@@ -232,8 +239,18 @@
 			children = (
 				A06BAE992AF8C1CC00DB5A76 /* API.swift */,
 				A0D5E0362B15DD9F00BEE525 /* MemberAPI.swift */,
+				A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		A075184F2B217F4D00E1AE7C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A07518522B219F6F00E1AE7C /* AnimatePlaceholder.swift */,
+				A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		A090A2972AFD1EFE001A1198 /* CustomAlert */ = {
@@ -383,6 +400,7 @@
 				A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */,
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
 				A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */,
+				A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */,
 				A06BAE9A2AF8C1CC00DB5A76 /* API.swift in Sources */,
 				A0AF34A42AEFA2A60057C996 /* LaunchScreenView.swift in Sources */,
 				A0BBA7062B01E13C00C3A8A0 /* HelpPage.swift in Sources */,
@@ -397,6 +415,7 @@
 				A04756722AEEB714000872B9 /* LoginView.swift in Sources */,
 				A06BAE9C2AF9E7CC00DB5A76 /* HomeInfoView.swift in Sources */,
 				A02101DA2AFB56BD00CB2FCD /* GroupEditModal.swift in Sources */,
+				A07518532B219F6F00E1AE7C /* AnimatePlaceholder.swift in Sources */,
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
 				A01551BD2AEE401C00B9D271 /* SettingView.swift in Sources */,
@@ -407,6 +426,7 @@
 				A02101D82AFB53BA00CB2FCD /* HomeFriendView.swift in Sources */,
 				A04F69842B0C77C800B6EEFF /* PersistenceController.swift in Sources */,
 				A02101C52AFB21D800CB2FCD /* HomeViewModel.swift in Sources */,
+				A05E269D2B1F401C00FD3E22 /* GroupAPI.swift in Sources */,
 				A0FD453E2AEB81D70050AB09 /* Where42.swift in Sources */,
 				A06BAE982AF8BDDE00DB5A76 /* DeviceName.swift in Sources */,
 				A02101D42AFB4C9200CB2FCD /* FriendEditModal.swift in Sources */,

@@ -15,38 +15,17 @@ class API: ObservableObject {
         case BadRequest
         case ServerError
     }
+
+    func errorPrint(_ error: Error, message: String) {
+        switch error {
+        case NetworkError.invalidHTTPResponse:
+            fatalError("잘못된 HTTP Response 입니다")
+        case NetworkError.BadRequest:
+            fatalError("잘못된 요청입니다")
+        case NetworkError.ServerError:
+            fatalError("서버 에러입니다")
+        default:
+            fatalError(message + ": " + error.localizedDescription)
+        }
+    }
 }
-
-// extension Bundle {
-//    var apiKey: String? {
-//        if let filePath = url(forResource: "Environment", withExtension: "plist") {
-//            do {
-//                let infoPlistData = try Data(contentsOf: filePath)
-//
-//                if let dict = try PropertyListSerialization.propertyList(from: infoPlistData, format: nil) as? [String: Any] {
-//                    return dict["API_PATH"]
-//                }
-//            }
-//        } catch {
-//            print(error)
-//        }
-//    }
-// }
-
-// class BaseEnv {
-//    var Env: [String: Any]?
-//
-//    init(resourceName: String) {
-//        if let filePath = Bundle.main.url(forResource: resourceName, withExtension: "plist") {
-//            do {
-//
-//
-//                if let dict = try PropertyListSerialization.propertyList(from: infoPlistData, format: nil) as? [String: Any] {
-//                    Env = dict
-//                }
-//            } catch {
-//                print(error)
-//            }
-//        }
-//    }
-// }

@@ -7,25 +7,25 @@
 
 import Foundation
 
-struct MemberCreateDTO: Codable {
+struct CreateMemberDTO: Codable {
     var intraId: Int
     var intraName: String?
     var grade: Int?
     var image: String?
 }
 
-struct MemberUpdateDTO: Codable {
+struct UpdateMemberDTO: Codable {
     var intraId: Int
     var comment: String?
     var customLocation: String?
 }
 
-struct MemberDeleteDTO: Codable {
+struct DeleteMemberDTO: Codable {
     var intraId: Int
 }
 
 class MemberAPI: API {
-    func createMember(memberCreateDTO: MemberCreateDTO) async throws -> MemberInfo {
+    func createMember(memberCreateDTO: CreateMemberDTO) async throws -> MemberInfo {
         let requestBody = try! JSONEncoder().encode(memberCreateDTO)
 
         guard let requestURL = URL(string: baseURL + "/member/") else {
@@ -61,7 +61,7 @@ class MemberAPI: API {
         }
     }
 
-    func getMemberInfo(intraId: Int) async throws -> MemberInfo {
+    func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, URL?) {
         guard let requestURL = URL(string: baseURL + "/member/?intraId=\(intraId)") else {
             print("Missing URL")
             fatalError("Missing URL")
@@ -81,7 +81,16 @@ class MemberAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                return try JSONDecoder().decode(MemberInfo.self, from: data)
+                if response.mimeType == "text/html" {
+                    print(requestURL)
+                    return (nil, requestURL)
+                } else {
+                    return try (JSONDecoder().decode(MemberInfo.self, from: data), nil)
+                }
+
+            case 300 ... 399:
+                print("Redirect")
+                throw NetworkError.BadRequest
 
             case 400 ... 499:
                 throw NetworkError.BadRequest
@@ -98,7 +107,7 @@ class MemberAPI: API {
     }
 
     func deleteMember(intraId: Int) async throws -> Bool {
-        let requestBody = try! JSONEncoder().encode(MemberDeleteDTO(intraId: intraId))
+        let requestBody = try! JSONEncoder().encode(DeleteMemberDTO(intraId: intraId))
 
         guard let requestURL = URL(string: baseURL + "/member/") else {
             fatalError("Missing URL")
@@ -134,7 +143,7 @@ class MemberAPI: API {
     }
 
     func updateStatusMessage(intraId: Int, statusMessage: String) async throws -> String? {
-        let requestBody = try! JSONEncoder().encode(MemberUpdateDTO(intraId: intraId, comment: statusMessage))
+        let requestBody = try! JSONEncoder().encode(UpdateMemberDTO(intraId: intraId, comment: statusMessage))
         print(String(data: requestBody, encoding: String.Encoding.utf8)!)
 
         guard let requestURL = URL(string: baseURL + "/member/comment") else {
@@ -175,7 +184,7 @@ class MemberAPI: API {
     }
 
     func updateCustomLocation(intraId: Int, customLocation: String) async throws -> String? {
-        let requestBody = try! JSONEncoder().encode(MemberUpdateDTO(intraId: intraId, customLocation: customLocation))
+        let requestBody = try! JSONEncoder().encode(UpdateMemberDTO(intraId: intraId, customLocation: customLocation))
 
         guard let requestURL = URL(string: baseURL + "/member/custom-location") else {
             fatalError("Missing URL")
@@ -196,7 +205,7 @@ class MemberAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 print("Success")
-                return try JSONDecoder().decode(MemberInfo.self, from: data).customLocation
+                return try JSONDecoder().decode(MemberInfo.self, from: data).location
             case 400 ... 499:
                 throw NetworkError.BadRequest
 

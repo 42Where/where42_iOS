@@ -21,18 +21,17 @@ struct MemberInfo: Codable, Hashable {
     }
 
     var inCluster: Bool? = false
-    var imacLocation: String?
-    var customLocation: String?
+    var agree: Bool?
+    var defaultGrouId: String?
+    var location: String?
 
     static var empty: MemberInfo {
         MemberInfo(id: 0, intraId: 0, intraName: "Name", grade: 0, image: "https://", comment: "Comment", inCluster: false)
     }
 
     func getLocation() -> String {
-        if customLocation != nil {
-            return customLocation!
-        } else if imacLocation != nil {
-            return imacLocation!
+        if location != nil {
+            return location!
         } else {
             return "잘못된 위치"
         }

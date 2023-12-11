@@ -14,7 +14,7 @@ struct SelectingView: View {
     @State private var isShowSheet = false
     @State private var name: String = ""
 
-    @State var dhyun: MemberInfo = .init(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", imacLocation: "퇴근")
+    @State var dhyun: MemberInfo = .init(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
 
     private var selectedUser: [MemberInfo] = []
 
@@ -36,7 +36,7 @@ struct SelectingView: View {
                             .stroke(.whereDeepNavy, lineWidth: 2)
                     )
 
-                    ForEach($homeViewModel.searching.users, id: \.self) { $user in
+                    ForEach($homeViewModel.searching.members, id: \.self) { $user in
                         SelectingFriendInfoView(userInfo: $user)
                             .padding(.top)
                     }

@@ -18,9 +18,9 @@ struct HomeGroupView: View {
             ForEach($groups, id: \.self) { $group in
                 LazyVStack(pinnedViews: .sectionHeaders) {
                     Section {
-                        if group.isOpen && group.totalNum > 0 {
-                            ForEach($group.users, id: \.self) { $user in
-                                if !(homeViewModel.isWork && user.imacLocation == "퇴근") {
+                        if group.isOpen! && group.totalNum > 0 {
+                            ForEach($group.members, id: \.self) { $user in
+                                if !(homeViewModel.isWork && user.location == "퇴근") {
                                     HomeFriendInfoView(userInfo: $user, groupInfo: $group)
                                         .padding(.horizontal)
                                         .padding(.vertical, 1)
@@ -32,38 +32,41 @@ struct HomeGroupView: View {
                             HStack {
                                 Text("\(group.name)")
                                     .font(.custom(Font.GmarketMedium, size: 13))
-                                Text("\(group.onlineNum)/\(group.totalNum)")
+                                Text("\(group.onlineNum!)/\(group.totalNum)")
                                     .font(.custom(Font.GmarketMedium, size: 11))
 
                                 Spacer()
 
-                                Button {} label: {
-                                    Image("Filter icon")
-                                }
-
-                                Button {
-                                    homeGroupViewModel.isSheetPresent.toggle()
-                                    homeViewModel.selectedGroup = group
-                                } label: {
-                                    Image("Edit icon")
-                                }
-
-                                Button {
-                                    withAnimation {
-                                        group.isOpen.toggle()
+                                HStack {
+                                    Button {} label: {
+                                        Image("Filter icon")
                                     }
-                                } label: {
-                                    if group.isOpen {
-                                        Image("Fold icon")
-                                    } else {
-                                        Image("Folded icon")
+
+                                    Button {
+                                        homeGroupViewModel.isSheetPresent.toggle()
+                                        homeViewModel.selectedGroup = group
+                                    } label: {
+                                        Image("Edit icon")
+                                    }
+
+                                    Button {
+                                        withAnimation {
+                                            group.isOpen!.toggle()
+                                        }
+                                    } label: {
+                                        if group.isOpen! {
+                                            Image("Fold icon")
+                                        } else {
+                                            Image("Folded icon")
+                                        }
                                     }
                                 }
+                                .unredacted()
                             }
                             .padding(.horizontal)
                             .padding(.vertical, 3)
 
-                            if group.isOpen && group.totalNum > 0 {
+                            if group.isOpen! && group.totalNum > 0 {
                                 Divider()
                             }
                         }

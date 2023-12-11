@@ -38,16 +38,16 @@ struct Where42: View {
                     }
                     .toolbar(.visible, for: .tabBar)
                     .toolbarBackground(Color.yellow, for: .tabBar)
-
-                    .onAppear(perform: {
-//                        UITabBar.appearance().scrollEdgeAppearance = .init()
-                    })
                 }
                 .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
                     SelectingView()
                 }
 
                 MainAlertView()
+
+                if mainViewModel.isPersonalViewPrsented {
+                    PersonalInfoAgreementView()
+                }
 
             } else {
                 VStack {
@@ -57,6 +57,10 @@ struct Where42: View {
                                         removal: AnyTransition.move(edge: .bottom)))
             }
         }
+//        .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
+//            MyWebView(url: homeViewModel.intraURL!)
+//                .ignoresSafeArea()
+//        }
         .animation(.easeIn, value: isLogin)
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)

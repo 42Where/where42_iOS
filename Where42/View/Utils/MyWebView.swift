@@ -5,26 +5,19 @@
 //  Created by 현동호 on 11/13/23.
 //
 
+import SafariServices
 import SwiftUI
-import WebKit
 
-struct MyWebView: UIViewRepresentable {
-    var urlToLoad: String
+struct MyWebView: UIViewControllerRepresentable {
+    let url: URL
 
-    func makeUIView(context: Context) -> WKWebView {
-        guard let url = URL(string: urlToLoad) else {
-            return WKWebView()
-        }
-
-        let webView = WKWebView()
-
-        webView.load(URLRequest(url: url))
-        return webView
+    func makeUIViewController(context: Context) -> some UIViewController {
+        return SFSafariViewController(url: url)
     }
 
-    func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<MyWebView>) {}
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
 }
 
 #Preview {
-    MyWebView(urlToLoad: "https://naver.com")
+    MyWebView(url: URL(string: "https://intra.42.fr")!)
 }

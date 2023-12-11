@@ -18,28 +18,41 @@ struct HomeView: View {
                     HomeInfoView(memberInfo: $homeViewModel.myInfo,
                                  isWork: $homeViewModel.isWork,
                                  isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
-                    
+                        
                     Divider()
                     
                     ScrollView {
                         HomeGroupView(groups: $homeViewModel.groups)
                             
                         HomeFriendView(friends: $homeViewModel.friends)
-                        
+                            
                         Spacer()
                         
                             .toolbar {
                                 Where42ToolBarContent(isShowSheet: $homeViewModel.isShowSettingSheet, isSettingPresenting: true)
                             }
+                            .unredacted()
                     }
                     .refreshable {}
                 }
+                .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
+                .disabled(homeViewModel.isLoading)
                 
                 .onAppear {
                     homeViewModel.countOnlineUsers()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        homeViewModel.isLoading = false
+                    }
                 }
                 .task {
                     homeViewModel.getMemberInfo()
+//                    homeViewModel.getGroup()
+                }
+                
+                if homeViewModel.isLoading {
+                    ProgressView()
+                        .scaleEffect(2)
+                        .progressViewStyle(.circular)
                 }
             }
         }
