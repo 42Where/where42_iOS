@@ -70,6 +70,7 @@ struct HomeGroupView: View {
                                 Divider()
                             }
                         }
+                        .background(.white)
                     }
                 }
 
