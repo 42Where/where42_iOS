@@ -20,7 +20,7 @@ class HomeViewModel: ObservableObject {
 
     @Published var selectedGroup: GroupInfo = .empty
 
-    @Published var intraId: Int = 99760
+    @Published var intraId: Int = 6
     @Published var myInfo: MemberInfo = .empty
 
     @Published var groups: [GroupInfo] = [
@@ -125,8 +125,11 @@ class HomeViewModel: ObservableObject {
                     isShow42IntraSheet.toggle()
                 } else {
                     DispatchQueue.main.async {
-//                        print(memberInfo)
+//                        print(memberInfo!)
                         self.myInfo = memberInfo!
+                        if self.myInfo.comment == nil {
+                            self.myInfo.comment = ""
+                        }
                     }
                 }
             } catch {
@@ -140,10 +143,10 @@ class HomeViewModel: ObservableObject {
     func getGroup() {
         Task {
             do {
-                let groupss = try await groupAPI.getGroup(intraId: self.intraId)
+                let responseGroups = try await groupAPI.getGroup(intraId: self.intraId)
                 DispatchQueue.main.async {
                     print("-------------------")
-                    print(groupss)
+                    print(responseGroups)
                 }
             } catch {
                 print("Error getGroup: \(error)")

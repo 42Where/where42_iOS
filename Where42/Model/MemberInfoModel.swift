@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 struct MemberInfo: Codable, Hashable {
-    var id: Int?
+//    var id: Int?
     var intraId: Int?
     var intraName: String?
-    var grade: Int?
+    var grade: String?
     var image: String?
     var comment: String? {
         didSet {
@@ -22,11 +22,11 @@ struct MemberInfo: Codable, Hashable {
 
     var inCluster: Bool? = false
     var agree: Bool?
-    var defaultGrouId: String?
+    var defaultGrouId: Int?
     var location: String?
 
     static var empty: MemberInfo {
-        MemberInfo(id: 0, intraId: 0, intraName: "Name", grade: 0, image: "https://", comment: "Comment", inCluster: false)
+        MemberInfo(intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false)
     }
 
     func getLocation() -> String {

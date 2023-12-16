@@ -62,7 +62,7 @@ class MemberAPI: API {
     }
 
     func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, URL?) {
-        guard let requestURL = URL(string: baseURL + "/member/?intraId=\(intraId)") else {
+        guard let requestURL = URL(string: baseURL + "/member?intraId=\(intraId)") else {
             print("Missing URL")
             fatalError("Missing URL")
         }

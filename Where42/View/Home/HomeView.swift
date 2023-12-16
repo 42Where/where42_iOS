@@ -46,7 +46,7 @@ struct HomeView: View {
                 }
                 .task {
                     homeViewModel.getMemberInfo()
-//                    homeViewModel.getGroup()
+                    homeViewModel.getGroup()
                 }
                 
                 if homeViewModel.isLoading {
