@@ -18,7 +18,7 @@ struct HomeGroupView: View {
             ForEach($groups, id: \.self) { $group in
                 LazyVStack(pinnedViews: .sectionHeaders) {
                     Section {
-                        if group.isOpen! && group.totalNum > 0 {
+                        if group.isOpen! && group.totalNum! > 0 {
                             ForEach($group.members, id: \.self) { $user in
                                 if !(homeViewModel.isWork && user.location == "퇴근") {
                                     HomeFriendInfoView(userInfo: $user, groupInfo: $group)
@@ -30,9 +30,9 @@ struct HomeGroupView: View {
                     } header: {
                         VStack {
                             HStack {
-                                Text("\(group.name)")
+                                Text("\(group.groupName)")
                                     .font(.custom(Font.GmarketMedium, size: 13))
-                                Text("\(group.onlineNum!)/\(group.totalNum)")
+                                Text("\(group.onlineNum!)/\(group.totalNum!)")
                                     .font(.custom(Font.GmarketMedium, size: 11))
 
                                 Spacer()
@@ -66,7 +66,7 @@ struct HomeGroupView: View {
                             .padding(.horizontal)
                             .padding(.vertical, 3)
 
-                            if group.isOpen! && group.totalNum > 0 {
+                            if group.isOpen! && group.totalNum! > 0 {
                                 Divider()
                             }
                         }

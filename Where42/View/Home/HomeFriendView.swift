@@ -18,7 +18,7 @@ struct HomeFriendView: View {
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if friends.isOpen! && friends.totalNum > 0 {
+                if friends.isOpen! && friends.totalNum! > 0 {
                     ForEach($friends.members, id: \.self) { $user in
                         if !(homeViewModel.isWork && user.location == "퇴근") {
                             HomeFriendInfoView(userInfo: $user, groupInfo: $friends)
@@ -30,9 +30,9 @@ struct HomeFriendView: View {
             } header: {
                 VStack {
                     HStack {
-                        Text("\(friends.name)")
+                        Text("\(friends.groupName)")
                             .font(.custom(Font.GmarketMedium, size: 13))
-                        Text("\(friends.onlineNum!)/\(friends.totalNum)")
+                        Text("\(friends.onlineNum!)/\(friends.totalNum!)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 
                         Spacer()
@@ -64,7 +64,7 @@ struct HomeFriendView: View {
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 3)
-                    if friends.isOpen! && friends.totalNum > 0 {
+                    if friends.isOpen! && friends.totalNum! > 0 {
                         Divider()
                     }
                 }

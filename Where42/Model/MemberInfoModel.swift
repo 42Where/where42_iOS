@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 struct MemberInfo: Codable, Hashable {
-//    var id: Int?
+    var groupId: Int?
+    var groupName: String?
     var intraId: Int?
     var intraName: String?
     var grade: String?
@@ -22,8 +23,37 @@ struct MemberInfo: Codable, Hashable {
 
     var inCluster: Bool? = false
     var agree: Bool?
-    var defaultGrouId: Int?
+    var defaultGroupId: Int?
     var location: String?
+
+    init(groupId: Int? = nil, groupName: String? = nil, intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
+        self.groupId = groupId
+        self.groupName = groupName
+        self.intraId = intraId
+        self.intraName = intraName
+        self.grade = grade
+        self.image = image
+        self.comment = comment
+        self.inCluster = inCluster
+        self.agree = agree
+        self.defaultGroupId = defaultGroupId
+        self.location = location
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.groupId = (try? container.decodeIfPresent(Int.self, forKey: .groupId)) ?? 0
+        self.groupName = (try? container.decodeIfPresent(String.self, forKey: .groupName)) ?? "nil"
+        self.intraId = (try? container.decodeIfPresent(Int.self, forKey: .intraId)) ?? 0
+        self.intraName = (try? container.decodeIfPresent(String.self, forKey: .intraName)) ?? "nil"
+        self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"
+        self.image = (try? container.decodeIfPresent(String.self, forKey: .image)) ?? "nil"
+        self.comment = (try? container.decodeIfPresent(String.self, forKey: .comment)) ?? "nil"
+        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? false
+        self.agree = (try? container.decodeIfPresent(Bool.self, forKey: .agree)) ?? false
+        self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
+        self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? "nil"
+    }
 
     static var empty: MemberInfo {
         MemberInfo(intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false)
@@ -43,10 +73,3 @@ struct MemberInfo: Codable, Hashable {
         }
     }
 }
-
-// struct UserInfo: Hashable {
-//    var intraName: String
-//    var image: String
-//    var imacLocation: String
-//    var comment: String
-// }

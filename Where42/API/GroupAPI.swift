@@ -50,7 +50,7 @@ class GroupAPI: API {
         }
     }
 
-    func getGroup(intraId: Int) async throws -> GroupInfo {
+    func getGroup(intraId: Int) async throws -> [GroupInfo] {
         guard let requestURL = URL(string: baseURL + "/group/?memberId=\(intraId)") else {
             fatalError("Missing URL")
         }
@@ -62,12 +62,12 @@ class GroupAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
-            print(String(data: data, encoding: .utf8))
+//            print(String(data: data, encoding: .utf8)!)
 
             switch response.statusCode {
             case 200 ... 299:
                 print("Success")
-                return try JSONDecoder().decode(GroupInfo.self, from: data)
+                return try JSONDecoder().decode([GroupInfo].self, from: data)
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
@@ -76,6 +76,7 @@ class GroupAPI: API {
                 fatalError("Failed Get Groups")
             }
         } catch {
+            print(error)
             errorPrint(error, message: "Failed Get Groups")
             fatalError()
         }
