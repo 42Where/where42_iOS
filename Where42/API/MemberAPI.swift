@@ -24,6 +24,12 @@ struct UpdateCustomLocationDTO: Codable {
     var customLocation: String?
 }
 
+struct ResponseCustomLocationDTO: Codable {
+    var intraId: Int
+    var imacLocation: String
+    var customLocation: String
+}
+
 struct DeleteMemberDTO: Codable {
     var intraId: Int
 }
@@ -207,8 +213,8 @@ class MemberAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Success")
-                return try JSONDecoder().decode(MemberInfo.self, from: data).location
+                print("Succeed update Custom Location")
+                return try JSONDecoder().decode(ResponseCustomLocationDTO.self, from: data).customLocation
             case 400 ... 499:
                 throw NetworkError.BadRequest
 

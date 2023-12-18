@@ -33,6 +33,7 @@ extension SettingView {
             do {
                 if let customLocation = try await memberAPI.updateCustomLocation(intraId: intraId, customLocation: inputText) {
                     DispatchQueue.main.async {
+                        print(customLocation)
                         self.newLocation = customLocation
                         self.inputText = ""
                     }
