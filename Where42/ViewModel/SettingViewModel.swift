@@ -29,7 +29,11 @@ extension SettingView {
             } catch {}
         }
 
-        func UpdateCustomLocation(intraId: Int) async {
+        func UpdateCustomLocation(intraId: Int) async -> Bool {
+            if inputText == "" {
+                return false
+            }
+
             do {
                 if let customLocation = try await memberAPI.updateCustomLocation(intraId: intraId, customLocation: inputText) {
                     DispatchQueue.main.async {
@@ -39,6 +43,7 @@ extension SettingView {
                     }
                 }
             } catch {}
+            return true
         }
     }
 }

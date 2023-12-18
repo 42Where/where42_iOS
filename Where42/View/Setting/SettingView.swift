@@ -91,11 +91,12 @@ struct SettingView: View {
                         settingViewModel.inputText = ""
                     }
                 } rightButtonAction: {
-                    withAnimation {
-                        settingViewModel.isCustomLocationAlertPresent.toggle()
+                    if await settingViewModel.UpdateCustomLocation(intraId: homeViewModel.intraId) {
+                        withAnimation {
+                            settingViewModel.isCustomLocationAlertPresent.toggle()
+                        }
+                        homeViewModel.myInfo.location = settingViewModel.newLocation
                     }
-                    await settingViewModel.UpdateCustomLocation(intraId: homeViewModel.intraId)
-                    homeViewModel.myInfo.location = settingViewModel.newLocation
                 }
             }
         }

@@ -66,7 +66,7 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Success")
+                print("Succeed get group")
                 return try JSONDecoder().decode([GroupInfo].self, from: data)
             case 400 ... 499:
                 throw NetworkError.BadRequest
