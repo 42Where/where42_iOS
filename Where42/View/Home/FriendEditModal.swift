@@ -11,7 +11,7 @@ import SwiftUI
 struct FriendEditModal: View {
     @EnvironmentObject var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: MemberInfo
+    @Binding var userInfo: GroupMemberInfo
     @Binding var groupInfo: GroupInfo
     @Binding var isFriend: Bool
     @Binding var isPresented: Bool
@@ -34,7 +34,7 @@ struct FriendEditModal: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text(userInfo.intraName!)
+                        Text(userInfo.memberIntraName!)
                             .font(.custom(Font.GmarketBold, size: 20))
                             .foregroundStyle(.whereDeepNavy)
 
@@ -71,7 +71,7 @@ struct FriendEditModal: View {
             Button {
                 withAnimation {
                     if isFriend {
-                        homeViewModel.deleteUserInGroup(group: &groupInfo, name: userInfo.intraName!)
+                        homeViewModel.deleteUserInGroup(group: &groupInfo, name: userInfo.memberIntraName!)
                     } else {
                         homeViewModel.addUserInGroup(group: &groupInfo, userInfo: userInfo)
                     }
@@ -94,6 +94,6 @@ struct FriendEditModal: View {
 }
 
 #Preview {
-    FriendEditModal(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isFriend: .constant(true), isPresented: .constant(true))
+    FriendEditModal(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isFriend: .constant(true), isPresented: .constant(true))
         .environmentObject(HomeViewModel())
 }

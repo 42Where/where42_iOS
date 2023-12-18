@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 
 struct MemberInfo: Codable, Hashable {
-    var groupId: Int?
-    var groupName: String?
     var intraId: Int?
     var intraName: String?
     var grade: String?
@@ -26,9 +24,7 @@ struct MemberInfo: Codable, Hashable {
     var defaultGroupId: Int?
     var location: String?
 
-    init(groupId: Int? = nil, groupName: String? = nil, intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
-        self.groupId = groupId
-        self.groupName = groupName
+    init(intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
         self.intraId = intraId
         self.intraName = intraName
         self.grade = grade
@@ -42,8 +38,7 @@ struct MemberInfo: Codable, Hashable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.groupId = (try? container.decodeIfPresent(Int.self, forKey: .groupId)) ?? 0
-        self.groupName = (try? container.decodeIfPresent(String.self, forKey: .groupName)) ?? "nil"
+
         self.intraId = (try? container.decodeIfPresent(Int.self, forKey: .intraId)) ?? 0
         self.intraName = (try? container.decodeIfPresent(String.self, forKey: .intraName)) ?? "nil"
         self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"

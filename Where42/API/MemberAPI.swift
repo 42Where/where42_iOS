@@ -14,9 +14,13 @@ struct CreateMemberDTO: Codable {
     var image: String?
 }
 
-struct UpdateMemberDTO: Codable {
+struct UpdateCommentDTO: Codable {
     var intraId: Int
     var comment: String?
+}
+
+struct UpdateCustomLocationDTO: Codable {
+    var intraId: Int
     var customLocation: String?
 }
 
@@ -143,11 +147,10 @@ class MemberAPI: API {
     }
 
     func updateStatusMessage(intraId: Int, statusMessage: String) async throws -> String? {
-        let requestBody = try! JSONEncoder().encode(UpdateMemberDTO(intraId: intraId, comment: statusMessage))
+        let requestBody = try! JSONEncoder().encode(UpdateCommentDTO(intraId: intraId, comment: statusMessage))
         print(String(data: requestBody, encoding: String.Encoding.utf8)!)
 
         guard let requestURL = URL(string: baseURL + "/member/comment") else {
-            print("Missing URL")
             fatalError("Missing URL")
         }
 
@@ -184,9 +187,9 @@ class MemberAPI: API {
     }
 
     func updateCustomLocation(intraId: Int, customLocation: String) async throws -> String? {
-        let requestBody = try! JSONEncoder().encode(UpdateMemberDTO(intraId: intraId, customLocation: customLocation))
+        let requestBody = try! JSONEncoder().encode(UpdateCustomLocationDTO(intraId: intraId, customLocation: customLocation))
 
-        guard let requestURL = URL(string: baseURL + "/member/custom-location") else {
+        guard let requestURL = URL(string: baseURL + "/location/custom") else {
             fatalError("Missing URL")
         }
 

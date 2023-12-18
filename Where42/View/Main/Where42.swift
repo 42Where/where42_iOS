@@ -5,6 +5,7 @@
 //  Created by 현동호 on 10/27/23.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct Where42: View {

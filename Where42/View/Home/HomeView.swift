@@ -33,7 +33,9 @@ struct HomeView: View {
                             }
                             .unredacted()
                     }
-                    .refreshable {}
+                    .refreshable {
+                        homeViewModel.getGroup()
+                    }
                 }
                 .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
                 .disabled(homeViewModel.isLoading)

@@ -9,7 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct HomeFriendInfoView: View {
-    @Binding var userInfo: MemberInfo
+    @Binding var userInfo: GroupMemberInfo
     @Binding var groupInfo: GroupInfo
 
     @State private var isWork = false
@@ -34,7 +34,7 @@ struct HomeFriendInfoView: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(userInfo.intraName!)
+                        Text(userInfo.memberIntraName!)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
@@ -98,6 +98,6 @@ struct ScaleButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    HomeFriendInfoView(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
+    HomeFriendInfoView(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
         .environmentObject(HomeViewModel())
 }
