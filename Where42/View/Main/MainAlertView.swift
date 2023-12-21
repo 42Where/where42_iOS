@@ -32,8 +32,8 @@ struct MainAlertView: View {
                     mainViewModel.isEditGroupNameAlertPrsented.toggle()
                 }
             } rightButtonAction: {
-                withAnimation {
-                    homeViewModel.editGroupName(isEditGroupNameAlertPrsented: $mainViewModel.isEditGroupNameAlertPrsented)
+                if await homeViewModel.editGroupName() {
+                    mainViewModel.isEditGroupNameAlertPrsented.toggle()
                 }
             }
         }

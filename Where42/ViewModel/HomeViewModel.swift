@@ -155,6 +155,16 @@ class HomeViewModel: ObservableObject {
         }
     }
 
+    func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
+        do {
+            let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName)
+            print(newName)
+            return true
+        } catch {
+            return false
+        }
+    }
+
     // Create New Group
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) {
@@ -203,20 +213,24 @@ class HomeViewModel: ObservableObject {
 
     // Edit Group
 
-    func editGroupName(isEditGroupNameAlertPrsented: Binding<Bool>) {
+    func editGroupName() async -> Bool {
         if inputText == "" {
-            return
+            return false
         }
 
         for index in groups.indices {
             if groups[index] == selectedGroup {
                 groups[index].groupName = inputText
+
+                if await updateGroupName(groupId: groups[index].groupId!, newGroupName: inputText) {
+                    inputText = ""
+                    selectedGroup = .empty
+                } else {
+                    return false
+                }
             }
         }
-
-        inputText = ""
-        selectedGroup = .empty
-        isEditGroupNameAlertPrsented.wrappedValue.toggle()
+        return true
     }
 
     func deleteGroup(isDeleteGroupAlertPrsented: Binding<Bool>) {
