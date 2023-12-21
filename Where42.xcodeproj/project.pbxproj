@@ -231,8 +231,8 @@
 			isa = PBXGroup;
 			children = (
 				A0FD453D2AEB81D70050AB09 /* Where42.swift */,
-				A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */,
 				A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */,
+				A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";

@@ -39,13 +39,15 @@ struct MainAlertView: View {
         }
 
         if mainViewModel.isDeleteGroupAlertPrsented {
-            CustomAlert(title: "그룹 삭제", message: " 님'\(homeViewModel.selectedGroup.groupName)' 을(를) 삭제하시겠습니까?", inputText: .constant("")) {
+            CustomAlert(title: "그룹 삭제", message: " 그룹 '\(homeViewModel.selectedGroup.groupName)' 을(를) 삭제하시겠습니까?", inputText: .constant("")) {
                 withAnimation {
                     mainViewModel.isDeleteGroupAlertPrsented.toggle()
                 }
             } rightButtonAction: {
-                withAnimation {
-                    homeViewModel.deleteGroup(isDeleteGroupAlertPrsented: $mainViewModel.isDeleteGroupAlertPrsented)
+                if await homeViewModel.deleteGroup() {
+                    withAnimation {
+                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                    }
                 }
             }
         }

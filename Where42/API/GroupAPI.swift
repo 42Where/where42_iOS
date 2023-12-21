@@ -12,7 +12,7 @@ struct CreateGroupDTO: Codable {
     var groupName: String
 }
 
-struct UpdateGroupNameDTO: Codable {
+struct UpdateGroupDTO: Codable {
     var groupId: Int
     var groupName: String
 }
@@ -88,7 +88,7 @@ class GroupAPI: API {
     }
 
     func updateGroupName(groupId: Int, newGroupName: String) async throws -> String {
-        guard let requestBody = try? JSONEncoder().encode(UpdateGroupNameDTO(groupId: groupId, groupName: newGroupName)) else {
+        guard let requestBody = try? JSONEncoder().encode(UpdateGroupDTO(groupId: groupId, groupName: newGroupName)) else {
             fatalError("Failed Create request Body")
         }
 
@@ -113,7 +113,7 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 print("Succeed update group name")
-                return try JSONDecoder().decode(UpdateGroupNameDTO.self, from: data).groupName
+                return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupName
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
@@ -125,6 +125,46 @@ class GroupAPI: API {
         } catch {
             errorPrint(error, message: "Failed update group name")
             fatalError()
+        }
+    }
+
+    func deleteGroup(groupId: Int, groupName: String) async throws -> Bool {
+        guard let requestBody = try? JSONEncoder().encode(UpdateGroupDTO(groupId: groupId, groupName: groupName)) else {
+            fatalError("Failed encode requestBody")
+        }
+
+        guard let requestURL = URL(string: baseURL + "/group/?groupId=\(groupId)") else {
+            fatalError("Failed encode requestBody")
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = requestBody
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+//            print(String(data: data, encoding: .utf8)!)
+
+            switch response.statusCode {
+            case 200 ... 299:
+                print("Succeed delete group")
+                return true
+            case 400 ... 499:
+                throw NetworkError.BadRequest
+            case 500 ... 599:
+                throw NetworkError.ServerError
+            default:
+                fatalError("Failed delete group")
+            }
+        } catch {
+            errorPrint(error, message: "Failed delete group")
+            return false
         }
     }
 }

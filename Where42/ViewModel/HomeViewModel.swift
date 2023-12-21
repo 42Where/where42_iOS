@@ -178,11 +178,13 @@ class HomeViewModel: ObservableObject {
         isSelectViewPrsented.wrappedValue.toggle()
     }
 
-    func createNewGroup() {
+    func createNewGroup(intraId: Int) async {
         newGroup.members = newUsers
 
         countGroupUsers(group: &newGroup)
         groups.append(newGroup)
+
+        await groupAPI.createGroup(intraId: intraId, groupName: newGroup.groupName)
 
         initNewGroup()
     }
@@ -233,13 +235,23 @@ class HomeViewModel: ObservableObject {
         return true
     }
 
-    func deleteGroup(isDeleteGroupAlertPrsented: Binding<Bool>) {
+    func deleteGroup() async -> Bool {
         for index in groups.indices {
             if groups[index] == selectedGroup {
-                groups.remove(at: index)
+                do {
+                    if try await groupAPI.deleteGroup(groupId: groups[index].groupId!, groupName: groups[index].groupName) {
+                        withAnimation {
+                            groups.remove(at: index)
+                        }
+                        return true
+                    } else {
+                        return false
+                    }
+                } catch {
+                    return false
+                }
             }
         }
-
-        isDeleteGroupAlertPrsented.wrappedValue.toggle()
+        return true
     }
 }

@@ -49,7 +49,9 @@ struct SelectingView: View {
                     Spacer()
 
                     Button {
-                        homeViewModel.createNewGroup()
+                        Task {
+                            await homeViewModel.createNewGroup(intraId: homeViewModel.intraId)
+                        }
                         mainViewModel.isSelectViewPrsented = false
                     } label: {
                         Text("그룹 추가하기")
