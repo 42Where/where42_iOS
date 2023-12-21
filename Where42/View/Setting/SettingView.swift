@@ -54,6 +54,7 @@ struct SettingView: View {
                 
                 Spacer()
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             
             if settingViewModel.isLogoutAlertPresent {
                 CustomAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?", inputText: .constant("")) {
@@ -100,7 +101,6 @@ struct SettingView: View {
                 }
             }
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

@@ -74,6 +74,7 @@ struct CustomAlert: View {
                         Task {
                             await rightButtonAction?()
                         }
+
                     } label: {
                         Text("확인")
                             .padding(.horizontal, 6)

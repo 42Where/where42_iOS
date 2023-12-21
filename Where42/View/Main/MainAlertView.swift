@@ -16,12 +16,11 @@ struct MainAlertView: View {
             CustomAlert(title: "새 그룹 만들기", textFieldTitle: "그룹명 지정", inputText: $homeViewModel.inputText) {
                 withAnimation {
                     homeViewModel.initNewGroup()
-                    mainViewModel.isNewGroupAlertPrsented.toggle()
+                    mainViewModel.isNewGroupAlertPrsented = false
                 }
             } rightButtonAction: {
                 withAnimation {
                     homeViewModel.confirmGroupName(isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented, isSelectViewPrsented: $mainViewModel.isSelectViewPrsented)
-//                    mainViewModel.isNewGroupAlertPrsented.toggle()
                 }
             }
         }

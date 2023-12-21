@@ -40,11 +40,13 @@ struct Where42: View {
                     .toolbar(.visible, for: .tabBar)
                     .toolbarBackground(Color.yellow, for: .tabBar)
                 }
+                .zIndex(0)
                 .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
                     SelectingView()
                 }
 
                 MainAlertView()
+                    .zIndex(1)
 
                 if mainViewModel.isPersonalViewPrsented {
                     PersonalInfoAgreementView()
