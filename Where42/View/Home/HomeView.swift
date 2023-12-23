@@ -24,7 +24,7 @@ struct HomeView: View {
                     ScrollView {
                         HomeGroupView(groups: $homeViewModel.groups)
                             
-                        HomeFriendView(friends: $homeViewModel.friends)
+//                        HomeFriendView(friends: $homeViewModel.friends)
                             
                         Spacer()
                         

@@ -17,6 +17,11 @@ struct UpdateGroupDTO: Codable {
     var groupName: String
 }
 
+struct DeleteGroupMemberDTO: Codable {
+    var groupId: Int
+    var members: [Int]
+}
+
 class GroupAPI: API {
     func createGroup(intraId: Int, groupName: String) async {
         guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(memberIntraId: intraId, groupName: groupName)) else {
@@ -143,7 +148,7 @@ class GroupAPI: API {
         request.httpBody = requestBody
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -166,5 +171,46 @@ class GroupAPI: API {
             errorPrint(error, message: "Failed delete group")
             return false
         }
+    }
+
+    func deleteGroupMember(groupId: Int, members: [Int]) async throws -> Bool {
+        guard let requestBody = try? JSONEncoder().encode(DeleteGroupMemberDTO(groupId: groupId, members: members)) else {
+            fatalError("Failed create request Body")
+        }
+
+        guard let requestURL = URL(string: baseURL + "/group/groupmember/") else { fatalError("Failed create URL")
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = requestBody
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+//            print(String(data: data, encoding: .utf8)!)
+
+            switch response.statusCode {
+            case 200 ... 299:
+                print("Succeed delete group")
+                return true
+            case 400 ... 499:
+                throw NetworkError.BadRequest
+            case 500 ... 599:
+                throw NetworkError.ServerError
+            default:
+                fatalError("Failed delete group")
+            }
+        } catch {
+            errorPrint(error, message: "Failed delete group member")
+            return false
+        }
+
+        return true
     }
 }

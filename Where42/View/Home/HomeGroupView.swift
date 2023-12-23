@@ -34,6 +34,10 @@ struct HomeGroupView: View {
                                     .font(.custom(Font.GmarketMedium, size: 13))
                                 Text("\(group.onlineNum!)/\(group.totalNum!)")
                                     .font(.custom(Font.GmarketMedium, size: 11))
+                                if group.groupName == "default" {
+                                    Text("아마 친구목록?")
+                                        .font(.custom(Font.GmarketLight, size: 11))
+                                }
 
                                 Spacer()
 
