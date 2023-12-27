@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct GroupEditModal: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
-    @EnvironmentObject var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
 
     @Binding var group: GroupInfo
     @Binding var isPresented: Bool
-
-    let GmarketFont: GmarketSansTTF = .init()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -43,7 +41,9 @@ struct GroupEditModal: View {
                         .foregroundStyle(.whereMediumNavy)
                 }
 
-                Button {} label: {
+                Button {
+                    homeViewModel.isGroupEditViewPrsented = true
+                } label: {
                     Text("그룹 수정하기")
                         .foregroundStyle(.whereMediumNavy)
                 }
@@ -61,10 +61,14 @@ struct GroupEditModal: View {
             .padding(.vertical, 20)
         }
         .padding()
+        .sheet(isPresented: $homeViewModel.isGroupEditViewPrsented) {
+            GroupEditView(group: $group)
+        }
     }
 }
 
 #Preview {
     GroupEditModal(group: .constant(HomeViewModel().friends), isPresented: .constant(false))
         .environmentObject(HomeViewModel())
+        .environmentObject(MainViewModel())
 }

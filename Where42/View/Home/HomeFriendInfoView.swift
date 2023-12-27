@@ -72,7 +72,7 @@ struct HomeFriendInfoView: View {
         .buttonStyle(ScaleButtonStyle())
 
         .sheet(isPresented: $isShowModal) {
-            FriendEditModal(userInfo: $userInfo, groupInfo: $groupInfo, isFriend: .constant(true), isPresented: $isShowModal)
+            FriendEditModal(userInfo: $userInfo, groupInfo: $groupInfo, isPresented: $isShowModal, isFriend: groupInfo.groupName == "default")
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {

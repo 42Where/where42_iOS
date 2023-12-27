@@ -8,14 +8,16 @@
 import SwiftUI
 
 class HomeViewModel: ObservableObject {
+    @Published var isGroupEditViewPrsented = false
     @Published var isShowSettingSheet = false
     @Published var isShow42IntraSheet = false
     @Published var isWork = false
     @Published var isLoading = true
     @Published var inputText = ""
     @Published var intraURL: URL?
+    @Published var isAPILoaded = false
 
-    @Published var newUsers: [GroupMemberInfo] = []
+    @Published var selectedUsers: [GroupMemberInfo] = []
     @Published var newGroup: GroupInfo = .empty
 
     @Published var selectedGroup: GroupInfo = .empty
@@ -23,47 +25,9 @@ class HomeViewModel: ObservableObject {
     @Published var intraId: Int = 6
     @Published var myInfo: MemberInfo = .empty
 
-    @Published var groups: [GroupInfo] = [
-        .init(groupName: "Where42", totalNum: 0, onlineNum: 0, isOpen: false, members: [
-            .init(memberIntraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun4", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun5", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun6", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun7", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun8", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun9", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun10", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun11", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
-        ]),
-        .init(groupName: "Group1", totalNum: 0, onlineNum: 0, isOpen: false, members: [
-            .init(memberIntraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun4", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun5", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun6", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun7", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun8", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun9", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun10", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun11", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun12", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun13", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun14", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun15", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-            .init(memberIntraName: "dhyun16", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-            .init(memberIntraName: "dhyun17", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~,", location: "퇴근")
-        ])
-    ]
+    @Published var groups: [GroupInfo] = [.empty, .empty]
 
-    @Published var friends: GroupInfo = .init(groupName: "친구목록", totalNum: 0, onlineNum: 0, isOpen: true, members: [
-        .init(memberIntraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-        .init(memberIntraName: "dhyun2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-        .init(memberIntraName: "dhyun3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-        .init(memberIntraName: "dhyun4", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
-    ])
+    @Published var friends: GroupInfo = .empty
 
     @Published var searching: GroupInfo = .init(groupName: "검색", totalNum: 0, onlineNum: 0, isOpen: false, members: [
         .init(memberIntraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
@@ -147,7 +111,10 @@ class HomeViewModel: ObservableObject {
 //                    print("-------------------")
 //                    print(responseGroups[0].members)
                     self.groups = responseGroups
-                    self.countAllGroupUsers()
+                    self.friends = responseGroups[responseGroups.firstIndex(where: { $0.groupName == "default" })!]
+                    self.friends.isOpen = true
+
+                    self.countOnlineUsers()
                 }
             } catch {
                 print("Error getGroup: \(error)")
@@ -179,7 +146,7 @@ class HomeViewModel: ObservableObject {
     }
 
     func createNewGroup(intraId: Int) async {
-        newGroup.members = newUsers
+        newGroup.members = selectedUsers
 
         countGroupUsers(group: &newGroup)
         groups.append(newGroup)
@@ -191,17 +158,28 @@ class HomeViewModel: ObservableObject {
 
     func initNewGroup() {
         inputText = ""
-        newUsers = []
+        selectedUsers = []
         newGroup = GroupInfo(groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
     }
 
-    func deleteUserInGroup(group: inout GroupInfo, name: String) {
-        group.members.enumerated().forEach { index, user in
-            if user.memberIntraName == name {
-                group.members.remove(at: index)
+    func deleteUserInGroup() async {
+//    func deleteUserInGroup(group: inout GroupInfo, name: String) async {
+//        group.members.enumerated().forEach { index, user in
+//            if user.memberIntraName == name {
+//                group.members.remove(at: index)
+//            }
+//        }
+//        countGroupUsers(group: &group)
+
+        do {
+            _ = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
+
+            selectedGroup.members = selectedGroup.members.filter { member in
+                !selectedUsers.contains(where: { $0.memberId == member.memberId })
             }
+        } catch {
+            fatalError("Failed delete group member")
         }
-        countGroupUsers(group: &group)
     }
 
     func addUserInGroup(group: inout GroupInfo, userInfo: GroupMemberInfo) {
@@ -244,14 +222,12 @@ class HomeViewModel: ObservableObject {
                             groups.remove(at: index)
                         }
                         return true
-                    } else {
-                        return false
                     }
                 } catch {
                     return false
                 }
             }
         }
-        return true
+        return false
     }
 }

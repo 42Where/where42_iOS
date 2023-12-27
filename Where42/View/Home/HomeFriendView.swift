@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeFriendView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var friends: GroupInfo
 
@@ -30,7 +30,7 @@ struct HomeFriendView: View {
             } header: {
                 VStack {
                     HStack {
-                        Text("\(friends.groupName)")
+                        Text("친구목록")
                             .font(.custom(Font.GmarketMedium, size: 13))
                         Text("\(friends.onlineNum!)/\(friends.totalNum!)")
                             .font(.custom(Font.GmarketMedium, size: 11))

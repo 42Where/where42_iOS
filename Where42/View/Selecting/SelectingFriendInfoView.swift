@@ -9,7 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct SelectingFriendInfoView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var userInfo: GroupMemberInfo
 
@@ -20,10 +20,10 @@ struct SelectingFriendInfoView: View {
         Button {
             isCheck.toggle()
             if isCheck {
-                homeViewModel.newUsers.append(userInfo)
+                homeViewModel.selectedUsers.append(userInfo)
             } else {
-                if let index = homeViewModel.newUsers.firstIndex(of: userInfo) {
-                    homeViewModel.newUsers.remove(at: index)
+                if let index = homeViewModel.selectedUsers.firstIndex(of: userInfo) {
+                    homeViewModel.selectedUsers.remove(at: index)
                 }
             }
         } label: {

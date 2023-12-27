@@ -10,6 +10,6 @@ import SwiftUI
 extension HomeGroupView {
     class HomeGruopViewModel: ObservableObject {
         @Published var modalHeight: CGFloat = 0
-        @Published var isSheetPresent: Bool = false
+        @Published var isEditModalSheetPresent: Bool = false
     }
 }

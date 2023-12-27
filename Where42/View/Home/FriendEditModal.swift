@@ -9,14 +9,13 @@ import Kingfisher
 import SwiftUI
 
 struct FriendEditModal: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var userInfo: GroupMemberInfo
     @Binding var groupInfo: GroupInfo
-    @Binding var isFriend: Bool
     @Binding var isPresented: Bool
 
-    let GmarketFont: GmarketSansTTF = .init()
+    @State var isFriend: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -71,7 +70,7 @@ struct FriendEditModal: View {
             Button {
                 withAnimation {
                     if isFriend {
-                        homeViewModel.deleteUserInGroup(group: &groupInfo, name: userInfo.memberIntraName!)
+//                        homeViewModel.deleteUserInGroup(group: &groupInfo, name: userInfo.memberIntraName!)
                     } else {
                         homeViewModel.addUserInGroup(group: &groupInfo, userInfo: userInfo)
                     }
@@ -83,8 +82,8 @@ struct FriendEditModal: View {
                         .foregroundStyle(.red)
                         .font(.custom(Font.GmarketMedium, size: 16))
                 } else {
-                    Text("친구 추가하기")
-                        .foregroundStyle(.whereDeepNavy)
+                    Text("그룹에서 삭제하기")
+                        .foregroundStyle(.red)
                         .font(.custom(Font.GmarketMedium, size: 16))
                 }
             }
@@ -94,6 +93,6 @@ struct FriendEditModal: View {
 }
 
 #Preview {
-    FriendEditModal(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isFriend: .constant(true), isPresented: .constant(true))
+    FriendEditModal(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
         .environmentObject(HomeViewModel())
 }

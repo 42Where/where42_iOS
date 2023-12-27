@@ -44,6 +44,8 @@ class GroupAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
+            print("response statusCode", response.statusCode)
+
             switch response.statusCode {
             case 200 ... 299:
                 print("Success")
@@ -173,8 +175,10 @@ class GroupAPI: API {
         }
     }
 
-    func deleteGroupMember(groupId: Int, members: [Int]) async throws -> Bool {
-        guard let requestBody = try? JSONEncoder().encode(DeleteGroupMemberDTO(groupId: groupId, members: members)) else {
+    func deleteGroupMember(groupId: Int, members: [GroupMemberInfo]) async throws -> Bool {
+        let membersIntraId: [Int] = members.map { $0.memberId! }
+
+        guard let requestBody = try? JSONEncoder().encode(DeleteGroupMemberDTO(groupId: groupId, members: membersIntraId)) else {
             fatalError("Failed create request Body")
         }
 
@@ -193,7 +197,7 @@ class GroupAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
-//            print(String(data: data, encoding: .utf8)!)
+            print(String(data: data, encoding: .utf8)!)
 
             switch response.statusCode {
             case 200 ... 299:

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Where42ToolBarContent: ToolbarContent {
-    @EnvironmentObject var mainViewModel: MainViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
 
     @Binding var isShowSheet: Bool
     var isSettingPresenting: Bool

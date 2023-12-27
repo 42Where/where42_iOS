@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MainAlertView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
-    @EnvironmentObject var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
 
     var body: some View {
         if mainViewModel.isNewGroupAlertPrsented {

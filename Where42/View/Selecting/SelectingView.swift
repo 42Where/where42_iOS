@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SelectingView: View {
-    @EnvironmentObject var mainViewModel: MainViewModel
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @State private var isShowSheet = false
     @State private var name: String = ""

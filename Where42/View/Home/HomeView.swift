@@ -24,8 +24,6 @@ struct HomeView: View {
                     ScrollView {
                         HomeGroupView(groups: $homeViewModel.groups)
                             
-//                        HomeFriendView(friends: $homeViewModel.friends)
-                            
                         Spacer()
                         
                             .toolbar {
@@ -47,8 +45,11 @@ struct HomeView: View {
                     }
                 }
                 .task {
-                    homeViewModel.getMemberInfo()
-                    homeViewModel.getGroup()
+                    if !homeViewModel.isAPILoaded {
+                        homeViewModel.getMemberInfo()
+                        homeViewModel.getGroup()
+                        homeViewModel.isAPILoaded = true
+                    }
                 }
                 
                 if homeViewModel.isLoading {
