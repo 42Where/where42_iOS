@@ -32,7 +32,7 @@ struct SelectingView: View {
                             .stroke(.whereDeepNavy, lineWidth: 2)
                     )
 
-                    ForEach($homeViewModel.searching.members, id: \.self) { $user in
+                    ForEach($homeViewModel.friends.members, id: \.self) { $user in
                         SelectingFriendInfoView(userInfo: $user)
                             .padding(.top)
                     }

@@ -158,12 +158,13 @@ class HomeViewModel: ObservableObject {
         groups.append(newGroup)
 
         let groupId = try? await groupAPI.createGroup(intraId: intraId, groupName: newGroup.groupName)
-        print(groupId, selectedUsers)
+
         if groupId != nil && selectedUsers.isEmpty == false {
             await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
         }
 
         initNewGroup()
+        getGroup()
     }
 
     func initNewGroup() {
@@ -173,20 +174,19 @@ class HomeViewModel: ObservableObject {
     }
 
     func deleteUserInGroup() async {
-//    func deleteUserInGroup(group: inout GroupInfo, name: String) async {
-//        group.members.enumerated().forEach { index, user in
-//            if user.memberIntraName == name {
-//                group.members.remove(at: index)
-//            }
-//        }
-//        countGroupUsers(group: &group)
-
         do {
             _ = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
 
-            selectedGroup.members = selectedGroup.members.filter { member in
+            let selectedIndex = groups.firstIndex(where: {
+                $0.groupName == selectedGroup.groupName
+            })
+
+            groups[selectedIndex!].members = selectedGroup.members.filter { member in
                 !selectedUsers.contains(where: { $0.intraId == member.intraId })
             }
+
+            initNewGroup()
+            countOnlineUsers()
         } catch {
             fatalError("Failed delete group member")
         }

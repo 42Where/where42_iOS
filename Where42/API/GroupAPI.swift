@@ -26,7 +26,6 @@ struct AddOneGroupMemberDTO: Codable {
     var intraId: Int
     var groupId: Int
     var groupName: String
-    var owner: Bool = false
     var isOwner: Bool = false
 }
 

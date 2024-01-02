@@ -30,15 +30,17 @@ struct GroupEditModal: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 40) {
-                Button {
-                    withAnimation {
-                        isPresented.toggle()
-                        homeViewModel.selectedGroup = group
-                        mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                if group.groupName != "default" {
+                    Button {
+                        withAnimation {
+                            isPresented.toggle()
+                            homeViewModel.selectedGroup = group
+                            mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                        }
+                    } label: {
+                        Text("그룹 이름 수정하기")
+                            .foregroundStyle(.whereMediumNavy)
                     }
-                } label: {
-                    Text("그룹 이름 수정하기")
-                        .foregroundStyle(.whereMediumNavy)
                 }
 
                 Button {
@@ -48,13 +50,15 @@ struct GroupEditModal: View {
                         .foregroundStyle(.whereMediumNavy)
                 }
 
-                Button {
-                    isPresented.toggle()
-                    homeViewModel.selectedGroup = group
-                    mainViewModel.isDeleteGroupAlertPrsented.toggle()
-                } label: {
-                    Text("그룹 삭제하기")
-                        .foregroundStyle(.red)
+                if group.groupName != "default" {
+                    Button {
+                        isPresented.toggle()
+                        homeViewModel.selectedGroup = group
+                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                    } label: {
+                        Text("그룹 삭제하기")
+                            .foregroundStyle(.red)
+                    }
                 }
             }
             .font(.custom(Font.GmarketMedium, size: 16))

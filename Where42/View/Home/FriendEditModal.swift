@@ -69,10 +69,10 @@ struct FriendEditModal: View {
 
             Button {
                 withAnimation {
-                    if isFriend {
-//                        homeViewModel.deleteUserInGroup(group: &groupInfo, name: userInfo.memberIntraName!)
-                    } else {
-                        homeViewModel.addUserInGroup(group: &groupInfo, userInfo: userInfo)
+                    Task {
+                        homeViewModel.selectedGroup = groupInfo
+                        homeViewModel.selectedUsers.append(userInfo)
+                        await homeViewModel.deleteUserInGroup()
                     }
                     isPresented.toggle()
                 }
