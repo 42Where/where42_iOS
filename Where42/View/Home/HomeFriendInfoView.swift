@@ -9,7 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct HomeFriendInfoView: View {
-    @Binding var userInfo: UserInfo
+    @Binding var userInfo: GroupMemberInfo
     @Binding var groupInfo: GroupInfo
 
     @State private var isWork = false
@@ -21,7 +21,7 @@ struct HomeFriendInfoView: View {
             isShowModal.toggle()
         } label: {
             HStack(spacing: 10) {
-                KFImage(URL(string: userInfo.avatar)!)
+                KFImage(URL(string: userInfo.image!)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -34,12 +34,12 @@ struct HomeFriendInfoView: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(userInfo.name)
+                        Text(userInfo.memberIntraName!)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
                         HStack(spacing: 4) {
-                            Text(userInfo.location)
+                            Text(userInfo.location!)
                         }
                         .font(.custom(Font.GmarketMedium, size: 13))
                         .padding(5.0)
@@ -50,7 +50,7 @@ struct HomeFriendInfoView: View {
                         .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
                     }
 
-                    Text(userInfo.comment)
+                    Text(userInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 14))
                         .foregroundStyle(.whereMediumNavy)
                 }
@@ -64,6 +64,7 @@ struct HomeFriendInfoView: View {
                         .resizable()
                         .frame(width: 20, height: 20)
                 }
+                .unredacted()
             }
             .padding(.vertical, 1)
             .background()
@@ -71,7 +72,7 @@ struct HomeFriendInfoView: View {
         .buttonStyle(ScaleButtonStyle())
 
         .sheet(isPresented: $isShowModal) {
-            FriendEditModal(userInfo: $userInfo, groupInfo: $groupInfo, isFriend: .constant(true), isPresented: $isShowModal)
+            FriendEditModal(userInfo: $userInfo, groupInfo: $groupInfo, isPresented: $isShowModal, isFriend: groupInfo.groupName == "default")
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {
@@ -97,6 +98,6 @@ struct ScaleButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    HomeFriendInfoView(userInfo: .constant(UserInfo(name: "dhyun", avatar: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", location: "개포 c2r5s6", comment: "안녕하세요")), groupInfo: .constant(HomeViewModel().friends))
+    HomeFriendInfoView(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
         .environmentObject(HomeViewModel())
 }

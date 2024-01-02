@@ -5,13 +5,12 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="onlineNum" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totalNum" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserInfomation" inverseName="group" inverseEntity="UserInfomation"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserInfomation"/>
     </entity>
     <entity name="UserInfomation" representedClassName="UserInfomation" syncable="YES" codeGenerationType="class">
         <attribute name="avatar" attributeType="String"/>
         <attribute name="comment" attributeType="String"/>
         <attribute name="location" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GroupInfomation" inverseName="users" inverseEntity="GroupInfomation"/>
     </entity>
 </model>

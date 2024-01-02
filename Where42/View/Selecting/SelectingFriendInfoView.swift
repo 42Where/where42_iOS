@@ -9,9 +9,9 @@ import Kingfisher
 import SwiftUI
 
 struct SelectingFriendInfoView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: UserInfo
+    @Binding var userInfo: GroupMemberInfo
 
     @State private var isWork = false
     @State private var isCheck = false
@@ -20,15 +20,15 @@ struct SelectingFriendInfoView: View {
         Button {
             isCheck.toggle()
             if isCheck {
-                homeViewModel.newUsers.append(userInfo)
+                homeViewModel.selectedUsers.append(userInfo)
             } else {
-                if let index = homeViewModel.newUsers.firstIndex(of: userInfo) {
-                    homeViewModel.newUsers.remove(at: index)
+                if let index = homeViewModel.selectedUsers.firstIndex(of: userInfo) {
+                    homeViewModel.selectedUsers.remove(at: index)
                 }
             }
         } label: {
             HStack(spacing: 10) {
-                KFImage(URL(string: userInfo.avatar)!)
+                KFImage(URL(string: userInfo.image!)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -41,12 +41,12 @@ struct SelectingFriendInfoView: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(userInfo.name)
+                        Text(userInfo.memberIntraName!)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
                         HStack(spacing: 4) {
-                            Text(userInfo.location)
+                            Text(userInfo.location!)
                         }
                         .font(.custom(Font.GmarketMedium, size: 13))
                         .padding(5.0)
@@ -57,7 +57,7 @@ struct SelectingFriendInfoView: View {
                         .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
                     }
 
-                    Text(userInfo.comment)
+                    Text(userInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 14))
                         .foregroundStyle(.whereMediumNavy)
                 }
@@ -82,6 +82,6 @@ struct SelectingFriendInfoView: View {
 }
 
 #Preview {
-    SelectingFriendInfoView(userInfo: .constant(UserInfo(name: "dhyun", avatar: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", location: "개포 c2r5s6", comment: "안녕하세요")))
+    SelectingFriendInfoView(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
         .environmentObject(HomeViewModel())
 }

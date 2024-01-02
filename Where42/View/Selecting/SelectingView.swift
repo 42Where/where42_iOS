@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct SelectingView: View {
-    @EnvironmentObject var mainViewModel: MainViewModel
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @State private var isShowSheet = false
     @State private var name: String = ""
-
-    @State var dhyun: UserInfo = .init(name: "dhyun", avatar: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", location: "퇴근", comment: "안녕하세요~")
-
-    private var selectedUser: [UserInfo] = []
 
     var body: some View {
         NavigationView {
@@ -36,7 +32,7 @@ struct SelectingView: View {
                             .stroke(.whereDeepNavy, lineWidth: 2)
                     )
 
-                    ForEach($homeViewModel.searching.users, id: \.self) { $user in
+                    ForEach($homeViewModel.friends.members, id: \.self) { $user in
                         SelectingFriendInfoView(userInfo: $user)
                             .padding(.top)
                     }
@@ -49,7 +45,9 @@ struct SelectingView: View {
                     Spacer()
 
                     Button {
-                        homeViewModel.createNewGroup()
+                        Task {
+                            await homeViewModel.createNewGroup(intraId: homeViewModel.intraId)
+                        }
                         mainViewModel.isSelectViewPrsented = false
                     } label: {
                         Text("그룹 추가하기")
