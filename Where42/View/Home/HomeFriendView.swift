@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeFriendView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var friends: GroupInfo
 
@@ -18,8 +18,8 @@ struct HomeFriendView: View {
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if friends.isOpen && friends.totalNum > 0 {
-                    ForEach($friends.users, id: \.self) { $user in
+                if friends.isOpen! && friends.totalNum! > 0 {
+                    ForEach($friends.members, id: \.self) { $user in
                         if !(homeViewModel.isWork && user.location == "퇴근") {
                             HomeFriendInfoView(userInfo: $user, groupInfo: $friends)
                                 .padding(.horizontal)
@@ -30,38 +30,41 @@ struct HomeFriendView: View {
             } header: {
                 VStack {
                     HStack {
-                        Text("\(friends.name)")
+                        Text("친구목록")
                             .font(.custom(Font.GmarketMedium, size: 13))
-                        Text("\(friends.onlineNum)/\(friends.totalNum)")
+                        Text("\(friends.onlineNum!)/\(friends.totalNum!)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 
                         Spacer()
 
-                        Button {} label: {
-                            Image("Filter icon")
-                        }
-
-                        Button {
-                            isSheetPresent.toggle()
-                        } label: {
-                            Image("Edit icon")
-                        }
-
-                        Button {
-                            withAnimation {
-                                friends.isOpen.toggle()
+                        HStack {
+                            Button {} label: {
+                                Image("Filter icon")
                             }
-                        } label: {
-                            if friends.isOpen {
-                                Image("Fold icon")
-                            } else {
-                                Image("Folded icon")
+
+                            Button {
+                                isSheetPresent.toggle()
+                            } label: {
+                                Image("Edit icon")
+                            }
+
+                            Button {
+                                withAnimation {
+                                    friends.isOpen!.toggle()
+                                }
+                            } label: {
+                                if friends.isOpen! {
+                                    Image("Fold icon")
+                                } else {
+                                    Image("Folded icon")
+                                }
                             }
                         }
+                        .unredacted()
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 3)
-                    if friends.isOpen && friends.totalNum > 0 {
+                    if friends.isOpen! && friends.totalNum! > 0 {
                         Divider()
                     }
                 }

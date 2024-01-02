@@ -5,9 +5,14 @@
 //  Created by 현동호 on 10/27/23.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct Where42: View {
+    init() {
+        UITabBar.appearance().scrollEdgeAppearance = .init()
+    }
+
     @StateObject var mainViewModel: MainViewModel = .init()
     @StateObject var homeViewModel: HomeViewModel = .init()
 
@@ -38,17 +43,24 @@ struct Where42: View {
                             .tag("Search")
                             .environment(\.horizontalSizeClass, oldSizeClass)
                     }
+                    .toolbar(.visible, for: .tabBar)
+                    .toolbarBackground(Color.yellow, for: .tabBar)
                     .environment(\.horizontalSizeClass, .compact)
-
                     .onAppear(perform: {
-                        UITabBar.appearance().scrollEdgeAppearance = .init()
+//                        UITabBar.appearance().scrollEdgeAppearance = .init()
                     })
                 }
+                .zIndex(0)
                 .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
                     SelectingView()
                 }
 
                 MainAlertView()
+                    .zIndex(1)
+
+                if mainViewModel.isPersonalViewPrsented {
+                    PersonalInfoAgreementView()
+                }
 
             } else {
                 VStack {
@@ -58,6 +70,10 @@ struct Where42: View {
                                         removal: AnyTransition.move(edge: .bottom)))
             }
         }
+//        .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
+//            MyWebView(url: homeViewModel.intraURL!)
+//                .ignoresSafeArea()
+//        }
         .animation(.easeIn, value: isLogin)
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)

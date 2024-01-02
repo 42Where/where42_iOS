@@ -9,19 +9,18 @@ import Kingfisher
 import SwiftUI
 
 struct FriendEditModal: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: UserInfo
+    @Binding var userInfo: GroupMemberInfo
     @Binding var groupInfo: GroupInfo
-    @Binding var isFriend: Bool
     @Binding var isPresented: Bool
 
-    let GmarketFont: GmarketSansTTF = .init()
+    @State var isFriend: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 10) {
-                KFImage(URL(string: userInfo.avatar)!)
+                KFImage(URL(string: userInfo.image!)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -34,12 +33,12 @@ struct FriendEditModal: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text(userInfo.name)
+                        Text(userInfo.memberIntraName!)
                             .font(.custom(Font.GmarketBold, size: 20))
                             .foregroundStyle(.whereDeepNavy)
 
                         HStack(spacing: 4) {
-                            Text(userInfo.location)
+                            Text(userInfo.location!)
                         }
                         .font(.custom(Font.GmarketMedium, size: 15))
                         .padding(5.0)
@@ -50,7 +49,7 @@ struct FriendEditModal: View {
                         .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
                     }
 
-                    Text(userInfo.comment)
+                    Text(userInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 16))
                         .foregroundStyle(.whereMediumNavy)
                 }
@@ -70,10 +69,10 @@ struct FriendEditModal: View {
 
             Button {
                 withAnimation {
-                    if isFriend {
-                        homeViewModel.deleteUser(group: &groupInfo, name: userInfo.name)
-                    } else {
-                        homeViewModel.addUser(group: &groupInfo, userInfo: userInfo)
+                    Task {
+                        homeViewModel.selectedGroup = groupInfo
+                        homeViewModel.selectedUsers.append(userInfo)
+                        await homeViewModel.deleteUserInGroup()
                     }
                     isPresented.toggle()
                 }
@@ -83,8 +82,8 @@ struct FriendEditModal: View {
                         .foregroundStyle(.red)
                         .font(.custom(Font.GmarketMedium, size: 16))
                 } else {
-                    Text("친구 추가하기")
-                        .foregroundStyle(.whereDeepNavy)
+                    Text("그룹에서 삭제하기")
+                        .foregroundStyle(.red)
                         .font(.custom(Font.GmarketMedium, size: 16))
                 }
             }
@@ -94,6 +93,6 @@ struct FriendEditModal: View {
 }
 
 #Preview {
-    FriendEditModal(userInfo: .constant(UserInfo(name: "dhyun", avatar: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", location: "개포 c2r5s6", comment: "안녕하세요")), groupInfo: .constant(HomeViewModel().friends), isFriend: .constant(true), isPresented: .constant(true))
+    FriendEditModal(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
         .environmentObject(HomeViewModel())
 }

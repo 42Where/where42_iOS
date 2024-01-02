@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct MainAlertView: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
-    @EnvironmentObject var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
 
     var body: some View {
         if mainViewModel.isNewGroupAlertPrsented {
             CustomAlert(title: "새 그룹 만들기", textFieldTitle: "그룹명 지정", inputText: $homeViewModel.inputText) {
                 withAnimation {
                     homeViewModel.initNewGroup()
-                    mainViewModel.isNewGroupAlertPrsented.toggle()
+                    mainViewModel.isNewGroupAlertPrsented = false
                 }
             } rightButtonAction: {
                 withAnimation {
                     homeViewModel.confirmGroupName(isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented, isSelectViewPrsented: $mainViewModel.isSelectViewPrsented)
-//                    mainViewModel.isNewGroupAlertPrsented.toggle()
                 }
             }
         }
@@ -32,20 +31,24 @@ struct MainAlertView: View {
                     mainViewModel.isEditGroupNameAlertPrsented.toggle()
                 }
             } rightButtonAction: {
-                withAnimation {
-                    homeViewModel.editGroupName(isEditGroupNameAlertPrsented: $mainViewModel.isEditGroupNameAlertPrsented)
+                if await homeViewModel.editGroupName() {
+                    withAnimation {
+                        mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                    }
                 }
             }
         }
 
         if mainViewModel.isDeleteGroupAlertPrsented {
-            CustomAlert(title: "그룹 삭제", message: " 님'\(homeViewModel.selectedGroup.name)' 을(를) 삭제하시겠습니까?", inputText: .constant("")) {
+            CustomAlert(title: "그룹 삭제", message: " 그룹 '\(homeViewModel.selectedGroup.groupName)' 을(를) 삭제하시겠습니까?", inputText: .constant("")) {
                 withAnimation {
                     mainViewModel.isDeleteGroupAlertPrsented.toggle()
                 }
             } rightButtonAction: {
-                withAnimation {
-                    homeViewModel.deleteGroup(isDeleteGroupAlertPrsented: $mainViewModel.isDeleteGroupAlertPrsented)
+                if await homeViewModel.deleteGroup() {
+                    withAnimation {
+                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                    }
                 }
             }
         }
