@@ -11,7 +11,7 @@ import SwiftUI
 struct GroupMemberInfo: Codable, Hashable {
     var groupId: Int?
     var groupName: String?
-    var memberId: Int?
+    var intraId: Int?
     var memberIntraName: String?
     var grade: String?
     var image: String?
@@ -26,10 +26,10 @@ struct GroupMemberInfo: Codable, Hashable {
     var defaultGroupId: Int?
     var location: String?
 
-    init(groupId: Int? = nil, groupName: String? = nil, memberId: Int? = nil, memberIntraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
+    init(groupId: Int? = nil, groupName: String? = nil, intraId: Int? = nil, memberIntraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
         self.groupId = groupId
         self.groupName = groupName
-        self.memberId = memberId
+        self.intraId = intraId
         self.memberIntraName = memberIntraName
         self.grade = grade
         self.image = image
@@ -45,7 +45,7 @@ struct GroupMemberInfo: Codable, Hashable {
 
         self.groupId = (try? container.decodeIfPresent(Int.self, forKey: .groupId)) ?? 0
         self.groupName = (try? container.decodeIfPresent(String.self, forKey: .groupName)) ?? "nil"
-        self.memberId = (try? container.decodeIfPresent(Int.self, forKey: .memberId)) ?? 0
+        self.intraId = (try? container.decodeIfPresent(Int.self, forKey: .intraId)) ?? 0
         self.memberIntraName = (try? container.decodeIfPresent(String.self, forKey: .memberIntraName)) ?? "nil"
         self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"
         self.image = (try? container.decodeIfPresent(String.self, forKey: .image)) ?? "nil"
@@ -57,7 +57,7 @@ struct GroupMemberInfo: Codable, Hashable {
     }
 
     static var empty: GroupMemberInfo {
-        GroupMemberInfo(memberId: 0, memberIntraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false)
+        GroupMemberInfo(intraId: 0, memberIntraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false)
     }
 
     func getLocation() -> String {

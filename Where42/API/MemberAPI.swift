@@ -119,7 +119,7 @@ class MemberAPI: API {
     func deleteMember(intraId: Int) async throws -> Bool {
         let requestBody = try! JSONEncoder().encode(DeleteMemberDTO(intraId: intraId))
 
-        guard let requestURL = URL(string: baseURL + "/member/") else {
+        guard let requestURL = URL(string: baseURL + "/member") else {
             fatalError("Missing URL")
         }
 

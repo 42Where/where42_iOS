@@ -30,10 +30,10 @@ class HomeViewModel: ObservableObject {
     @Published var friends: GroupInfo = .empty
 
     @Published var searching: GroupInfo = .init(groupName: "검색", totalNum: 0, onlineNum: 0, isOpen: false, members: [
-        .init(memberIntraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-        .init(memberIntraName: "dhyun2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-        .init(memberIntraName: "dhyun3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-        .init(memberIntraName: "dhyun4", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
+        .init(intraId: 1, memberIntraName: "member0", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
+        .init(intraId: 2, memberIntraName: "member1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
+        .init(intraId: 3, memberIntraName: "member2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
+        .init(intraId: 4, memberIntraName: "member3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
     ])
 
     private let memberAPI = MemberAPI()
@@ -139,6 +139,12 @@ class HomeViewModel: ObservableObject {
             return
         }
 
+        let duplicateName: Int? = groups.firstIndex(where: { $0.groupName == inputText })
+
+        if duplicateName != nil {
+            return
+        }
+
         newGroup.groupName = inputText
 
         isNewGroupAlertPrsented.wrappedValue.toggle()
@@ -151,7 +157,11 @@ class HomeViewModel: ObservableObject {
         countGroupUsers(group: &newGroup)
         groups.append(newGroup)
 
-        await groupAPI.createGroup(intraId: intraId, groupName: newGroup.groupName)
+        let groupId = try? await groupAPI.createGroup(intraId: intraId, groupName: newGroup.groupName)
+        print(groupId, selectedUsers)
+        if groupId != nil && selectedUsers.isEmpty == false {
+            await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
+        }
 
         initNewGroup()
     }
@@ -175,7 +185,7 @@ class HomeViewModel: ObservableObject {
             _ = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
 
             selectedGroup.members = selectedGroup.members.filter { member in
-                !selectedUsers.contains(where: { $0.memberId == member.memberId })
+                !selectedUsers.contains(where: { $0.intraId == member.intraId })
             }
         } catch {
             fatalError("Failed delete group member")
