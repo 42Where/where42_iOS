@@ -15,16 +15,35 @@ struct HomeGroupView: View {
 
     var body: some View {
         VStack {
+            if UIDevice.idiom == .pad {}
             ForEach($groups, id: \.self) { $group in
                 if group.groupName != "default" {
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
                             if group.isOpen! && group.totalNum! > 0 {
-                                ForEach($group.members, id: \.self) { $user in
-                                    if !(homeViewModel.isWork && user.location == "퇴근") {
-                                        HomeFriendInfoView(userInfo: $user, groupInfo: $group)
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 1)
+                                ForEach(0 ..< group.members.count, id: \.self) { index in
+                                    if !(homeViewModel.isWork && group.members[index].location == "퇴근") {
+                                        if UIDevice.idiom == .phone {
+                                            HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
+                                                .padding(.horizontal)
+                                                .padding(.vertical, 1)
+                                        } else if UIDevice.idiom == .pad {
+                                            if index % 2 == 0 {
+                                                HStack {
+                                                    HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
+                                                        .padding(.horizontal)
+                                                        .padding(.vertical, 1)
+                                                    if index + 1 < group.members.count {
+                                                        HomeFriendInfoView(userInfo: $group.members[index + 1], groupInfo: $group)
+                                                            .padding(.horizontal)
+                                                            .padding(.vertical, 1)
+                                                    } else {
+                                                        Spacer()
+                                                            .padding()
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

@@ -274,7 +274,8 @@
 				A0D275E32B06EACC00A414CD /* Debug.xcconfig */,
 				A0D275E42B06EAEB00A414CD /* Release.xcconfig */,
 			);
-			path = XCConfig;
+			name = XCConfig;
+			path = ../XCConfig;
 			sourceTree = "<group>";
 		};
 		A0FD452F2AEB81D60050AB09 = {

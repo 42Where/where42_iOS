@@ -19,11 +19,29 @@ struct HomeFriendView: View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
                 if friends.isOpen! && friends.totalNum! > 0 {
-                    ForEach($friends.members, id: \.self) { $user in
-                        if !(homeViewModel.isWork && user.location == "퇴근") {
-                            HomeFriendInfoView(userInfo: $user, groupInfo: $friends)
-                                .padding(.horizontal)
-                                .padding(.vertical, 1)
+                    ForEach(0 ..< friends.members.count, id: \.self) { index in
+                        if !(homeViewModel.isWork && friends.members[index].location == "퇴근") {
+                            if UIDevice.idiom == .phone {
+                                HomeFriendInfoView(userInfo: $friends.members[index], groupInfo: $friends)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 1)
+                            } else if UIDevice.idiom == .pad {
+                                if index % 2 == 0 {
+                                    HStack {
+                                        HomeFriendInfoView(userInfo: $friends.members[index], groupInfo: $friends)
+                                            .padding(.horizontal)
+                                            .padding(.vertical, 1)
+                                        if index + 1 < friends.members.count {
+                                            HomeFriendInfoView(userInfo: $friends.members[index + 1], groupInfo: $friends)
+                                                .padding(.horizontal)
+                                                .padding(.vertical, 1)
+                                        } else {
+                                            Spacer()
+                                                .padding()
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension UIDevice {
+    static var idiom: UIUserInterfaceIdiom {
+        UIDevice.current.userInterfaceIdiom
+    }
+}
+
 class MainViewModel: ObservableObject {
     @Published var tabSelection: String = "Home"
     @Published var isSelectViewPrsented = false
