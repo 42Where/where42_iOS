@@ -89,7 +89,7 @@ struct CustomAlert: View {
                 .font(.custom(Font.GmarketMedium, size: 15))
             }
             .padding(20)
-            .frame(width: 270)
+            .frame(width: UIDevice.idiom == .phone ? 270 : 370)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }

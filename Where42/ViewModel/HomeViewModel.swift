@@ -29,13 +29,6 @@ class HomeViewModel: ObservableObject {
 
     @Published var friends: GroupInfo = .empty
 
-    @Published var searching: GroupInfo = .init(groupName: "검색", totalNum: 0, onlineNum: 0, isOpen: false, members: [
-        .init(intraId: 1, memberIntraName: "member0", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-        .init(intraId: 2, memberIntraName: "member1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
-        .init(intraId: 3, memberIntraName: "member2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
-        .init(intraId: 4, memberIntraName: "member3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
-    ])
-
     private let memberAPI = MemberAPI()
     private let groupAPI = GroupAPI()
 

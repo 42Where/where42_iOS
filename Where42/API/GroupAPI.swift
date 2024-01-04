@@ -56,8 +56,6 @@ class GroupAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
-            print("response statusCode", response.statusCode)
-
             switch response.statusCode {
             case 200 ... 299:
                 print("Success")
