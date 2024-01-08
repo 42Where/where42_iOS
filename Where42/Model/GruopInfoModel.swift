@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct GroupInfo: Hashable, Codable {
+struct GroupInfo: Identifiable, Hashable, Codable {
+    var id: UUID
+
     var groupId: Int?
     var groupName: String
     var totalNum: Int?
@@ -20,7 +22,8 @@ struct GroupInfo: Hashable, Codable {
         case totalNum = "count"
     }
 
-    init(groupId: Int? = nil, groupName: String, totalNum: Int? = nil, onlineNum: Int? = nil, isOpen: Bool? = nil, members: [GroupMemberInfo]) {
+    init(id: UUID, groupId: Int? = nil, groupName: String, totalNum: Int? = nil, onlineNum: Int? = nil, isOpen: Bool? = nil, members: [GroupMemberInfo]) {
+        self.id = id
         self.groupId = groupId
         self.groupName = groupName
         self.totalNum = totalNum
@@ -31,6 +34,7 @@ struct GroupInfo: Hashable, Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = UUID()
         self.groupId = (try? container.decodeIfPresent(Int.self, forKey: .groupId)) ?? 0
         self.groupName = (try? container.decodeIfPresent(String.self, forKey: .groupName)) ?? "nil"
         self.members = (try? container.decodeIfPresent([GroupMemberInfo].self, forKey: .members)) ?? []
@@ -38,6 +42,6 @@ struct GroupInfo: Hashable, Codable {
     }
 
     static var empty: GroupInfo {
-        GroupInfo(groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+        GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
     }
 }

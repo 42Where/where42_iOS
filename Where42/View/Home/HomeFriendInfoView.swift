@@ -13,7 +13,7 @@ struct HomeFriendInfoView: View {
     @Binding var groupInfo: GroupInfo
 
     @State private var isWork = false
-    @State private var isShowModal: Bool = false
+    @State private var isShowModal = false
     @State private var modalheight: CGFloat = 0
 
     var body: some View {
@@ -58,7 +58,7 @@ struct HomeFriendInfoView: View {
                 Spacer()
 
                 Button {
-                    isShowModal.toggle()
+                    isShowModal = true
                 } label: {
                     Image("Function icon")
                         .resizable()
@@ -71,7 +71,7 @@ struct HomeFriendInfoView: View {
         }
         .buttonStyle(ScaleButtonStyle())
 
-        .sheet(isPresented: $isShowModal) {
+        .sheetOrPopOver(isPresented: $isShowModal) {
             FriendEditModal(userInfo: $userInfo, groupInfo: $groupInfo, isPresented: $isShowModal, isFriend: groupInfo.groupName == "default")
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in

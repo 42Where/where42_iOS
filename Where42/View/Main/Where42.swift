@@ -67,10 +67,10 @@ struct Where42: View {
                                         removal: AnyTransition.move(edge: .bottom)))
             }
         }
-//        .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
-//            MyWebView(url: homeViewModel.intraURL!)
-//                .ignoresSafeArea()
-//        }
+        .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
+            MyWebView(urlToLoad: homeViewModel.intraURL!, isPresented: $homeViewModel.isShow42IntraSheet)
+                .ignoresSafeArea()
+        }
         .animation(.easeIn, value: isLogin)
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)
@@ -93,12 +93,12 @@ struct Where42: View {
 //    }
 // }
 
-// struct Previews2: PreviewProvider {
-//    static var previews: some View {
-//        Where42()
-//            .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
-//            .previewDisplayName("iPad Air 5th")
-//            .environmentObject(MainViewModel())
-//            .environmentObject(HomeViewModel())
-//    }
-// }
+struct Previews2: PreviewProvider {
+    static var previews: some View {
+        Where42()
+            .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
+            .previewDisplayName("iPad Air 5th")
+            .environmentObject(MainViewModel())
+            .environmentObject(HomeViewModel())
+    }
+}

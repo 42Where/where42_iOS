@@ -36,8 +36,8 @@ struct GroupEditView: View {
                 Button {
                     Task {
                         await homeViewModel.deleteUserInGroup()
+                        homeViewModel.isGroupEditViewPrsented = false
                     }
-                    homeViewModel.isGroupEditViewPrsented = false
                 } label: {
                     Text("그룹에서 삭제")
                         .font(.custom(Font.GmarketMedium, size: 20))
@@ -55,7 +55,7 @@ struct GroupEditView: View {
 }
 
 #Preview {
-    GroupEditView(group: .constant(GroupInfo(groupId: 0, groupName: "테스트 그룹", totalNum: 10, onlineNum: 10, isOpen: true, members: [
+    GroupEditView(group: .constant(GroupInfo(id: UUID(), groupId: 0, groupName: "테스트 그룹", totalNum: 10, onlineNum: 10, isOpen: true, members: [
         .init(memberIntraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
         .init(memberIntraName: "dhyun2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
         .init(memberIntraName: "dhyun3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),

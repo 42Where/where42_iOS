@@ -82,22 +82,22 @@ struct HomeFriendView: View {
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 3)
+
                     if friends.isOpen! && friends.totalNum! > 0 {
                         Divider()
                     }
                 }
                 .background(.white)
-            }
-
-            .sheet(isPresented: $isSheetPresent) {
-                GroupEditModal(group: $homeViewModel.friends, isPresented: $isSheetPresent)
-                    .readSize()
-                    .onPreferenceChange(SizePreferenceKey.self, perform: { value in
-                        if let value {
-                            modalHeight = value.height
-                        }
-                    })
-                    .presentationDetents([.height(modalHeight)])
+                .sheetOrPopOver(isPresented: $isSheetPresent) {
+                    GroupEditModal(group: $homeViewModel.friends, isPresented: $isSheetPresent)
+                        .readSize()
+                        .onPreferenceChange(SizePreferenceKey.self, perform: { value in
+                            if let value {
+                                modalHeight = value.height
+                            }
+                        })
+                        .presentationDetents([.height(modalHeight)])
+                }
             }
 
             Divider()

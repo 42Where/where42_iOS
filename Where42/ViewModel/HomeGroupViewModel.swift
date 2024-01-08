@@ -9,5 +9,4 @@ import SwiftUI
 
 class HomeGroupViewModel: ObservableObject {
     @Published var modalHeight: CGFloat = 0
-    @Published var isEditModalSheetPresent: Bool = false
 }

@@ -14,7 +14,7 @@ class HomeViewModel: ObservableObject {
     @Published var isWork = false
     @Published var isLoading = true
     @Published var inputText = ""
-    @Published var intraURL: URL?
+    @Published var intraURL: String? = ""
     @Published var isAPILoaded = false
 
     @Published var selectedUsers: [GroupMemberInfo] = []
@@ -163,7 +163,7 @@ class HomeViewModel: ObservableObject {
     func initNewGroup() {
         inputText = ""
         selectedUsers = []
-        newGroup = GroupInfo(groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+        newGroup = GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
     }
 
     func deleteUserInGroup() async {

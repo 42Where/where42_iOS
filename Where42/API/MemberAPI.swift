@@ -71,7 +71,7 @@ class MemberAPI: API {
         }
     }
 
-    func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, URL?) {
+    func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, String?) {
         guard let requestURL = URL(string: baseURL + "/member?intraId=\(intraId)") else {
             print("Missing URL")
             fatalError("Missing URL")
@@ -92,8 +92,8 @@ class MemberAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    print(requestURL)
-                    return (nil, requestURL)
+                    print(requestURL.absoluteString)
+                    return (nil, requestURL.absoluteString)
                 } else {
                     return try (JSONDecoder().decode(MemberInfo.self, from: data), nil)
                 }

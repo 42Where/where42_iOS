@@ -102,10 +102,10 @@ struct LoginView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-            .previewDevice(PreviewDevice(rawValue: DeviceName.iPhone_SE_3rd_generation.rawValue))
-            .previewDisplayName("iPhone SE 3rd")
-    }
-}
+// struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoginView()
+//            .previewDevice(PreviewDevice(rawValue: DeviceName.iPhone_SE_3rd_generation.rawValue))
+//            .previewDisplayName("iPhone SE 3rd")
+//    }
+// }

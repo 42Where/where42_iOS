@@ -44,6 +44,7 @@ struct GroupEditModal: View {
                 }
 
                 Button {
+                    isPresented = false
                     homeViewModel.isGroupEditViewPrsented = true
                 } label: {
                     Text("그룹 수정하기")
