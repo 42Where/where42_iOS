@@ -54,11 +54,6 @@ struct Where42: View {
 
                 MainAlertView()
                     .zIndex(1)
-
-                if mainViewModel.isPersonalViewPrsented {
-                    PersonalInfoAgreementView()
-                }
-
             } else {
                 VStack {
                     LoginView()
@@ -68,7 +63,9 @@ struct Where42: View {
             }
         }
         .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
-            MyWebView(urlToLoad: homeViewModel.intraURL!, isPresented: $homeViewModel.isShow42IntraSheet)
+            MyWebView(
+                urlToLoad: homeViewModel.intraURL!,
+                isPresented: $homeViewModel.isShow42IntraSheet)
                 .ignoresSafeArea()
         }
         .animation(.easeIn, value: isLogin)
@@ -82,16 +79,6 @@ struct Where42: View {
         .environmentObject(MainViewModel())
         .environmentObject(HomeViewModel())
 }
-
-// struct Previews: PreviewProvider {
-//    static var previews: some View {
-//        Where42()
-//            .previewDevice(PreviewDevice(rawValue: DeviceName.iPhone_SE_3rd_generation.rawValue))
-//            .previewDisplayName("iPhone SE 3rd")
-//            .environmentObject(MainViewModel())
-//            .environmentObject(HomeViewModel())
-//    }
-// }
 
 struct Previews2: PreviewProvider {
     static var previews: some View {

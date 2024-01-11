@@ -9,7 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct HomeFriendInfoView: View {
-    @Binding var userInfo: GroupMemberInfo
+    @Binding var userInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
 
     @State private var isWork = false
@@ -34,7 +34,7 @@ struct HomeFriendInfoView: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(userInfo.memberIntraName!)
+                        Text(userInfo.intraName!)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
@@ -72,7 +72,11 @@ struct HomeFriendInfoView: View {
         .buttonStyle(ScaleButtonStyle())
 
         .sheetOrPopOver(isPresented: $isShowModal) {
-            FriendEditModal(userInfo: $userInfo, groupInfo: $groupInfo, isPresented: $isShowModal, isFriend: groupInfo.groupName == "default")
+            FriendEditModal(
+                userInfo: $userInfo,
+                groupInfo: $groupInfo,
+                isPresented: $isShowModal,
+                isFriend: groupInfo.groupName == "default")
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {
@@ -98,6 +102,6 @@ struct ScaleButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    HomeFriendInfoView(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
+    HomeFriendInfoView(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
         .environmentObject(HomeViewModel())
 }

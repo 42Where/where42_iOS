@@ -88,7 +88,9 @@ struct HomeGroupSingleView: View {
                 }
                 .background(.white)
                 .sheetOrPopOver(isPresented: $isPresented) {
-                    GroupEditModal(group: $homeViewModel.selectedGroup, isPresented: $isPresented)
+                    GroupEditModal(
+                        group: $homeViewModel.selectedGroup,
+                        isPresented: $isPresented)
                         .readSize()
                         .onPreferenceChange(SizePreferenceKey.self, perform: { size in
                             if let size {

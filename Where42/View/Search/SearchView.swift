@@ -15,7 +15,7 @@ struct SearchView: View {
 
     var isSelected = false
 
-    @State var dhyun: GroupMemberInfo = .init(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근")
+    @State private var member12 = MemberInfo(intraId: 12, intraName: "member12", image: "https://i.ibb.co/M1wyzZV/IMG-6196.jpg", comment: "nil", inCluster: false, location: "퇴근")
 
     var body: some View {
         NavigationView {
@@ -36,7 +36,7 @@ struct SearchView: View {
                     )
 
                     HomeFriendInfoView(
-                        userInfo: $dhyun,
+                        userInfo: $member12,
                         groupInfo: $searchViewModel.searching
                     )
                     .padding(.top)

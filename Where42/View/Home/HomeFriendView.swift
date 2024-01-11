@@ -28,11 +28,15 @@ struct HomeFriendView: View {
                             } else if UIDevice.idiom == .pad {
                                 if index % 2 == 0 {
                                     HStack {
-                                        HomeFriendInfoView(userInfo: $friends.members[index], groupInfo: $friends)
+                                        HomeFriendInfoView(
+                                            userInfo: $friends.members[index],
+                                            groupInfo: $friends)
                                             .padding(.horizontal)
                                             .padding(.vertical, 1)
                                         if index + 1 < friends.members.count {
-                                            HomeFriendInfoView(userInfo: $friends.members[index + 1], groupInfo: $friends)
+                                            HomeFriendInfoView(
+                                                userInfo: $friends.members[index + 1],
+                                                groupInfo: $friends)
                                                 .padding(.horizontal)
                                                 .padding(.vertical, 1)
                                         } else {
@@ -89,7 +93,9 @@ struct HomeFriendView: View {
                 }
                 .background(.white)
                 .sheetOrPopOver(isPresented: $isSheetPresent) {
-                    GroupEditModal(group: $homeViewModel.friends, isPresented: $isSheetPresent)
+                    GroupEditModal(
+                        group: $homeViewModel.friends,
+                        isPresented: $isSheetPresent)
                         .readSize()
                         .onPreferenceChange(SizePreferenceKey.self, perform: { value in
                             if let value {

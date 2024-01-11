@@ -8,26 +8,29 @@
 import SwiftUI
 
 class HomeViewModel: ObservableObject {
-    @Published var isGroupEditViewPrsented = false
     @Published var isShowSettingSheet = false
+    @Published var isGroupEditViewPrsented = false
     @Published var isShow42IntraSheet = false
+    @Published var isShowAgreementSheet = false
     @Published var isWork = false
     @Published var isLoading = true
     @Published var inputText = ""
     @Published var intraURL: String? = ""
     @Published var isAPILoaded = false
 
-    @Published var selectedUsers: [GroupMemberInfo] = []
+    @Published var selectedUsers: [MemberInfo] = []
     @Published var newGroup: GroupInfo = .empty
 
     @Published var selectedGroup: GroupInfo = .empty
 
-    @Published var intraId: Int = 6
+    @Published var intraId: Int = 99760
     @Published var myInfo: MemberInfo = .empty
 
     @Published var groups: [GroupInfo] = [.empty, .empty]
 
     @Published var friends: GroupInfo = .empty
+
+    @AppStorage("isLogin") var isLogin = false
 
     private let memberAPI = MemberAPI()
     private let groupAPI = GroupAPI()
@@ -78,13 +81,20 @@ class HomeViewModel: ObservableObject {
             do {
                 let (memberInfo, url) = try await memberAPI.getMemberInfo(intraId: self.intraId)
                 if url != nil {
-                    intraURL = url
-                    isShow42IntraSheet.toggle()
+                    DispatchQueue.main.async {
+                        self.intraURL = url
+                        self.isShow42IntraSheet.toggle()
+                    }
                 } else {
                     DispatchQueue.main.async {
-                        self.myInfo = memberInfo!
-                        if self.myInfo.comment == nil {
-                            self.myInfo.comment = ""
+                        if memberInfo != nil {
+                            self.myInfo = memberInfo!
+                            if self.myInfo.comment == nil {
+                                self.myInfo.comment = ""
+                            }
+                            self.isLogin = true
+                        } else {
+                            self.isLogin = false
                         }
                     }
                 }
@@ -101,13 +111,18 @@ class HomeViewModel: ObservableObject {
             do {
                 let responseGroups = try await groupAPI.getGroup(intraId: self.intraId)
                 DispatchQueue.main.async {
-//                    print("-------------------")
 //                    print(responseGroups[0].members)
-                    self.groups = responseGroups
-                    self.friends = responseGroups[responseGroups.firstIndex(where: { $0.groupName == "default" })!]
-                    self.friends.isOpen = true
+                    if let responseGroups = responseGroups {
+                        self.groups = responseGroups
+                        self.friends = responseGroups[responseGroups.firstIndex(
+                            where: { $0.groupName == "default" }
+                        )!]
+                        self.friends.isOpen = true
 
-                    self.countOnlineUsers()
+                        self.countOnlineUsers()
+                    } else {
+                        self.isLogin = false
+                    }
                 }
             } catch {
                 print("Error getGroup: \(error)")
@@ -118,7 +133,7 @@ class HomeViewModel: ObservableObject {
     func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
         do {
             let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName)
-            print(newName)
+            print(newName!)
             return true
         } catch {
             return false
@@ -128,6 +143,7 @@ class HomeViewModel: ObservableObject {
     // Create New Group
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) {
+        print("confirm")
         if inputText == "" {
             return
         }
@@ -140,24 +156,34 @@ class HomeViewModel: ObservableObject {
 
         newGroup.groupName = inputText
 
-        isNewGroupAlertPrsented.wrappedValue.toggle()
-        isSelectViewPrsented.wrappedValue.toggle()
+        DispatchQueue.main.async {
+            isNewGroupAlertPrsented.wrappedValue.toggle()
+            isSelectViewPrsented.wrappedValue.toggle()
+        }
     }
 
     func createNewGroup(intraId: Int) async {
-        newGroup.members = selectedUsers
+        DispatchQueue.main.async {
+            self.newGroup.members = self.selectedUsers
 
-        countGroupUsers(group: &newGroup)
-        groups.append(newGroup)
+            self.countGroupUsers(group: &self.newGroup)
+            self.groups.append(self.newGroup)
+        }
 
         let groupId = try? await groupAPI.createGroup(intraId: intraId, groupName: newGroup.groupName)
 
         if groupId != nil && selectedUsers.isEmpty == false {
-            await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
+            do {
+                _ = try await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
+            } catch {
+                print("Failed to create new group")
+            }
         }
 
-        initNewGroup()
-        getGroup()
+        DispatchQueue.main.async {
+            self.initNewGroup()
+            self.getGroup()
+        }
     }
 
     func initNewGroup() {
@@ -174,20 +200,22 @@ class HomeViewModel: ObservableObject {
                 $0.groupName == selectedGroup.groupName
             })
 
-            groups[selectedIndex!].members = selectedGroup.members.filter { member in
-                !selectedUsers.contains(where: { $0.intraId == member.intraId })
-            }
+            DispatchQueue.main.async {
+                self.groups[selectedIndex!].members = self.selectedGroup.members.filter { member in
+                    !self.selectedUsers.contains(where: { $0.intraId == member.intraId })
+                }
 
-            initNewGroup()
-            countOnlineUsers()
+                self.initNewGroup()
+                self.countOnlineUsers()
+            }
         } catch {
-            fatalError("Failed delete group member")
+            print("Failed delete group member")
         }
     }
 
-    func addUserInGroup(group: inout GroupInfo, userInfo: GroupMemberInfo) {
+    func addUserInGroup(group: inout GroupInfo, userInfo: MemberInfo) {
         group.members.forEach { user in
-            if user.memberIntraName == userInfo.memberIntraName {
+            if user.intraName == userInfo.intraName {
                 return
             }
         }
@@ -203,11 +231,15 @@ class HomeViewModel: ObservableObject {
 
         for index in groups.indices {
             if groups[index] == selectedGroup {
-                groups[index].groupName = inputText
+                DispatchQueue.main.async {
+                    self.groups[index].groupName = self.inputText
+                }
 
                 if await updateGroupName(groupId: groups[index].groupId!, newGroupName: inputText) {
-                    inputText = ""
-                    selectedGroup = .empty
+                    DispatchQueue.main.async {
+                        self.inputText = ""
+                        self.selectedGroup = .empty
+                    }
                 } else {
                     return false
                 }
@@ -220,9 +252,13 @@ class HomeViewModel: ObservableObject {
         for index in groups.indices {
             if groups[index] == selectedGroup {
                 do {
-                    if try await groupAPI.deleteGroup(groupId: groups[index].groupId!, groupName: groups[index].groupName) {
-                        withAnimation {
-                            groups.remove(at: index)
+                    if try await groupAPI.deleteGroup(
+                        groupId: groups[index].groupId!,
+                        groupName: groups[index].groupName
+                    ) {
+//                        withAnimation {
+                        DispatchQueue.main.async {
+                            self.groups.remove(at: index)
                         }
                         return true
                     }

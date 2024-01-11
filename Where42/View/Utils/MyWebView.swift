@@ -16,6 +16,9 @@ class FullScreenWKWebView: WKWebView {
 
 struct MyWebView: UIViewRepresentable {
     @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @AppStorage("token") var token = ""
+    @AppStorage("isLogin") var isLogin = false
     
     var urlToLoad: String
     
@@ -61,24 +64,41 @@ struct MyWebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            if let currentURL = webView.url?.absoluteString {
-//                if currentURL == "https://intra.42.fr" {
-//                parent.isPresented = false
-                webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                    for cookie in cookies {
-                        if cookie.name == "where42" {
-                            print(cookie.name)
-                        }
-                    }
+            print("didFinish")
+            if let host = webView.url?.host() {
+                print(host)
+                if host == "localhost" {
+//                    print(webView.url?.query()?.split(separator: "&"))
+                    let query = webView.url?.query()?.split(separator: "&")
+                    parseQuery(token: String(query![0]), intraId: String(query![1]), agreement: String(query![2]))
+                    parent.isPresented = false
+//                webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+//                    for cookie in cookies {
+//                        print(cookie.name)
 //                    }
+//                }
                 }
+            }
+        }
+        
+        func parseQuery(token: String, intraId: String, agreement: String) {
+            print(token.components(separatedBy: "=")[1])
+            print(intraId.components(separatedBy: "=")[1])
+//            print(agreement.components(separatedBy: "=")[1])
+            
+            parent.homeViewModel.intraId = Int(intraId.components(separatedBy: "=")[1])!
+//            parent.homeViewModel.intraId = 6
+            parent.token = "Bearer " + token.components(separatedBy: "=")[1]
+            if agreement.components(separatedBy: "=")[1] == "false" {
+                parent.homeViewModel.isShowAgreementSheet = true
+            } else {
+                parent.isLogin = true
             }
         }
     }
 }
 
 #Preview {
-//    MyWebView(urlToLoad: "https://intra.42.fr", isPresented: .constant(true))
-    MyWebView(urlToLoad: "https://github.com", isPresented: .constant(true))
+    MyWebView(urlToLoad: "http://13.209.149.15:8080/v3/member?intraId=7", isPresented: .constant(true))
         .environmentObject(MainViewModel())
 }

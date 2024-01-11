@@ -44,7 +44,6 @@ struct GroupEditModal: View {
                 }
 
                 Button {
-                    isPresented = false
                     homeViewModel.isGroupEditViewPrsented = true
                 } label: {
                     Text("그룹 수정하기")
@@ -67,7 +66,9 @@ struct GroupEditModal: View {
         }
         .padding()
         .sheet(isPresented: $homeViewModel.isGroupEditViewPrsented) {
-            GroupEditView(group: $group)
+            GroupEditView(
+                group: $group,
+                isGroupEditModalPresented: $isPresented)
         }
     }
 }

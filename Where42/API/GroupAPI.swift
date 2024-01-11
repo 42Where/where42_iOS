@@ -5,7 +5,7 @@
 //  Created by 현동호 on 12/5/23.
 //
 
-import Foundation
+import SwiftUI
 
 struct CreateGroupDTO: Codable {
     var intraId: Int
@@ -26,7 +26,6 @@ struct AddOneGroupMemberDTO: Codable {
     var intraId: Int
     var groupId: Int
     var groupName: String
-    var isOwner: Bool = false
 }
 
 struct AddGroupMembersDTO: Codable {
@@ -37,16 +36,19 @@ struct AddGroupMembersDTO: Codable {
 class GroupAPI: API {
     func createGroup(intraId: Int, groupName: String) async throws -> Int? {
         guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(intraId: intraId, groupName: groupName)) else {
-            fatalError("Failed Create Request Body")
+            print("Failed Create Request Body")
+            return nil
         }
 
         guard let requestURL = URL(string: baseURL + "/group") else {
-            fatalError("Missing URL")
+            print("Missing URL")
+            return nil
         }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -58,14 +60,19 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Success")
-                return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupId
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Success")
+                    return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupId
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed Create Group")
+                print("Failed Create Group")
             }
         } catch {
             errorPrint(error, message: "Failed Create Group")
@@ -73,13 +80,16 @@ class GroupAPI: API {
         return nil
     }
 
-    func getGroup(intraId: Int) async throws -> [GroupInfo] {
+    func getGroup(intraId: Int) async throws -> [GroupInfo]? {
         guard let requestURL = URL(string: baseURL + "/group?intraId=\(intraId)") else {
-            fatalError("Missing URL")
+            throw NetworkError.invalidURL
         }
 
+        var request = URLRequest(url: requestURL)
+        request.addValue(token, forHTTPHeaderField: "Authorization")
+
         do {
-            let (data, response) = try await URLSession.shared.data(from: requestURL)
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -89,34 +99,41 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Succeed get group")
-                return try JSONDecoder().decode([GroupInfo].self, from: data)
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed get group")
+                    return try JSONDecoder().decode([GroupInfo].self, from: data)
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed Get Groups")
+                print("Failed Get Groups")
             }
         } catch {
-            print(error)
             errorPrint(error, message: "Failed Get Groups")
-            fatalError()
         }
+        return nil
     }
 
-    func updateGroupName(groupId: Int, newGroupName: String) async throws -> String {
+    func updateGroupName(groupId: Int, newGroupName: String) async throws -> String? {
         guard let requestBody = try? JSONEncoder().encode(UpdateGroupDTO(groupId: groupId, groupName: newGroupName)) else {
-            fatalError("Failed Create request Body")
+            print("Failed Create request Body")
+            throw NetworkError.invalidURL
         }
 
         guard let requestURL = URL(string: baseURL + "/group/name") else {
-            fatalError("Missing Error")
+            print("Missing Error")
+            throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -130,34 +147,42 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Succeed update group name")
-                return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupName
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed update group name")
+                    return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupName
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed update Group name")
+                print("Failed update Group name")
             }
 
         } catch {
             errorPrint(error, message: "Failed update group name")
-            fatalError()
         }
+        return nil
     }
 
     func deleteGroup(groupId: Int, groupName: String) async throws -> Bool {
         guard let requestBody = try? JSONEncoder().encode(UpdateGroupDTO(groupId: groupId, groupName: groupName)) else {
-            fatalError("Failed encode requestBody")
+            print("Failed encode requestBody")
+            throw NetworkError.invalidRequestBody
         }
 
         guard let requestURL = URL(string: baseURL + "/group?groupId=\(groupId)") else {
-            fatalError("Failed encode requestBody")
+            print("Failed encode requestURL")
+            throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -171,34 +196,43 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Succeed delete group")
-                return true
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed delete group")
+                    return true
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed delete group")
+                print("Failed delete group")
             }
         } catch {
             errorPrint(error, message: "Failed delete group")
-            return false
         }
+        return false
     }
 
-    func deleteGroupMember(groupId: Int, members: [GroupMemberInfo]) async throws -> Bool {
+    func deleteGroupMember(groupId: Int, members: [MemberInfo]) async throws -> Bool {
         let membersIntraId: [Int] = members.map { $0.intraId! }
 
         guard let requestBody = try? JSONEncoder().encode(DeleteGroupMemberDTO(groupId: groupId, members: membersIntraId)) else {
-            fatalError("Failed create request Body")
+            print("Failed create request Body")
+            throw NetworkError.invalidRequestBody
         }
 
-        guard let requestURL = URL(string: baseURL + "/group/groupmember") else { fatalError("Failed create URL")
+        guard let requestURL = URL(string: baseURL + "/group/groupmember") else {
+            print("Failed create URL")
+            throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -212,35 +246,43 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Succeed delete group")
-                return true
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed delete group")
+                    return true
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed delete group")
+                print("Failed delete group")
             }
         } catch {
             errorPrint(error, message: "Failed delete group member")
-            return false
         }
+        return false
     }
 
-    func addMembers(groupId: Int, members: [GroupMemberInfo]) async {
-        let members: [String] = members.map { $0.memberIntraName! }
+    func addMembers(groupId: Int, members: [MemberInfo]) async throws -> Bool {
+        let members: [String] = members.map { $0.intraName! }
 
         guard let requsetBody = try? JSONEncoder().encode(AddGroupMembersDTO(groupId: groupId, members: members)) else {
-            fatalError("failed create requset body")
+            print("failed create requset body")
+            return false
         }
 
         guard let requestURL = URL(string: baseURL + "/group/groupmember/members") else {
-            fatalError("failed create requset URL")
+            print("failed create requset URL")
+            return false
         }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         do {
@@ -254,31 +296,41 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Succeed add members")
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed add members")
+                    return true
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed add members")
+                print("Failed add members")
             }
         } catch {
             errorPrint(error, message: "Failed add members")
         }
+        return false
     }
 
-    func addOneMember(groupId: Int, groupName: String, intraId: Int) async {
+    func addOneMember(groupId: Int, groupName: String, intraId: Int) async throws -> Bool {
         guard let requsetBody = try? JSONEncoder().encode(AddOneGroupMemberDTO(intraId: intraId, groupId: groupId, groupName: groupName)) else {
-            fatalError("failed create requset body")
+            print("failed create requset body")
+            return false
         }
 
         guard let requestURL = URL(string: baseURL + "/group/groupmember/members") else {
-            fatalError("failed create requset URL")
+            print("failed create requset URL")
+            return false
         }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         do {
@@ -292,16 +344,23 @@ class GroupAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                print("Succeed add one member")
+                if response.mimeType == "text/html" {
+                    isLogin = false
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed add one member")
+                    return true
+                }
             case 400 ... 499:
                 throw NetworkError.BadRequest
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
-                fatalError("Failed add one member")
+                print("Failed add one member")
             }
         } catch {
             errorPrint(error, message: "Failed add one member")
         }
+        return false
     }
 }
