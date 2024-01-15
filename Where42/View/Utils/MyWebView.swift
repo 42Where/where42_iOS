@@ -92,6 +92,7 @@ struct MyWebView: UIViewRepresentable {
             if agreement.components(separatedBy: "=")[1] == "false" {
                 parent.homeViewModel.isShowAgreementSheet = true
             } else {
+                parent.homeViewModel.isAPILoaded = false
                 parent.isLogin = true
             }
         }

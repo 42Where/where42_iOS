@@ -86,7 +86,7 @@ class MemberAPI: API {
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
-            print(String(data: data, encoding: String.Encoding.utf8)!)
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse

@@ -59,7 +59,6 @@ struct LoginView: View {
                 Button("L O G I N") {
                     print(token)
                     homeViewModel.getMemberInfo()
-//                    isLogin.toggle()
                 }
                 .font(.custom("GmarketSansTTFBold", size: 20.0))
                 .foregroundStyle(.white)

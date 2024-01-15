@@ -60,19 +60,19 @@ struct GroupEditView: View {
                     homeViewModel.isGroupEditViewPrsented = false
                 } label: {
                     HStack {
-                        Spacer()
+//                        Spacer()
 
 //                        Text("다른 그룹에 추가")
 //                            .font(.custom(Font.GmarketMedium, size: 20))
 //                            .foregroundStyle(.white)
 
-                        Spacer()
+//                        Spacer()
 
                         Text("그룹에서 삭제")
                             .font(.custom(Font.GmarketMedium, size: 20))
                             .foregroundStyle(.white)
 
-                        Spacer()
+//                        Spacer()
                     }
                 }
                 .clipShape(Rectangle())
