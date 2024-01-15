@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct PersonalInfoAgreementView: View {
+    @EnvironmentObject private var loginViewModel: LoginViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @Binding var isPresent: Bool
+
     var body: some View {
         ZStack {
             Color.black
@@ -55,7 +59,9 @@ struct PersonalInfoAgreementView: View {
                 HStack {
                     Spacer()
 
-                    Button {} label: {
+                    Button {
+                        isPresent = false
+                    } label: {
                         Text("거절")
                             .padding(.horizontal, 6)
                             .padding(4)
@@ -68,7 +74,10 @@ struct PersonalInfoAgreementView: View {
 
                     Spacer()
 
-                    Button {} label: {
+                    Button {
+                        loginViewModel.join(intraId: String(homeViewModel.intraId))
+                        isPresent = false
+                    } label: {
                         Text("동의")
                             .padding(.horizontal, 6)
                             .padding(4.5)
@@ -92,5 +101,5 @@ struct PersonalInfoAgreementView: View {
 }
 
 #Preview {
-    PersonalInfoAgreementView()
+    PersonalInfoAgreementView(isPresent: .constant(true))
 }

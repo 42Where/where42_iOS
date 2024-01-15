@@ -66,7 +66,9 @@ struct GroupEditModal: View {
         }
         .padding()
         .sheet(isPresented: $homeViewModel.isGroupEditViewPrsented) {
-            GroupEditView(group: $group)
+            GroupEditView(
+                group: $group,
+                isGroupEditModalPresented: $isPresented)
         }
     }
 }

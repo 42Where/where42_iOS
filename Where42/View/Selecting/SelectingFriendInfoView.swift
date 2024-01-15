@@ -11,7 +11,7 @@ import SwiftUI
 struct SelectingFriendInfoView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: GroupMemberInfo
+    @Binding var userInfo: MemberInfo
 
     @State private var isWork = false
     @State private var isCheck = false
@@ -21,6 +21,7 @@ struct SelectingFriendInfoView: View {
             isCheck.toggle()
             if isCheck {
                 homeViewModel.selectedUsers.append(userInfo)
+                print(homeViewModel.selectedUsers)
             } else {
                 if let index = homeViewModel.selectedUsers.firstIndex(of: userInfo) {
                     homeViewModel.selectedUsers.remove(at: index)
@@ -41,7 +42,7 @@ struct SelectingFriendInfoView: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(userInfo.memberIntraName!)
+                        Text(userInfo.intraName!)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
@@ -82,6 +83,6 @@ struct SelectingFriendInfoView: View {
 }
 
 #Preview {
-    SelectingFriendInfoView(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
+    SelectingFriendInfoView(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
         .environmentObject(HomeViewModel())
 }

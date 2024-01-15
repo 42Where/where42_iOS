@@ -11,7 +11,7 @@ import SwiftUI
 struct FriendEditModal: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: GroupMemberInfo
+    @Binding var userInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
     @Binding var isPresented: Bool
 
@@ -33,7 +33,7 @@ struct FriendEditModal: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text(userInfo.memberIntraName!)
+                        Text(userInfo.intraName!)
                             .font(.custom(Font.GmarketBold, size: 20))
                             .foregroundStyle(.whereDeepNavy)
 
@@ -93,6 +93,6 @@ struct FriendEditModal: View {
 }
 
 #Preview {
-    FriendEditModal(userInfo: .constant(GroupMemberInfo(memberIntraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
+    FriendEditModal(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
         .environmentObject(HomeViewModel())
 }

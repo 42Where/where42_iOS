@@ -1,42 +1,36 @@
 //
-//  HomeFriendView.swift
+//  groupBar.swift
 //  Where42
 //
-//  Created by 현동호 on 11/8/23.
+//  Created by 현동호 on 1/8/24.
 //
 
 import SwiftUI
 
-struct HomeFriendView: View {
+struct HomeGroupSingleView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var homeGroupViewModel: HomeGroupViewModel
 
-    @Binding var friends: GroupInfo
-
-    @State private var modalHeight: CGFloat = 0
-    @State private var isSheetPresent: Bool = false
-
+    @Binding var group: GroupInfo
+    @State var isPresented = false
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if friends.isOpen! && friends.totalNum! > 0 {
-                    ForEach(0 ..< friends.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWork && friends.members[index].location == "퇴근") {
+                if group.isOpen! && group.totalNum! > 0 {
+                    ForEach(0 ..< group.members.count, id: \.self) { index in
+                        if !(homeViewModel.isWork && group.members[index].location == "퇴근") {
                             if UIDevice.idiom == .phone {
-                                HomeFriendInfoView(userInfo: $friends.members[index], groupInfo: $friends)
+                                HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
                                     .padding(.horizontal)
                                     .padding(.vertical, 1)
                             } else if UIDevice.idiom == .pad {
                                 if index % 2 == 0 {
                                     HStack {
-                                        HomeFriendInfoView(
-                                            userInfo: $friends.members[index],
-                                            groupInfo: $friends)
+                                        HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
                                             .padding(.horizontal)
                                             .padding(.vertical, 1)
-                                        if index + 1 < friends.members.count {
-                                            HomeFriendInfoView(
-                                                userInfo: $friends.members[index + 1],
-                                                groupInfo: $friends)
+                                        if index + 1 < group.members.count {
+                                            HomeFriendInfoView(userInfo: $group.members[index + 1], groupInfo: $group)
                                                 .padding(.horizontal)
                                                 .padding(.vertical, 1)
                                         } else {
@@ -52,9 +46,9 @@ struct HomeFriendView: View {
             } header: {
                 VStack {
                     HStack {
-                        Text("친구목록")
+                        Text("\(group.groupName)")
                             .font(.custom(Font.GmarketMedium, size: 13))
-                        Text("\(friends.onlineNum!)/\(friends.totalNum!)")
+                        Text("\(group.onlineNum!)/\(group.totalNum!)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 
                         Spacer()
@@ -65,17 +59,18 @@ struct HomeFriendView: View {
                             }
 
                             Button {
-                                isSheetPresent.toggle()
+                                isPresented.toggle()
+                                homeViewModel.selectedGroup = group
                             } label: {
                                 Image("Edit icon")
                             }
 
                             Button {
                                 withAnimation {
-                                    friends.isOpen!.toggle()
+                                    group.isOpen!.toggle()
                                 }
                             } label: {
-                                if friends.isOpen! {
+                                if group.isOpen! {
                                     Image("Fold icon")
                                 } else {
                                     Image("Folded icon")
@@ -87,31 +82,30 @@ struct HomeFriendView: View {
                     .padding(.horizontal)
                     .padding(.vertical, 3)
 
-                    if friends.isOpen! && friends.totalNum! > 0 {
+                    if group.isOpen! && group.totalNum! > 0 {
                         Divider()
                     }
                 }
                 .background(.white)
-                .sheetOrPopOver(isPresented: $isSheetPresent) {
+                .sheetOrPopOver(isPresented: $isPresented) {
                     GroupEditModal(
-                        group: $homeViewModel.friends,
-                        isPresented: $isSheetPresent)
+                        group: $homeViewModel.selectedGroup,
+                        isPresented: $isPresented)
                         .readSize()
-                        .onPreferenceChange(SizePreferenceKey.self, perform: { value in
-                            if let value {
-                                modalHeight = value.height
+                        .onPreferenceChange(SizePreferenceKey.self, perform: { size in
+                            if let size {
+                                homeGroupViewModel.modalHeight = size.height
                             }
                         })
-                        .presentationDetents([.height(modalHeight)])
+                        .presentationDetents([.height(homeGroupViewModel.modalHeight)])
                 }
             }
-
-            Divider()
         }
     }
 }
 
 #Preview {
-    HomeFriendView(friends: .constant(HomeViewModel().friends))
+    HomeGroupSingleView(group: .constant(.empty))
         .environmentObject(HomeViewModel())
+        .environmentObject(HomeGroupViewModel())
 }

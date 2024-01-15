@@ -32,9 +32,25 @@ struct SelectingView: View {
                             .stroke(.whereDeepNavy, lineWidth: 2)
                     )
 
-                    ForEach($homeViewModel.friends.members, id: \.self) { $user in
-                        SelectingFriendInfoView(userInfo: $user)
-                            .padding(.top)
+                    ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
+                        if UIDevice.idiom == .phone {
+                            SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
+                                .padding(.top)
+                        } else if UIDevice.idiom == .pad {
+                            if index % 2 == 0 {
+                                HStack {
+                                    SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
+                                        .padding([.top, .leading, .trailing])
+                                    if index + 1 < homeViewModel.friends.members.count {
+                                        SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index + 1])
+                                            .padding([.top, .leading, .trailing])
+                                    } else {
+                                        Spacer()
+                                            .padding()
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     Spacer()

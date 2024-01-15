@@ -10,14 +10,16 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @AppStorage("isLogin") var isLogin = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
-                    HomeInfoView(memberInfo: $homeViewModel.myInfo,
-                                 isWork: $homeViewModel.isWork,
-                                 isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
+                    HomeInfoView(
+                        memberInfo: $homeViewModel.myInfo,
+                        isWork: $homeViewModel.isWork,
+                        isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
                         
                     Divider()
                     
@@ -27,11 +29,14 @@ struct HomeView: View {
                         Spacer()
                         
                             .toolbar {
-                                Where42ToolBarContent(isShowSheet: $homeViewModel.isShowSettingSheet, isSettingPresenting: true)
+                                Where42ToolBarContent(
+                                    isShowSheet: $homeViewModel.isShowSettingSheet,
+                                    isSettingPresenting: true)
                             }
                             .unredacted()
                     }
                     .refreshable {
+                        homeViewModel.getMemberInfo()
                         homeViewModel.getGroup()
                     }
                 }
@@ -48,7 +53,9 @@ struct HomeView: View {
                     if !homeViewModel.isAPILoaded {
                         homeViewModel.getMemberInfo()
                         homeViewModel.getGroup()
-                        homeViewModel.isAPILoaded = true
+                        if isLogin == true {
+                            homeViewModel.isAPILoaded = true
+                        }
                     }
                 }
                 
@@ -59,6 +66,7 @@ struct HomeView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

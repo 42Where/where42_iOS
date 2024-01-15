@@ -11,6 +11,7 @@ struct SettingView: View {
     @StateObject private var settingViewModel: SettingViewModel = .init()
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @AppStorage("isLogin") var isLogin: Bool = false
+    @AppStorage("token") var token = ""
 
     var body: some View {
         ZStack {
@@ -66,6 +67,7 @@ struct SettingView: View {
                         homeViewModel.isShowSettingSheet = false
                         settingViewModel.isLogoutAlertPresent = false
                         isLogin = false
+                        token = ""
                     }
                 }
             }
