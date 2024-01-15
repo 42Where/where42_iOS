@@ -8,21 +8,19 @@
 import SwiftUI
 
 struct GroupEditModal: View {
-    @EnvironmentObject var homeViewModel: HomeViewModel
-    @EnvironmentObject var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
 
     @Binding var group: GroupInfo
     @Binding var isPresented: Bool
 
-    let GmarketFont: GmarketSansTTF = .init()
-
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("\(group.name)")
+                Text("\(group.groupName)")
                     .font(.custom(Font.GmarketMedium, size: 16))
 
-                Text("\(group.onlineNum)/\(group.totalNum)")
+                Text("\(group.onlineNum!)/\(group.totalNum!)")
                     .font(.custom(Font.GmarketMedium, size: 13))
 
                 Spacer()
@@ -32,39 +30,51 @@ struct GroupEditModal: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 40) {
-                Button {
-                    withAnimation {
-                        isPresented.toggle()
-                        homeViewModel.selectedGroup = group
-                        mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                if group.groupName != "default" {
+                    Button {
+                        withAnimation {
+                            isPresented.toggle()
+                            homeViewModel.selectedGroup = group
+                            mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                        }
+                    } label: {
+                        Text("그룹 이름 수정하기")
+                            .foregroundStyle(.whereMediumNavy)
                     }
-                } label: {
-                    Text("그룹 이름 수정하기")
-                        .foregroundStyle(.whereMediumNavy)
                 }
 
-                Button {} label: {
+                Button {
+                    homeViewModel.isGroupEditViewPrsented = true
+                } label: {
                     Text("그룹 수정하기")
                         .foregroundStyle(.whereMediumNavy)
                 }
 
-                Button {
-                    isPresented.toggle()
-                    homeViewModel.selectedGroup = group
-                    mainViewModel.isDeleteGroupAlertPrsented.toggle()
-                } label: {
-                    Text("그룹 삭제하기")
-                        .foregroundStyle(.red)
+                if group.groupName != "default" {
+                    Button {
+                        isPresented.toggle()
+                        homeViewModel.selectedGroup = group
+                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                    } label: {
+                        Text("그룹 삭제하기")
+                            .foregroundStyle(.red)
+                    }
                 }
             }
             .font(.custom(Font.GmarketMedium, size: 16))
             .padding(.vertical, 20)
         }
         .padding()
+        .sheet(isPresented: $homeViewModel.isGroupEditViewPrsented) {
+            GroupEditView(
+                group: $group,
+                isGroupEditModalPresented: $isPresented)
+        }
     }
 }
 
 #Preview {
     GroupEditModal(group: .constant(HomeViewModel().friends), isPresented: .constant(false))
         .environmentObject(HomeViewModel())
+        .environmentObject(MainViewModel())
 }

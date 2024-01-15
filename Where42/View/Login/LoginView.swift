@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct LoginView: View {
+    @EnvironmentObject private var homeViewModel: HomeViewModel
     @StateObject var loginViewModel: LoginViewModel = .init()
 
     @AppStorage("isLogin") var isLogin: Bool = false
-    @AppStorage("isLoginViewPresented") var isLoginViewPresented: Bool = true
+    @AppStorage("token ") var token = ""
 
     var body: some View {
         ZStack {
@@ -56,8 +57,9 @@ struct LoginView: View {
                 Spacer()
 
                 Button("L O G I N") {
-                    isLogin.toggle()
-                    isLoginViewPresented.toggle()
+                    print(token)
+                    homeViewModel.getMemberInfo()
+//                    isLogin.toggle()
                 }
                 .font(.custom("GmarketSansTTFBold", size: 20.0))
                 .foregroundStyle(.white)
@@ -93,6 +95,10 @@ struct LoginView: View {
             }
         }
         .foregroundColor(.whereDeepNavy)
+        .fullScreenCover(isPresented: $homeViewModel.isShowAgreementSheet) {
+            PersonalInfoAgreementView(isPresent: $homeViewModel.isShowAgreementSheet)
+        }
+        .environmentObject(loginViewModel)
     }
 }
 
@@ -102,10 +108,10 @@ struct LoginView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-            .previewDevice(PreviewDevice(rawValue: DeviceName.iPhone_SE_3rd_generation.rawValue))
-            .previewDisplayName("iPhone SE 3rd")
-    }
-}
+// struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoginView()
+//            .previewDevice(PreviewDevice(rawValue: DeviceName.iPhone_SE_3rd_generation.rawValue))
+//            .previewDisplayName("iPhone SE 3rd")
+//    }
+// }

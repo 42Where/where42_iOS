@@ -11,6 +11,7 @@ struct SettingView: View {
     @StateObject private var settingViewModel: SettingViewModel = .init()
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @AppStorage("isLogin") var isLogin: Bool = false
+    @AppStorage("token") var token = ""
 
     var body: some View {
         ZStack {
@@ -54,6 +55,7 @@ struct SettingView: View {
                 
                 Spacer()
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             
             if settingViewModel.isLogoutAlertPresent {
                 CustomAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?", inputText: .constant("")) {
@@ -65,6 +67,7 @@ struct SettingView: View {
                         homeViewModel.isShowSettingSheet = false
                         settingViewModel.isLogoutAlertPresent = false
                         isLogin = false
+                        token = ""
                     }
                 }
             }
@@ -91,15 +94,15 @@ struct SettingView: View {
                         settingViewModel.inputText = ""
                     }
                 } rightButtonAction: {
-                    withAnimation {
-                        settingViewModel.isCustomLocationAlertPresent.toggle()
+                    if await settingViewModel.UpdateCustomLocation(intraId: homeViewModel.intraId) {
+                        withAnimation {
+                            settingViewModel.isCustomLocationAlertPresent.toggle()
+                        }
+                        homeViewModel.myInfo.location = settingViewModel.newLocation
                     }
-                    await settingViewModel.UpdateCustomLocation(intraId: homeViewModel.intraId)
-                    homeViewModel.myInfo.customLocation = settingViewModel.newCustomLocation
                 }
             }
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

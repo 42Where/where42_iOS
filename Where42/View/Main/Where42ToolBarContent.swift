@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct Where42ToolBarContent: ToolbarContent {
-    @EnvironmentObject var mainViewModel: MainViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var isShowSheet: Bool
     var isSettingPresenting: Bool
@@ -17,6 +18,8 @@ struct Where42ToolBarContent: ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button {
                 mainViewModel.tabSelection = "Home"
+                mainViewModel.isSelectViewPrsented = false
+                homeViewModel.inputText = ""
             } label: {
                 Image("Where42 logo 3")
             }

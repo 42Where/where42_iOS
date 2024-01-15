@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct SelectingView: View {
-    @EnvironmentObject var mainViewModel: MainViewModel
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @State private var isShowSheet = false
     @State private var name: String = ""
-
-    @State var dhyun: MemberInfo = .init(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", imacLocation: "퇴근")
-
-    private var selectedUser: [MemberInfo] = []
 
     var body: some View {
         NavigationView {
@@ -36,9 +32,25 @@ struct SelectingView: View {
                             .stroke(.whereDeepNavy, lineWidth: 2)
                     )
 
-                    ForEach($homeViewModel.searching.users, id: \.self) { $user in
-                        SelectingFriendInfoView(userInfo: $user)
-                            .padding(.top)
+                    ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
+                        if UIDevice.idiom == .phone {
+                            SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
+                                .padding(.top)
+                        } else if UIDevice.idiom == .pad {
+                            if index % 2 == 0 {
+                                HStack {
+                                    SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
+                                        .padding([.top, .leading, .trailing])
+                                    if index + 1 < homeViewModel.friends.members.count {
+                                        SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index + 1])
+                                            .padding([.top, .leading, .trailing])
+                                    } else {
+                                        Spacer()
+                                            .padding()
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     Spacer()
@@ -49,7 +61,9 @@ struct SelectingView: View {
                     Spacer()
 
                     Button {
-                        homeViewModel.createNewGroup()
+                        Task {
+                            await homeViewModel.createNewGroup(intraId: homeViewModel.intraId)
+                        }
                         mainViewModel.isSelectViewPrsented = false
                     } label: {
                         Text("그룹 추가하기")

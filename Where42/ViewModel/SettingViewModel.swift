@@ -14,7 +14,7 @@ extension SettingView {
         @Published var isCustomLocationAlertPresent = false
         @Published var inputText = ""
         @Published var newStatusMessage: String = "수정중..."
-        @Published var newCustomLocation: String = "수정중..."
+        @Published var newLocation: String = "수정중..."
 
         private let memberAPI = MemberAPI()
 
@@ -29,15 +29,21 @@ extension SettingView {
             } catch {}
         }
 
-        func UpdateCustomLocation(intraId: Int) async {
+        func UpdateCustomLocation(intraId: Int) async -> Bool {
+            if inputText == "" {
+                return false
+            }
+
             do {
                 if let customLocation = try await memberAPI.updateCustomLocation(intraId: intraId, customLocation: inputText) {
                     DispatchQueue.main.async {
-                        self.newCustomLocation = customLocation
+                        print(customLocation)
+                        self.newLocation = customLocation
                         self.inputText = ""
                     }
                 }
             } catch {}
+            return true
         }
     }
 }
