@@ -20,7 +20,7 @@ extension SettingView {
 
         func UpdateComment(intraId: Int) async {
             do {
-                if let comment = try await memberAPI.updateStatusMessage(intraId: intraId, statusMessage: inputText) {
+                if let comment = try await memberAPI.updateStatusMessage(statusMessage: inputText) {
                     DispatchQueue.main.async {
                         self.newStatusMessage = comment
                         self.inputText = ""
@@ -35,7 +35,7 @@ extension SettingView {
             }
 
             do {
-                if let customLocation = try await memberAPI.updateCustomLocation(intraId: intraId, customLocation: inputText) {
+                if let customLocation = try await memberAPI.updateCustomLocation(customLocation: inputText) {
                     DispatchQueue.main.async {
                         print(customLocation)
                         self.newLocation = customLocation

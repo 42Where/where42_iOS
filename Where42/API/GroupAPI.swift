@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CreateGroupDTO: Codable {
-    var intraId: Int
     var groupName: String
 }
 
@@ -25,7 +24,6 @@ struct DeleteGroupMemberDTO: Codable {
 struct AddOneGroupMemberDTO: Codable {
     var intraId: Int
     var groupId: Int
-    var groupName: String
 }
 
 struct AddGroupMembersDTO: Codable {
@@ -34,8 +32,8 @@ struct AddGroupMembersDTO: Codable {
 }
 
 class GroupAPI: API {
-    func createGroup(intraId: Int, groupName: String) async throws -> Int? {
-        guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(intraId: intraId, groupName: groupName)) else {
+    func createGroup(groupName: String) async throws -> Int? {
+        guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(groupName: groupName)) else {
             print("Failed Create Request Body")
             return nil
         }
@@ -80,8 +78,8 @@ class GroupAPI: API {
         return nil
     }
 
-    func getGroup(intraId: Int) async throws -> [GroupInfo]? {
-        guard let requestURL = URL(string: baseURL + "/group?intraId=\(intraId)") else {
+    func getGroup() async throws -> [GroupInfo]? {
+        guard let requestURL = URL(string: baseURL + "/group") else {
             throw NetworkError.invalidURL
         }
 
@@ -168,12 +166,7 @@ class GroupAPI: API {
         return nil
     }
 
-    func deleteGroup(groupId: Int, groupName: String) async throws -> Bool {
-        guard let requestBody = try? JSONEncoder().encode(UpdateGroupDTO(groupId: groupId, groupName: groupName)) else {
-            print("Failed encode requestBody")
-            throw NetworkError.invalidRequestBody
-        }
-
+    func deleteGroup(groupId: Int) async throws -> Bool {
         guard let requestURL = URL(string: baseURL + "/group?groupId=\(groupId)") else {
             print("Failed encode requestURL")
             throw NetworkError.invalidURL
@@ -183,7 +176,6 @@ class GroupAPI: API {
         request.httpMethod = "DELETE"
         request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
         request.addValue(token, forHTTPHeaderField: "Authorization")
-        request.httpBody = requestBody
 
         do {
             let (_, response) = try await URLSession.shared.data(for: request)
@@ -317,7 +309,7 @@ class GroupAPI: API {
     }
 
     func addOneMember(groupId: Int, groupName: String, intraId: Int) async throws -> Bool {
-        guard let requsetBody = try? JSONEncoder().encode(AddOneGroupMemberDTO(intraId: intraId, groupId: groupId, groupName: groupName)) else {
+        guard let requsetBody = try? JSONEncoder().encode(AddOneGroupMemberDTO(intraId: intraId, groupId: groupId)) else {
             print("failed create requset body")
             return false
         }

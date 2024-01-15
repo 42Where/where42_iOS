@@ -15,19 +15,11 @@ struct CreateMemberDTO: Codable {
 }
 
 struct UpdateCommentDTO: Codable {
-    var intraId: Int
     var comment: String?
 }
 
 struct UpdateCustomLocationDTO: Codable {
-    var intraId: Int
     var customLocation: String?
-}
-
-struct ResponseCustomLocationDTO: Codable {
-    var intraId: Int
-    var imacLocation: String
-    var customLocation: String
 }
 
 struct DeleteMemberDTO: Codable {
@@ -166,8 +158,8 @@ class MemberAPI: API {
         return false
     }
 
-    func updateStatusMessage(intraId: Int, statusMessage: String) async throws -> String? {
-        guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(intraId: intraId, comment: statusMessage)) else {
+    func updateStatusMessage(statusMessage: String) async throws -> String? {
+        guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(comment: statusMessage)) else {
             throw NetworkError.invalidRequestBody
         }
 //        print(String(data: requestBody, encoding: String.Encoding.utf8)!)
@@ -214,8 +206,8 @@ class MemberAPI: API {
         return nil
     }
 
-    func updateCustomLocation(intraId: Int, customLocation: String) async throws -> String? {
-        guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(intraId: intraId, customLocation: customLocation)) else {
+    func updateCustomLocation(customLocation: String) async throws -> String? {
+        guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(customLocation: customLocation)) else {
             throw NetworkError.invalidRequestBody
         }
 
@@ -243,7 +235,7 @@ class MemberAPI: API {
                     throw NetworkError.Token
                 } else {
                     print("Succeed update Custom Location")
-                    return try JSONDecoder().decode(ResponseCustomLocationDTO.self, from: data).customLocation
+                    return try JSONDecoder().decode(UpdateCustomLocationDTO.self, from: data).customLocation
                 }
             case 400 ... 499:
                 throw NetworkError.BadRequest

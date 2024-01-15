@@ -109,7 +109,7 @@ class HomeViewModel: ObservableObject {
     func getGroup() {
         Task {
             do {
-                let responseGroups = try await groupAPI.getGroup(intraId: self.intraId)
+                let responseGroups = try await groupAPI.getGroup()
                 DispatchQueue.main.async {
 //                    print(responseGroups[0].members)
                     if let responseGroups = responseGroups {
@@ -170,7 +170,7 @@ class HomeViewModel: ObservableObject {
             self.groups.append(self.newGroup)
         }
 
-        let groupId = try? await groupAPI.createGroup(intraId: intraId, groupName: newGroup.groupName)
+        let groupId = try? await groupAPI.createGroup(groupName: newGroup.groupName)
 
         if groupId != nil && selectedUsers.isEmpty == false {
             do {
@@ -253,8 +253,7 @@ class HomeViewModel: ObservableObject {
             if groups[index] == selectedGroup {
                 do {
                     if try await groupAPI.deleteGroup(
-                        groupId: groups[index].groupId!,
-                        groupName: groups[index].groupName
+                        groupId: groups[index].groupId!
                     ) {
 //                        withAnimation {
                         DispatchQueue.main.async {
