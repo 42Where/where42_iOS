@@ -66,6 +66,7 @@ struct MainAlertView: View {
                 }
             }
         }
+//            .toolbar
     }
 }
 

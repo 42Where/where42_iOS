@@ -21,53 +21,64 @@ struct Where42: View {
     @Environment(\.horizontalSizeClass) var oldSizeClass
 
     var body: some View {
-        ZStack {
-            if isLogin {
-                VStack {
-                    TabView(selection: $mainViewModel.tabSelection) {
-                        HomeView()
-                            .tabItem {
-                                Image("Home icon M")
-                                Text("⸻")
-                            }
-                            .tag("Home")
-                            .environment(\.horizontalSizeClass, oldSizeClass)
-
-                        SearchView()
-                            .tabItem {
-                                VStack {
-                                    Image("Search icon M")
+        NavigationView {
+            ZStack {
+                if isLogin {
+                    VStack {
+                        TabView(selection: $mainViewModel.tabSelection) {
+                            HomeView()
+                                .tabItem {
+                                    Image("Home icon M")
                                     Text("⸻")
                                 }
-                            }
-                            .tag("Search")
-                            .environment(\.horizontalSizeClass, oldSizeClass)
-                    }
-                    .toolbar(.visible, for: .tabBar)
-                    .toolbarBackground(Color.yellow, for: .tabBar)
-                    .environment(\.horizontalSizeClass, .compact)
-                }
-                .zIndex(0)
-                .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
-                    SelectingView()
-                }
+                                .tag("Home")
+                                .environment(\.horizontalSizeClass, oldSizeClass)
 
-                MainAlertView()
-                    .zIndex(1)
-            } else {
-                VStack {
-                    LoginView()
+                            SearchView()
+                                .tabItem {
+                                    VStack {
+                                        Image("Search icon M")
+                                        Text("⸻")
+                                    }
+                                }
+                                .tag("Search")
+                                .environment(\.horizontalSizeClass, oldSizeClass)
+                        }
+//                        .toolbar(.visible, for: .tabBar)
+                        .environment(\.horizontalSizeClass, .compact)
+                    }
+                    .zIndex(0)
+                    .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
+                        SelectingView()
+                    }
+
+                    MainAlertView()
+                        .zIndex(1)
+
+                } else {
+                    VStack {
+                        LoginView()
+                    }
+                    .transition(.asymmetric(insertion: AnyTransition.move(edge: .bottom),
+                                            removal: AnyTransition.move(edge: .bottom)))
                 }
-                .transition(.asymmetric(insertion: AnyTransition.move(edge: .bottom),
-                                        removal: AnyTransition.move(edge: .bottom)))
             }
-        }
-        .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
-            MyWebView(
-                urlToLoad: homeViewModel.intraURL!,
-                isPresented: $homeViewModel.isShow42IntraSheet)
+            .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
+                MyWebView(
+                    urlToLoad: homeViewModel.intraURL!,
+                    isPresented: $homeViewModel.isShow42IntraSheet
+                )
                 .ignoresSafeArea()
+            }
+            .toolbar {
+                Where42ToolBarContent(
+                    isShowSheet: $homeViewModel.isShowSettingSheet
+                )
+            }
+            .unredacted()
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+
         .animation(.easeIn, value: isLogin)
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)

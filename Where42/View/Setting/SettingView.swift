@@ -70,6 +70,7 @@ struct SettingView: View {
                         token = ""
                     }
                 }
+                .zIndex(1)
             }
             
             if settingViewModel.isStatusMessageAlertPresent {
@@ -85,6 +86,7 @@ struct SettingView: View {
                     await settingViewModel.UpdateComment(intraId: homeViewModel.intraId)
                     homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
                 }
+                .zIndex(1)
             }
             
             if settingViewModel.isCustomLocationAlertPresent {
@@ -101,8 +103,10 @@ struct SettingView: View {
                         homeViewModel.myInfo.location = settingViewModel.newLocation
                     }
                 }
+                .zIndex(1)
             }
         }
+        .zIndex(0)
     }
 }
 

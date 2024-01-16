@@ -27,6 +27,13 @@ struct SearchView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20)
                         TextField("이름을 입력해주세요", text: $name)
+
+                        if name != "" {
+                            Image(systemName: "xmark.circle.fill")
+                                .onTapGesture {
+                                    name = ""
+                                }
+                        }
                     }
                     .padding()
                     .foregroundStyle(.whereDeepNavy)
@@ -35,11 +42,15 @@ struct SearchView: View {
                             .stroke(.whereDeepNavy, lineWidth: 2)
                     )
 
-                    HomeFriendInfoView(
-                        userInfo: $member12,
-                        groupInfo: $searchViewModel.searching
-                    )
-                    .padding(.top)
+                    ScrollView {
+                        LazyVStack {
+                            HomeFriendInfoView(
+                                userInfo: $member12,
+                                groupInfo: $searchViewModel.searching
+                            )
+                            .padding(.top)
+                        }
+                    }
 
                     Spacer()
                 }
@@ -61,11 +72,7 @@ struct SearchView: View {
                     .ignoresSafeArea()
                 }
             }
-            .toolbar {
-                Where42ToolBarContent(isShowSheet: $isShowSheet, isSettingPresenting: false)
-            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }

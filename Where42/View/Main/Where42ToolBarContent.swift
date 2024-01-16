@@ -12,7 +12,6 @@ struct Where42ToolBarContent: ToolbarContent {
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var isShowSheet: Bool
-    var isSettingPresenting: Bool
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -25,13 +24,13 @@ struct Where42ToolBarContent: ToolbarContent {
             }
         }
 
-        if isSettingPresenting {
+        if mainViewModel.tabSelection == "Home" {
             ToolbarItem(placement: .topBarTrailing) {
                 Button { isShowSheet.toggle() } label: { Image("Setting icon M") }
                     .sheet(isPresented: $isShowSheet) {
                         SettingView()
                     }
-                //                        NavigationLink(destination: SettingView(), label: { Image("Setting icon M") })
+//                NavigationLink(destination: SettingView(), label: { Image("Setting icon M") })
             }
         }
     }

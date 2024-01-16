@@ -13,60 +13,50 @@ struct HomeView: View {
     @AppStorage("isLogin") var isLogin = false
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    HomeInfoView(
-                        memberInfo: $homeViewModel.myInfo,
-                        isWork: $homeViewModel.isWork,
-                        isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
+        ZStack {
+            VStack {
+                HomeInfoView(
+                    memberInfo: $homeViewModel.myInfo,
+                    isWork: $homeViewModel.isWork,
+                    isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
                         
-                    Divider()
+                Divider()
                     
-                    ScrollView {
-                        HomeGroupView(groups: $homeViewModel.groups)
+                ScrollView {
+                    HomeGroupView(groups: $homeViewModel.groups)
                             
-                        Spacer()
-                        
-                            .toolbar {
-                                Where42ToolBarContent(
-                                    isShowSheet: $homeViewModel.isShowSettingSheet,
-                                    isSettingPresenting: true)
-                            }
-                            .unredacted()
-                    }
-                    .refreshable {
-                        homeViewModel.getMemberInfo()
-                        homeViewModel.getGroup()
-                    }
+                    Spacer()
                 }
-                .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
-                .disabled(homeViewModel.isLoading)
-                
-                .onAppear {
-                    homeViewModel.countOnlineUsers()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        homeViewModel.isLoading = false
-                    }
-                }
-                .task {
-                    if !homeViewModel.isAPILoaded {
-                        homeViewModel.getMemberInfo()
-                        homeViewModel.getGroup()
-                        if isLogin == true {
-                            homeViewModel.isAPILoaded = true
-                        }
-                    }
-                }
-                
-                if homeViewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(2)
-                        .progressViewStyle(.circular)
+                .refreshable {
+                    homeViewModel.getMemberInfo()
+                    homeViewModel.getGroup()
                 }
             }
+            .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
+            .disabled(homeViewModel.isLoading)
+                
+            .onAppear {
+                homeViewModel.countOnlineUsers()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                    homeViewModel.isLoading = false
+                }
+            }
+            .task {
+                if !homeViewModel.isAPILoaded {
+                    homeViewModel.getMemberInfo()
+                    homeViewModel.getGroup()
+                    if isLogin == true {
+                        homeViewModel.isAPILoaded = true
+                    }
+                }
+            }
+                
+            if homeViewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(2)
+                    .progressViewStyle(.circular)
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
