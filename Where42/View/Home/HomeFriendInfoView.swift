@@ -76,7 +76,7 @@ struct HomeFriendInfoView: View {
                 userInfo: $userInfo,
                 groupInfo: $groupInfo,
                 isPresented: $isShowModal,
-                isFriend: groupInfo.groupName == "default")
+                isFriend: groupInfo.groupName == "친구목록")
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {

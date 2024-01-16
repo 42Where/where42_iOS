@@ -114,9 +114,10 @@ class HomeViewModel: ObservableObject {
 //                    print(responseGroups[0].members)
                     if let responseGroups = responseGroups {
                         self.groups = responseGroups
-                        self.friends = responseGroups[responseGroups.firstIndex(
+                        self.friends = self.groups[responseGroups.firstIndex(
                             where: { $0.groupName == "default" }
                         )!]
+                        self.friends.groupName = "친구목록"
                         self.friends.isOpen = true
 
                         self.countOnlineUsers()
@@ -196,13 +197,23 @@ class HomeViewModel: ObservableObject {
         do {
             _ = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
 
-            let selectedIndex = groups.firstIndex(where: {
-                $0.groupName == selectedGroup.groupName
-            })
-
             DispatchQueue.main.async {
-                self.groups[selectedIndex!].members = self.selectedGroup.members.filter { member in
-                    !self.selectedUsers.contains(where: { $0.intraId == member.intraId })
+                if self.selectedGroup.groupName == "친구목록" {
+                    withAnimation {
+                        self.friends.members = self.selectedGroup.members.filter { member in
+                            !self.selectedUsers.contains(where: { $0.intraId == member.intraId })
+                        }
+                    }
+                } else {
+                    let selectedIndex = self.groups.firstIndex(where: {
+                        $0.groupName == self.selectedGroup.groupName
+                    })
+
+                    withAnimation {
+                        self.groups[selectedIndex!].members = self.selectedGroup.members.filter { member in
+                            !self.selectedUsers.contains(where: { $0.intraId == member.intraId })
+                        }
+                    }
                 }
 
                 self.initNewGroup()
@@ -255,9 +266,10 @@ class HomeViewModel: ObservableObject {
                     if try await groupAPI.deleteGroup(
                         groupId: groups[index].groupId!
                     ) {
-//                        withAnimation {
-                        DispatchQueue.main.async {
-                            self.groups.remove(at: index)
+                        withAnimation {
+                            DispatchQueue.main.async {
+                                self.groups.remove(at: index)
+                            }
                         }
                         return true
                     }

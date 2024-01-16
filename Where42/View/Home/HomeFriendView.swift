@@ -52,7 +52,7 @@ struct HomeFriendView: View {
             } header: {
                 VStack {
                     HStack {
-                        Text("친구목록")
+                        Text(friends.groupName)
                             .font(.custom(Font.GmarketMedium, size: 13))
                         Text("\(friends.onlineNum!)/\(friends.totalNum!)")
                             .font(.custom(Font.GmarketMedium, size: 11))

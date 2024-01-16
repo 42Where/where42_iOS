@@ -30,7 +30,7 @@ struct GroupEditModal: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 40) {
-                if group.groupName != "default" {
+                if group.groupName != "친구목록" {
                     Button {
                         withAnimation {
                             isPresented.toggle()
@@ -50,7 +50,7 @@ struct GroupEditModal: View {
                         .foregroundStyle(.whereMediumNavy)
                 }
 
-                if group.groupName != "default" {
+                if group.groupName != "친구목록" {
                     Button {
                         isPresented.toggle()
                         homeViewModel.selectedGroup = group

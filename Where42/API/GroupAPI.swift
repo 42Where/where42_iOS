@@ -16,7 +16,7 @@ struct UpdateGroupDTO: Codable {
     var groupName: String
 }
 
-struct DeleteGroupMemberDTO: Codable {
+struct UpdateGroupMemberDTO: Codable {
     var groupId: Int
     var members: [Int]
 }
@@ -24,11 +24,6 @@ struct DeleteGroupMemberDTO: Codable {
 struct AddOneGroupMemberDTO: Codable {
     var intraId: Int
     var groupId: Int
-}
-
-struct AddGroupMembersDTO: Codable {
-    var groupId: Int
-    var members: [String]
 }
 
 class GroupAPI: API {
@@ -211,7 +206,7 @@ class GroupAPI: API {
     func deleteGroupMember(groupId: Int, members: [MemberInfo]) async throws -> Bool {
         let membersIntraId: [Int] = members.map { $0.intraId! }
 
-        guard let requestBody = try? JSONEncoder().encode(DeleteGroupMemberDTO(groupId: groupId, members: membersIntraId)) else {
+        guard let requestBody = try? JSONEncoder().encode(UpdateGroupMemberDTO(groupId: groupId, members: membersIntraId)) else {
             print("Failed create request Body")
             throw NetworkError.invalidRequestBody
         }
@@ -259,9 +254,9 @@ class GroupAPI: API {
     }
 
     func addMembers(groupId: Int, members: [MemberInfo]) async throws -> Bool {
-        let members: [String] = members.map { $0.intraName! }
+        let members: [Int] = members.map { $0.intraId! }
 
-        guard let requsetBody = try? JSONEncoder().encode(AddGroupMembersDTO(groupId: groupId, members: members)) else {
+        guard let requsetBody = try? JSONEncoder().encode(UpdateGroupMemberDTO(groupId: groupId, members: members)) else {
             print("failed create requset body")
             return false
         }
