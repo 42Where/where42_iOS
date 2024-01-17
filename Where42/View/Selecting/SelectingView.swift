@@ -68,8 +68,6 @@ struct SelectingView: View {
                         }
                     }
                 }
-                .onChange(of: name) { _ in
-                }
 
                 Spacer()
             }

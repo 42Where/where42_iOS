@@ -73,12 +73,12 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         print(token)
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        request.addValue(token + "1", forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
-//            print(String(data: data, encoding: String.Encoding.utf8)!)
+            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -87,20 +87,21 @@ class MemberAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-//                    print(requestURL.absoluteString)
                     return (nil, requestURL.absoluteString)
                 } else {
                     return try (JSONDecoder().decode(MemberInfo.self, from: data), nil)
                 }
             case 300 ... 399:
-                print("Redirect")
                 throw NetworkError.BadRequest
-
-            case 401:
-                return (nil, requestURL.absoluteString)
 
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    print(customException)
+                } else {
+                    throw NetworkError.BadRequest
+                }
 
             case 500 ... 599:
                 throw NetworkError.ServerError

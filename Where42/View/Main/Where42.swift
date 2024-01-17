@@ -44,13 +44,18 @@ struct Where42: View {
                                 .tag("Search")
                                 .environment(\.horizontalSizeClass, oldSizeClass)
                         }
-//                        .toolbar(.visible, for: .tabBar)
                         .environment(\.horizontalSizeClass, .compact)
                     }
-                    .zIndex(0)
                     .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
                         SelectingView()
                     }
+                    .toolbar {
+                        Where42ToolBarContent(
+                            isShowSheet: $homeViewModel.isShowSettingSheet
+                        )
+                    }
+                    .unredacted()
+                    .zIndex(0)
 
                     MainAlertView()
                         .zIndex(1)
@@ -70,12 +75,6 @@ struct Where42: View {
                 )
                 .ignoresSafeArea()
             }
-            .toolbar {
-                Where42ToolBarContent(
-                    isShowSheet: $homeViewModel.isShowSettingSheet
-                )
-            }
-            .unredacted()
         }
         .navigationViewStyle(StackNavigationViewStyle())
 

@@ -21,7 +21,7 @@ struct CustomAlert: View {
         ZStack {
             Color.black
                 .opacity(0.30)
-                .ignoresSafeArea()
+                .ignoresSafeArea(.all)
                 .onTapGesture {
                     leftButtonAction?()
                 }
