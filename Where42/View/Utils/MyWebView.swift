@@ -42,9 +42,13 @@ struct MyWebView: UIViewRepresentable {
         userContentController.addUserScript(script)
         let webView = FullScreenWKWebView(frame: CGRect.zero, configuration: conf)
         
+        if homeViewModel.isLogout == true {
+            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
+            let date = NSDate(timeIntervalSince1970: 0)
+            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
+        }
         webView.navigationDelegate = context.coordinator
         webView.scrollView.isScrollEnabled = false
-        
         webView.load(URLRequest(url: url))
         
         return webView
@@ -94,6 +98,7 @@ struct MyWebView: UIViewRepresentable {
             } else {
                 parent.homeViewModel.isAPILoaded = false
                 parent.isLogin = true
+                parent.homeViewModel.isLogout = false
             }
         }
     }

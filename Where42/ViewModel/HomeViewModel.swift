@@ -17,6 +17,7 @@ class HomeViewModel: ObservableObject {
     @Published var inputText = ""
     @Published var intraURL: String? = ""
     @Published var isAPILoaded = false
+    @Published var isLogout = false
 
     @Published var selectedUsers: [MemberInfo] = []
     @Published var newGroup: GroupInfo = .empty

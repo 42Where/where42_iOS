@@ -71,6 +71,7 @@ struct SettingView: View {
                         settingViewModel.isLogoutAlertPresent = false
                         isLogin = false
                         token = ""
+                        homeViewModel.isLogout = true
                     }
                 }
                 .zIndex(1)

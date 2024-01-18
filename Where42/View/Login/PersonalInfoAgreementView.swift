@@ -77,6 +77,9 @@ struct PersonalInfoAgreementView: View {
                     Button {
                         loginViewModel.join(intraId: String(homeViewModel.intraId))
                         isPresent = false
+                        homeViewModel.isLogin = true
+                        homeViewModel.isLogout = false
+                        homeViewModel.isAPILoaded = false
                     } label: {
                         Text("동의")
                             .padding(.horizontal, 6)
