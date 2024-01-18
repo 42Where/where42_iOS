@@ -43,16 +43,9 @@ class API: ObservableObject {
     func parseCustomException(response: String) -> CustomException {
         let components = response.components(separatedBy: ",")
 
-        print(components)
-        print(components[1].replacingOccurrences(of: "errorMessage=", with: "").replacingOccurrences(of: ")", with: ""))
         let errorCode = Int(components[0].replacingOccurrences(of: "\"CustomException(errorCode=", with: "")) ?? 0
         let errorMessage = components[1].replacingOccurrences(of: " errorMessage=", with: "").replacingOccurrences(of: ")\"", with: "")
 
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
-    }
-
-    struct CustomException: Codable {
-        var errorCode: Int
-        var errorMessage: String
     }
 }

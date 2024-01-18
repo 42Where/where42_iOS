@@ -83,15 +83,12 @@ class HomeViewModel: ObservableObject {
                 if url != nil {
                     DispatchQueue.main.async {
                         self.intraURL = url
-                        self.isShow42IntraSheet.toggle()
+                        self.isShow42IntraSheet = true
                     }
                 } else {
                     DispatchQueue.main.async {
                         if memberInfo != nil {
                             self.myInfo = memberInfo!
-                            if self.myInfo.comment == nil {
-                                self.myInfo.comment = ""
-                            }
                             self.isLogin = true
                         } else {
                             self.isLogin = false
@@ -122,7 +119,8 @@ class HomeViewModel: ObservableObject {
 
                         self.countOnlineUsers()
                     } else {
-                        self.isLogin = false
+                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                        self.isShow42IntraSheet = true
                     }
                 }
             } catch {
@@ -133,8 +131,13 @@ class HomeViewModel: ObservableObject {
 
     func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
         do {
-            let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName)
-            print(newName!)
+            guard let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName) else {
+                DispatchQueue.main.async {
+                    self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                    self.isShow42IntraSheet = true
+                }
+                return false
+            }
             return true
         } catch {
             return false
@@ -175,9 +178,20 @@ class HomeViewModel: ObservableObject {
 
         if groupId != nil && selectedUsers.isEmpty == false {
             do {
-                _ = try await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
+                let response = try await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
+                if response == false {
+                    DispatchQueue.main.async {
+                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                        self.isShow42IntraSheet = true
+                    }
+                }
             } catch {
                 print("Failed to create new group")
+            }
+        } else if groupId == nil {
+            DispatchQueue.main.async {
+                self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                self.isShow42IntraSheet = true
             }
         }
 
@@ -195,7 +209,14 @@ class HomeViewModel: ObservableObject {
 
     func deleteUserInGroup() async {
         do {
-            _ = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
+            let response = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
+            if response == false {
+                DispatchQueue.main.async {
+                    self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                    self.isShow42IntraSheet = true
+                }
+                return
+            }
 
             DispatchQueue.main.async {
                 if self.selectedGroup.groupName == "친구목록" {
@@ -252,6 +273,10 @@ class HomeViewModel: ObservableObject {
                         self.selectedGroup = .empty
                     }
                 } else {
+                    DispatchQueue.main.async {
+                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                        self.isShow42IntraSheet = true
+                    }
                     return false
                 }
             }
@@ -272,6 +297,12 @@ class HomeViewModel: ObservableObject {
                             }
                         }
                         return true
+                    } else {
+                        DispatchQueue.main.async {
+                            self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                            self.isShow42IntraSheet = true
+                        }
+                        return false
                     }
                 } catch {
                     return false

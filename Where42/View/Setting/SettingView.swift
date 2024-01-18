@@ -32,14 +32,14 @@ struct SettingView: View {
 
                 Spacer()
                 
-                Button("자리비움") {}
-                    .buttonStyle(setButton())
-                    
-                Spacer()
+//                Button("자리비움") {}
+//                    .buttonStyle(setButton())
+//
+//                Spacer()
                 
                 Button("코멘트 설정") {
                     withAnimation {
-                        settingViewModel.isStatusMessageAlertPresent.toggle()
+                        settingViewModel.isStatusMessageAlertPresent = true
                     }
                 }
                 .buttonStyle(setButton())
@@ -48,7 +48,7 @@ struct SettingView: View {
                 
                 Button("자리 설정") {
                     withAnimation {
-                        settingViewModel.isCustomLocationAlertPresent.toggle()
+                        settingViewModel.isCustomLocationAlertPresent = true
                     }
                 }
                 .buttonStyle(setButton())
@@ -56,6 +56,9 @@ struct SettingView: View {
                 Spacer()
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
+            .fullScreenCover(isPresented: $settingViewModel.isIntraPresented, content: {
+                MyWebView(urlToLoad: settingViewModel.intraURL, isPresented: $settingViewModel.isIntraPresented)
+            })
             
             if settingViewModel.isLogoutAlertPresent {
                 CustomAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?", inputText: .constant("")) {

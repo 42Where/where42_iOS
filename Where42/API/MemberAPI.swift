@@ -73,12 +73,12 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         print(token)
-        request.addValue(token + "1", forHTTPHeaderField: "Authorization")
+        request.addValue(token, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
-            print(String(data: data, encoding: String.Encoding.utf8)!)
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -91,6 +91,7 @@ class MemberAPI: API {
                 } else {
                     return try (JSONDecoder().decode(MemberInfo.self, from: data), nil)
                 }
+
             case 300 ... 399:
                 throw NetworkError.BadRequest
 
@@ -98,7 +99,9 @@ class MemberAPI: API {
                 let response = String(data: data, encoding: String.Encoding.utf8)!
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
-                    print(customException)
+                    if customException.handleError() == false {
+                        return (nil, requestURL.absoluteString)
+                    }
                 } else {
                     throw NetworkError.BadRequest
                 }
@@ -130,7 +133,7 @@ class MemberAPI: API {
         request.httpBody = requestBody
 
         do {
-            let (_, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -138,15 +141,16 @@ class MemberAPI: API {
 
             switch response.statusCode {
             case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
-                } else {
-                    return true
-                }
+                return true
 
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {}
+                } else {
+                    throw NetworkError.BadRequest
+                }
 
             case 500 ... 599:
                 throw NetworkError.ServerError
@@ -187,14 +191,21 @@ class MemberAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return requestURL.absoluteString
                 } else {
                     return try JSONDecoder().decode(MemberInfo.self, from: data).comment
                 }
 
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return requestURL.absoluteString
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
 
             case 500 ... 599:
                 throw NetworkError.ServerError
@@ -232,14 +243,22 @@ class MemberAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return requestURL.absoluteString
                 } else {
                     print("Succeed update Custom Location")
                     return try JSONDecoder().decode(UpdateCustomLocationDTO.self, from: data).customLocation
                 }
+
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return requestURL.absoluteString
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
 
             case 500 ... 599:
                 throw NetworkError.ServerError

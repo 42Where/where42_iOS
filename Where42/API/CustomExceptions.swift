@@ -47,4 +47,50 @@ struct CustomException: Codable {
         self.errorCode = errorCode
         self.errorMessage = errorMessage
     }
+
+    func handleError() -> Bool {
+        print(self.errorMessage)
+        switch self.errorCode {
+        case 1000:
+            return true
+        case 1001:
+            return true
+        case 1102:
+            return true
+        case 1200:
+            return true
+        case 1300:
+            return false
+        case 1301:
+            return false
+        case 1400:
+            return false
+        case 1401:
+            return false
+        case 1402:
+            return false
+        case 1500:
+            return false
+        case 1501:
+            return false
+        case 1502:
+            return false
+        case 1503:
+            return false
+        case 1504:
+            return false
+        case 1600:
+            return false
+        case 1601:
+            return false
+        case 1602:
+            return false
+        case 1603:
+            return false
+        case 1604:
+            return false
+        default:
+            return true
+        }
+    }
 }

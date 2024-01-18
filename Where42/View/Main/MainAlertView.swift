@@ -38,12 +38,13 @@ struct MainAlertView: View {
                 inputText: $homeViewModel.inputText)
             {
                 withAnimation {
-                    mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                    homeViewModel.initNewGroup()
+                    mainViewModel.isEditGroupNameAlertPrsented = false
                 }
             } rightButtonAction: {
                 if await homeViewModel.editGroupName() {
                     withAnimation {
-                        mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                        mainViewModel.isEditGroupNameAlertPrsented = false
                     }
                 }
             }
@@ -56,12 +57,12 @@ struct MainAlertView: View {
                 inputText: .constant(""))
             {
                 withAnimation {
-                    mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                    mainViewModel.isDeleteGroupAlertPrsented = false
                 }
             } rightButtonAction: {
                 if await homeViewModel.deleteGroup() {
                     withAnimation {
-                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                        mainViewModel.isDeleteGroupAlertPrsented = false
                     }
                 }
             }

@@ -54,14 +54,22 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return nil
                 } else {
                     print("Success")
                     return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupId
                 }
+
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return nil
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
@@ -93,14 +101,22 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return nil
                 } else {
                     print("Succeed get group")
                     return try JSONDecoder().decode([GroupInfo].self, from: data)
                 }
+
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return nil
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
@@ -141,14 +157,22 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return nil
                 } else {
                     print("Succeed update group name")
                     return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupName
                 }
+
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return nil
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
@@ -173,7 +197,7 @@ class GroupAPI: API {
         request.addValue(token, forHTTPHeaderField: "Authorization")
 
         do {
-            let (_, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -184,14 +208,21 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return false
                 } else {
                     print("Succeed delete group")
                     return true
                 }
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return false
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
@@ -234,14 +265,21 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return false
                 } else {
                     print("Succeed delete group")
                     return true
                 }
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return false
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
@@ -284,14 +322,21 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
+                    return false
                 } else {
                     print("Succeed add members")
                     return true
                 }
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return false
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
@@ -321,7 +366,7 @@ class GroupAPI: API {
         request.httpBody = requsetBody
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse

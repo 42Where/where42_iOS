@@ -12,9 +12,11 @@ extension SettingView {
         @Published var isLogoutAlertPresent = false
         @Published var isStatusMessageAlertPresent = false
         @Published var isCustomLocationAlertPresent = false
+        @Published var isIntraPresented = false
         @Published var inputText = ""
-        @Published var newStatusMessage: String = "수정중..."
-        @Published var newLocation: String = "수정중..."
+        @Published var newStatusMessage = "수정중..."
+        @Published var newLocation = "수정중..."
+        @Published var intraURL = ""
 
         private let memberAPI = MemberAPI()
 
@@ -22,8 +24,14 @@ extension SettingView {
             do {
                 if let comment = try await memberAPI.updateStatusMessage(statusMessage: inputText) {
                     DispatchQueue.main.async {
-                        self.newStatusMessage = comment
-                        self.inputText = ""
+                        if comment.contains("http") == false {
+                            self.newStatusMessage = comment
+                            self.inputText = ""
+                        } else {
+                            self.intraURL = comment
+                            self.isIntraPresented = true
+                            // 상태메세지를 업데이트 할 수 없습니다
+                        }
                     }
                 }
             } catch {}
@@ -37,9 +45,14 @@ extension SettingView {
             do {
                 if let customLocation = try await memberAPI.updateCustomLocation(customLocation: inputText) {
                     DispatchQueue.main.async {
-                        print(customLocation)
-                        self.newLocation = customLocation
-                        self.inputText = ""
+                        if customLocation.contains("http") == false {
+                            self.newLocation = customLocation
+                            self.inputText = ""
+                        } else {
+                            self.intraURL = customLocation
+                            self.isIntraPresented = true
+                            // 자리를 업데이트 할 수 없습니다
+                        }
                     }
                 }
             } catch {}
