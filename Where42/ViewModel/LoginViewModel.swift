@@ -8,18 +8,27 @@
 import SwiftUI
 
 class LoginViewModel: ObservableObject {
-    @Published var isHelpPagePresent: Bool = false
+    @Published var isHelpPagePresent = false
+    @Published var isShow42IntraSheet = false
+    @Published var intraURL: String? = ""
 
     let memberAPI = MemberAPI()
     let loginAPI = LoginAPI()
 
-    func login(isPresent: Binding<Bool>) async {
-//            do {
-//                let (member, url) = try await memberAPI.getMemberInfo(intraId: 6)
-//                if url != nil {}
-//            } catch {
-//                print("Failed to Login")
-//            }
+    func login() {
+        Task {
+            do {
+                let (_, url) = try await memberAPI.getMemberInfo(intraId: 99760)
+                if url != nil {
+                    DispatchQueue.main.async {
+                        self.intraURL = url
+                        self.isShow42IntraSheet = true
+                    }
+                }
+            } catch {
+                print("Error login: \(error)")
+            }
+        }
     }
 
     func join(intraId: String) {

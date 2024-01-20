@@ -64,8 +64,11 @@ struct Where42: View {
                     VStack {
                         LoginView()
                     }
-                    .transition(.asymmetric(insertion: AnyTransition.move(edge: .bottom),
-                                            removal: AnyTransition.move(edge: .bottom)))
+                    .transition(
+                        .asymmetric(
+                            insertion: AnyTransition.move(edge: .bottom),
+                            removal: AnyTransition.move(edge: .bottom)
+                        ))
                 }
             }
             .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {

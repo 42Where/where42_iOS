@@ -58,7 +58,7 @@ struct LoginView: View {
 
                 Button("L O G I N") {
                     print(token)
-                    homeViewModel.getMemberInfo()
+                    loginViewModel.login()
                 }
                 .font(.custom("GmarketSansTTFBold", size: 20.0))
                 .foregroundStyle(.white)
@@ -94,6 +94,9 @@ struct LoginView: View {
             }
         }
         .foregroundColor(.whereDeepNavy)
+        .fullScreenCover(isPresented: $loginViewModel.isShow42IntraSheet) {
+            MyWebView(urlToLoad: loginViewModel.intraURL!, isPresented: $loginViewModel.isShow42IntraSheet)
+        }
         .fullScreenCover(isPresented: $homeViewModel.isShowAgreementSheet) {
             PersonalInfoAgreementView(isPresent: $homeViewModel.isShowAgreementSheet)
         }
