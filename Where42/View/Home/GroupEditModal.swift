@@ -33,7 +33,7 @@ struct GroupEditModal: View {
                 if group.groupName != "친구목록" {
                     Button {
                         withAnimation {
-                            isPresented.toggle()
+                            isPresented = false
                             homeViewModel.selectedGroup = group
                             mainViewModel.isEditGroupNameAlertPrsented.toggle()
                         }
@@ -44,17 +44,26 @@ struct GroupEditModal: View {
                 }
 
                 Button {
-                    homeViewModel.isGroupEditViewPrsented = true
+                    Task {
+                        await homeViewModel.getNotInGroupMember()
+                    }
+                    withAnimation {
+                        isPresented = false
+                        homeViewModel.selectedGroup = group
+                        homeViewModel.isGroupEditSelectAlertPrsented = true
+                    }
                 } label: {
-                    Text("그룹 수정하기")
+                    Text("멤버 수정하기")
                         .foregroundStyle(.whereMediumNavy)
                 }
 
                 if group.groupName != "친구목록" {
                     Button {
-                        isPresented.toggle()
-                        homeViewModel.selectedGroup = group
-                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                        withAnimation {
+                            isPresented = false
+                            homeViewModel.selectedGroup = group
+                            mainViewModel.isDeleteGroupAlertPrsented = true
+                        }
                     } label: {
                         Text("그룹 삭제하기")
                             .foregroundStyle(.red)
@@ -65,11 +74,7 @@ struct GroupEditModal: View {
             .padding(.vertical, 20)
         }
         .padding()
-        .sheet(isPresented: $homeViewModel.isGroupEditViewPrsented) {
-            GroupEditView(
-                group: $group,
-                isGroupEditModalPresented: $isPresented)
-        }
+        .sheet(isPresented: $homeViewModel.isGroupMemberDeleteViewPrsented) {}
     }
 }
 

@@ -9,12 +9,17 @@ import SwiftUI
 
 struct GroupEditSelectModal: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
+
     var body: some View {
         ZStack {
             Color.black
                 .opacity(0.30)
                 .ignoresSafeArea(.all)
-                .onTapGesture {}
+                .onTapGesture {
+                    withAnimation {
+                        homeViewModel.isGroupEditSelectAlertPrsented = false
+                    }
+                }
 
             VStack(spacing: 25) {
                 Text("멤버 편집 기능을 선택해주세요")
@@ -23,17 +28,32 @@ struct GroupEditSelectModal: View {
                     .lineSpacing(5.0)
 
                 HStack {
-                    Button {} label: {
-                        Text("멤버 추가하기")
-                            .font(.custom(Font.GmarketMedium, size: 15))
-                            .padding(8)
-                            .foregroundStyle(.whereDeepNavy)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.whereDeepNavy, lineWidth: 1)
-                            )
+                    if homeViewModel.selectedGroup.groupName != "친구목록" {
+                        Button {
+                            homeViewModel.selectedUsers = []
+                            withAnimation {
+                                homeViewModel.isGroupMemberAddViewPrsented = true
+                            }
+                        } label: {
+                            Text("멤버 추가하기")
+                                .font(.custom(Font.GmarketMedium, size: 15))
+                                .padding(8)
+                                .foregroundStyle(.whereDeepNavy)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.whereDeepNavy, lineWidth: 1)
+                                )
+                        }
+
+                        Spacer()
                     }
-                    Button {} label: {
+
+                    Button {
+                        homeViewModel.selectedUsers = []
+                        withAnimation {
+                            homeViewModel.isGroupMemberDeleteViewPrsented = true
+                        }
+                    } label: {
                         Text("멤버 삭제하기")
                             .font(.custom(Font.GmarketMedium, size: 15))
                             .padding(8.5)
@@ -50,10 +70,23 @@ struct GroupEditSelectModal: View {
             .frame(width: UIDevice.idiom == .phone ? 270 : 370)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
+            .sheet(isPresented: $homeViewModel.isGroupMemberDeleteViewPrsented) {
+                GroupMemberDeleteView(
+                    group: $homeViewModel.selectedGroup,
+                    isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
+                )
+            }
+            .sheet(isPresented: $homeViewModel.isGroupMemberAddViewPrsented) {
+                GroupMemberAddView(
+                    group: $homeViewModel.notInGroups,
+                    isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
+                )
+            }
         }
     }
 }
 
 #Preview {
     GroupEditSelectModal()
+        .environmentObject(HomeViewModel())
 }

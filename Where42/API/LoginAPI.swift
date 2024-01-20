@@ -35,7 +35,7 @@ class LoginAPI: API {
             return
         }
 
-        let intraIdQuery = URLQueryItem(name: "intra_id", value: intraId)
+//        let intraIdQuery = URLQueryItem(name: "intra_id", value: intraId)
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
@@ -43,7 +43,6 @@ class LoginAPI: API {
 
         print(" J O I N ")
         print(intraId)
-        print(request.url?.absoluteString)
         print(token)
 
         do {

@@ -395,4 +395,51 @@ class GroupAPI: API {
         }
         return false
     }
+
+    func getNotInGorupMember(groupId: Int) async throws -> [MemberInfo]? {
+        guard let requestURL = URL(string: baseURL + "/group/groupmember/not-ingroup?groupId=\(groupId)") else {
+            return nil
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.addValue(token, forHTTPHeaderField: "Authorization")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+//            print(String(data: data, encoding: .utf8)!)
+
+            switch response.statusCode {
+            case 200 ... 299:
+                if response.mimeType == "text/html" {
+                    return nil
+                } else {
+                    print("Succeed get not in group members")
+                    return try JSONDecoder().decode([MemberInfo].self, from: data)
+                }
+            case 400 ... 499:
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return nil
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
+            case 500 ... 599:
+                throw NetworkError.ServerError
+            default:
+                print("Failed add members")
+            }
+        } catch {
+            errorPrint(error, message: "Failed add members")
+        }
+        return nil
+    }
 }

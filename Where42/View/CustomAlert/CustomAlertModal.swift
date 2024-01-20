@@ -126,7 +126,7 @@ struct CustomBasicAlert: View {
 }
 
 #Preview {
-//    CustomAlert(title: .constant("상태메시지 변경"), textFieldTitle: .constant("코멘트를 입력해주세요"))
+    CustomAlert(title: "상태메시지 변경", textFieldTitle: "코멘트를 입력해주세요", inputText: .constant(""))
 //    CustomAlert(title: "로그아웃", textFieldTitle: nil, message: "이 'Group1' 을(를) 삭제하시겠습니까?", inputText: .constant(""))
-    CustomBasicAlert(title: "현재 페이지를 로드할 수 없습니다")
+//    CustomBasicAlert(title: "현재 페이지를 로드할 수 없습니다")
 }

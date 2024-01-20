@@ -95,7 +95,10 @@ struct LoginView: View {
         }
         .foregroundColor(.whereDeepNavy)
         .fullScreenCover(isPresented: $loginViewModel.isShow42IntraSheet) {
-            MyWebView(urlToLoad: loginViewModel.intraURL!, isPresented: $loginViewModel.isShow42IntraSheet)
+            MyWebView(
+                urlToLoad: loginViewModel.intraURL!,
+                isPresented: $loginViewModel.isShow42IntraSheet)
+                .ignoresSafeArea()
         }
         .fullScreenCover(isPresented: $homeViewModel.isShowAgreementSheet) {
             PersonalInfoAgreementView(isPresent: $homeViewModel.isShowAgreementSheet)

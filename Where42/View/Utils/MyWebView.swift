@@ -29,6 +29,14 @@ struct MyWebView: UIViewRepresentable {
             return FullScreenWKWebView()
         }
         
+        homeViewModel.isAPILoaded = false
+        
+        if homeViewModel.isLogout == true {
+            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
+            let date = NSDate(timeIntervalSince1970: 0)
+            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
+        }
+        
         let source = "var meta = document.createElement('meta');" +
             "meta.name = 'viewport';" +
             "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
@@ -42,11 +50,6 @@ struct MyWebView: UIViewRepresentable {
         userContentController.addUserScript(script)
         let webView = FullScreenWKWebView(frame: CGRect.zero, configuration: conf)
         
-        if homeViewModel.isLogout == true {
-            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
-            let date = NSDate(timeIntervalSince1970: 0)
-            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
-        }
         webView.navigationDelegate = context.coordinator
         webView.scrollView.isScrollEnabled = false
         webView.load(URLRequest(url: url))

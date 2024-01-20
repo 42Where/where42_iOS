@@ -57,7 +57,10 @@ struct SettingView: View {
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .fullScreenCover(isPresented: $settingViewModel.isIntraPresented, content: {
-                MyWebView(urlToLoad: settingViewModel.intraURL, isPresented: $settingViewModel.isIntraPresented)
+                MyWebView(
+                    urlToLoad: settingViewModel.intraURL,
+                    isPresented: $settingViewModel.isIntraPresented)
+                    .ignoresSafeArea()
             })
             
             if settingViewModel.isLogoutAlertPresent {

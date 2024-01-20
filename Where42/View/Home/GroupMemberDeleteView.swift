@@ -56,23 +56,15 @@ struct GroupMemberDeleteView: View {
                     Task {
                         await homeViewModel.deleteUserInGroup()
                     }
-                    isGroupEditModalPresented = false
-                    homeViewModel.isGroupMemberDeleteViewPrsented = false
+                    withAnimation {
+                        isGroupEditModalPresented = false
+                        homeViewModel.isGroupMemberDeleteViewPrsented = false
+                    }
                 } label: {
                     HStack {
-//                        Spacer()
-
-//                        Text("다른 그룹에 추가")
-//                            .font(.custom(Font.GmarketMedium, size: 20))
-//                            .foregroundStyle(.white)
-
-//                        Spacer()
-
-                        Text("그룹에서 삭제")
+                        Text("멤버 삭제하기")
                             .font(.custom(Font.GmarketMedium, size: 20))
                             .foregroundStyle(.white)
-
-//                        Spacer()
                     }
                 }
                 .clipShape(Rectangle())

@@ -17,7 +17,7 @@ struct GroupMemberAddView: View {
 
     var body: some View {
         VStack {
-            Text("\(group.groupName)")
+            Text("\(homeViewModel.selectedGroup.groupName)")
                 .font(.custom(Font.GmarketBold, size: 25))
                 .padding(.top, 40)
 
@@ -54,10 +54,16 @@ struct GroupMemberAddView: View {
 
                 Button {
                     Task {
-                        await homeViewModel.deleteUserInGroup()
+                        if homeViewModel.selectedUsers.isEmpty == false {
+                            await homeViewModel.addMemberInGroup(
+                                groupId: homeViewModel.selectedGroup.groupId!
+                            )
+                        }
                     }
-                    isGroupEditModalPresented = false
-                    homeViewModel.isGroupMemberDeleteViewPrsented = false
+                    withAnimation {
+                        isGroupEditModalPresented = false
+                        homeViewModel.isGroupMemberAddViewPrsented = false
+                    }
                 } label: {
                     HStack {
                         Text("멤버 추가하기")

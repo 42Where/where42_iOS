@@ -67,6 +67,10 @@ struct MainAlertView: View {
                 }
             }
         }
+
+        if homeViewModel.isGroupEditSelectAlertPrsented {
+            GroupEditSelectModal()
+        }
     }
 }
 

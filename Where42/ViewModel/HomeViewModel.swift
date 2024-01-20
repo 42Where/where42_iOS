@@ -9,7 +9,9 @@ import SwiftUI
 
 class HomeViewModel: ObservableObject {
     @Published var isShowSettingSheet = false
-    @Published var isGroupEditViewPrsented = false
+    @Published var isGroupEditSelectAlertPrsented = false
+    @Published var isGroupMemberDeleteViewPrsented = false
+    @Published var isGroupMemberAddViewPrsented = false
     @Published var isShow42IntraSheet = false
     @Published var isShowAgreementSheet = false
     @Published var isWork = false
@@ -28,6 +30,7 @@ class HomeViewModel: ObservableObject {
     @Published var myInfo: MemberInfo = .empty
 
     @Published var groups: [GroupInfo] = [.empty, .empty]
+    @Published var notInGroups: GroupInfo = .init(id: UUID(), groupName: "not in group", members: [.empty])
 
     @Published var friends: GroupInfo = .empty
 
@@ -104,6 +107,12 @@ class HomeViewModel: ObservableObject {
 
     // Group
 
+    func initNewGroup() {
+        inputText = ""
+        selectedUsers = []
+        newGroup = GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+    }
+
     func getGroup() {
         Task {
             do {
@@ -130,22 +139,51 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
+    func createNewGroup(intraId: Int) async {
+        DispatchQueue.main.async {
+            self.newGroup.members = self.selectedUsers
+
+            self.countGroupUsers(group: &self.newGroup)
+            self.groups.append(self.newGroup)
+        }
+
+        let groupId = try? await groupAPI.createGroup(groupName: newGroup.groupName)
+
+        if groupId != nil && selectedUsers.isEmpty == false {
+            await addMemberInGroup(groupId: groupId!)
+        } else if groupId == nil {
+            DispatchQueue.main.async {
+                self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                self.isShow42IntraSheet = true
+            }
+        }
+
+        DispatchQueue.main.async {
+            self.initNewGroup()
+            self.getGroup()
+        }
+    }
+
+    func addMemberInGroup(groupId: Int) async {
+        DispatchQueue.main.async {
+            if let selectedIndex = self.groups.firstIndex(where: { $0.groupId == groupId }) {
+                self.groups[selectedIndex].members += self.selectedUsers
+                self.countAllGroupUsers()
+            }
+        }
+
         do {
-            guard let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName) else {
+            let response = try await groupAPI.addMembers(groupId: groupId, members: selectedUsers)
+            if response == false {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
                 }
-                return false
             }
-            return true
         } catch {
-            return false
+            print("Failed to create new group")
         }
     }
-
-    // Create New Group
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) {
         print("confirm")
@@ -167,45 +205,21 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func createNewGroup(intraId: Int) async {
-        DispatchQueue.main.async {
-            self.newGroup.members = self.selectedUsers
-
-            self.countGroupUsers(group: &self.newGroup)
-            self.groups.append(self.newGroup)
-        }
-
-        let groupId = try? await groupAPI.createGroup(groupName: newGroup.groupName)
-
-        if groupId != nil && selectedUsers.isEmpty == false {
-            do {
-                let response = try await groupAPI.addMembers(groupId: groupId!, members: selectedUsers)
-                if response == false {
-                    DispatchQueue.main.async {
-                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
-                        self.isShow42IntraSheet = true
-                    }
+    func getNotInGroupMember() async {
+        do {
+            guard let response = try await groupAPI.getNotInGorupMember(groupId: selectedGroup.groupId!) else {
+                DispatchQueue.main.async {
+                    self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                    self.isShow42IntraSheet = true
                 }
-            } catch {
-                print("Failed to create new group")
+                return
             }
-        } else if groupId == nil {
+
             DispatchQueue.main.async {
-                self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
-                self.isShow42IntraSheet = true
+                print(response)
+                self.notInGroups.members = response
             }
-        }
-
-        DispatchQueue.main.async {
-            self.initNewGroup()
-            self.getGroup()
-        }
-    }
-
-    func initNewGroup() {
-        inputText = ""
-        selectedUsers = []
-        newGroup = GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+        } catch {}
     }
 
     func deleteUserInGroup() async {
@@ -246,17 +260,6 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func addUserInGroup(group: inout GroupInfo, userInfo: MemberInfo) {
-        group.members.forEach { user in
-            if user.intraName == userInfo.intraName {
-                return
-            }
-        }
-        group.members.append(userInfo)
-    }
-
-    // Edit Group
-
     func editGroupName() async -> Bool {
         if inputText == "" {
             return false
@@ -273,16 +276,25 @@ class HomeViewModel: ObservableObject {
                         self.inputText = ""
                         self.selectedGroup = .empty
                     }
-                } else {
-                    DispatchQueue.main.async {
-                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
-                        self.isShow42IntraSheet = true
-                    }
-                    return false
                 }
             }
         }
         return true
+    }
+
+    func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
+        do {
+            guard let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName) else {
+                DispatchQueue.main.async {
+                    self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                    self.isShow42IntraSheet = true
+                }
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
     }
 
     func deleteGroup() async -> Bool {
