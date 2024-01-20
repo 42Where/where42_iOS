@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GroupEditView: View {
+struct GroupMemberDeleteView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var group: GroupInfo
@@ -57,7 +57,7 @@ struct GroupEditView: View {
                         await homeViewModel.deleteUserInGroup()
                     }
                     isGroupEditModalPresented = false
-                    homeViewModel.isGroupEditViewPrsented = false
+                    homeViewModel.isGroupMemberDeleteViewPrsented = false
                 } label: {
                     HStack {
 //                        Spacer()
@@ -87,7 +87,7 @@ struct GroupEditView: View {
 }
 
 #Preview {
-    GroupEditView(group: .constant(GroupInfo(id: UUID(), groupId: 0, groupName: "테스트 그룹", totalNum: 10, onlineNum: 10, isOpen: true, members: [
+    GroupMemberDeleteView(group: .constant(GroupInfo(id: UUID(), groupId: 0, groupName: "테스트 그룹", totalNum: 10, onlineNum: 10, isOpen: true, members: [
         .init(intraName: "dhyun1", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
         .init(intraName: "dhyun2", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "퇴근"),
         .init(intraName: "dhyun3", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
