@@ -50,6 +50,11 @@ struct HomeView: View {
                     }
                 }
             }
+            .onChange(of: homeViewModel.isLogout) { newValue in
+                guard newValue != true else { return }
+                homeViewModel.getMemberInfo()
+                homeViewModel.getGroup()
+            }
                 
             if homeViewModel.isLoading {
                 ProgressView()
