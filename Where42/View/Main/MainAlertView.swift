@@ -68,6 +68,40 @@ struct MainAlertView: View {
             }
         }
 
+        if homeViewModel.isFriendDeleteAlertPresented {
+            if homeViewModel.isFriend {
+                CustomAlert(
+                    title: "친구 삭제",
+                    message: " 친구 '\(homeViewModel.selectedUser.intraName!)'님을 친구목록에서 삭제하시겠습니까?",
+                    inputText: .constant(""))
+                {
+                    withAnimation {
+                        homeViewModel.isFriendDeleteAlertPresented = false
+                    }
+                } rightButtonAction: {
+                    await homeViewModel.deleteUserInGroup()
+                    withAnimation {
+                        homeViewModel.isFriendDeleteAlertPresented = false
+                    }
+                }
+            } else {
+                CustomAlert(
+                    title: "멤버 삭제",
+                    message: " 멤버 '\(homeViewModel.selectedUser.intraName!)'님을 그룹에서 삭제하시겠습니까?",
+                    inputText: .constant(""))
+                {
+                    withAnimation {
+                        homeViewModel.isFriendDeleteAlertPresented = false
+                    }
+                } rightButtonAction: {
+                    await homeViewModel.deleteUserInGroup()
+                    withAnimation {
+                        homeViewModel.isFriendDeleteAlertPresented = false
+                    }
+                }
+            }
+        }
+
         if homeViewModel.isGroupEditSelectAlertPrsented {
             GroupEditSelectModal()
         }

@@ -60,9 +60,9 @@ struct HomeFriendView: View {
                         Spacer()
 
                         HStack {
-                            Button {} label: {
-                                Image("Filter icon")
-                            }
+//                            Button {} label: {
+//                                Image("Filter icon")
+//                            }
 
                             Button {
                                 isSheetPresent.toggle()

@@ -12,6 +12,7 @@ class HomeViewModel: ObservableObject {
     @Published var isGroupEditSelectAlertPrsented = false
     @Published var isGroupMemberDeleteViewPrsented = false
     @Published var isGroupMemberAddViewPrsented = false
+    @Published var isFriendDeleteAlertPresented = false
     @Published var isShow42IntraSheet = false
     @Published var isShowAgreementSheet = false
     @Published var isWork = false
@@ -20,11 +21,13 @@ class HomeViewModel: ObservableObject {
     @Published var intraURL: String? = ""
     @Published var isAPILoaded = false
     @Published var isLogout = false
+    @Published var isFriend = false
 
+    @Published var selectedUser: MemberInfo = .empty
     @Published var selectedUsers: [MemberInfo] = []
-    @Published var newGroup: GroupInfo = .empty
-
     @Published var selectedGroup: GroupInfo = .empty
+
+    @Published var newGroup: GroupInfo = .empty
 
     @Published var intraId: Int = 99760
     @Published var myInfo: MemberInfo = .empty

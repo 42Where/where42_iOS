@@ -69,12 +69,19 @@ struct FriendEditModal: View {
 
             Button {
                 withAnimation {
-                    Task {
-                        homeViewModel.selectedGroup = groupInfo
-                        homeViewModel.selectedUsers.append(userInfo)
-                        await homeViewModel.deleteUserInGroup()
+                    isPresented = false
+                    homeViewModel.isFriendDeleteAlertPresented = true
+                    homeViewModel.selectedUser = userInfo
+                    if isFriend {
+                        homeViewModel.isFriend = true
+                    } else {
+                        homeViewModel.isFriend = false
                     }
-                    isPresented.toggle()
+                    homeViewModel.selectedGroup = groupInfo
+                    homeViewModel.selectedUsers.append(userInfo)
+                    //                    Task {
+//                        await homeViewModel.deleteUserInGroup()
+//                    }
                 }
             } label: {
                 if isFriend {

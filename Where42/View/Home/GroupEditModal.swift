@@ -74,7 +74,6 @@ struct GroupEditModal: View {
             .padding(.vertical, 20)
         }
         .padding()
-        .sheet(isPresented: $homeViewModel.isGroupMemberDeleteViewPrsented) {}
     }
 }
 
