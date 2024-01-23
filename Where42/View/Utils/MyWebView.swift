@@ -79,6 +79,8 @@ struct MyWebView: UIViewRepresentable {
                     let query = webView.url?.query()?.split(separator: "&")
                     parseQuery(token: String(query![0]), intraId: String(query![1]), agreement: String(query![2]))
                     parent.isPresented = false
+                    parent.homeViewModel.getMemberInfo()
+                    parent.homeViewModel.getGroup()
 //                webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
 //                    for cookie in cookies {
 //                        print(cookie.name)

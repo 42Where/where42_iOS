@@ -11,6 +11,7 @@ struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @AppStorage("isLogin") var isLogin = false
+    @AppStorage("token") var token = ""
     
     var body: some View {
         ZStack {
@@ -50,12 +51,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .onChange(of: homeViewModel.isLogout) { newValue in
-                guard newValue != true else { return }
-                homeViewModel.getMemberInfo()
-                homeViewModel.getGroup()
-            }
-                
+            
             if homeViewModel.isLoading {
                 ProgressView()
                     .scaleEffect(2)
