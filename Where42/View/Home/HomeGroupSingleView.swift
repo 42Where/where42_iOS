@@ -54,9 +54,9 @@ struct HomeGroupSingleView: View {
                         Spacer()
 
                         HStack {
-                            Button {} label: {
-                                Image("Filter icon")
-                            }
+//                            Button {} label: {
+//                                Image("Filter icon")
+//                            }
 
                             Button {
                                 isPresented.toggle()

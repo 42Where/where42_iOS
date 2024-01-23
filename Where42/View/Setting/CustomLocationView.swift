@@ -8,25 +8,20 @@
 import SwiftUI
 
 struct CustomLocationView: View {
-    private let defaultFloor = ["", "1층", "2층", "3층", "4층", "5층", "B1 / 옥상"]
-    private let defaultLocation = [
-        [],
-        ["오픈 스튜디오", "오픈 라운지", "42LAB", "유튜브 스튜디오"],
-        ["유튜브 스튜디오", "오아시스", "회의실A", "회의실B", "스톤테이블", "기타 학습공간"],
-        ["오아시스", "다각형 책상A", "다각형 책상"],
-        ["오아시스", "회의실A", "회의실B", "스톤테이블", "기타 학습공간"],
-        ["오아시스", "좌식공간", "스톤 테이블", "기타 학습공간"],
-        ["오픈 스튜디오", "탁구대", "야외정원", "기타 학습공간"]
-    ]
-    @State private var floor = 0
-    @State private var customLocation = ""
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
 
     var body: some View {
         ZStack {
             Color.black
                 .opacity(0.3)
                 .ignoresSafeArea(.all)
-                .onTapGesture {}
+                .onTapGesture {
+                    withAnimation {
+                        settingViewModel.isCustomLocationAlertPresent = false
+                        settingViewModel.initCustomLocation()
+                    }
+                }
 
             VStack {
                 Text("수동 자리 설정")
@@ -36,28 +31,44 @@ struct CustomLocationView: View {
                 VStack {
                     HStack(alignment: .top, spacing: 0) {
                         VStack(spacing: 10) {
-                            Text("층 수 선택")
+                            Text("층")
                                 .font(.custom(Font.GmarketBold, size: 18))
 
                             Divider()
                                 .overlay(.whereDeepNavy)
 
-                            VStack(spacing: 20) {
-                                ForEach(defaultFloor.indices, id: \.self) { index in
+                            VStack(spacing: 0) {
+                                ForEach(settingViewModel.defaultFloor.indices, id: \.self) { index in
                                     if index != 0 {
                                         Button {
-                                            withAnimation {
-                                                self.floor = index
-                                            }
+                                            settingViewModel.selectedFloor = index
                                         } label: {
-                                            Text(defaultFloor[index])
+                                            if settingViewModel.selectedFloor == index {
+                                                ZStack {
+                                                    Text(settingViewModel.defaultFloor[index])
+
+                                                    HStack {
+                                                        Spacer()
+
+                                                        Image("Next icon")
+                                                            .padding(.trailing, 5)
+                                                    }
+                                                }
+                                                .frame(width: 135, height: 22)
+                                                .background(.black.opacity(0.12))
+                                                .clipShape(RoundedRectangle(cornerRadius: 3.0))
+                                                .padding(.bottom, 13)
+                                            } else {
+                                                Text(settingViewModel.defaultFloor[index])
+                                                    .frame(width: 135, height: 22)
+                                                    .padding(.bottom, 13)
+                                            }
                                         }
                                     }
                                 }
                             }
                             .font(.custom(Font.GmarketMedium, size: 15))
                             .foregroundStyle(.whereDeepNavy)
-                            .padding(.horizontal, 15)
                         }
                         .frame(width: 140)
                         .padding(.vertical, 15)
@@ -66,26 +77,34 @@ struct CustomLocationView: View {
                             .overlay(.whereDeepNavy)
 
                         VStack(spacing: 10) {
-                            Text("장소 선택")
+                            Text("자리")
                                 .font(.custom(Font.GmarketBold, size: 18))
 
                             Divider()
                                 .overlay(.whereDeepNavy)
 
-                            VStack(spacing: 20) {
-                                ForEach(defaultLocation[floor], id: \.self) { location in
+                            VStack(spacing: 0) {
+                                ForEach(settingViewModel.defaultLocation[settingViewModel.selectedFloor], id: \.self) { location in
                                     Button {
-                                        customLocation = defaultFloor[floor] + " " + location
-                                        print(customLocation)
+                                        settingViewModel.setCustomLocation(location: location)
+                                        settingViewModel.selectedLocation = location
                                     } label: {
-                                        Text(location)
-                                            .font(.custom(Font.GmarketMedium, size: 15))
-                                            .foregroundStyle(.whereDeepNavy)
+                                        if location != settingViewModel.selectedLocation {
+                                            Text(location)
+                                                .frame(width: 135, height: 22)
+                                                .padding(.bottom, 13)
+                                        } else {
+                                            Text(location)
+                                                .frame(width: 135, height: 22)
+                                                .background(.black.opacity(0.12))
+                                                .clipShape(RoundedRectangle(cornerRadius: 3.0))
+                                                .padding(.bottom, 13)
+                                        }
                                     }
                                 }
                             }
-                            .padding(.horizontal, 15)
                             .font(.custom(Font.GmarketMedium, size: 15))
+                            .foregroundStyle(.whereDeepNavy)
                         }
                         .frame(width: 140)
                         .padding(.vertical, 15)
@@ -99,7 +118,12 @@ struct CustomLocationView: View {
                 HStack {
                     Spacer()
 
-                    Button {} label: {
+                    Button {
+                        withAnimation {
+                            settingViewModel.isCustomLocationAlertPresent = false
+                            settingViewModel.initCustomLocation()
+                        }
+                    } label: {
                         Text("취소")
                             .padding(.horizontal, 6)
                             .padding(4)
@@ -110,7 +134,12 @@ struct CustomLocationView: View {
                             )
                     }
 
-                    Button {} label: {
+                    Button {
+                        Task {
+                            await settingViewModel.UpdateCustomLocation()
+                            homeViewModel.myInfo.location = settingViewModel.newLocation
+                        }
+                    } label: {
                         Text("확인")
                             .padding(.horizontal, 6)
                             .padding(4.5)
@@ -134,4 +163,5 @@ struct CustomLocationView: View {
 
 #Preview {
     CustomLocationView()
+        .environmentObject(SettingViewModel())
 }

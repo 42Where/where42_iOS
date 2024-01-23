@@ -40,25 +40,13 @@ struct SettingAlert: View {
                 withAnimation {
                     settingViewModel.isStatusMessageAlertPresent.toggle()
                 }
-                await settingViewModel.UpdateComment(intraId: homeViewModel.intraId)
+                await settingViewModel.UpdateComment()
                 homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
             }
         }
 
         if settingViewModel.isCustomLocationAlertPresent {
-            CustomAlert(title: "수동 자리 설정", textFieldTitle: "설정할 자리를 입력해주세요", inputText: $settingViewModel.inputText) {
-                withAnimation {
-                    settingViewModel.isCustomLocationAlertPresent.toggle()
-                    settingViewModel.inputText = ""
-                }
-            } rightButtonAction: {
-                if await settingViewModel.UpdateCustomLocation(intraId: homeViewModel.intraId) {
-                    withAnimation {
-                        settingViewModel.isCustomLocationAlertPresent.toggle()
-                    }
-                    homeViewModel.myInfo.location = settingViewModel.newLocation
-                }
-            }
+            CustomLocationView()
         }
     }
 }

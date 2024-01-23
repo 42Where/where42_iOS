@@ -32,11 +32,6 @@ struct SettingView: View {
 
                 Spacer()
                 
-//                Button("자리비움") {}
-//                    .buttonStyle(setButton())
-//
-//                Spacer()
-                
                 Button("코멘트 설정") {
                     withAnimation {
                         settingViewModel.isStatusMessageAlertPresent = true
