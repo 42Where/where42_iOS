@@ -137,7 +137,9 @@ struct CustomLocationView: View {
                     Button {
                         Task {
                             await settingViewModel.UpdateCustomLocation()
-                            homeViewModel.myInfo.location = settingViewModel.newLocation
+                            DispatchQueue.main.async {
+                                self.homeViewModel.myInfo.location = self.settingViewModel.newLocation
+                            }
                         }
                     } label: {
                         Text("확인")

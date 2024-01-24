@@ -58,6 +58,7 @@ struct LoginView: View {
 
                 Button("L O G I N") {
                     print(token)
+                    loginViewModel.isLoginButtonPushed = true
                     loginViewModel.login()
                 }
                 .font(.custom("GmarketSansTTFBold", size: 20.0))
@@ -93,6 +94,7 @@ struct LoginView: View {
                 }
             }
         }
+        .disabled(loginViewModel.isLoginButtonPushed)
         .foregroundColor(.whereDeepNavy)
         .fullScreenCover(isPresented: $loginViewModel.isShow42IntraSheet) {
             MyWebView(
@@ -108,9 +110,8 @@ struct LoginView: View {
 }
 
 #Preview("iPhone 15 Pro") {
-    Group {
-        LoginView()
-    }
+    LoginView()
+        .environmentObject(HomeViewModel())
 }
 
 // struct ContentView_Previews: PreviewProvider {

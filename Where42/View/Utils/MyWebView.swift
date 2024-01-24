@@ -9,6 +9,12 @@ import SwiftUI
 import WebKit
 
 class FullScreenWKWebView: WKWebView {
+    var accessoryView: UIView?
+    
+    override var inputAccessoryView: UIView? {
+        return accessoryView
+    }
+    
     override var safeAreaInsets: UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }

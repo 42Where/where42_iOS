@@ -200,9 +200,8 @@ class HomeViewModel: ObservableObject {
             return
         }
 
-        newGroup.groupName = inputText
-
         DispatchQueue.main.async {
+            self.newGroup.groupName = self.inputText
             isNewGroupAlertPrsented.wrappedValue.toggle()
             isSelectViewPrsented.wrappedValue.toggle()
         }

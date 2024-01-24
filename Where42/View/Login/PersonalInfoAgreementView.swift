@@ -75,6 +75,7 @@ struct PersonalInfoAgreementView: View {
                     Spacer()
 
                     Button {
+                        loginViewModel.isAgreeButtonPushed = true
                         loginViewModel.join(intraId: String(homeViewModel.intraId))
                         isPresent = false
                         homeViewModel.isLogin = true
@@ -100,9 +101,12 @@ struct PersonalInfoAgreementView: View {
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }
+        .disabled(loginViewModel.isAgreeButtonPushed)
     }
 }
 
 #Preview {
     PersonalInfoAgreementView(isPresent: .constant(true))
+        .environmentObject(HomeViewModel())
+        .environmentObject(LoginViewModel())
 }

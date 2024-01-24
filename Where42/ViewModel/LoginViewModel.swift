@@ -10,6 +10,8 @@ import SwiftUI
 class LoginViewModel: ObservableObject {
     @Published var isHelpPagePresent = false
     @Published var isShow42IntraSheet = false
+    @Published var isLoginButtonPushed = false
+    @Published var isAgreeButtonPushed = false
     @Published var intraURL: String? = ""
 
     let memberAPI = MemberAPI()
@@ -23,6 +25,7 @@ class LoginViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.intraURL = url
                         self.isShow42IntraSheet = true
+                        self.isLoginButtonPushed = false
                     }
                 }
             } catch {
@@ -34,6 +37,9 @@ class LoginViewModel: ObservableObject {
     func join(intraId: String) {
         Task {
             await loginAPI.join(intraId: intraId)
+            DispatchQueue.main.async {
+                self.isAgreeButtonPushed = false
+            }
         }
     }
 }
