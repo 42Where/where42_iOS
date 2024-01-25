@@ -14,44 +14,112 @@ struct GroupMemberAddView: View {
     @Binding var isGroupEditModalPresented: Bool
 
     @State private var isShowSheet = false
+    @State private var name = ""
 
     var body: some View {
         VStack {
             Text("\(homeViewModel.selectedGroup.groupName)")
                 .font(.custom(Font.GmarketBold, size: 25))
                 .padding(.top, 40)
-
-            ScrollView {
-                LazyVStack {
-                    ForEach(0 ..< group.members.count, id: \.self) { index in
-                        if UIDevice.idiom == .phone {
-                            SelectingFriendInfoView(userInfo: $group.members[index])
-                                .padding(.top)
-                        } else if UIDevice.idiom == .pad {
-                            if index % 2 == 0 {
-                                HStack {
+            
+            HStack {
+                Image("Search icon M")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20)
+                TextField("이름을 입력해주세요", text: $name)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                
+                Spacer()
+                
+                if name != "" {
+                    Image(systemName: "xmark.circle.fill")
+                        .onTapGesture {
+                            name = ""
+                        }
+                }
+            }
+            .padding()
+            .foregroundStyle(.whereDeepNavy)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(.whereDeepNavy, lineWidth: 2)
+            )
+            .padding([.horizontal, .top])
+            
+            if group.members.count == 0 || (name != "" && homeViewModel.viewPresentCount == 0) {
+                Spacer()
+                
+                VStack {
+                    VStack {
+                        if group.members.count == 0 {
+                            Text("추가할 수 있는 멤버가 없습니다")
+                        } else {
+                            Text("존재하지 않는 멤버입니다")
+                        }
+                    }
+                    .font(.custom(Font.GmarketBold, size: 20))
+                    .foregroundStyle(.whereDeepNavy)
+                }
+                
+                Spacer()
+            } else {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(0 ..< group.members.count, id: \.self) { index in
+                            if name == "" || (group.members[index].intraName?.contains(name.lowercased())) == true {
+                                if UIDevice.idiom == .phone {
                                     SelectingFriendInfoView(userInfo: $group.members[index])
-                                        .padding([.top, .leading, .trailing])
-                                    if index + 1 < group.members.count {
-                                        SelectingFriendInfoView(userInfo: $group.members[index + 1])
-                                            .padding([.top, .leading, .trailing])
-                                    } else {
-                                        Spacer()
-                                            .padding()
+                                        .padding(.top)
+                                        .onAppear {
+                                            homeViewModel.viewPresentCount += 1
+                                        }
+                                        .onDisappear {
+                                            homeViewModel.viewPresentCount -= 1
+                                        }
+                                } else if UIDevice.idiom == .pad {
+                                    if index % 2 == 0 {
+                                        HStack {
+                                            SelectingFriendInfoView(userInfo: $group.members[index])
+                                                .padding([.top, .leading, .trailing])
+                                                .onAppear {
+                                                    homeViewModel.viewPresentCount += 1
+                                                }
+                                                .onDisappear {
+                                                    homeViewModel.viewPresentCount -= 1
+                                                }
+                                            if index + 1 < group.members.count {
+                                                SelectingFriendInfoView(userInfo: $group.members[index + 1])
+                                                    .padding([.top, .leading, .trailing])
+                                                    .onAppear {
+                                                        homeViewModel.viewPresentCount += 1
+                                                    }
+                                                    .onDisappear {
+                                                        homeViewModel.viewPresentCount -= 1
+                                                    }
+                                            } else {
+                                                Spacer()
+                                                    .padding()
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
+                        
+                        Spacer()
                     }
-
-                    Spacer()
+                    .padding([.horizontal, .bottom])
+                    .onAppear {
+                        homeViewModel.viewPresentCount = 0
+                    }
                 }
-                .padding()
             }
-
+                
             HStack {
                 Spacer()
-
+                    
                 Button {
                     Task {
                         if homeViewModel.selectedUsers.isEmpty == false {
@@ -73,11 +141,13 @@ struct GroupMemberAddView: View {
                 }
                 .clipShape(Rectangle())
                 .padding()
-
+                    
                 Spacer()
             }
             .background(.whereDeepNavy)
+            .disabled(group.members.count == 0)
         }
+        
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
@@ -108,4 +178,5 @@ struct GroupMemberAddView: View {
         .init(intraName: "dhyun22", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6"),
         .init(intraName: "dhyun23", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요~", location: "개포 c2r5s6")
     ])), isGroupEditModalPresented: .constant(true))
+        .environmentObject(HomeViewModel())
 }

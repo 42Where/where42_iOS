@@ -22,6 +22,7 @@ class HomeViewModel: ObservableObject {
     @Published var isAPILoaded = false
     @Published var isLogout = false
     @Published var isFriend = false
+    @Published var viewPresentCount = 0
 
     @Published var selectedUser: MemberInfo = .empty
     @Published var selectedUsers: [MemberInfo] = []

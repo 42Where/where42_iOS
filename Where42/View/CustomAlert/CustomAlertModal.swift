@@ -45,6 +45,8 @@ struct CustomAlert: View {
                             RoundedRectangle(cornerRadius: 5)
                                 .stroke(.whereDeepNavy, lineWidth: 1)
                         )
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
                 }
 
                 if let message = message {

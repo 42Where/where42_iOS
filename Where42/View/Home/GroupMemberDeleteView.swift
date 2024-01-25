@@ -14,44 +14,110 @@ struct GroupMemberDeleteView: View {
     @Binding var isGroupEditModalPresented: Bool
 
     @State private var isShowSheet = false
+    @State private var name = ""
 
     var body: some View {
         VStack {
             Text("\(group.groupName)")
                 .font(.custom(Font.GmarketBold, size: 25))
                 .padding(.top, 40)
+            
+            HStack {
+                Image("Search icon M")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20)
+                TextField("이름을 입력해주세요", text: $name)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
 
-            ScrollView {
-                LazyVStack {
-                    ForEach(0 ..< group.members.count, id: \.self) { index in
-                        if UIDevice.idiom == .phone {
-                            SelectingFriendInfoView(userInfo: $group.members[index])
-                                .padding(.top)
-                        } else if UIDevice.idiom == .pad {
-                            if index % 2 == 0 {
-                                HStack {
+                Spacer()
+                
+                if name != "" {
+                    Image(systemName: "xmark.circle.fill")
+                        .onTapGesture {
+                            name = ""
+                        }
+                }
+            }
+            .padding()
+            .foregroundStyle(.whereDeepNavy)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(.whereDeepNavy, lineWidth: 2)
+            )
+            .padding([.horizontal, .top])
+            
+            if group.members.count == 0 || (name != "" && homeViewModel.viewPresentCount == 0) {
+                Spacer()
+                
+                VStack {
+                    if group.members.count == 0 {
+                        Text("삭제할 수 있는 멤버가 없습니다")
+                    } else {
+                        Text("존재하지 않는 멤버입니다")
+                    }
+                }
+                .font(.custom(Font.GmarketBold, size: 20))
+                .foregroundStyle(.whereDeepNavy)
+                
+                Spacer()
+            } else {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(0 ..< group.members.count, id: \.self) { index in
+                            if name == "" || (group.members[index].intraName?.contains(name.lowercased())) == true {
+                                if UIDevice.idiom == .phone {
                                     SelectingFriendInfoView(userInfo: $group.members[index])
-                                        .padding([.top, .leading, .trailing])
-                                    if index + 1 < group.members.count {
-                                        SelectingFriendInfoView(userInfo: $group.members[index + 1])
-                                            .padding([.top, .leading, .trailing])
-                                    } else {
-                                        Spacer()
-                                            .padding()
+                                        .padding(.top)
+                                        .onAppear {
+                                            homeViewModel.viewPresentCount += 1
+                                        }
+                                        .onDisappear {
+                                            homeViewModel.viewPresentCount -= 1
+                                        }
+                                } else if UIDevice.idiom == .pad {
+                                    if index % 2 == 0 {
+                                        HStack {
+                                            SelectingFriendInfoView(userInfo: $group.members[index])
+                                                .padding([.top, .leading, .trailing])
+                                                .onAppear {
+                                                    homeViewModel.viewPresentCount += 1
+                                                }
+                                                .onDisappear {
+                                                    homeViewModel.viewPresentCount -= 1
+                                                }
+                                            if index + 1 < group.members.count {
+                                                SelectingFriendInfoView(userInfo: $group.members[index + 1])
+                                                    .padding([.top, .leading, .trailing])
+                                                    .onAppear {
+                                                        homeViewModel.viewPresentCount += 1
+                                                    }
+                                                    .onDisappear {
+                                                        homeViewModel.viewPresentCount -= 1
+                                                    }
+                                            } else {
+                                                Spacer()
+                                                    .padding()
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
+                        
+                        Spacer()
                     }
-
-                    Spacer()
+                    .padding([.horizontal, .bottom])
+                    .onAppear {
+                        homeViewModel.viewPresentCount = 0
+                    }
                 }
-                .padding()
             }
-
+                
             HStack {
                 Spacer()
-
+                    
                 Button {
                     Task {
                         await homeViewModel.deleteUserInGroup()
@@ -69,11 +135,13 @@ struct GroupMemberDeleteView: View {
                 }
                 .clipShape(Rectangle())
                 .padding()
-
+                    
                 Spacer()
             }
             .background(.whereRed)
+            .disabled(group.members.count == 0)
         }
+        
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
