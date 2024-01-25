@@ -55,7 +55,7 @@ class HomeViewModel: ObservableObject {
             groups[index].onlineNum = 0
             groups[index].members.forEach { user in
                 if user.location != "퇴근" {
-                    groups[index].onlineNum! += 1
+                    groups[index].onlineNum += 1
                 }
             }
         }
@@ -66,7 +66,7 @@ class HomeViewModel: ObservableObject {
         group.onlineNum = 0
         group.members.forEach { user in
             if user.location != "퇴근" {
-                group.onlineNum! += 1
+                group.onlineNum += 1
             }
         }
     }
@@ -76,7 +76,7 @@ class HomeViewModel: ObservableObject {
         friends.onlineNum = 0
         friends.members.forEach { user in
             if user.location != "퇴근" {
-                friends.onlineNum! += 1
+                friends.onlineNum += 1
             }
         }
     }
@@ -145,7 +145,6 @@ class HomeViewModel: ObservableObject {
     func createNewGroup(intraId: Int) async {
         DispatchQueue.main.async {
             self.newGroup.members = self.selectedUsers
-
             self.countGroupUsers(group: &self.newGroup)
             self.groups.append(self.newGroup)
         }
@@ -163,8 +162,8 @@ class HomeViewModel: ObservableObject {
 
         DispatchQueue.main.async {
             self.initNewGroup()
-            self.getGroup()
         }
+        getGroup()
     }
 
     func addMemberInGroup(groupId: Int) async {
@@ -200,11 +199,9 @@ class HomeViewModel: ObservableObject {
             return
         }
 
-        DispatchQueue.main.async {
-            self.newGroup.groupName = self.inputText
-            isNewGroupAlertPrsented.wrappedValue.toggle()
-            isSelectViewPrsented.wrappedValue.toggle()
-        }
+        newGroup.groupName = inputText
+        isNewGroupAlertPrsented.wrappedValue = false
+        isSelectViewPrsented.wrappedValue = true
     }
 
     func getNotInGroupMember() async {
@@ -218,7 +215,7 @@ class HomeViewModel: ObservableObject {
             }
 
             DispatchQueue.main.async {
-                print(response)
+//                print(response)
                 self.notInGroups.members = response
             }
         } catch {}

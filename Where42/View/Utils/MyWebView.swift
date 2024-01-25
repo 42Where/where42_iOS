@@ -35,13 +35,15 @@ struct MyWebView: UIViewRepresentable {
             return FullScreenWKWebView()
         }
         
-        homeViewModel.isAPILoaded = false
-        
-        if homeViewModel.isLogout == true {
-            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
-            let date = NSDate(timeIntervalSince1970: 0)
-            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
+        DispatchQueue.main.async {
+            self.homeViewModel.isAPILoaded = false
         }
+        
+//        if homeViewModel.isLogout == true {
+//            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
+//            let date = NSDate(timeIntervalSince1970: 0)
+//            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
+//        }
         
         let source = "var meta = document.createElement('meta');" +
             "meta.name = 'viewport';" +
@@ -87,6 +89,7 @@ struct MyWebView: UIViewRepresentable {
                     parent.isPresented = false
                     parent.homeViewModel.getMemberInfo()
                     parent.homeViewModel.getGroup()
+
 //                webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
 //                    for cookie in cookies {
 //                        print(cookie.name)
@@ -104,7 +107,7 @@ struct MyWebView: UIViewRepresentable {
             parent.homeViewModel.intraId = Int(intraId.components(separatedBy: "=")[1])!
 //            parent.homeViewModel.intraId = 6
             parent.token = "Bearer " + token.components(separatedBy: "=")[1]
-            if agreement.components(separatedBy: "=")[1] == "false" {
+            if agreement.components(separatedBy: "=")[1] == "true" {
                 parent.homeViewModel.isShowAgreementSheet = true
             } else {
                 parent.homeViewModel.isAPILoaded = false

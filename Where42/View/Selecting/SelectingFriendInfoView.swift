@@ -21,7 +21,6 @@ struct SelectingFriendInfoView: View {
             isCheck.toggle()
             if isCheck {
                 homeViewModel.selectedUsers.append(userInfo)
-                print(homeViewModel.selectedUsers)
             } else {
                 if let index = homeViewModel.selectedUsers.firstIndex(of: userInfo) {
                     homeViewModel.selectedUsers.remove(at: index)

@@ -20,7 +20,7 @@ struct GroupEditModal: View {
                 Text("\(group.groupName)")
                     .font(.custom(Font.GmarketMedium, size: 16))
 
-                Text("\(group.onlineNum!)/\(group.totalNum!)")
+                Text("\(group.onlineNum)/\(group.totalNum)")
                     .font(.custom(Font.GmarketMedium, size: 13))
 
                 Spacer()

@@ -12,9 +12,9 @@ struct GroupInfo: Identifiable, Hashable, Codable {
 
     var groupId: Int?
     var groupName: String
-    var totalNum: Int?
-    var onlineNum: Int?
-    var isOpen: Bool? = false
+    var totalNum: Int = 0
+    var onlineNum: Int = 0
+    var isOpen: Bool = false
     var members: [MemberInfo] = []
 
     enum CodingKeys: String, CodingKey {
@@ -22,7 +22,7 @@ struct GroupInfo: Identifiable, Hashable, Codable {
         case totalNum = "count"
     }
 
-    init(id: UUID, groupId: Int? = nil, groupName: String, totalNum: Int? = nil, onlineNum: Int? = nil, isOpen: Bool? = nil, members: [MemberInfo]) {
+    init(id: UUID, groupId: Int? = nil, groupName: String, totalNum: Int = 0, onlineNum: Int = 0, isOpen: Bool = false, members: [MemberInfo]) {
         self.id = id
         self.groupId = groupId
         self.groupName = groupName

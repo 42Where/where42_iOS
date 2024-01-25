@@ -16,7 +16,7 @@ struct HomeGroupSingleView: View {
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if group.isOpen! && group.totalNum! > 0 {
+                if group.isOpen && group.totalNum > 0 {
                     ForEach(0 ..< group.members.count, id: \.self) { index in
                         if !(homeViewModel.isWork && group.members[index].location == "퇴근") {
                             if UIDevice.idiom == .phone {
@@ -48,7 +48,7 @@ struct HomeGroupSingleView: View {
                     HStack {
                         Text("\(group.groupName)")
                             .font(.custom(Font.GmarketMedium, size: 13))
-                        Text("\(group.onlineNum!)/\(group.totalNum!)")
+                        Text("\(group.onlineNum)/\(group.totalNum)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 
                         Spacer()
@@ -67,10 +67,10 @@ struct HomeGroupSingleView: View {
 
                             Button {
                                 withAnimation {
-                                    group.isOpen!.toggle()
+                                    group.isOpen.toggle()
                                 }
                             } label: {
-                                if group.isOpen! {
+                                if group.isOpen {
                                     Image("Fold icon")
                                 } else {
                                     Image("Folded icon")
@@ -82,7 +82,7 @@ struct HomeGroupSingleView: View {
                     .padding(.horizontal)
                     .padding(.vertical, 3)
 
-                    if group.isOpen! && group.totalNum! > 0 {
+                    if group.isOpen && group.totalNum > 0 {
                         Divider()
                     }
                 }

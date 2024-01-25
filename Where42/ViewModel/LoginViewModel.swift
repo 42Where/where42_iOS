@@ -37,9 +37,7 @@ class LoginViewModel: ObservableObject {
     func join(intraId: String) {
         Task {
             await loginAPI.join(intraId: intraId)
-            DispatchQueue.main.async {
-                self.isAgreeButtonPushed = false
-            }
+            self.isAgreeButtonPushed = false
         }
     }
 }

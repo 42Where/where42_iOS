@@ -21,11 +21,11 @@ struct SettingAlert: View {
                 }
             } rightButtonAction: {
                 withAnimation {
-                    homeViewModel.isShowSettingSheet = false
-                    settingViewModel.isLogoutAlertPresent = false
-                    isLogin = false
-                    token = ""
-                    homeViewModel.isLogout = true
+                    self.homeViewModel.isShowSettingSheet = false
+                    self.settingViewModel.isLogoutAlertPresent = false
+                    self.isLogin = false
+                    self.token = ""
+                    self.homeViewModel.isLogout = true
                 }
             }
         }

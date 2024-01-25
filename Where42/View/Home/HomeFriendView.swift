@@ -18,7 +18,7 @@ struct HomeFriendView: View {
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if friends.isOpen! && friends.totalNum! > 0 {
+                if friends.isOpen && friends.totalNum > 0 {
                     ForEach(0 ..< friends.members.count, id: \.self) { index in
                         if !(homeViewModel.isWork && friends.members[index].location == "퇴근") {
                             if UIDevice.idiom == .phone {
@@ -54,7 +54,7 @@ struct HomeFriendView: View {
                     HStack {
                         Text(friends.groupName)
                             .font(.custom(Font.GmarketMedium, size: 13))
-                        Text("\(friends.onlineNum!)/\(friends.totalNum!)")
+                        Text("\(friends.onlineNum)/\(friends.totalNum)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 
                         Spacer()
@@ -72,10 +72,10 @@ struct HomeFriendView: View {
 
                             Button {
                                 withAnimation {
-                                    friends.isOpen!.toggle()
+                                    friends.isOpen.toggle()
                                 }
                             } label: {
-                                if friends.isOpen! {
+                                if friends.isOpen {
                                     Image("Fold icon")
                                 } else {
                                     Image("Folded icon")
@@ -87,7 +87,7 @@ struct HomeFriendView: View {
                     .padding(.horizontal)
                     .padding(.vertical, 3)
 
-                    if friends.isOpen! && friends.totalNum! > 0 {
+                    if friends.isOpen && friends.totalNum > 0 {
                         Divider()
                     }
                 }

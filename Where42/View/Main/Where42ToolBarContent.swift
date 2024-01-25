@@ -23,7 +23,8 @@ struct Where42ToolBarContent: ToolbarContent {
                 Image("Where42 logo 3")
             }
             .disabled(mainViewModel.isDeleteGroupAlertPrsented || mainViewModel.isNewGroupAlertPrsented || mainViewModel.isEditGroupNameAlertPrsented ||
-                homeViewModel.isGroupEditSelectAlertPrsented)
+                homeViewModel.isGroupEditSelectAlertPrsented ||
+                homeViewModel.isFriendDeleteAlertPresented)
         }
 
         if mainViewModel.tabSelection == "Home" {
@@ -33,7 +34,8 @@ struct Where42ToolBarContent: ToolbarContent {
                         SettingView()
                     }
                     .disabled(mainViewModel.isDeleteGroupAlertPrsented || mainViewModel.isNewGroupAlertPrsented || mainViewModel.isEditGroupNameAlertPrsented ||
-                        homeViewModel.isGroupEditSelectAlertPrsented)
+                        homeViewModel.isGroupEditSelectAlertPrsented ||
+                        homeViewModel.isFriendDeleteAlertPresented)
 //                NavigationLink(destination: SettingView(), label: { Image("Setting icon M") })
             }
         }
