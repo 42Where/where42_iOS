@@ -85,7 +85,7 @@ struct GroupMemberAddView: View {
                                     if index % 2 == 0 {
                                         HStack {
                                             SelectingFriendInfoView(userInfo: $group.members[index])
-                                                .padding([.top, .leading, .trailing])
+                                                .padding([.top, .horizontal])
                                                 .onAppear {
                                                     homeViewModel.viewPresentCount += 1
                                                 }
@@ -94,7 +94,7 @@ struct GroupMemberAddView: View {
                                                 }
                                             if index + 1 < group.members.count {
                                                 SelectingFriendInfoView(userInfo: $group.members[index + 1])
-                                                    .padding([.top, .leading, .trailing])
+                                                    .padding([.top, .horizontal])
                                                     .onAppear {
                                                         homeViewModel.viewPresentCount += 1
                                                     }

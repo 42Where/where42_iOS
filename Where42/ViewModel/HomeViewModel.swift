@@ -284,7 +284,7 @@ class HomeViewModel: ObservableObject {
 
     func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
         do {
-            guard let newName = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName) else {
+            guard let _ = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName) else {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true

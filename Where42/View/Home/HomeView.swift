@@ -22,7 +22,8 @@ struct HomeView: View {
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWork,
-                    isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
+                    isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented
+                )
                         
                 Divider()
                     
@@ -60,6 +61,18 @@ struct HomeView: View {
                     .scaleEffect(2)
                     .progressViewStyle(.circular)
             }
+        }
+        .sheet(isPresented: $homeViewModel.isGroupMemberDeleteViewPrsented) {
+            GroupMemberDeleteView(
+                group: $homeViewModel.selectedGroup,
+                isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
+            )
+        }
+        .sheet(isPresented: $homeViewModel.isGroupMemberAddViewPrsented) {
+            GroupMemberAddView(
+                group: $homeViewModel.notInGroups,
+                isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
+            )
         }
     }
 }

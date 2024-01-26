@@ -32,6 +32,7 @@ struct GroupEditSelectModal: View {
                         Button {
                             homeViewModel.selectedUsers = []
                             withAnimation {
+                                homeViewModel.isGroupEditSelectAlertPrsented = false
                                 homeViewModel.isGroupMemberAddViewPrsented = true
                             }
                         } label: {
@@ -51,6 +52,7 @@ struct GroupEditSelectModal: View {
                     Button {
                         homeViewModel.selectedUsers = []
                         withAnimation {
+                            homeViewModel.isGroupEditSelectAlertPrsented = false
                             homeViewModel.isGroupMemberDeleteViewPrsented = true
                         }
                     } label: {
@@ -70,18 +72,6 @@ struct GroupEditSelectModal: View {
             .frame(width: UIDevice.idiom == .phone ? 270 : 370)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
-            .sheet(isPresented: $homeViewModel.isGroupMemberDeleteViewPrsented) {
-                GroupMemberDeleteView(
-                    group: $homeViewModel.selectedGroup,
-                    isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
-                )
-            }
-            .sheet(isPresented: $homeViewModel.isGroupMemberAddViewPrsented) {
-                GroupMemberAddView(
-                    group: $homeViewModel.notInGroups,
-                    isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
-                )
-            }
         }
     }
 }

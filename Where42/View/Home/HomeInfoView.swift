@@ -9,6 +9,8 @@ import Kingfisher
 import SwiftUI
 
 struct HomeInfoView: View {
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    
     @Binding var memberInfo: MemberInfo
     @Binding var isWork: Bool
     @Binding var isNewGroupAlertPrsent: Bool
@@ -60,6 +62,7 @@ struct HomeInfoView: View {
                         withAnimation {
                             isNewGroupAlertPrsent.toggle()
                         }
+                        homeViewModel.selectedUsers = []
                     } label: {
                         Image("Group icon")
                         Text("새 그룹")
