@@ -107,7 +107,7 @@ struct MyWebView: UIViewRepresentable {
             parent.homeViewModel.intraId = Int(intraId.components(separatedBy: "=")[1])!
 //            parent.homeViewModel.intraId = 6
             parent.token = "Bearer " + token.components(separatedBy: "=")[1]
-            if agreement.components(separatedBy: "=")[1] == "true" {
+            if agreement.components(separatedBy: "=")[1] == "false" {
                 parent.homeViewModel.isShowAgreementSheet = true
             } else {
                 parent.homeViewModel.isAPILoaded = false

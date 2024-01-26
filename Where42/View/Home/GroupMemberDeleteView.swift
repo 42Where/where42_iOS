@@ -66,7 +66,10 @@ struct GroupMemberDeleteView: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(0 ..< group.members.count, id: \.self) { index in
-                            if name == "" || (group.members[index].intraName?.contains(name.lowercased())) == true {
+                            if group.members[index].isCheck == true ||
+                                name == "" ||
+                                (group.members[index].intraName?.contains(name.lowercased())) == true
+                            {
                                 if UIDevice.idiom == .phone {
                                     SelectingFriendInfoView(userInfo: $group.members[index])
                                         .padding(.top)

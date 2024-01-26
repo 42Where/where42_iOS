@@ -62,7 +62,9 @@ struct SelectingView: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
-                            if name == "" || (homeViewModel.friends.members[index].intraName?.contains(name.lowercased())) == true {
+                            if homeViewModel.friends.members[index].isCheck == true ||
+                                name == "" || (homeViewModel.friends.members[index].intraName?.contains(name.lowercased())) == true
+                            {
                                 if UIDevice.idiom == .phone {
                                     SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
                                         .padding(.top)

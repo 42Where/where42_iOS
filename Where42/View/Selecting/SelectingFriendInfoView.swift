@@ -18,6 +18,7 @@ struct SelectingFriendInfoView: View {
 
     var body: some View {
         Button {
+            userInfo.isCheck.toggle()
             isCheck.toggle()
             if isCheck {
                 homeViewModel.selectedUsers.append(userInfo)
@@ -26,6 +27,7 @@ struct SelectingFriendInfoView: View {
                     homeViewModel.selectedUsers.remove(at: index)
                 }
             }
+//            print(homeViewModel.selectedUsers)
         } label: {
             HStack(spacing: 10) {
                 KFImage(URL(string: userInfo.image!)!)
@@ -76,6 +78,9 @@ struct SelectingFriendInfoView: View {
             }
             .padding(.vertical, 1)
             .background()
+        }
+        .onAppear {
+            userInfo.isCheck = isCheck
         }
 //        .buttonStyle(ScaleButtonStyle())
     }

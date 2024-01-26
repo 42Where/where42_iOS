@@ -22,9 +22,8 @@ struct MemberInfo: Codable, Hashable {
     var inCluster: Bool? = false
     var agree: Bool?
     var defaultGroupId: Int?
-    var location: String? {
-        didSet {}
-    }
+    var location: String?
+    var isCheck = false
 
     init(intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
         self.intraId = intraId
