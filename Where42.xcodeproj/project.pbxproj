@@ -30,6 +30,7 @@
 		A05E269D2B1F401C00FD3E22 /* GroupAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */; };
 		A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06000802AFCFCA800CC9A6A /* MainViewModel.swift */; };
 		A06000842AFD166800CC9A6A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A06000832AFD166800CC9A6A /* Kingfisher */; };
+		A06810DC2B6A233D0045DC43 /* NetworkMonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */; };
 		A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */; };
 		A06BAE982AF8BDDE00DB5A76 /* DeviceName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE972AF8BDDE00DB5A76 /* DeviceName.swift */; };
 		A06BAE9A2AF8C1CC00DB5A76 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE992AF8C1CC00DB5A76 /* API.swift */; };
@@ -86,6 +87,7 @@
 		A04E11D62B4C23560067AA39 /* HomeGroupSingleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGroupSingleView.swift; sourceTree = "<group>"; };
 		A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupAPI.swift; sourceTree = "<group>"; };
 		A06000802AFCFCA800CC9A6A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorView.swift; sourceTree = "<group>"; };
 		A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Where42ToolBarContent.swift; sourceTree = "<group>"; };
 		A06BAE972AF8BDDE00DB5A76 /* DeviceName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceName.swift; sourceTree = "<group>"; };
 		A06BAE992AF8C1CC00DB5A76 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			children = (
 				A07518522B219F6F00E1AE7C /* AnimatePlaceholder.swift */,
 				A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */,
+				A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */,
 				A0782B822AFCA00A00A7DDDA /* readSize.swift */,
 			);
 			path = Utils;
@@ -431,6 +434,7 @@
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
 				A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */,
 				A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */,
+				A06810DC2B6A233D0045DC43 /* NetworkMonitorView.swift in Sources */,
 				A06BAE9A2AF8C1CC00DB5A76 /* API.swift in Sources */,
 				A0AF34A42AEFA2A60057C996 /* LaunchScreenView.swift in Sources */,
 				A0E366132B63937800C90D08 /* SearchMemberInfoView.swift in Sources */,

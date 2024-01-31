@@ -10,6 +10,7 @@ import SwiftUI
 struct Where42ToolBarContent: ToolbarContent {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var networkMonitor: NetworkMonitor
 
     @Binding var isShowSheet: Bool
 
@@ -22,9 +23,12 @@ struct Where42ToolBarContent: ToolbarContent {
             } label: {
                 Image("Where42 logo 3")
             }
-            .disabled(mainViewModel.isDeleteGroupAlertPrsented || mainViewModel.isNewGroupAlertPrsented || mainViewModel.isEditGroupNameAlertPrsented ||
+            .disabled(mainViewModel.isDeleteGroupAlertPrsented ||
+                mainViewModel.isNewGroupAlertPrsented ||
+                mainViewModel.isEditGroupNameAlertPrsented ||
                 homeViewModel.isGroupEditSelectAlertPrsented ||
-                homeViewModel.isFriendDeleteAlertPresented)
+                homeViewModel.isFriendDeleteAlertPresented ||
+                !networkMonitor.isConnected)
         }
 
         if mainViewModel.tabSelection == "Home" {
@@ -33,9 +37,12 @@ struct Where42ToolBarContent: ToolbarContent {
                     .sheet(isPresented: $isShowSheet) {
                         SettingView()
                     }
-                    .disabled(mainViewModel.isDeleteGroupAlertPrsented || mainViewModel.isNewGroupAlertPrsented || mainViewModel.isEditGroupNameAlertPrsented ||
+                    .disabled(mainViewModel.isDeleteGroupAlertPrsented ||
+                        mainViewModel.isNewGroupAlertPrsented ||
+                        mainViewModel.isEditGroupNameAlertPrsented ||
                         homeViewModel.isGroupEditSelectAlertPrsented ||
-                        homeViewModel.isFriendDeleteAlertPresented)
+                        homeViewModel.isFriendDeleteAlertPresented ||
+                        !networkMonitor.isConnected)
 //                NavigationLink(destination: SettingView(), label: { Image("Setting icon M") })
             }
         }

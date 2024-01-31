@@ -15,6 +15,7 @@ struct Where42: View {
 
     @StateObject var mainViewModel: MainViewModel = .init()
     @StateObject var homeViewModel: HomeViewModel = .init()
+    @StateObject var networkMonitor: NetworkMonitor = .init()
 
     @AppStorage("isLogin") var isLogin: Bool = false
 
@@ -70,6 +71,10 @@ struct Where42: View {
                             removal: AnyTransition.move(edge: .bottom)
                         ))
                 }
+
+                if networkMonitor.isConnected == false {
+                    NetworkMonitorView()
+                }
             }
             .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
                 MyWebView(
@@ -84,6 +89,7 @@ struct Where42: View {
         .animation(.easeIn, value: isLogin)
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)
+        .environmentObject(networkMonitor)
     }
 }
 
