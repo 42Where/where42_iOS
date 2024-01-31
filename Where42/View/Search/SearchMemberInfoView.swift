@@ -18,8 +18,6 @@ struct SearchMemberInfoView: View {
 
     var body: some View {
         Button {
-            print(isCheck)
-            print(userInfo.isCheck)
             userInfo.isCheck.toggle()
             isCheck.toggle()
             if isCheck {
@@ -33,7 +31,6 @@ struct SearchMemberInfoView: View {
                     }
                 }
             }
-            print(homeViewModel.selectedUsers)
         } label: {
             HStack(spacing: 10) {
                 KFImage(URL(string: userInfo.image!)!)

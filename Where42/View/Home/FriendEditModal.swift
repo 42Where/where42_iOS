@@ -56,14 +56,14 @@ struct FriendEditModal: View {
 
                 Spacer()
 
-                Button {
-                    //                isShowModal.toggle()
-                } label: {
-                    Image("Function icon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                .padding()
+//                Button {
+//                    //                isShowModal.toggle()
+//                } label: {
+//                    Image("Function icon")
+//                        .resizable()
+//                        .frame(width: 20, height: 20)
+//                }
+//                .padding()
             }
             .padding([.top, .leading])
 
