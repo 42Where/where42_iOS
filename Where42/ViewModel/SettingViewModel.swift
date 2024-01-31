@@ -20,16 +20,24 @@ class SettingViewModel: ObservableObject {
     @Published var selectedLocation = ""
     @Published var customLocation = ""
 
-    let defaultFloor = ["", "1층", "2층", "3층", "4층", "5층", "B1 / 옥상"]
+    let defaultFloor = ["지하", "1층", "2층", "3층", "4층", "5층", "옥상"]
     let defaultLocation = [
         [],
-        ["오픈 스튜디오", "오픈 라운지", "42LAB", "유튜브 스튜디오"],
-        ["유튜브 스튜디오", "오아시스", "회의실A", "회의실B", "스톤테이블", "기타 학습공간"],
-        ["오아시스", "다각형 책상A", "다각형 책상B"],
-        ["오아시스", "회의실A", "회의실B", "스톤테이블", "기타 학습공간"],
-        ["오아시스", "좌식공간", "스톤 테이블", "기타 학습공간"],
-        ["오픈 스튜디오", "탁구대", "야외정원", "기타 학습공간"]
+        ["42LAB", "오픈스튜디오", "오락실"],
+        ["1클러스터", "2클러스터", "회의실", "사각테이블", "원형테이블", "직선테이블", "테라스"],
+        ["x1클러스터", "x2클러스터", "반원테이블", "중앙테이블", "직선테이블", "테라스"],
+        ["3클러스터", "4클러스터", "회의실", "원형테이블", "직선테이블"],
+        ["5클러스터", "6클러스터", "집현전", "원형테이블", "직선테이블"],
+        ["탁구대", "야외정원"]
     ]
+
+//    1층 -> 42LAB, 오픈스튜디오, 오락실
+//    2층 -> 1클러스터 , 2클러스터, 회의실, 직선테이블, 원형 테이블, 사각테이블, 테라스
+//    3층 -> x1클러스터 , x2클러스터, 반원 테이블, 중앙테이블, 직선테이블, 테라스
+//    4층->   3클러스터 , 4클러스터, 회의실, 원형테이블, 직선테이블
+//    5층 -> 5클러스터, 6클러스터, 집현전, 원형테이블, 직선테이블
+//    옥상-> 탁구대, 야외정원,
+//    지하
 
     private let memberAPI = MemberAPI()
 
@@ -56,14 +64,10 @@ class SettingViewModel: ObservableObject {
     }
 
     func setCustomLocation(location: String) {
-        if selectedFloor != 6 {
-            customLocation = defaultFloor[selectedFloor] + " " + location
-        } else {
-            if location == "오픈 스튜디오" || location == "기타 학습공간" {
-                customLocation = "B1 " + location
-            } else {
-                customLocation = location
-            }
+        if selectedFloor == 6 || location == "집현전" || location == "42LAB" {
+            customLocation = location
+        } else if selectedFloor != 0 {
+            customLocation = customLocation + " " + location
         }
         print(customLocation)
     }

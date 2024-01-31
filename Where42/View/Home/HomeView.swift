@@ -16,9 +16,9 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
-                Button("토큰") {
-                    token = ""
-                }
+//                Button("토큰") {
+//                    token = ""
+//                }
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWork,

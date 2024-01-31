@@ -240,6 +240,8 @@ class MemberAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
+
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {

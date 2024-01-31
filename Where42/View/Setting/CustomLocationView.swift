@@ -39,10 +39,11 @@ struct CustomLocationView: View {
 
                             VStack(spacing: 0) {
                                 ForEach(settingViewModel.defaultFloor.indices, id: \.self) { index in
-                                    if index != 0 {
-                                        Button {
-                                            settingViewModel.selectedFloor = index
-                                        } label: {
+                                    Button {
+                                        settingViewModel.selectedFloor = index
+                                        settingViewModel.customLocation = settingViewModel.defaultFloor[index]
+                                    } label: {
+                                        Group {
                                             if settingViewModel.selectedFloor == index {
                                                 ZStack {
                                                     Text(settingViewModel.defaultFloor[index])
@@ -50,20 +51,22 @@ struct CustomLocationView: View {
                                                     HStack {
                                                         Spacer()
 
-                                                        Image("Next icon")
-                                                            .padding(.trailing, 5)
+                                                        if index != 0 {
+                                                            Image("Next icon")
+                                                                .padding(.trailing, 5)
+                                                        }
                                                     }
                                                 }
                                                 .frame(width: 135, height: 22)
                                                 .background(.black.opacity(0.12))
                                                 .clipShape(RoundedRectangle(cornerRadius: 3.0))
-                                                .padding(.bottom, 13)
+
                                             } else {
                                                 Text(settingViewModel.defaultFloor[index])
                                                     .frame(width: 135, height: 22)
-                                                    .padding(.bottom, 13)
                                             }
                                         }
+                                        .padding(.bottom, index != 6 ? 13 : 0)
                                     }
                                 }
                             }
@@ -89,17 +92,19 @@ struct CustomLocationView: View {
                                         settingViewModel.setCustomLocation(location: location)
                                         settingViewModel.selectedLocation = location
                                     } label: {
-                                        if location != settingViewModel.selectedLocation {
-                                            Text(location)
-                                                .frame(width: 135, height: 22)
-                                                .padding(.bottom, 13)
-                                        } else {
-                                            Text(location)
-                                                .frame(width: 135, height: 22)
-                                                .background(.black.opacity(0.12))
-                                                .clipShape(RoundedRectangle(cornerRadius: 3.0))
-                                                .padding(.bottom, 13)
+                                        Group {
+                                            if location != settingViewModel.selectedLocation {
+                                                Text(location)
+                                                    .frame(width: 135, height: 22)
+                                            } else {
+                                                Text(location)
+                                                    .frame(width: 135, height: 22)
+                                                    .background(.black.opacity(0.12))
+                                                    .clipShape(RoundedRectangle(cornerRadius: 3.0))
+                                            }
                                         }
+                                        .frame(width: 135, height: 22)
+                                        .padding(.bottom, location != settingViewModel.defaultLocation[settingViewModel.selectedFloor].last ? 13 : 0)
                                     }
                                 }
                             }
@@ -153,7 +158,7 @@ struct CustomLocationView: View {
                 .font(.custom(Font.GmarketMedium, size: 15))
                 .padding(.trailing, 10)
             }
-            .frame(width: 300, height: 350)
+            .frame(width: 300, height: 367)
             .padding()
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
