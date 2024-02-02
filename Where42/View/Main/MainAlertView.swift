@@ -27,18 +27,7 @@ struct MainAlertView: View {
                     let status = homeViewModel.confirmGroupName(
                         isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented,
                         isSelectViewPrsented: $mainViewModel.isSelectViewPrsented)
-
-                    switch status {
-                    case "wrong":
-
-                        mainViewModel.toast = Toast(title: "잘못된 그룹 이름입니다")
-                    case "long":
-                        mainViewModel.toast = Toast(title: "그룹 이름이 너무 깁니다")
-                    case "duplicate":
-                        mainViewModel.toast = Toast(title: "이미 존재하는 그룹입니다")
-                    default:
-                        return
-                    }
+                    mainViewModel.setToast(type: status)
                 }
             }
         }
@@ -61,14 +50,7 @@ struct MainAlertView: View {
                         mainViewModel.isEditGroupNameAlertPrsented = false
                     }
                 } else {
-                    switch status {
-                    case "wrong":
-                        mainViewModel.toast = Toast(title: "잘못된 그룹 이름입니다")
-                    case "long":
-                        mainViewModel.toast = Toast(title: "그룹 이름이 너무 깁니다")
-                    default:
-                        return
-                    }
+                    mainViewModel.setToast(type: status)
                 }
             }
         }

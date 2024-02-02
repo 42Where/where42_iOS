@@ -35,10 +35,9 @@ class SettingViewModel: ObservableObject {
 
     func UpdateComment() async -> String? {
         if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
-            return "wrong"
-        }
-        if inputText.count > 40 {
-            return "long"
+            return "wrongComment"
+        } else if inputText.count > 40 {
+            return "longComment"
         }
 
         do {

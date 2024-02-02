@@ -56,14 +56,7 @@ struct SettingAlert: View {
                     }
                     homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
                 } else {
-                    switch status {
-                    case "wrong":
-                        mainViewModel.toast = Toast(title: "잘못된 그룹 이름입니다")
-                    case "long":
-                        mainViewModel.toast = Toast(title: "그룹 이름이 너무 깁니다")
-                    default:
-                        return
-                    }
+                    mainViewModel.setToast(type: status)
                 }
             }
             .toastView(toast: $mainViewModel.toast)

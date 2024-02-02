@@ -191,15 +191,11 @@ class HomeViewModel: ObservableObject {
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) -> String? {
         print("confirm")
         if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
-            return "wrong"
+            return "wrongGroupName"
         } else if inputText.count > 40 {
-            return "long"
-        }
-
-        let duplicateName: Int? = groups.firstIndex(where: { $0.groupName == inputText })
-
-        if duplicateName != nil {
-            return "duplicate"
+            return "longGroupName"
+        } else if groups.firstIndex(where: { $0.groupName == inputText }) != nil {
+            return "duplicateGroupName"
         }
 
         newGroup.groupName = inputText
@@ -264,10 +260,12 @@ class HomeViewModel: ObservableObject {
     }
 
     func editGroupName() async -> String? {
-        if inputText == "" {
-            return "wrong"
+        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
+            return "wrongGroupName"
         } else if inputText.count > 40 {
-            return "long"
+            return "longGroupName"
+        } else if groups.firstIndex(where: { $0.groupName == inputText }) != nil {
+            return "duplicateGroupName"
         }
 
         for index in groups.indices {
