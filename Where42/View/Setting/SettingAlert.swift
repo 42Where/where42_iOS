@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct SettingAlert: View {
+    @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var settingViewModel: SettingViewModel
     @AppStorage("isLogin") var isLogin: Bool = false
-    @AppStorage("token") var token = ""
+    @AppStorage("accessToken") var accessToken = ""
+
+    @State private var message: String! = ""
 
     var body: some View {
         if settingViewModel.isLogoutAlertPresent {
-            CustomAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?", inputText: .constant("")) {
+            CustomAlert(
+                title: "로그아웃",
+                message: "로그아웃 하시겠습니까?",
+                inputText: .constant("")
+            ) {
                 withAnimation {
                     settingViewModel.isLogoutAlertPresent = false
                 }
@@ -24,25 +31,42 @@ struct SettingAlert: View {
                     self.homeViewModel.isShowSettingSheet = false
                     self.settingViewModel.isLogoutAlertPresent = false
                     self.isLogin = false
-                    self.token = ""
+                    self.accessToken = ""
                     self.homeViewModel.isLogout = true
                 }
             }
         }
 
         if settingViewModel.isStatusMessageAlertPresent {
-            CustomAlert(title: "상태메세지 변경", textFieldTitle: "상태메세지를 입력해주세요", inputText: $settingViewModel.inputText) {
+            CustomAlert(
+                title: "코멘트 변경",
+                inputText: $settingViewModel.inputText,
+                textFieldTitle: "코멘트를 입력해주세요"
+            ) {
                 withAnimation {
-                    settingViewModel.isStatusMessageAlertPresent.toggle()
+                    settingViewModel.isStatusMessageAlertPresent = false
                     settingViewModel.inputText = ""
                 }
             } rightButtonAction: {
-                withAnimation {
-                    settingViewModel.isStatusMessageAlertPresent.toggle()
+                let status = await settingViewModel.UpdateComment()
+
+                if status == nil {
+                    withAnimation {
+                        settingViewModel.isStatusMessageAlertPresent = false
+                    }
+                    homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
+                } else {
+                    switch status {
+                    case "wrong":
+                        mainViewModel.toast = Toast(title: "잘못된 그룹 이름입니다")
+                    case "long":
+                        mainViewModel.toast = Toast(title: "그룹 이름이 너무 깁니다")
+                    default:
+                        return
+                    }
                 }
-                await settingViewModel.UpdateComment()
-                homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
             }
+            .toastView(toast: $mainViewModel.toast)
         }
 
         if settingViewModel.isCustomLocationAlertPresent {

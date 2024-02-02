@@ -23,7 +23,8 @@ class FullScreenWKWebView: WKWebView {
 struct MyWebView: UIViewRepresentable {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @AppStorage("token") var token = ""
+    @AppStorage("accessToken") var accessToken = ""
+    @AppStorage("refreshToken") var refreshToken = ""
     @AppStorage("isLogin") var isLogin = false
     
     var urlToLoad: String
@@ -79,34 +80,37 @@ struct MyWebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            print("didFinish")
             if let host = webView.url?.host() {
                 print(host)
                 if host == "localhost" {
 //                    print(webView.url?.query()?.split(separator: "&"))
                     let query = webView.url?.query()?.split(separator: "&")
-                    parseQuery(token: String(query![0]), intraId: String(query![1]), agreement: String(query![2]))
-                    parent.isPresented = false
-                    parent.homeViewModel.getMemberInfo()
-                    parent.homeViewModel.getGroup()
-
-//                webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-//                    for cookie in cookies {
-//                        print(cookie.name)
-//                    }
-//                }
+                    webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+                        print("-------------- Cookie --------------")
+                        for cookie in cookies {
+//                            print(cookie.name, cookie.value)
+                            if cookie.name == "accessToken" {
+                                self.parent.accessToken = "Bearer " + cookie.value
+                            } else if cookie.name == "refreshToken" {
+                                self.parent.refreshToken = cookie.value
+                            }
+                        }
+                        print("------------------------------------")
+                        self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
+                        self.parent.isPresented = false
+                        self.parent.homeViewModel.getMemberInfo()
+                        self.parent.homeViewModel.getGroup()
+                    }
                 }
             }
         }
         
-        func parseQuery(token: String, intraId: String, agreement: String) {
-            print(token.components(separatedBy: "=")[1])
-            print(intraId.components(separatedBy: "=")[1])
+        func parseQuery(intraId: String, agreement: String) {
+//            print(intraId.components(separatedBy: "=")[1])
 //            print(agreement.components(separatedBy: "=")[1])
             
             parent.homeViewModel.intraId = Int(intraId.components(separatedBy: "=")[1])!
-//            parent.homeViewModel.intraId = 6
-            parent.token = "Bearer " + token.components(separatedBy: "=")[1]
+            
             if agreement.components(separatedBy: "=")[1] == "false" {
                 parent.homeViewModel.isShowAgreementSheet = true
             } else {
@@ -114,6 +118,10 @@ struct MyWebView: UIViewRepresentable {
                 parent.isLogin = true
                 parent.homeViewModel.isLogout = false
             }
+//            print("-------------- Parse --------------")
+//            print(parent.accessToken)
+//            print(parent.refreshToken)
+//            print("------------------------------------")
         }
     }
 }

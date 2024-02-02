@@ -9,8 +9,9 @@ import SwiftUI
 
 class API: ObservableObject {
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
-    @AppStorage("token") var token = ""
     @AppStorage("isLogin") var isLogin = false
+    @AppStorage("accessToken") var accessToken = ""
+    @AppStorage("refreshToken") var refreshToken = ""
 
     enum NetworkError: Error {
         case invalidURL
@@ -47,5 +48,9 @@ class API: ObservableObject {
         let errorMessage = components[1].replacingOccurrences(of: " errorMessage=", with: "").replacingOccurrences(of: ")\"", with: "")
 
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
+    }
+
+    func reissue() {
+        
     }
 }

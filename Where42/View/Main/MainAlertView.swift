@@ -15,8 +15,8 @@ struct MainAlertView: View {
         if mainViewModel.isNewGroupAlertPrsented {
             CustomAlert(
                 title: "새 그룹 만들기",
-                textFieldTitle: "그룹명 지정",
-                inputText: $homeViewModel.inputText)
+                inputText: $homeViewModel.inputText,
+                textFieldTitle: "그룹 이름을 입력해주세요")
             {
                 withAnimation {
                     homeViewModel.initNewGroup()
@@ -24,9 +24,21 @@ struct MainAlertView: View {
                 }
             } rightButtonAction: {
                 withAnimation {
-                    homeViewModel.confirmGroupName(
+                    let status = homeViewModel.confirmGroupName(
                         isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented,
                         isSelectViewPrsented: $mainViewModel.isSelectViewPrsented)
+
+                    switch status {
+                    case "wrong":
+
+                        mainViewModel.toast = Toast(title: "잘못된 그룹 이름입니다")
+                    case "long":
+                        mainViewModel.toast = Toast(title: "그룹 이름이 너무 깁니다")
+                    case "duplicate":
+                        mainViewModel.toast = Toast(title: "이미 존재하는 그룹입니다")
+                    default:
+                        return
+                    }
                 }
             }
         }
@@ -34,17 +46,28 @@ struct MainAlertView: View {
         if mainViewModel.isEditGroupNameAlertPrsented {
             CustomAlert(
                 title: "그룹 이름 수정",
-                textFieldTitle: "그룹 이름을 입력해주세요",
-                inputText: $homeViewModel.inputText)
+                inputText: $homeViewModel.inputText,
+                textFieldTitle: "그룹 이름을 입력해주세요")
             {
                 withAnimation {
                     homeViewModel.initNewGroup()
                     mainViewModel.isEditGroupNameAlertPrsented = false
                 }
             } rightButtonAction: {
-                if await homeViewModel.editGroupName() {
+                let status = await homeViewModel.editGroupName()
+
+                if status == nil {
                     withAnimation {
                         mainViewModel.isEditGroupNameAlertPrsented = false
+                    }
+                } else {
+                    switch status {
+                    case "wrong":
+                        mainViewModel.toast = Toast(title: "잘못된 그룹 이름입니다")
+                    case "long":
+                        mainViewModel.toast = Toast(title: "그룹 이름이 너무 깁니다")
+                    default:
+                        return
                     }
                 }
             }

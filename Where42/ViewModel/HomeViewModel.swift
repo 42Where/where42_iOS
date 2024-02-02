@@ -188,21 +188,24 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) {
+    func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) -> String? {
         print("confirm")
-        if inputText == "" {
-            return
+        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
+            return "wrong"
+        } else if inputText.count > 40 {
+            return "long"
         }
 
         let duplicateName: Int? = groups.firstIndex(where: { $0.groupName == inputText })
 
         if duplicateName != nil {
-            return
+            return "duplicate"
         }
 
         newGroup.groupName = inputText
         isNewGroupAlertPrsented.wrappedValue = false
         isSelectViewPrsented.wrappedValue = true
+        return nil
     }
 
     func getNotInGroupMember() async {
@@ -260,9 +263,11 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func editGroupName() async -> Bool {
+    func editGroupName() async -> String? {
         if inputText == "" {
-            return false
+            return "wrong"
+        } else if inputText.count > 40 {
+            return "long"
         }
 
         for index in groups.indices {
@@ -279,7 +284,7 @@ class HomeViewModel: ObservableObject {
                 }
             }
         }
-        return true
+        return nil
     }
 
     func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {

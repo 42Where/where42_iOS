@@ -33,10 +33,18 @@ class SettingViewModel: ObservableObject {
 
     private let memberAPI = MemberAPI()
 
-    func UpdateComment() async {
+    func UpdateComment() async -> String? {
+        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
+            return "wrong"
+        }
+        if inputText.count > 40 {
+            return "long"
+        }
+
         do {
             if let comment = try await memberAPI.updateStatusMessage(statusMessage: inputText) {
                 DispatchQueue.main.async {
+                    print(comment)
                     if comment.contains("http") == false {
                         self.newStatusMessage = comment
                         self.inputText = ""
@@ -48,6 +56,7 @@ class SettingViewModel: ObservableObject {
                 }
             }
         } catch {}
+        return nil
     }
 
     func initCustomLocation() {

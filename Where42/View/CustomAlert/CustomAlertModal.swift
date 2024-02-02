@@ -9,10 +9,9 @@ import SwiftUI
 
 struct CustomAlert: View {
     var title: String
-    var textFieldTitle: String?
     var message: String?
-
     @Binding var inputText: String
+    var textFieldTitle: String?
 
     var leftButtonAction: (() -> Void)?
     var rightButtonAction: (() async -> Void)?
@@ -36,8 +35,15 @@ struct CustomAlert: View {
                     }
                 }
 
+                if let message = message {
+                    Text(message)
+                        .font(.custom(Font.GmarketMedium, size: 15))
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(6)
+                }
+
                 if let textFieldTitle = textFieldTitle {
-                    TextField(textFieldTitle, text: $inputText)
+                    TextField(textFieldTitle, text: $inputText, axis: .vertical)
                         .font(.custom(Font.GmarketMedium, size: 16))
                         .padding(4)
                         .foregroundStyle(.whereDeepNavy)
@@ -45,15 +51,9 @@ struct CustomAlert: View {
                             RoundedRectangle(cornerRadius: 5)
                                 .stroke(.whereDeepNavy, lineWidth: 1)
                         )
+                        .lineLimit(...5)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                }
-
-                if let message = message {
-                    Text(message)
-                        .font(.custom(Font.GmarketMedium, size: 15))
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(6)
                 }
 
                 HStack {
@@ -128,7 +128,7 @@ struct CustomBasicAlert: View {
 }
 
 #Preview {
-    CustomAlert(title: "상태메시지 변경", textFieldTitle: "코멘트를 입력해주세요", inputText: .constant(""))
+    CustomAlert(title: "상태메시지 변경", inputText: .constant(""), textFieldTitle: "코멘트 입력 바람")
 //    CustomAlert(title: "로그아웃", textFieldTitle: nil, message: "이 'Group1' 을(를) 삭제하시겠습니까?", inputText: .constant(""))
 //    CustomBasicAlert(title: "현재 페이지를 로드할 수 없습니다")
 }

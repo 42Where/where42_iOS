@@ -11,14 +11,15 @@ struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @AppStorage("isLogin") var isLogin = false
-    @AppStorage("token") var token = ""
+    @AppStorage("accessToken") var accessToken = ""
     
     var body: some View {
         ZStack {
             VStack {
-//                Button("토큰") {
-//                    token = ""
-//                }
+                Button("토큰") {
+                    accessToken = ""
+                }
+                
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWork,

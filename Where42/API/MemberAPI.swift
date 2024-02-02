@@ -27,53 +27,14 @@ struct DeleteMemberDTO: Codable {
 }
 
 class MemberAPI: API {
-    func createMember(memberCreateDTO: CreateMemberDTO) async throws -> MemberInfo? {
-        guard let requestBody = try? JSONEncoder().encode(memberCreateDTO) else {
-            throw NetworkError.invalidRequestBody
-        }
-
-        guard let requestURL = URL(string: baseURL + "/member/") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = requestBody
-
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-            switch response.statusCode {
-            case 200 ... 299:
-                return try JSONDecoder().decode(MemberInfo.self, from: data)
-
-            case 400 ... 499:
-                throw NetworkError.BadRequest
-
-            case 500 ... 599:
-                throw NetworkError.ServerError
-
-            default: print("Unknown HTTP Response Status Code")
-            }
-        } catch {
-            print("Failed create Member")
-        }
-        return nil
-    }
-
     func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, String?) {
         guard let requestURL = URL(string: baseURL + "/member?intraId=\(intraId)") else {
             throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
-        print(token)
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        print(accessToken)
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -129,7 +90,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -176,7 +137,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -230,7 +191,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {

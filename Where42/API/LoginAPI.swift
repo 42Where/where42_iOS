@@ -39,11 +39,11 @@ class LoginAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
 
         print(" J O I N ")
         print(intraId)
-        print(token)
+        print(accessToken)
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

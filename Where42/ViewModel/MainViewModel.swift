@@ -21,4 +21,5 @@ class MainViewModel: ObservableObject {
     @Published var isEditGroupNameAlertPrsented = false
     @Published var isDeleteGroupAlertPrsented = false
     @Published var newGroupName = "수정중..."
+    @Published var toast: Toast? = nil
 }

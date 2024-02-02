@@ -83,7 +83,9 @@ struct Where42: View {
                 )
                 .ignoresSafeArea()
             }
+            .toastView(toast: $mainViewModel.toast)
         }
+
         .navigationViewStyle(StackNavigationViewStyle())
 
         .animation(.easeIn, value: isLogin)
