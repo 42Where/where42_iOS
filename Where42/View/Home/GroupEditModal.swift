@@ -45,12 +45,13 @@ struct GroupEditModal: View {
 
                 Button {
                     Task {
-                        await homeViewModel.getNotInGroupMember()
-                    }
-                    withAnimation {
-                        isPresented = false
-                        homeViewModel.selectedGroup = group
-                        homeViewModel.isGroupEditSelectAlertPrsented = true
+                        if await homeViewModel.getNotInGroupMember() {
+                            withAnimation {
+                                isPresented = false
+                                homeViewModel.selectedGroup = group
+                                homeViewModel.isGroupEditSelectAlertPrsented = true
+                            }
+                        }
                     }
                 } label: {
                     Text("멤버 수정하기")
@@ -80,5 +81,5 @@ struct GroupEditModal: View {
 #Preview {
     GroupEditModal(group: .constant(HomeViewModel().friends), isPresented: .constant(false))
         .environmentObject(HomeViewModel())
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
 }

@@ -49,7 +49,7 @@ struct NetworkMonitorView: View {
                 Text("네트워크 연결")
                     .font(.custom(Font.GmarketBold, size: 18))
 
-                Text("네트워크가 감지되지 않습니다. 연결 후 다시 시도해주세요")
+                Text("네트워크가 감지되지 않습니다. 연결 후 다시 시도해 주세요")
                     .font(.custom(Font.GmarketMedium, size: 15))
                     .multilineTextAlignment(.center)
                     .lineSpacing(6)

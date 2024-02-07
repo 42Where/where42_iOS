@@ -27,6 +27,10 @@ struct AddOneGroupMemberDTO: Codable {
 }
 
 class GroupAPI: API {
+    static let shared = GroupAPI()
+
+    override private init() {}
+
     func createGroup(groupName: String) async throws -> Int? {
         guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(groupName: groupName)) else {
             print("Failed Create Request Body")
@@ -41,7 +45,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -65,7 +69,9 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return nil
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return nil
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -75,6 +81,8 @@ class GroupAPI: API {
             default:
                 print("Failed Create Group")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed Create Group")
         }
@@ -87,7 +95,7 @@ class GroupAPI: API {
         }
 
         var request = URLRequest(url: requestURL)
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -112,7 +120,8 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return nil
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -122,6 +131,8 @@ class GroupAPI: API {
             default:
                 print("Failed Get Groups")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed Get Groups")
         }
@@ -142,7 +153,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -168,7 +179,8 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return nil
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -178,7 +190,8 @@ class GroupAPI: API {
             default:
                 print("Failed update Group name")
             }
-
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed update group name")
         }
@@ -194,7 +207,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -218,7 +231,8 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return false
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -228,6 +242,8 @@ class GroupAPI: API {
             default:
                 print("Failed delete group")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed delete group")
         }
@@ -250,7 +266,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -275,7 +291,9 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return false
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return false
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -285,6 +303,8 @@ class GroupAPI: API {
             default:
                 print("Failed delete group")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed delete group member")
         }
@@ -307,7 +327,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         do {
@@ -332,7 +352,9 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return false
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return false
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -342,6 +364,8 @@ class GroupAPI: API {
             default:
                 print("Failed add members")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed add members")
         }
@@ -362,7 +386,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         do {
@@ -390,6 +414,8 @@ class GroupAPI: API {
             default:
                 print("Failed add one member")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed add one member")
         }
@@ -403,7 +429,7 @@ class GroupAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -427,7 +453,9 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return nil
+                        try await GroupAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return nil
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -437,6 +465,8 @@ class GroupAPI: API {
             default:
                 print("Failed add members")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed add members")
         }

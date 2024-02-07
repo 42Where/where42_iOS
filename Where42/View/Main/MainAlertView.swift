@@ -74,34 +74,20 @@ struct MainAlertView: View {
         }
 
         if homeViewModel.isFriendDeleteAlertPresented {
-            if homeViewModel.isFriend {
-                CustomAlert(
-                    title: "친구 삭제",
-                    message: " 친구 '\(homeViewModel.selectedUser.intraName!)'님을 친구목록에서 삭제하시겠습니까?",
-                    inputText: .constant(""))
-                {
-                    withAnimation {
-                        homeViewModel.isFriendDeleteAlertPresented = false
-                    }
-                } rightButtonAction: {
-                    await homeViewModel.deleteUserInGroup()
+            CustomAlert(
+                title: homeViewModel.isFriend ? "친구 삭제" : "멤버 삭제",
+                message: homeViewModel.isFriend ?
+                    " 친구 '\(homeViewModel.selectedUser.intraName!)'님을 친구목록에서 삭제하시겠습니까?" :
+                    " 멤버 '\(homeViewModel.selectedUser.intraName!)'님을 그룹에서 삭제하시겠습니까?",
+                inputText: .constant(""))
+            {
+                withAnimation {
+                    homeViewModel.isFriendDeleteAlertPresented = false
+                }
+            } rightButtonAction: {
+                if await homeViewModel.deleteUserInGroup() {
                     withAnimation {
                         self.homeViewModel.isFriendDeleteAlertPresented = false
-                    }
-                }
-            } else {
-                CustomAlert(
-                    title: "멤버 삭제",
-                    message: " 멤버 '\(homeViewModel.selectedUser.intraName!)'님을 그룹에서 삭제하시겠습니까?",
-                    inputText: .constant(""))
-                {
-                    withAnimation {
-                        homeViewModel.isFriendDeleteAlertPresented = false
-                    }
-                } rightButtonAction: {
-                    await homeViewModel.deleteUserInGroup()
-                    withAnimation {
-                        homeViewModel.isFriendDeleteAlertPresented = false
                     }
                 }
             }
@@ -116,5 +102,5 @@ struct MainAlertView: View {
 #Preview {
     MainAlertView()
         .environmentObject(HomeViewModel())
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
 }

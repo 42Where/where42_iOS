@@ -25,7 +25,9 @@ struct SearchMemberInfoView: View {
                     homeViewModel.selectedUsers.append(userInfo)
                 }
             } else {
-                if let index = homeViewModel.selectedUsers.firstIndex(where: { $0.intraId == userInfo.intraId }) {
+                if let index = homeViewModel.selectedUsers.firstIndex(
+                    where: { $0.intraId == userInfo.intraId })
+                {
                     withAnimation {
                         homeViewModel.selectedUsers.remove(at: index)
                     }

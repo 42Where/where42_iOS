@@ -23,8 +23,6 @@ class FullScreenWKWebView: WKWebView {
 struct MyWebView: UIViewRepresentable {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @AppStorage("accessToken") var accessToken = ""
-    @AppStorage("refreshToken") var refreshToken = ""
     @AppStorage("isLogin") var isLogin = false
     
     var urlToLoad: String
@@ -83,19 +81,25 @@ struct MyWebView: UIViewRepresentable {
             if let host = webView.url?.host() {
                 print(host)
                 if host == "localhost" {
-//                    print(webView.url?.query()?.split(separator: "&"))
+                    print(webView.url?.absoluteString)
+                    print(webView.url?.query()?.split(separator: "&"))
+                    if (webView.url?.absoluteString.contains("login-fail")) == true {
+                        parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                        parent.isPresented = false
+                        return
+                    }
                     let query = webView.url?.query()?.split(separator: "&")
                     webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                        print("-------------- Cookie --------------")
+//                        print("-------------- Cookie --------------")
                         for cookie in cookies {
 //                            print(cookie.name, cookie.value)
                             if cookie.name == "accessToken" {
-                                self.parent.accessToken = "Bearer " + cookie.value
+                                API.sharedAPI.accessToken = "Bearer " + cookie.value
                             } else if cookie.name == "refreshToken" {
-                                self.parent.refreshToken = cookie.value
+                                API.sharedAPI.refreshToken = "Bearer " + cookie.value
                             }
                         }
-                        print("------------------------------------")
+//                        print("------------------------------------")
                         self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
                         self.parent.isPresented = false
                         self.parent.homeViewModel.getMemberInfo()
@@ -128,5 +132,5 @@ struct MyWebView: UIViewRepresentable {
 
 #Preview {
     MyWebView(urlToLoad: "http://13.209.149.15:8080/v3/member?intraId=7", isPresented: .constant(true))
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
 }

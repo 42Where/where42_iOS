@@ -14,16 +14,16 @@ class LoginViewModel: ObservableObject {
     @Published var isAgreeButtonPushed = false
     @Published var intraURL: String? = ""
 
-    let memberAPI = MemberAPI()
-    let loginAPI = LoginAPI()
+    let memberAPI = MemberAPI.shared
+    let loginAPI = LoginAPI.shared
 
     func login() {
         Task {
             do {
-                let (_, url) = try await memberAPI.getMemberInfo(intraId: 99760)
-                if url != nil {
+                let response = try await memberAPI.getMemberInfo(intraId: 99760)
+                if response == nil {
                     DispatchQueue.main.async {
-                        self.intraURL = url
+                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                         self.isShow42IntraSheet = true
                         self.isLoginButtonPushed = false
                     }

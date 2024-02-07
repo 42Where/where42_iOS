@@ -12,7 +12,6 @@ struct SettingAlert: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var settingViewModel: SettingViewModel
     @AppStorage("isLogin") var isLogin: Bool = false
-    @AppStorage("accessToken") var accessToken = ""
 
     @State private var message: String! = ""
 
@@ -31,7 +30,7 @@ struct SettingAlert: View {
                     self.homeViewModel.isShowSettingSheet = false
                     self.settingViewModel.isLogoutAlertPresent = false
                     self.isLogin = false
-                    self.accessToken = ""
+                    API.sharedAPI.accessToken = ""
                     self.homeViewModel.isLogout = true
                 }
             }
@@ -59,7 +58,6 @@ struct SettingAlert: View {
                     mainViewModel.setToast(type: status)
                 }
             }
-            .toastView(toast: $mainViewModel.toast)
         }
 
         if settingViewModel.isCustomLocationAlertPresent {

@@ -39,6 +39,7 @@ struct MyToast: View {
             }
             .padding()
         }
+        .frame(minWidth: 350)
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 1)
@@ -50,16 +51,20 @@ struct ToastModifier: ViewModifier {
     @Binding var toast: Toast?
     @State private var workItem: DispatchWorkItem?
     func body(content: Content) -> some View {
-        content
-            .overlay(
-                ZStack {
-                    mainToastView()
-                        .offset(y: -30)
-                }.animation(.spring(), value: toast)
-            )
-            .onChange(of: toast) { _ in
-                showToast()
-            }
+        ZStack {
+            content
+                .overlay(
+                    ZStack {
+                        mainToastView()
+                            //                        .offset(y: -45)
+                            .offset(y: -500)
+                    }
+                    .animation(.spring(), value: toast)
+                )
+                .onChange(of: toast) { _ in
+                    showToast()
+                }
+        }
     }
 
     @ViewBuilder func mainToastView() -> some View {

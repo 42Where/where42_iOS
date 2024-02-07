@@ -13,7 +13,8 @@ struct Where42: View {
         UITabBar.appearance().scrollEdgeAppearance = .init()
     }
 
-    @StateObject var mainViewModel: MainViewModel = .init()
+    @EnvironmentObject private var sceneDelegate: WhereSceneDelegate
+    @StateObject var mainViewModel: MainViewModel = .shared
     @StateObject var homeViewModel: HomeViewModel = .init()
     @StateObject var networkMonitor: NetworkMonitor = .init()
 
@@ -47,12 +48,9 @@ struct Where42: View {
                         }
                         .environment(\.horizontalSizeClass, .compact)
                     }
-                    .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
-                        SelectingView()
-                    }
                     .toolbar {
                         Where42ToolBarContent(
-                            isShowSheet: $homeViewModel.isShowSettingSheet
+                            //                            isShowSheet: $homeViewModel.isShowSettingSheet
                         )
                     }
                     .unredacted()
@@ -75,20 +73,43 @@ struct Where42: View {
                 if networkMonitor.isConnected == false {
                     NetworkMonitorView()
                 }
+
+                if homeViewModel.isShow42IntraSheet == true && homeViewModel.isLogout == false && networkMonitor.isConnected == true {
+                    MyWebView(
+                        urlToLoad: homeViewModel.intraURL!,
+                        isPresented: $homeViewModel.isShow42IntraSheet
+                    )
+                    .ignoresSafeArea()
+                    .zIndex(-1)
+                    ProgressView()
+                        .zIndex(2)
+                }
             }
-            .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
+            .fullScreenCover(isPresented: homeViewModel.isLogout == true ? $homeViewModel.isShow42IntraSheet : .constant(false)) {
                 MyWebView(
                     urlToLoad: homeViewModel.intraURL!,
                     isPresented: $homeViewModel.isShow42IntraSheet
                 )
                 .ignoresSafeArea()
             }
-            .toastView(toast: $mainViewModel.toast)
+
+            .disabled(homeViewModel.isShow42IntraSheet && networkMonitor.isConnected)
         }
+        .onChange(of: homeViewModel.toast) { newToast in
+            if newToast != nil {
+                mainViewModel.toast = newToast
+                homeViewModel.toast = nil
+            }
+        }
+        .onChange(of: mainViewModel.toast) { newToast in
+            sceneDelegate.toastState = newToast
+        }
+        .toastView(toast: $mainViewModel.toast)
 
         .navigationViewStyle(StackNavigationViewStyle())
 
         .animation(.easeIn, value: isLogin)
+
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)
         .environmentObject(networkMonitor)
@@ -99,6 +120,8 @@ struct Where42: View {
     Where42()
         .environmentObject(MainViewModel())
         .environmentObject(HomeViewModel())
+        .environmentObject(API())
+        .environmentObject(WhereSceneDelegate())
 }
 
 // struct Previews2: PreviewProvider {

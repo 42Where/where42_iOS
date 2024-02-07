@@ -18,7 +18,7 @@ class SettingViewModel: ObservableObject {
     @Published var intraURL = ""
     @Published var selectedFloor = 0
     @Published var selectedLocation = ""
-    @Published var customLocation = ""
+    @Published var customLocation = "지하"
 
     let defaultFloor = ["지하", "1층", "2층", "3층", "4층", "5층", "옥상"]
     let defaultLocation = [
@@ -31,7 +31,7 @@ class SettingViewModel: ObservableObject {
         ["탁구대", "야외정원"]
     ]
 
-    private let memberAPI = MemberAPI()
+    private let memberAPI = MemberAPI.shared
 
     func UpdateComment() async -> String? {
         if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
@@ -42,18 +42,23 @@ class SettingViewModel: ObservableObject {
 
         do {
             if let comment = try await memberAPI.updateStatusMessage(statusMessage: inputText) {
-                DispatchQueue.main.async {
-                    print(comment)
-                    if comment.contains("http") == false {
+                print(comment)
+                if comment.contains("http") == false {
+                    DispatchQueue.main.async {
                         self.newStatusMessage = comment
                         self.inputText = ""
-                    } else {
+                    }
+                } else {
+                    DispatchQueue.main.async {
                         self.intraURL = comment
                         self.isIntraPresented = true
-                        // 상태메세지를 업데이트 할 수 없습니다
                     }
+                    return "reissue"
+                    // 상태메세지를 업데이트 할 수 없습니다
                 }
             }
+        } catch API.NetworkError.Reissue {
+            return "reissue"
         } catch {}
         return nil
     }
@@ -63,32 +68,39 @@ class SettingViewModel: ObservableObject {
         selectedLocation = ""
     }
 
-    func setCustomLocation(location: String) {
-        if selectedFloor == 6 || location == "집현전" || location == "42LAB" {
-            customLocation = location
-        } else if selectedFloor != 0 {
-            customLocation = customLocation + " " + location
+    func setCustomLocation() {
+        if selectedFloor == 6 || selectedLocation == "집현전" || selectedLocation == "42LAB" {
+            customLocation = selectedLocation
+        } else if selectedFloor != 0 && selectedLocation != "" {
+            customLocation = customLocation + " " + selectedLocation
         }
         print(customLocation)
     }
 
-    func UpdateCustomLocation() async {
+    func UpdateCustomLocation() async -> String? {
         do {
+            setCustomLocation()
             if let responseCustomLocation = try await memberAPI.updateCustomLocation(customLocation: customLocation) {
-                DispatchQueue.main.async {
-                    if responseCustomLocation.contains("http") == false {
+                if responseCustomLocation.contains("http") == false {
+                    DispatchQueue.main.async {
                         self.newLocation = responseCustomLocation
                         withAnimation {
                             self.isCustomLocationAlertPresent = false
                         }
-                    } else {
+                    }
+                } else {
+                    DispatchQueue.main.async {
                         self.intraURL = responseCustomLocation
                         self.isIntraPresented = true
-                        // 자리를 업데이트 할 수 없습니다
                     }
-                    self.initCustomLocation()
+                    return nil
+                    // 자리를 업데이트 할 수 없습니다
                 }
+                initCustomLocation()
             }
+        } catch API.NetworkError.Reissue {
+            return "reissue"
         } catch {}
+        return nil
     }
 }

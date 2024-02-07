@@ -79,9 +79,6 @@ struct FriendEditModal: View {
                     }
                     homeViewModel.selectedGroup = groupInfo
                     homeViewModel.selectedUsers.append(userInfo)
-                    //                    Task {
-//                        await homeViewModel.deleteUserInGroup()
-//                    }
                 }
             } label: {
                 if isFriend {

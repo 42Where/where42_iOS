@@ -7,7 +7,13 @@
 
 import SwiftUI
 
+struct ResponseRefreshToken: Codable {
+    var refreshToken: String
+}
+
 class API: ObservableObject {
+    static let sharedAPI = API()
+
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
     @AppStorage("isLogin") var isLogin = false
     @AppStorage("accessToken") var accessToken = ""
@@ -20,6 +26,7 @@ class API: ObservableObject {
         case BadRequest
         case ServerError
         case Token
+        case Reissue
     }
 
     func errorPrint(_ error: Error, message: String) {
@@ -36,6 +43,8 @@ class API: ObservableObject {
             print("서버 에러입니다")
         case NetworkError.Token:
             print("유효하지 않은 토큰입니다")
+        case NetworkError.Reissue:
+            print("잠시 후 다시 시도해 주세요")
         default:
             print(message + ": " + error.localizedDescription)
         }
@@ -44,13 +53,64 @@ class API: ObservableObject {
     func parseCustomException(response: String) -> CustomException {
         let components = response.components(separatedBy: ",")
 
-        let errorCode = Int(components[0].replacingOccurrences(of: "\"CustomException(errorCode=", with: "")) ?? 0
-        let errorMessage = components[1].replacingOccurrences(of: " errorMessage=", with: "").replacingOccurrences(of: ")\"", with: "")
+        let errorCode = Int(components[0].replacingOccurrences(of: "\"CustomException(errorCode=", with: "").replacingOccurrences(of: "CustomException(errorCode=", with: "")) ?? 0
+
+        let errorMessage = components[1].replacingOccurrences(of: " errorMessage=", with: "").replacingOccurrences(of: ")\"", with: "").replacingOccurrences(of: ")", with: "")
 
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
     }
 
-    func reissue() {
-        
+    func reissue() async throws {
+        guard let requestURL = URL(string: baseURL + "/jwt/reissue") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.addValue(API.sharedAPI.refreshToken, forHTTPHeaderField: "Authorization")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
+
+            print("----- reissue -----")
+            accessToken = ""
+            switch response.statusCode {
+            case 200 ... 299:
+                if response.mimeType == "text/html" {
+                    return
+                } else {
+                    let reissueAccessToken = try JSONDecoder().decode(ResponseRefreshToken.self, from: data).refreshToken
+                    API.sharedAPI.accessToken = "Bearer " + reissueAccessToken
+                    return
+                }
+
+            case 300 ... 399:
+                throw NetworkError.BadRequest
+
+            case 400 ... 499:
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        return
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
+
+            case 500 ... 599:
+                throw NetworkError.ServerError
+
+            default: print("Unknown HTTP Response Status Code")
+            }
+        } catch {
+            errorPrint(error, message: "Failed to get member infomation")
+        }
     }
 }

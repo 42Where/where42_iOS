@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct GroupMemberAddView: View {
+    @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
     @Binding var group: GroupInfo
@@ -18,6 +19,12 @@ struct GroupMemberAddView: View {
 
     var body: some View {
         VStack {
+            Button("access 초기화") {
+                homeViewModel.resetAccesstoken()
+            }
+            Button("access 만료") {
+                homeViewModel.expireAccesstoken()
+            }
             Text("\(homeViewModel.selectedGroup.groupName)")
                 .font(.custom(Font.GmarketBold, size: 25))
                 .padding(.top, 40)
@@ -126,14 +133,15 @@ struct GroupMemberAddView: View {
                 Button {
                     Task {
                         if homeViewModel.selectedUsers.isEmpty == false {
-                            await homeViewModel.addMemberInGroup(
+                            if await homeViewModel.addMemberInGroup(
                                 groupId: homeViewModel.selectedGroup.groupId!
-                            )
+                            ) {
+                                withAnimation {
+                                    isGroupEditModalPresented = false
+                                    homeViewModel.isGroupMemberAddViewPrsented = false
+                                }
+                            }
                         }
-                    }
-                    withAnimation {
-                        isGroupEditModalPresented = false
-                        homeViewModel.isGroupMemberAddViewPrsented = false
                     }
                 } label: {
                     HStack {
@@ -150,8 +158,8 @@ struct GroupMemberAddView: View {
             .background(.whereDeepNavy)
             .disabled(group.members.count == 0)
         }
-        
         .ignoresSafeArea(.keyboard, edges: .bottom)
+//        .toastView(toast: $mainViewModel.toast)
     }
 }
 

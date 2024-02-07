@@ -12,7 +12,7 @@ struct Where42ToolBarContent: ToolbarContent {
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var networkMonitor: NetworkMonitor
 
-    @Binding var isShowSheet: Bool
+//    @Binding var isShowSheet: Bool
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -33,17 +33,20 @@ struct Where42ToolBarContent: ToolbarContent {
 
         if mainViewModel.tabSelection == "Home" {
             ToolbarItem(placement: .topBarTrailing) {
-                Button { isShowSheet.toggle() } label: { Image("Setting icon M") }
-                    .sheet(isPresented: $isShowSheet) {
-                        SettingView()
-                    }
-                    .disabled(mainViewModel.isDeleteGroupAlertPrsented ||
-                        mainViewModel.isNewGroupAlertPrsented ||
-                        mainViewModel.isEditGroupNameAlertPrsented ||
-                        homeViewModel.isGroupEditSelectAlertPrsented ||
-                        homeViewModel.isFriendDeleteAlertPresented ||
-                        !networkMonitor.isConnected)
-//                NavigationLink(destination: SettingView(), label: { Image("Setting icon M") })
+//                Button { isShowSheet.toggle() } label: { Image("Setting icon M") }
+//                    .sheet(isPresented: $isShowSheet) {
+//                        SettingView()
+//                    }
+                NavigationLink(
+                    destination: SettingView(),
+                    label: { Image("Setting icon M") }
+                )
+                .disabled(mainViewModel.isDeleteGroupAlertPrsented ||
+                    mainViewModel.isNewGroupAlertPrsented ||
+                    mainViewModel.isEditGroupNameAlertPrsented ||
+                    homeViewModel.isGroupEditSelectAlertPrsented ||
+                    homeViewModel.isFriendDeleteAlertPresented ||
+                    !networkMonitor.isConnected)
             }
         }
     }

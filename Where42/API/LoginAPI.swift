@@ -12,6 +12,9 @@ struct joinDTO: Codable {
 }
 
 class LoginAPI: API {
+    static let shared = LoginAPI()
+
+    override private init() {}
 //    func login() async throws -> {
 //        guard let requestURL = URL(string: baseURL + "") else {
 //            throw NetworkError.invalidURL
@@ -39,7 +42,7 @@ class LoginAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(LoginAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
 
         print(" J O I N ")
         print(intraId)

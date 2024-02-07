@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CustomLocationView: View {
+    @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var settingViewModel: SettingViewModel
 
@@ -42,6 +43,7 @@ struct CustomLocationView: View {
                                     Button {
                                         settingViewModel.selectedFloor = index
                                         settingViewModel.customLocation = settingViewModel.defaultFloor[index]
+                                        settingViewModel.selectedLocation = ""
                                     } label: {
                                         Group {
                                             if settingViewModel.selectedFloor == index {
@@ -89,7 +91,7 @@ struct CustomLocationView: View {
                             VStack(spacing: 0) {
                                 ForEach(settingViewModel.defaultLocation[settingViewModel.selectedFloor], id: \.self) { location in
                                     Button {
-                                        settingViewModel.setCustomLocation(location: location)
+//                                        settingViewModel.setCustomLocation(location: location)
                                         settingViewModel.selectedLocation = location
                                     } label: {
                                         Group {
@@ -141,8 +143,13 @@ struct CustomLocationView: View {
 
                     Button {
                         Task {
-                            await settingViewModel.UpdateCustomLocation()
-                            self.homeViewModel.myInfo.location = self.settingViewModel.newLocation
+                            let status = await settingViewModel.UpdateCustomLocation()
+
+                            if status == nil {
+                                self.homeViewModel.myInfo.location = self.settingViewModel.newLocation
+                            } else {
+                                mainViewModel.setToast(type: status)
+                            }
                         }
                     } label: {
                         Text("확인")

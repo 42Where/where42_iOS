@@ -27,14 +27,18 @@ struct DeleteMemberDTO: Codable {
 }
 
 class MemberAPI: API {
-    func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, String?) {
+    static let shared = MemberAPI()
+
+    override private init() {}
+
+    func getMemberInfo(intraId: Int) async throws -> MemberInfo? {
         guard let requestURL = URL(string: baseURL + "/member?intraId=\(intraId)") else {
             throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
-        print(accessToken)
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        print("getMemberInfo token: ", MemberAPI.sharedAPI.accessToken)
+        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -48,9 +52,9 @@ class MemberAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    return (nil, requestURL.absoluteString)
+                    return nil
                 } else {
-                    return try (JSONDecoder().decode(MemberInfo.self, from: data), nil)
+                    return try JSONDecoder().decode(MemberInfo.self, from: data)
                 }
 
             case 300 ... 399:
@@ -61,7 +65,9 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return (nil, requestURL.absoluteString)
+                        try await MemberAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return (nil, requestURL.absoluteString)
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -72,10 +78,12 @@ class MemberAPI: API {
 
             default: print("Unknown HTTP Response Status Code")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to get member infomation")
         }
-        return (nil, nil)
+        return nil
     }
 
     func deleteMember(intraId: Int) async throws -> Bool {
@@ -90,7 +98,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -108,7 +116,9 @@ class MemberAPI: API {
                 let response = String(data: data, encoding: String.Encoding.utf8)!
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {}
+                    if customException.handleError() == false {
+                        try await MemberAPI.sharedAPI.reissue()
+                    }
                 } else {
                     throw NetworkError.BadRequest
                 }
@@ -137,13 +147,13 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
-            print(String(data: data, encoding: String.Encoding.utf8)!)
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
@@ -162,7 +172,9 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return requestURL.absoluteString
+                        try await MemberAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return requestURL.absoluteString
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -173,6 +185,8 @@ class MemberAPI: API {
 
             default: print("Unknown HTTP Response Status Code")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to update status message")
         }
@@ -191,7 +205,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -203,6 +217,7 @@ class MemberAPI: API {
 
 //            print(String(data: data, encoding: String.Encoding.utf8)!)
 
+            print(response.statusCode)
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
@@ -217,7 +232,9 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return requestURL.absoluteString
+                        try await MemberAPI.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+//                        return requestURL.absoluteString
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -228,6 +245,8 @@ class MemberAPI: API {
 
             default: print("Unknown HTTP Response Status Code")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to update custom location")
         }

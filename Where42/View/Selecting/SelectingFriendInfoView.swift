@@ -23,11 +23,13 @@ struct SelectingFriendInfoView: View {
             if isCheck {
                 homeViewModel.selectedUsers.append(userInfo)
             } else {
-                if let index = homeViewModel.selectedUsers.firstIndex(of: userInfo) {
+                if let index = homeViewModel.selectedUsers.firstIndex(
+                    where: { $0.intraId == userInfo.intraId })
+                {
                     homeViewModel.selectedUsers.remove(at: index)
                 }
             }
-//            print(homeViewModel.selectedUsers)
+            print(homeViewModel.selectedUsers)
         } label: {
             HStack(spacing: 10) {
                 KFImage(URL(string: userInfo.image!)!)

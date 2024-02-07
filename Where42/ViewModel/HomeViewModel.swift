@@ -37,11 +37,12 @@ class HomeViewModel: ObservableObject {
     @Published var notInGroups: GroupInfo = .init(id: UUID(), groupName: "not in group", members: [.empty])
 
     @Published var friends: GroupInfo = .empty
+    @Published var toast: Toast? = nil
 
     @AppStorage("isLogin") var isLogin = false
 
-    private let memberAPI = MemberAPI()
-    private let groupAPI = GroupAPI()
+    private let memberAPI = MemberAPI.shared
+    private let groupAPI = GroupAPI.shared
 
     // Count
 
@@ -87,21 +88,22 @@ class HomeViewModel: ObservableObject {
     func getMemberInfo() {
         Task {
             do {
-                let (memberInfo, url) = try await memberAPI.getMemberInfo(intraId: self.intraId)
-                if url != nil {
+                let memberInfo = try await memberAPI.getMemberInfo(intraId: self.intraId)
+                if memberInfo == nil {
                     DispatchQueue.main.async {
-                        self.intraURL = url
+                        self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                         self.isShow42IntraSheet = true
+                        self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
                 } else {
                     DispatchQueue.main.async {
-                        if memberInfo != nil {
-                            self.myInfo = memberInfo!
-                            self.isLogin = true
-                        } else {
-                            self.isLogin = false
-                        }
+                        self.myInfo = memberInfo!
+                        self.isLogin = true
                     }
+                }
+            } catch API.NetworkError.Reissue {
+                DispatchQueue.main.async {
+                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } catch {
                 print("Error getUserInfo: \(error)")
@@ -126,7 +128,7 @@ class HomeViewModel: ObservableObject {
                     if let responseGroups = responseGroups {
                         self.groups = responseGroups
                         self.friends = self.groups[responseGroups.firstIndex(
-                            where: { $0.groupName == "default" }
+                            where: { $0.groupId == self.myInfo.defaultGroupId }
                         )!]
                         self.friends.groupName = "친구목록"
                         self.friends.isOpen = true
@@ -135,7 +137,12 @@ class HomeViewModel: ObservableObject {
                     } else {
                         self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                         self.isShow42IntraSheet = true
+                        self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
+                }
+            } catch API.NetworkError.Reissue {
+                DispatchQueue.main.async {
+                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } catch {
                 print("Error getGroup: \(error)")
@@ -144,21 +151,29 @@ class HomeViewModel: ObservableObject {
     }
 
     func createNewGroup(intraId: Int) async {
-        DispatchQueue.main.async {
-            self.newGroup.members = self.selectedUsers
-            self.countGroupUsers(group: &self.newGroup)
-            self.groups.append(self.newGroup)
-        }
+        do {
+            let groupId = try await groupAPI.createGroup(groupName: newGroup.groupName)
 
-        let groupId = try? await groupAPI.createGroup(groupName: newGroup.groupName)
-
-        if groupId != nil && selectedUsers.isEmpty == false {
-            await addMemberInGroup(groupId: groupId!)
-        } else if groupId == nil {
-            DispatchQueue.main.async {
-                self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
-                self.isShow42IntraSheet = true
+            if groupId != nil && selectedUsers.isEmpty == false {
+                await addMemberInGroup(groupId: groupId!)
+                DispatchQueue.main.async {
+                    self.newGroup.members = self.selectedUsers
+                    self.countGroupUsers(group: &self.newGroup)
+                    self.groups.append(self.newGroup)
+                }
+            } else if groupId == nil {
+                DispatchQueue.main.async {
+                    self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
+                    self.isShow42IntraSheet = true
+                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                }
             }
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+            }
+        } catch {
+            print("Error Create Group: \(error)")
         }
 
         DispatchQueue.main.async {
@@ -167,25 +182,32 @@ class HomeViewModel: ObservableObject {
         getGroup()
     }
 
-    func addMemberInGroup(groupId: Int) async {
-        DispatchQueue.main.async {
-            if let selectedIndex = self.groups.firstIndex(where: { $0.groupId == groupId }) {
-                self.groups[selectedIndex].members += self.selectedUsers
-                self.countAllGroupUsers()
-            }
-        }
-
+    func addMemberInGroup(groupId: Int) async -> Bool {
         do {
             let response = try await groupAPI.addMembers(groupId: groupId, members: selectedUsers)
             if response == false {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
+                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    if let selectedIndex = self.groups.firstIndex(where: { $0.groupId == groupId }) {
+                        self.groups[selectedIndex].members += self.selectedUsers
+                        self.countAllGroupUsers()
+                    }
                 }
             }
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+            }
+            return false
         } catch {
             print("Failed to create new group")
         }
+        return true
     }
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) -> String? {
@@ -194,8 +216,6 @@ class HomeViewModel: ObservableObject {
             return "wrongGroupName"
         } else if inputText.count > 40 {
             return "longGroupName"
-        } else if groups.firstIndex(where: { $0.groupName == inputText }) != nil {
-            return "duplicateGroupName"
         }
 
         newGroup.groupName = inputText
@@ -204,32 +224,40 @@ class HomeViewModel: ObservableObject {
         return nil
     }
 
-    func getNotInGroupMember() async {
+    func getNotInGroupMember() async -> Bool {
         do {
             guard let response = try await groupAPI.getNotInGorupMember(groupId: selectedGroup.groupId!) else {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
+                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
-                return
+                return false
             }
 
             DispatchQueue.main.async {
 //                print(response)
                 self.notInGroups.members = response
             }
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+            }
+            return false
         } catch {}
+        return true
     }
 
-    func deleteUserInGroup() async {
+    func deleteUserInGroup() async -> Bool {
         do {
             let response = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedUsers)
             if response == false {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
+                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
-                return
+                return false
             }
 
             DispatchQueue.main.async {
@@ -254,9 +282,15 @@ class HomeViewModel: ObservableObject {
                 self.initNewGroup()
                 self.countOnlineUsers()
             }
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                self.toast = Toast(title: "잠시 후  다시 시도해 주세요")
+            }
+            return false
         } catch {
             print("Failed delete group member")
         }
+        return true
     }
 
     func editGroupName() async -> String? {
@@ -264,21 +298,21 @@ class HomeViewModel: ObservableObject {
             return "wrongGroupName"
         } else if inputText.count > 40 {
             return "longGroupName"
-        } else if groups.firstIndex(where: { $0.groupName == inputText }) != nil {
-            return "duplicateGroupName"
         }
 
         for index in groups.indices {
             if groups[index] == selectedGroup {
-                DispatchQueue.main.async {
-                    self.groups[index].groupName = self.inputText
-                }
-
-                if await updateGroupName(groupId: groups[index].groupId!, newGroupName: inputText) {
+                if await updateGroupName(
+                    groupId: groups[index].groupId!,
+                    newGroupName: inputText
+                ) {
                     DispatchQueue.main.async {
+                        self.groups[index].groupName = self.inputText
                         self.inputText = ""
                         self.selectedGroup = .empty
                     }
+                } else {
+                    return "reissue"
                 }
             }
         }
@@ -287,14 +321,19 @@ class HomeViewModel: ObservableObject {
 
     func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
         do {
-            guard let _ = try await groupAPI.updateGroupName(groupId: groupId, newGroupName: newGroupName) else {
+            guard let _ = try await groupAPI.updateGroupName(
+                groupId: groupId,
+                newGroupName: newGroupName
+            ) else {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
                 }
-                return false
+                throw API.NetworkError.Reissue
             }
             return true
+        } catch API.NetworkError.Reissue {
+            return false
         } catch {
             return false
         }
@@ -317,8 +356,13 @@ class HomeViewModel: ObservableObject {
                         DispatchQueue.main.async {
                             self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                             self.isShow42IntraSheet = true
+                            self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                         }
                         return false
+                    }
+                } catch API.NetworkError.Reissue {
+                    DispatchQueue.main.async {
+                        self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
                 } catch {
                     return false
@@ -326,5 +370,31 @@ class HomeViewModel: ObservableObject {
             }
         }
         return false
+    }
+
+    func reissue() async {
+        do {
+            try await API.sharedAPI.reissue()
+        } catch {}
+    }
+
+    func resetAccesstoken() {
+        API.sharedAPI.accessToken = ""
+        print("token: ", API.sharedAPI.accessToken)
+    }
+
+    func expireAccesstoken() {
+        API.sharedAPI.accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
+        print("token: ", API.sharedAPI.accessToken)
+    }
+
+    func resetRefreshtoken() {
+        API.sharedAPI.refreshToken = ""
+        print("token: ", API.sharedAPI.refreshToken)
+    }
+
+    func expireRefreshtoken() {
+        API.sharedAPI.refreshToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
+        print("token: ", API.sharedAPI.refreshToken)
     }
 }

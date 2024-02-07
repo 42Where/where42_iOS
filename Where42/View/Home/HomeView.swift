@@ -11,15 +11,26 @@ struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @AppStorage("isLogin") var isLogin = false
-    @AppStorage("accessToken") var accessToken = ""
     
     var body: some View {
         ZStack {
             VStack {
-                Button("토큰") {
-                    accessToken = ""
+                Button("access 초기화") {
+                    homeViewModel.resetAccesstoken()
                 }
-                
+                Button("access 만료") {
+                    homeViewModel.expireAccesstoken()
+                }
+                Button("refresh 초기화") {
+                    homeViewModel.resetRefreshtoken()
+                }
+                Button("refresh 만료") {
+                    homeViewModel.expireAccesstoken()
+                }
+                Button("toast") {
+                    mainViewModel.toast = Toast(title: "제가 보이시나요?")
+                }
+
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWork,
@@ -34,20 +45,17 @@ struct HomeView: View {
                     Spacer()
                 }
                 .refreshable {
-                    homeViewModel.getMemberInfo()
-                    homeViewModel.getGroup()
+                    Task {
+                        await homeViewModel.reissue()
+                        homeViewModel.getMemberInfo()
+                        homeViewModel.getGroup()
+                    }
                 }
             }
             .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
             .disabled(homeViewModel.isLoading)
                 
             .onAppear {
-                homeViewModel.countOnlineUsers()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                    homeViewModel.isLoading = false
-                }
-            }
-            .task {
                 if !homeViewModel.isAPILoaded {
                     homeViewModel.getMemberInfo()
                     homeViewModel.getGroup()
@@ -55,6 +63,13 @@ struct HomeView: View {
                         homeViewModel.isAPILoaded = true
                     }
                 }
+                homeViewModel.countOnlineUsers()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                    homeViewModel.isLoading = false
+                }
+            }
+            .task {
+                await homeViewModel.reissue()
             }
             
             if homeViewModel.isLoading {
@@ -75,11 +90,14 @@ struct HomeView: View {
                 isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
             )
         }
+        .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
+            SelectingView()
+        }
     }
 }
 
 #Preview {
     HomeView()
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
         .environmentObject(HomeViewModel())
 }

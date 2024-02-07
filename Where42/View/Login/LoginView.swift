@@ -12,7 +12,6 @@ struct LoginView: View {
     @StateObject var loginViewModel: LoginViewModel = .init()
 
     @AppStorage("isLogin") var isLogin: Bool = false
-    @AppStorage("token ") var token = ""
 
     var body: some View {
         ZStack {
@@ -57,7 +56,7 @@ struct LoginView: View {
                 Spacer()
 
                 Button("L O G I N") {
-                    print(token)
+                    API.sharedAPI.accessToken = ""
                     loginViewModel.isLoginButtonPushed = true
                     loginViewModel.login()
                 }
@@ -94,14 +93,18 @@ struct LoginView: View {
                 }
             }
         }
+        .onChange(of: loginViewModel.isShow42IntraSheet) { newValue in
+            homeViewModel.isShow42IntraSheet = newValue
+            homeViewModel.intraURL = loginViewModel.intraURL
+        }
         .disabled(loginViewModel.isLoginButtonPushed)
         .foregroundColor(.whereDeepNavy)
-        .fullScreenCover(isPresented: $loginViewModel.isShow42IntraSheet) {
-            MyWebView(
-                urlToLoad: loginViewModel.intraURL!,
-                isPresented: $loginViewModel.isShow42IntraSheet)
-                .ignoresSafeArea()
-        }
+//        .fullScreenCover(isPresented: $loginViewModel.isShow42IntraSheet) {
+//            MyWebView(
+//                urlToLoad: loginViewModel.intraURL!,
+//                isPresented: $loginViewModel.isShow42IntraSheet)
+//                .ignoresSafeArea()
+//        }
         .fullScreenCover(isPresented: $homeViewModel.isShowAgreementSheet) {
             PersonalInfoAgreementView(isPresent: $homeViewModel.isShowAgreementSheet)
         }
