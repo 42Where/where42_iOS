@@ -20,7 +20,7 @@ class HomeViewModel: ObservableObject {
     @Published var inputText = ""
     @Published var intraURL: String? = ""
     @Published var isAPILoaded = false
-    @Published var isLogout = false
+    @Published var isLogout = true
     @Published var isFriend = false
     @Published var viewPresentCount = 0
 

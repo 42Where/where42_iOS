@@ -14,6 +14,7 @@ struct Toast: Equatable {
 
 struct MyToast: View {
     var title: String
+    var shadow: Bool
     var onCancleTapped: () -> Void
 
     var body: some View {
@@ -42,22 +43,22 @@ struct MyToast: View {
         .frame(minWidth: 350)
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 1)
+        .shadow(color: shadow ? .black.opacity(0.2) : .clear, radius: 4, x: 0, y: 1)
         .padding(16)
     }
 }
 
 struct ToastModifier: ViewModifier {
     @Binding var toast: Toast?
+    var shadow: Bool = true
     @State private var workItem: DispatchWorkItem?
+
     func body(content: Content) -> some View {
         ZStack {
             content
                 .overlay(
                     ZStack {
                         mainToastView()
-                            //                        .offset(y: -45)
-                            .offset(y: -500)
                     }
                     .animation(.spring(), value: toast)
                 )
@@ -70,14 +71,15 @@ struct ToastModifier: ViewModifier {
     @ViewBuilder func mainToastView() -> some View {
         if let toast = toast {
             VStack {
-                Spacer()
                 MyToast(
-                    title: toast.title
+                    title: toast.title,
+                    shadow: shadow
                 ) {
                     dismissToast()
                 }
+                Spacer()
             }
-            .transition(.move(edge: .bottom))
+            .transition(.move(edge: .top))
         }
     }
 
@@ -107,11 +109,11 @@ struct ToastModifier: ViewModifier {
 }
 
 extension View {
-    func toastView(toast: Binding<Toast?>) -> some View {
-        modifier(ToastModifier(toast: toast))
+    func toastView(toast: Binding<Toast?>, shadow: Bool) -> some View {
+        modifier(ToastModifier(toast: toast, shadow: shadow))
     }
 }
 
 #Preview {
-    MyToast(title: "오류 발생", onCancleTapped: {})
+    MyToast(title: "오류 발생", shadow: true, onCancleTapped: {})
 }

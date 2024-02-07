@@ -25,65 +25,68 @@ struct Where42: View {
     var body: some View {
         NavigationView {
             ZStack {
-                if isLogin {
-                    VStack {
-                        TabView(selection: $mainViewModel.tabSelection) {
-                            HomeView()
-                                .tabItem {
-                                    Image("Home icon M")
-                                    Text("⸻")
-                                }
-                                .tag("Home")
-                                .environment(\.horizontalSizeClass, oldSizeClass)
-
-                            SearchView()
-                                .tabItem {
-                                    VStack {
-                                        Image("Search icon M")
+                ZStack {
+                    if isLogin {
+                        VStack {
+                            TabView(selection: $mainViewModel.tabSelection) {
+                                HomeView()
+                                    .tabItem {
+                                        Image("Home icon M")
                                         Text("⸻")
                                     }
-                                }
-                                .tag("Search")
-                                .environment(\.horizontalSizeClass, oldSizeClass)
+                                    .tag("Home")
+                                    .environment(\.horizontalSizeClass, oldSizeClass)
+
+                                SearchView()
+                                    .tabItem {
+                                        VStack {
+                                            Image("Search icon M")
+                                            Text("⸻")
+                                        }
+                                    }
+                                    .tag("Search")
+                                    .environment(\.horizontalSizeClass, oldSizeClass)
+                            }
+                            .environment(\.horizontalSizeClass, .compact)
                         }
-                        .environment(\.horizontalSizeClass, .compact)
+                        .toolbar {
+                            Where42ToolBarContent(
+                                //                            isShowSheet: $homeViewModel.isShowSettingSheet
+                            )
+                        }
+                        .unredacted()
+                        .zIndex(0)
+
+                        MainAlertView()
+                            .zIndex(1)
+
+                    } else {
+                        VStack {
+                            LoginView()
+                        }
+                        .transition(
+                            .asymmetric(
+                                insertion: AnyTransition.move(edge: .bottom),
+                                removal: AnyTransition.move(edge: .bottom)
+                            ))
                     }
-                    .toolbar {
-                        Where42ToolBarContent(
-                            //                            isShowSheet: $homeViewModel.isShowSettingSheet
+
+                    if networkMonitor.isConnected == false {
+                        NetworkMonitorView()
+                    }
+
+                    if homeViewModel.isShow42IntraSheet == true && homeViewModel.isLogout == false && networkMonitor.isConnected == true {
+                        MyWebView(
+                            urlToLoad: homeViewModel.intraURL!,
+                            isPresented: $homeViewModel.isShow42IntraSheet
                         )
+                        .ignoresSafeArea()
+                        .zIndex(-1)
+                        ProgressView()
+                            .zIndex(2)
                     }
-                    .unredacted()
-                    .zIndex(0)
-
-                    MainAlertView()
-                        .zIndex(1)
-
-                } else {
-                    VStack {
-                        LoginView()
-                    }
-                    .transition(
-                        .asymmetric(
-                            insertion: AnyTransition.move(edge: .bottom),
-                            removal: AnyTransition.move(edge: .bottom)
-                        ))
                 }
-
-                if networkMonitor.isConnected == false {
-                    NetworkMonitorView()
-                }
-
-                if homeViewModel.isShow42IntraSheet == true && homeViewModel.isLogout == false && networkMonitor.isConnected == true {
-                    MyWebView(
-                        urlToLoad: homeViewModel.intraURL!,
-                        isPresented: $homeViewModel.isShow42IntraSheet
-                    )
-                    .ignoresSafeArea()
-                    .zIndex(-1)
-                    ProgressView()
-                        .zIndex(2)
-                }
+                .disabled(homeViewModel.isShow42IntraSheet && networkMonitor.isConnected)
             }
             .fullScreenCover(isPresented: homeViewModel.isLogout == true ? $homeViewModel.isShow42IntraSheet : .constant(false)) {
                 MyWebView(
@@ -92,8 +95,6 @@ struct Where42: View {
                 )
                 .ignoresSafeArea()
             }
-
-            .disabled(homeViewModel.isShow42IntraSheet && networkMonitor.isConnected)
         }
         .onChange(of: homeViewModel.toast) { newToast in
             if newToast != nil {
@@ -104,7 +105,7 @@ struct Where42: View {
         .onChange(of: mainViewModel.toast) { newToast in
             sceneDelegate.toastState = newToast
         }
-        .toastView(toast: $mainViewModel.toast)
+        .toastView(toast: $mainViewModel.toast, shadow: true)
 
         .navigationViewStyle(StackNavigationViewStyle())
 

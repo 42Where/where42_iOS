@@ -12,9 +12,7 @@ struct ToastScene: View {
 
     var body: some View {
         Color.clear
-            .ignoresSafeArea()
-            .toastView(toast: $mainViewModel.toast)
-            .transition(.move(edge: .bottom))
+            .toastView(toast: $mainViewModel.toast, shadow: false)
     }
 }
 

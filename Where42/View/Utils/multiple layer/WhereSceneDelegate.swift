@@ -11,13 +11,17 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
     var toastState: Toast? {
         didSet(oldValue) {
             if oldValue == nil {
-                setupToastWindow()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self.setupToastWindow()
+                }
+            } else {
+                toastWindow = nil
             }
         }
     }
 
     var toastWindow: UIWindow?
-    var windowScene: UIWindowScene?
+    weak var windowScene: UIWindowScene?
 
     func scene(
         _ scene: UIScene,
@@ -29,18 +33,19 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
     }
 
     func setupToastWindow() {
-        print("setup")
         guard let windowScene = windowScene else {
             return
         }
 
         let viewController = UIHostingController(
-            rootView: ToastScene().environmentObject(MainViewModel.shared)
+            rootView: ToastScene()
+                .environmentObject(MainViewModel.shared)
         )
         viewController.view.backgroundColor = .clear
 
         let window = PassThroughWindow(windowScene: windowScene)
         window.rootViewController = viewController
+
         window.isHidden = false
 
         toastWindow = window
