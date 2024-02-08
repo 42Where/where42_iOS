@@ -70,7 +70,9 @@ struct HomeView: View {
                 }
             }
             .task {
-                _ = await homeViewModel.reissue()
+                if API.sharedAPI.isLogin {
+                    _ = await homeViewModel.reissue()
+                }
             }
             
             if homeViewModel.isLoading {

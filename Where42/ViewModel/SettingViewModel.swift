@@ -32,6 +32,7 @@ class SettingViewModel: ObservableObject {
     ]
 
     private let memberAPI = MemberAPI.shared
+    private let loginAPI = LoginAPI.shared
 
     func UpdateComment() async -> String? {
         if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
@@ -102,5 +103,11 @@ class SettingViewModel: ObservableObject {
             return "reissue"
         } catch {}
         return nil
+    }
+
+    func logout() async {
+        do {
+            try await loginAPI.logout()
+        } catch {}
     }
 }

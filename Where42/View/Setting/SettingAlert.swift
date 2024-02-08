@@ -26,11 +26,12 @@ struct SettingAlert: View {
                     settingViewModel.isLogoutAlertPresent = false
                 }
             } rightButtonAction: {
+                await self.settingViewModel.logout()
+                API.sharedAPI.accessToken = ""
                 withAnimation {
                     self.homeViewModel.isShowSettingSheet = false
                     self.settingViewModel.isLogoutAlertPresent = false
                     self.isLogin = false
-                    API.sharedAPI.accessToken = ""
                     self.homeViewModel.isLogout = true
                 }
             }

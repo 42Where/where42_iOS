@@ -79,4 +79,39 @@ class LoginAPI: API {
             }
         } catch {}
     }
+
+    func logout() async throws {
+        guard let requsetURL = URL(string: baseURL + "/logout") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requsetURL)
+        request.httpMethod = "POST"
+        request.addValue(API.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+            print(String(data: data, encoding: .utf8))
+
+            switch response.statusCode {
+            case 200 ... 299:
+                if response.mimeType == "text/html" {
+                    throw NetworkError.Token
+                } else {
+                    print("Succeed logout")
+                }
+            case 400 ... 499:
+                throw NetworkError.BadRequest
+            case 500 ... 599:
+                throw NetworkError.ServerError
+            default:
+                print("Failed logout")
+            }
+        } catch {}
+    }
 }

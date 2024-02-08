@@ -42,6 +42,7 @@ class HomeViewModel: ObservableObject {
 
     private let memberAPI = MemberAPI.shared
     private let groupAPI = GroupAPI.shared
+    private let loginAPI = LoginAPI.shared
 
     // Count
 
@@ -377,8 +378,15 @@ class HomeViewModel: ObservableObject {
             return true
         } catch {
             print("reissue failed")
+            await logout()
             return false
         }
+    }
+
+    func logout() async {
+        do {
+            try await loginAPI.logout()
+        } catch {}
     }
 
     func resetAccesstoken() {
