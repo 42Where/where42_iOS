@@ -65,15 +65,19 @@ class SettingViewModel: ObservableObject {
     }
 
     func initCustomLocation() {
-        selectedFloor = 0
-        selectedLocation = ""
+        DispatchQueue.main.async {
+            self.selectedFloor = 0
+            self.selectedLocation = ""
+        }
     }
 
     func setCustomLocation() {
-        if selectedFloor == 6 || selectedLocation == "집현전" || selectedLocation == "42LAB" {
-            customLocation = selectedLocation
-        } else if selectedFloor != 0 && selectedLocation != "" {
-            customLocation = customLocation + " " + selectedLocation
+        DispatchQueue.main.async {
+            if self.selectedFloor == 6 || self.selectedLocation == "집현전" || self.selectedLocation == "42LAB" {
+                self.customLocation = self.selectedLocation
+            } else if self.selectedFloor != 0 && self.selectedLocation != "" {
+                self.customLocation = self.customLocation + " " + self.selectedLocation
+            }
         }
         print(customLocation)
     }
