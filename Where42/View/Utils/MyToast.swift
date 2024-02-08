@@ -14,7 +14,6 @@ struct Toast: Equatable {
 
 struct MyToast: View {
     var title: String
-    var shadow: Bool
     var onCancleTapped: () -> Void
 
     var body: some View {
@@ -43,14 +42,13 @@ struct MyToast: View {
         .frame(minWidth: 350)
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .shadow(color: shadow ? .black.opacity(0.2) : .clear, radius: 4, x: 0, y: 1)
+        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 1)
         .padding(16)
     }
 }
 
 struct ToastModifier: ViewModifier {
     @Binding var toast: Toast?
-    var shadow: Bool = true
     @State private var workItem: DispatchWorkItem?
 
     func body(content: Content) -> some View {
@@ -72,8 +70,7 @@ struct ToastModifier: ViewModifier {
         if let toast = toast {
             VStack {
                 MyToast(
-                    title: toast.title,
-                    shadow: shadow
+                    title: toast.title
                 ) {
                     dismissToast()
                 }
@@ -109,11 +106,11 @@ struct ToastModifier: ViewModifier {
 }
 
 extension View {
-    func toastView(toast: Binding<Toast?>, shadow: Bool) -> some View {
-        modifier(ToastModifier(toast: toast, shadow: shadow))
+    func toastView(toast: Binding<Toast?>) -> some View {
+        modifier(ToastModifier(toast: toast))
     }
 }
 
 #Preview {
-    MyToast(title: "오류 발생", shadow: true, onCancleTapped: {})
+    MyToast(title: "오류 발생", onCancleTapped: {})
 }

@@ -12,7 +12,7 @@ struct ToastScene: View {
 
     var body: some View {
         Color.clear
-            .toastView(toast: $mainViewModel.toast, shadow: false)
+            .toastView(toast: $mainViewModel.toast)
     }
 }
 

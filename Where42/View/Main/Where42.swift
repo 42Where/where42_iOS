@@ -88,7 +88,7 @@ struct Where42: View {
                 }
                 .disabled(homeViewModel.isShow42IntraSheet && networkMonitor.isConnected)
             }
-            .fullScreenCover(isPresented: homeViewModel.isLogout == true ? $homeViewModel.isShow42IntraSheet : .constant(false)) {
+            .fullScreenCover(isPresented: homeViewModel.isLogout == true && networkMonitor.isConnected == true ? $homeViewModel.isShow42IntraSheet : .constant(false)) {
                 MyWebView(
                     urlToLoad: homeViewModel.intraURL!,
                     isPresented: $homeViewModel.isShow42IntraSheet
@@ -96,16 +96,11 @@ struct Where42: View {
                 .ignoresSafeArea()
             }
         }
-        .onChange(of: homeViewModel.toast) { newToast in
-            if newToast != nil {
-                mainViewModel.toast = newToast
-                homeViewModel.toast = nil
-            }
+        .onAppear {
+            sceneDelegate.toastState = mainViewModel.toast
         }
-        .onChange(of: mainViewModel.toast) { newToast in
-            sceneDelegate.toastState = newToast
-        }
-        .toastView(toast: $mainViewModel.toast, shadow: true)
+
+        .toastView(toast: $mainViewModel.toast)
 
         .navigationViewStyle(StackNavigationViewStyle())
 

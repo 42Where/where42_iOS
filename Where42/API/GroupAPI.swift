@@ -69,7 +69,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return nil
                     }
@@ -120,7 +120,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
                     }
                 } else {
@@ -179,7 +179,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
                     }
                 } else {
@@ -231,7 +231,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
                     }
                 } else {
@@ -291,7 +291,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return false
                     }
@@ -352,7 +352,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return false
                     }
@@ -453,7 +453,7 @@ class GroupAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await GroupAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return nil
                     }

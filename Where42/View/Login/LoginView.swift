@@ -93,6 +93,9 @@ struct LoginView: View {
                 }
             }
         }
+        .onAppear {
+            MainViewModel.shared.toast = nil
+        }
         .onChange(of: loginViewModel.isShow42IntraSheet) { newValue in
             homeViewModel.isShow42IntraSheet = newValue
             homeViewModel.intraURL = loginViewModel.intraURL

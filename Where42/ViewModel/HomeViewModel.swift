@@ -37,7 +37,6 @@ class HomeViewModel: ObservableObject {
     @Published var notInGroups: GroupInfo = .init(id: UUID(), groupName: "not in group", members: [.empty])
 
     @Published var friends: GroupInfo = .empty
-    @Published var toast: Toast? = nil
 
     @AppStorage("isLogin") var isLogin = false
 
@@ -93,7 +92,7 @@ class HomeViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                         self.isShow42IntraSheet = true
-                        self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                        MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -103,7 +102,7 @@ class HomeViewModel: ObservableObject {
                 }
             } catch API.NetworkError.Reissue {
                 DispatchQueue.main.async {
-                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } catch {
                 print("Error getUserInfo: \(error)")
@@ -137,12 +136,12 @@ class HomeViewModel: ObservableObject {
                     } else {
                         self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                         self.isShow42IntraSheet = true
-                        self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                        MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
                 }
             } catch API.NetworkError.Reissue {
                 DispatchQueue.main.async {
-                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } catch {
                 print("Error getGroup: \(error)")
@@ -165,12 +164,12 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
-                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             }
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
-                self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
             print("Error Create Group: \(error)")
@@ -189,7 +188,7 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
-                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
                 DispatchQueue.main.async {
@@ -201,7 +200,7 @@ class HomeViewModel: ObservableObject {
             }
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
-                self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
             return false
         } catch {
@@ -230,7 +229,7 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
-                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
                 return false
             }
@@ -241,7 +240,7 @@ class HomeViewModel: ObservableObject {
             }
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
-                self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
             return false
         } catch {}
@@ -255,7 +254,7 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                     self.isShow42IntraSheet = true
-                    self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
                 return false
             }
@@ -284,7 +283,7 @@ class HomeViewModel: ObservableObject {
             }
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
-                self.toast = Toast(title: "잠시 후  다시 시도해 주세요")
+                MainViewModel.shared.toast = Toast(title: "잠시 후  다시 시도해 주세요")
             }
             return false
         } catch {
@@ -356,13 +355,13 @@ class HomeViewModel: ObservableObject {
                         DispatchQueue.main.async {
                             self.intraURL = "http://13.209.149.15:8080/v3/member?intraId=99760"
                             self.isShow42IntraSheet = true
-                            self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                            MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                         }
                         return false
                     }
                 } catch API.NetworkError.Reissue {
                     DispatchQueue.main.async {
-                        self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                        MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
                 } catch {
                     return false
@@ -372,29 +371,41 @@ class HomeViewModel: ObservableObject {
         return false
     }
 
-    func reissue() async {
+    func reissue() async -> Bool {
         do {
             try await API.sharedAPI.reissue()
-        } catch {}
+            return true
+        } catch {
+            print("reissue failed")
+            return false
+        }
     }
 
     func resetAccesstoken() {
-        API.sharedAPI.accessToken = ""
-        print("token: ", API.sharedAPI.accessToken)
+        DispatchQueue.main.async {
+            API.sharedAPI.accessToken = ""
+            print("access token: ", API.sharedAPI.accessToken)
+        }
     }
 
     func expireAccesstoken() {
-        API.sharedAPI.accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
-        print("token: ", API.sharedAPI.accessToken)
+        DispatchQueue.main.async {
+            API.sharedAPI.accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
+            print("access token: ", API.sharedAPI.accessToken)
+        }
     }
 
     func resetRefreshtoken() {
-        API.sharedAPI.refreshToken = ""
-        print("token: ", API.sharedAPI.refreshToken)
+        DispatchQueue.main.async {
+            API.sharedAPI.refreshToken = ""
+            print("refresh token: ", API.sharedAPI.refreshToken)
+        }
     }
 
     func expireRefreshtoken() {
-        API.sharedAPI.refreshToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
-        print("token: ", API.sharedAPI.refreshToken)
+        DispatchQueue.main.async {
+            API.sharedAPI.refreshToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
+            print("refresh token: ", API.sharedAPI.refreshToken)
+        }
     }
 }

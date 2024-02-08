@@ -11,11 +11,10 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
     var toastState: Toast? {
         didSet(oldValue) {
             if oldValue == nil {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    self.setupToastWindow()
-                }
-            } else {
-                toastWindow = nil
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+//                    self.setupToastWindow()
+//                }
+                setupToastWindow()
             }
         }
     }
@@ -41,6 +40,7 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
             rootView: ToastScene()
                 .environmentObject(MainViewModel.shared)
         )
+
         viewController.view.backgroundColor = .clear
 
         let window = PassThroughWindow(windowScene: windowScene)

@@ -65,7 +65,7 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await MemberAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return (nil, requestURL.absoluteString)
                     }
@@ -117,7 +117,7 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await MemberAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -172,7 +172,7 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await MemberAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return requestURL.absoluteString
                     }
@@ -232,7 +232,7 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await MemberAPI.sharedAPI.reissue()
+                        try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
 //                        return requestURL.absoluteString
                     }

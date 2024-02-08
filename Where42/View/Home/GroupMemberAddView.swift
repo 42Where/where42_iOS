@@ -159,7 +159,6 @@ struct GroupMemberAddView: View {
             .disabled(group.members.count == 0)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
-//        .toastView(toast: $mainViewModel.toast)
     }
 }
 

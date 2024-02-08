@@ -84,6 +84,7 @@ struct MyWebView: UIViewRepresentable {
                     print(webView.url?.absoluteString)
                     print(webView.url?.query()?.split(separator: "&"))
                     if (webView.url?.absoluteString.contains("login-fail")) == true {
+                        print("login-fail")
                         parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                         parent.isPresented = false
                         return

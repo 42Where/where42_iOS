@@ -15,21 +15,21 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
-                Button("access 초기화") {
-                    homeViewModel.resetAccesstoken()
-                }
-                Button("access 만료") {
-                    homeViewModel.expireAccesstoken()
-                }
-                Button("refresh 초기화") {
-                    homeViewModel.resetRefreshtoken()
-                }
-                Button("refresh 만료") {
-                    homeViewModel.expireAccesstoken()
-                }
-                Button("toast") {
-                    mainViewModel.toast = Toast(title: "제가 보이시나요?")
-                }
+//                Button("access 초기화") {
+//                    homeViewModel.resetAccesstoken()
+//                }
+//                Button("access 만료") {
+//                    homeViewModel.expireAccesstoken()
+//                }
+//                Button("refresh 초기화") {
+//                    homeViewModel.resetRefreshtoken()
+//                }
+//                Button("refresh 만료") {
+//                    homeViewModel.expireRefreshtoken()
+//                }
+//                Button("toast") {
+//                    mainViewModel.toast = Toast(title: "제가 보이시나요?")
+//                }
 
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
@@ -46,9 +46,10 @@ struct HomeView: View {
                 }
                 .refreshable {
                     Task {
-                        await homeViewModel.reissue()
-                        homeViewModel.getMemberInfo()
-                        homeViewModel.getGroup()
+                        if await homeViewModel.reissue() {
+                            homeViewModel.getMemberInfo()
+                            homeViewModel.getGroup()
+                        }
                     }
                 }
             }
@@ -69,7 +70,7 @@ struct HomeView: View {
                 }
             }
             .task {
-                await homeViewModel.reissue()
+                _ = await homeViewModel.reissue()
             }
             
             if homeViewModel.isLoading {

@@ -69,6 +69,8 @@ class API: ObservableObject {
         request.httpMethod = "POST"
         request.addValue(API.sharedAPI.refreshToken, forHTTPHeaderField: "Authorization")
 
+        print("API.sharedAPI.refreshToken: ", API.sharedAPI.refreshToken)
+
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -76,14 +78,15 @@ class API: ObservableObject {
                 throw NetworkError.invalidHTTPResponse
             }
 
-//            print(String(data: data, encoding: String.Encoding.utf8)!)
+            //            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             print("----- reissue -----")
             accessToken = ""
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    return
+                    API.sharedAPI.isLogin = false
+                    throw NetworkError.Reissue
                 } else {
                     let reissueAccessToken = try JSONDecoder().decode(ResponseRefreshToken.self, from: data).refreshToken
                     API.sharedAPI.accessToken = "Bearer " + reissueAccessToken
@@ -98,7 +101,8 @@ class API: ObservableObject {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        return
+                        API.sharedAPI.isLogin = false
+                        throw NetworkError.Reissue
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -109,6 +113,8 @@ class API: ObservableObject {
 
             default: print("Unknown HTTP Response Status Code")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to get member infomation")
         }
