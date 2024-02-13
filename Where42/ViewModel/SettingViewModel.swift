@@ -8,14 +8,13 @@
 import SwiftUI
 
 class SettingViewModel: ObservableObject {
-    @Published var isLogoutAlertPresent = false
-    @Published var isStatusMessageAlertPresent = false
-    @Published var isCustomLocationAlertPresent = false
-    @Published var isIntraPresented = false
+    @Published var isLogoutAlertPresented = false
+    @Published var isStatusMessageAlertPresented = false
+    @Published var isCustomLocationAlertPresented = false
     @Published var inputText = ""
     @Published var newStatusMessage = "수정중..."
     @Published var newLocation = "수정중..."
-    @Published var intraURL = ""
+
     @Published var selectedFloor = 0
     @Published var selectedLocation = ""
     @Published var customLocation = "지하"
@@ -51,8 +50,7 @@ class SettingViewModel: ObservableObject {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.intraURL = comment
-                        self.isIntraPresented = true
+                        MainViewModel.shared.is42IntraSheetPresented = true
                     }
                     return "reissue"
                     // 상태메세지를 업데이트 할 수 없습니다
@@ -90,13 +88,12 @@ class SettingViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.newLocation = responseCustomLocation
                         withAnimation {
-                            self.isCustomLocationAlertPresent = false
+                            self.isCustomLocationAlertPresented = false
                         }
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.intraURL = responseCustomLocation
-                        self.isIntraPresented = true
+                        MainViewModel.shared.is42IntraSheetPresented = true
                     }
                     return nil
                     // 자리를 업데이트 할 수 없습니다

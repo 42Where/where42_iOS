@@ -10,6 +10,7 @@ import SwiftUI
 struct PersonalInfoAgreementView: View {
     @EnvironmentObject private var loginViewModel: LoginViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
     @Binding var isPresent: Bool
 
     var body: some View {
@@ -76,10 +77,10 @@ struct PersonalInfoAgreementView: View {
 
                     Button {
                         loginViewModel.isAgreeButtonPushed = true
-                        loginViewModel.join(intraId: String(homeViewModel.intraId))
+                        loginViewModel.join(intraId: String(API.sharedAPI.intraId))
                         isPresent = false
-                        homeViewModel.isLogin = true
-                        homeViewModel.isLogout = false
+                        API.sharedAPI.isLogin = true
+                        mainViewModel.isLogout = false
                         homeViewModel.isAPILoaded = false
                     } label: {
                         Text("동의")

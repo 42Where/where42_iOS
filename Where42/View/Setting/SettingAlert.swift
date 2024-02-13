@@ -16,35 +16,34 @@ struct SettingAlert: View {
     @State private var message: String! = ""
 
     var body: some View {
-        if settingViewModel.isLogoutAlertPresent {
+        if settingViewModel.isLogoutAlertPresented {
             CustomAlert(
                 title: "로그아웃",
                 message: "로그아웃 하시겠습니까?",
                 inputText: .constant("")
             ) {
                 withAnimation {
-                    settingViewModel.isLogoutAlertPresent = false
+                    settingViewModel.isLogoutAlertPresented = false
                 }
             } rightButtonAction: {
                 await self.settingViewModel.logout()
                 API.sharedAPI.accessToken = ""
                 withAnimation {
-                    self.homeViewModel.isShowSettingSheet = false
-                    self.settingViewModel.isLogoutAlertPresent = false
+                    self.settingViewModel.isLogoutAlertPresented = false
                     self.isLogin = false
-                    self.homeViewModel.isLogout = true
+                    self.mainViewModel.isLogout = true
                 }
             }
         }
 
-        if settingViewModel.isStatusMessageAlertPresent {
+        if settingViewModel.isStatusMessageAlertPresented {
             CustomAlert(
                 title: "코멘트 변경",
                 inputText: $settingViewModel.inputText,
                 textFieldTitle: "코멘트를 입력해주세요"
             ) {
                 withAnimation {
-                    settingViewModel.isStatusMessageAlertPresent = false
+                    settingViewModel.isStatusMessageAlertPresented = false
                     settingViewModel.inputText = ""
                 }
             } rightButtonAction: {
@@ -52,7 +51,7 @@ struct SettingAlert: View {
 
                 if status == nil {
                     withAnimation {
-                        settingViewModel.isStatusMessageAlertPresent = false
+                        settingViewModel.isStatusMessageAlertPresented = false
                     }
                     homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
                 } else {
@@ -61,7 +60,7 @@ struct SettingAlert: View {
             }
         }
 
-        if settingViewModel.isCustomLocationAlertPresent {
+        if settingViewModel.isCustomLocationAlertPresented {
             CustomLocationView()
         }
     }

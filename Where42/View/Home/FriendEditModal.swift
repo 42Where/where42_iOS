@@ -71,14 +71,14 @@ struct FriendEditModal: View {
                 withAnimation {
                     isPresented = false
                     homeViewModel.isFriendDeleteAlertPresented = true
-                    homeViewModel.selectedUser = userInfo
+                    homeViewModel.selectedMember = userInfo
                     if isFriend {
                         homeViewModel.isFriend = true
                     } else {
                         homeViewModel.isFriend = false
                     }
                     homeViewModel.selectedGroup = groupInfo
-                    homeViewModel.selectedUsers.append(userInfo)
+                    homeViewModel.selectedMembers.append(userInfo)
                 }
             } label: {
                 if isFriend {

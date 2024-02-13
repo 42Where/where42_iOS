@@ -13,7 +13,6 @@ struct SelectingFriendInfoView: View {
 
     @Binding var userInfo: MemberInfo
 
-    @State private var isWork = false
     @State private var isCheck = false
 
     var body: some View {
@@ -21,15 +20,15 @@ struct SelectingFriendInfoView: View {
             userInfo.isCheck.toggle()
             isCheck.toggle()
             if isCheck {
-                homeViewModel.selectedUsers.append(userInfo)
+                homeViewModel.selectedMembers.append(userInfo)
             } else {
-                if let index = homeViewModel.selectedUsers.firstIndex(
+                if let index = homeViewModel.selectedMembers.firstIndex(
                     where: { $0.intraId == userInfo.intraId })
                 {
-                    homeViewModel.selectedUsers.remove(at: index)
+                    homeViewModel.selectedMembers.remove(at: index)
                 }
             }
-            print(homeViewModel.selectedUsers)
+            print(homeViewModel.selectedMembers)
         } label: {
             HStack(spacing: 10) {
                 KFImage(URL(string: userInfo.image!)!)

@@ -62,7 +62,7 @@ struct HomeInfoView: View {
                         withAnimation {
                             isNewGroupAlertPrsent.toggle()
                         }
-                        homeViewModel.selectedUsers = []
+                        homeViewModel.selectedMembers = []
                     } label: {
                         Image("Group icon")
                         Text("새 그룹")

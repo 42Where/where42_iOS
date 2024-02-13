@@ -15,6 +15,7 @@ class API: ObservableObject {
     static let sharedAPI = API()
 
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
+    @AppStorage("intraId") var intraId: Int = 0
     @AppStorage("isLogin") var isLogin = false
     @AppStorage("accessToken") var accessToken = ""
     @AppStorage("refreshToken") var refreshToken = ""
@@ -86,6 +87,7 @@ class API: ObservableObject {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
                     API.sharedAPI.isLogin = false
+                    MainViewModel.shared.isLogout = true
                     throw NetworkError.Reissue
                 } else {
                     let reissueAccessToken = try JSONDecoder().decode(ResponseRefreshToken.self, from: data).refreshToken

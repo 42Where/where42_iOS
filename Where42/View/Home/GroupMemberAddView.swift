@@ -132,7 +132,7 @@ struct GroupMemberAddView: View {
                     
                 Button {
                     Task {
-                        if homeViewModel.selectedUsers.isEmpty == false {
+                        if homeViewModel.selectedMembers.isEmpty == false {
                             if await homeViewModel.addMemberInGroup(
                                 groupId: homeViewModel.selectedGroup.groupId!
                             ) {

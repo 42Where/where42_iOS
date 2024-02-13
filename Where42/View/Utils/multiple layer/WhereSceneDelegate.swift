@@ -27,7 +27,6 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        print(scene)
         windowScene = scene as? UIWindowScene
     }
 

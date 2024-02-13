@@ -75,10 +75,10 @@ struct Where42: View {
                         NetworkMonitorView()
                     }
 
-                    if homeViewModel.isShow42IntraSheet == true && homeViewModel.isLogout == false && networkMonitor.isConnected == true {
+                    if mainViewModel.is42IntraSheetPresented == true && mainViewModel.isLogout == false && networkMonitor.isConnected == true {
                         MyWebView(
-                            urlToLoad: homeViewModel.intraURL!,
-                            isPresented: $homeViewModel.isShow42IntraSheet
+                            urlToLoad: mainViewModel.intraURL,
+                            isPresented: $mainViewModel.is42IntraSheetPresented
                         )
                         .ignoresSafeArea()
                         .zIndex(-1)
@@ -86,12 +86,12 @@ struct Where42: View {
                             .zIndex(2)
                     }
                 }
-                .disabled(homeViewModel.isShow42IntraSheet && networkMonitor.isConnected)
+                .disabled(mainViewModel.is42IntraSheetPresented && networkMonitor.isConnected)
             }
-            .fullScreenCover(isPresented: homeViewModel.isLogout == true && networkMonitor.isConnected == true ? $homeViewModel.isShow42IntraSheet : .constant(false)) {
+            .fullScreenCover(isPresented: mainViewModel.isLogout == true && networkMonitor.isConnected == true ? $mainViewModel.is42IntraSheetPresented : .constant(false)) {
                 MyWebView(
-                    urlToLoad: homeViewModel.intraURL!,
-                    isPresented: $homeViewModel.isShow42IntraSheet
+                    urlToLoad: mainViewModel.intraURL,
+                    isPresented: $mainViewModel.is42IntraSheetPresented
                 )
                 .ignoresSafeArea()
             }
@@ -116,6 +116,7 @@ struct Where42: View {
     Where42()
         .environmentObject(MainViewModel())
         .environmentObject(HomeViewModel())
+        .environmentObject(NetworkMonitor())
         .environmentObject(API())
         .environmentObject(WhereSceneDelegate())
 }

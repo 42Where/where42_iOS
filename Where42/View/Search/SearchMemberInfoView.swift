@@ -13,7 +13,6 @@ struct SearchMemberInfoView: View {
 
     @Binding var userInfo: MemberInfo
 
-    @State private var isWork = false
     @State private var isCheck = false
 
     var body: some View {
@@ -22,14 +21,14 @@ struct SearchMemberInfoView: View {
             isCheck.toggle()
             if isCheck {
                 withAnimation {
-                    homeViewModel.selectedUsers.append(userInfo)
+                    homeViewModel.selectedMembers.append(userInfo)
                 }
             } else {
-                if let index = homeViewModel.selectedUsers.firstIndex(
+                if let index = homeViewModel.selectedMembers.firstIndex(
                     where: { $0.intraId == userInfo.intraId })
                 {
                     withAnimation {
-                        homeViewModel.selectedUsers.remove(at: index)
+                        homeViewModel.selectedMembers.remove(at: index)
                     }
                 }
             }
@@ -72,15 +71,15 @@ struct SearchMemberInfoView: View {
                 Spacer()
 
 //                if !homeViewModel.friends.members.contains(where: { $0.intraId == userInfo.intraId }) {
-                if homeViewModel.selectedUsers.count == 0 && !isCheck {
+                if homeViewModel.selectedMembers.count == 0 && !isCheck {
                     Image("Add Friend icon")
                         .resizable()
                         .frame(width: 20, height: 20)
-                } else if homeViewModel.selectedUsers.count > 0 && !isCheck {
+                } else if homeViewModel.selectedMembers.count > 0 && !isCheck {
                     Image("Empty Box")
                         .resizable()
                         .frame(width: 20, height: 20)
-                } else if homeViewModel.selectedUsers.count > 0 {
+                } else if homeViewModel.selectedMembers.count > 0 {
                     Image("Checked Box")
                         .resizable()
                         .frame(width: 20, height: 20)
@@ -94,9 +93,9 @@ struct SearchMemberInfoView: View {
             userInfo.isCheck = isCheck
 
             if isCheck &&
-                !homeViewModel.selectedUsers.contains(where: { $0.intraId == userInfo.intraId })
+                !homeViewModel.selectedMembers.contains(where: { $0.intraId == userInfo.intraId })
             {
-                homeViewModel.selectedUsers.append(userInfo)
+                homeViewModel.selectedMembers.append(userInfo)
             }
         }
 //        .buttonStyle(ScaleButtonStyle())

@@ -19,7 +19,7 @@ struct CustomLocationView: View {
                 .ignoresSafeArea(.all)
                 .onTapGesture {
                     withAnimation {
-                        settingViewModel.isCustomLocationAlertPresent = false
+                        settingViewModel.isCustomLocationAlertPresented = false
                         settingViewModel.initCustomLocation()
                     }
                 }
@@ -127,7 +127,7 @@ struct CustomLocationView: View {
 
                     Button {
                         withAnimation {
-                            settingViewModel.isCustomLocationAlertPresent = false
+                            settingViewModel.isCustomLocationAlertPresented = false
                             settingViewModel.initCustomLocation()
                         }
                     } label: {

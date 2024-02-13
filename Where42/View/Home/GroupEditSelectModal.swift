@@ -30,7 +30,7 @@ struct GroupEditSelectModal: View {
                 HStack {
                     if homeViewModel.selectedGroup.groupName != "친구목록" {
                         Button {
-                            homeViewModel.selectedUsers = []
+                            homeViewModel.selectedMembers = []
                             withAnimation {
                                 homeViewModel.isGroupEditSelectAlertPrsented = false
                                 homeViewModel.isGroupMemberAddViewPrsented = true
@@ -50,7 +50,7 @@ struct GroupEditSelectModal: View {
                     }
 
                     Button {
-                        homeViewModel.selectedUsers = []
+                        homeViewModel.selectedMembers = []
                         withAnimation {
                             homeViewModel.isGroupEditSelectAlertPrsented = false
                             homeViewModel.isGroupMemberDeleteViewPrsented = true

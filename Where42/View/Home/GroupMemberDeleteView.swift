@@ -123,7 +123,7 @@ struct GroupMemberDeleteView: View {
                     
                 Button {
                     Task {
-                        await homeViewModel.deleteUserInGroup()
+                        await homeViewModel.deleteMemberInGroup()
                     }
                     withAnimation {
                         isGroupEditModalPresented = false

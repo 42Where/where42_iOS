@@ -20,7 +20,7 @@ struct HomeFriendView: View {
             Section {
                 if friends.isOpen && friends.totalNum > 0 {
                     ForEach(0 ..< friends.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWork && friends.members[index].location == "퇴근") {
+                        if !(homeViewModel.isWorkCheked && friends.members[index].location == "퇴근") {
                             if UIDevice.idiom == .phone {
                                 HomeFriendInfoView(userInfo: $friends.members[index], groupInfo: $friends)
                                     .padding(.horizontal)

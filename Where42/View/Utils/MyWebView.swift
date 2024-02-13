@@ -23,6 +23,7 @@ class FullScreenWKWebView: WKWebView {
 struct MyWebView: UIViewRepresentable {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var loginViewModel: LoginViewModel
     @AppStorage("isLogin") var isLogin = false
     
     var urlToLoad: String
@@ -103,8 +104,10 @@ struct MyWebView: UIViewRepresentable {
 //                        print("------------------------------------")
                         self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
                         self.parent.isPresented = false
-                        self.parent.homeViewModel.getMemberInfo()
-                        self.parent.homeViewModel.getGroup()
+                        
+//                        await self.parent.homeViewModel.getMemberInfo()
+                        
+//                        self.parent.homeViewModel.getGroup()
                     }
                 }
             }
@@ -114,14 +117,14 @@ struct MyWebView: UIViewRepresentable {
 //            print(intraId.components(separatedBy: "=")[1])
 //            print(agreement.components(separatedBy: "=")[1])
             
-            parent.homeViewModel.intraId = Int(intraId.components(separatedBy: "=")[1])!
+            API.sharedAPI.intraId = Int(intraId.components(separatedBy: "=")[1])!
             
             if agreement.components(separatedBy: "=")[1] == "false" {
-                parent.homeViewModel.isShowAgreementSheet = true
+                parent.loginViewModel.isShowAgreementSheet = true
             } else {
                 parent.homeViewModel.isAPILoaded = false
                 parent.isLogin = true
-                parent.homeViewModel.isLogout = false
+                parent.mainViewModel.isLogout = false
             }
 //            print("-------------- Parse --------------")
 //            print(parent.accessToken)

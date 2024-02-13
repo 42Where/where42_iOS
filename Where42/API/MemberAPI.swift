@@ -31,8 +31,8 @@ class MemberAPI: API {
 
     override private init() {}
 
-    func getMemberInfo(intraId: Int) async throws -> MemberInfo? {
-        guard let requestURL = URL(string: baseURL + "/member?intraId=\(intraId)") else {
+    func getMemberInfo() async throws -> MemberInfo? {
+        guard let requestURL = URL(string: baseURL + "/member?intraId=\(API.sharedAPI.intraId)") else {
             throw NetworkError.invalidURL
         }
 

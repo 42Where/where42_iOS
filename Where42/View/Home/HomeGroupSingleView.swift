@@ -18,7 +18,7 @@ struct HomeGroupSingleView: View {
             Section {
                 if group.isOpen && group.totalNum > 0 {
                     ForEach(0 ..< group.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWork && group.members[index].location == "퇴근") {
+                        if !(homeViewModel.isWorkCheked && group.members[index].location == "퇴근") {
                             if UIDevice.idiom == .phone {
                                 HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
                                     .padding(.horizontal)

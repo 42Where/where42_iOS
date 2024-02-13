@@ -15,40 +15,40 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
-//                Button("access 초기화") {
-//                    homeViewModel.resetAccesstoken()
-//                }
-//                Button("access 만료") {
-//                    homeViewModel.expireAccesstoken()
-//                }
-//                Button("refresh 초기화") {
-//                    homeViewModel.resetRefreshtoken()
-//                }
-//                Button("refresh 만료") {
-//                    homeViewModel.expireRefreshtoken()
-//                }
+                Button("access 초기화") {
+                    homeViewModel.resetAccesstoken()
+                }
+                Button("access 만료") {
+                    homeViewModel.expireAccesstoken()
+                }
+                Button("refresh 초기화") {
+                    homeViewModel.resetRefreshtoken()
+                }
+                Button("refresh 만료") {
+                    homeViewModel.expireRefreshtoken()
+                }
 //                Button("toast") {
 //                    mainViewModel.toast = Toast(title: "제가 보이시나요?")
 //                }
 
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
-                    isWork: $homeViewModel.isWork,
+                    isWork: $homeViewModel.isWorkCheked,
                     isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented
                 )
                         
                 Divider()
                     
                 ScrollView {
-                    HomeGroupView(groups: $homeViewModel.groups)
+                    HomeGroupView(groups: $homeViewModel.myGroups)
                             
                     Spacer()
                 }
                 .refreshable {
                     Task {
                         if await homeViewModel.reissue() {
-                            homeViewModel.getMemberInfo()
-                            homeViewModel.getGroup()
+                            await homeViewModel.getMemberInfo()
+                            await homeViewModel.getGroup()
                         }
                     }
                 }
@@ -56,22 +56,19 @@ struct HomeView: View {
             .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
             .disabled(homeViewModel.isLoading)
                 
-            .onAppear {
-                if !homeViewModel.isAPILoaded {
-                    homeViewModel.getMemberInfo()
-                    homeViewModel.getGroup()
-                    if isLogin == true {
-                        homeViewModel.isAPILoaded = true
-                    }
-                }
-                homeViewModel.countOnlineUsers()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                    homeViewModel.isLoading = false
-                }
-            }
             .task {
                 if API.sharedAPI.isLogin {
-                    _ = await homeViewModel.reissue()
+                    if !homeViewModel.isAPILoaded {
+                        if await homeViewModel.reissue() {
+                            await homeViewModel.getMemberInfo()
+                            await homeViewModel.getGroup()
+                            if isLogin == true {
+                                homeViewModel.isAPILoaded = true
+                            }
+                            homeViewModel.countAllMembers()
+                            homeViewModel.isLoading = false
+                        }
+                    }
                 }
             }
             
@@ -89,7 +86,7 @@ struct HomeView: View {
         }
         .sheet(isPresented: $homeViewModel.isGroupMemberAddViewPrsented) {
             GroupMemberAddView(
-                group: $homeViewModel.notInGroups,
+                group: $homeViewModel.notInGroup,
                 isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
             )
         }

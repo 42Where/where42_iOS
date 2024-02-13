@@ -45,7 +45,7 @@ struct GroupEditModal: View {
 
                 Button {
                     Task {
-                        if await homeViewModel.getNotInGroupMember() {
+                        if await homeViewModel.getMembersNotInGroup() {
                             withAnimation {
                                 isPresented = false
                                 homeViewModel.selectedGroup = group

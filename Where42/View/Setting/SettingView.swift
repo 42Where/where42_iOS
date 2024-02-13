@@ -27,7 +27,7 @@ struct SettingView: View {
 
                 Button("로그아웃") {
                     withAnimation {
-                        settingViewModel.isLogoutAlertPresent = true
+                        settingViewModel.isLogoutAlertPresented = true
                     }
                 }
                 .buttonStyle(setButton())
@@ -36,7 +36,7 @@ struct SettingView: View {
 
                 Button("코멘트 설정") {
                     withAnimation {
-                        settingViewModel.isStatusMessageAlertPresent = true
+                        settingViewModel.isStatusMessageAlertPresented = true
                     }
                 }
                 .buttonStyle(setButton())
@@ -45,7 +45,7 @@ struct SettingView: View {
 
                 Button("자리 설정") {
                     withAnimation {
-                        settingViewModel.isCustomLocationAlertPresent = true
+                        settingViewModel.isCustomLocationAlertPresented = true
                     }
                 }
                 .buttonStyle(setButton())
@@ -53,16 +53,11 @@ struct SettingView: View {
                 Spacer()
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
-            .onChange(of: settingViewModel.isIntraPresented) { newValue in
-                homeViewModel.isShow42IntraSheet = newValue
-                homeViewModel.intraURL = settingViewModel.intraURL
-                mainViewModel.setToast(type: "reissue")
-            }
 
             SettingAlert()
                 .zIndex(1)
 
-            if homeViewModel.isShow42IntraSheet {
+            if mainViewModel.is42IntraSheetPresented {
                 ProgressView()
                     .zIndex(2)
             }
@@ -70,7 +65,7 @@ struct SettingView: View {
         .zIndex(0)
         .environmentObject(settingViewModel)
 //        .navigationBarBackButtonHidden()
-        .disabled(homeViewModel.isShow42IntraSheet)
+        .disabled(mainViewModel.is42IntraSheetPresented)
     }
 }
 

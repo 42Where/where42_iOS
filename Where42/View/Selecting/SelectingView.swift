@@ -119,7 +119,7 @@ struct SelectingView: View {
                 
             Button {
                 Task {
-                    await homeViewModel.createNewGroup(intraId: homeViewModel.intraId)
+                    await homeViewModel.createNewGroup()
                 }
                 mainViewModel.isSelectViewPrsented = false
             } label: {

@@ -77,7 +77,7 @@ struct LoginView: View {
                 VStack {
                     Button {
                         withAnimation {
-                            loginViewModel.isHelpPagePresent.toggle()
+                            loginViewModel.isHelpPagePresented.toggle()
                         }
                     } label: {
                         Image("Wiki icon")
@@ -85,7 +85,7 @@ struct LoginView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 50)
                     }
-                    .sheet(isPresented: $loginViewModel.isHelpPagePresent, content: {
+                    .sheet(isPresented: $loginViewModel.isHelpPagePresented, content: {
                         HelpPage()
                     })
 
@@ -96,20 +96,12 @@ struct LoginView: View {
         .onAppear {
             MainViewModel.shared.toast = nil
         }
-        .onChange(of: loginViewModel.isShow42IntraSheet) { newValue in
-            homeViewModel.isShow42IntraSheet = newValue
-            homeViewModel.intraURL = loginViewModel.intraURL
-        }
+
         .disabled(loginViewModel.isLoginButtonPushed)
         .foregroundColor(.whereDeepNavy)
-//        .fullScreenCover(isPresented: $loginViewModel.isShow42IntraSheet) {
-//            MyWebView(
-//                urlToLoad: loginViewModel.intraURL!,
-//                isPresented: $loginViewModel.isShow42IntraSheet)
-//                .ignoresSafeArea()
-//        }
-        .fullScreenCover(isPresented: $homeViewModel.isShowAgreementSheet) {
-            PersonalInfoAgreementView(isPresent: $homeViewModel.isShowAgreementSheet)
+
+        .fullScreenCover(isPresented: $loginViewModel.isShowAgreementSheet) {
+            PersonalInfoAgreementView(isPresent: $loginViewModel.isShowAgreementSheet)
         }
         .environmentObject(loginViewModel)
     }

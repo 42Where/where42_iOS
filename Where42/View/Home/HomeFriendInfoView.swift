@@ -12,7 +12,6 @@ struct HomeFriendInfoView: View {
     @Binding var userInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
 
-    @State private var isWork = false
     @State private var isShowModal = false
     @State private var modalheight: CGFloat = 0
 

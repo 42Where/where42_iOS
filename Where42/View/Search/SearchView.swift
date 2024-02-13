@@ -94,7 +94,7 @@ struct SearchView: View {
 
             Spacer()
 
-            if homeViewModel.selectedUsers.count > 0 {
+            if homeViewModel.selectedMembers.count > 0 {
                 HStack {
                     Spacer()
 
@@ -117,7 +117,7 @@ struct SearchView: View {
             }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        .toolbar(homeViewModel.selectedUsers.count > 0 ? .hidden : .visible, for: .tabBar)
+        .toolbar(homeViewModel.selectedMembers.count > 0 ? .hidden : .visible, for: .tabBar)
         .transition(.move(edge: .bottom))
     }
 }

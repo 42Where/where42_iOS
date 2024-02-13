@@ -31,7 +31,7 @@ struct HomeGroupView: View {
 }
 
 #Preview {
-    HomeGroupView(groups: .constant(HomeViewModel().groups))
+    HomeGroupView(groups: .constant(HomeViewModel().myGroups))
         .environmentObject(HomeViewModel())
         .environmentObject(HomeGroupViewModel())
 }
