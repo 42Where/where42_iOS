@@ -18,6 +18,9 @@ class MainViewModel: ObservableObject {
 
 //    private init() {}
 
+    @AppStorage("isLogin") var isLogin = false
+    @AppStorage("isLogout") var isLogout = true
+
     @Published var tabSelection: String = "Home"
 
     @Published var isSelectViewPrsented = false
@@ -28,7 +31,6 @@ class MainViewModel: ObservableObject {
 
     let intraURL: String = "http://13.209.149.15:8080/v3/member?intraId=99760"
     @Published var is42IntraSheetPresented = false
-    @Published var isLogout = true
 
     @Published var toast: Toast? = nil
 

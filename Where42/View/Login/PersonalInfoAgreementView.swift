@@ -79,7 +79,7 @@ struct PersonalInfoAgreementView: View {
                         loginViewModel.isAgreeButtonPushed = true
                         loginViewModel.join(intraId: String(API.sharedAPI.intraId))
                         isPresent = false
-                        API.sharedAPI.isLogin = true
+                        mainViewModel.isLogin = true
                         mainViewModel.isLogout = false
                         homeViewModel.isAPILoaded = false
                     } label: {

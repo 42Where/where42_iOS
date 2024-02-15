@@ -18,15 +18,13 @@ struct Where42: View {
     @StateObject var homeViewModel: HomeViewModel = .init()
     @StateObject var networkMonitor: NetworkMonitor = .init()
 
-    @AppStorage("isLogin") var isLogin: Bool = false
-
     @Environment(\.horizontalSizeClass) var oldSizeClass
 
     var body: some View {
         NavigationView {
             ZStack {
                 ZStack {
-                    if isLogin {
+                    if mainViewModel.isLogin {
                         VStack {
                             TabView(selection: $mainViewModel.tabSelection) {
                                 HomeView()
@@ -50,9 +48,7 @@ struct Where42: View {
                             .environment(\.horizontalSizeClass, .compact)
                         }
                         .toolbar {
-                            Where42ToolBarContent(
-                                //                            isShowSheet: $homeViewModel.isShowSettingSheet
-                            )
+                            Where42ToolBarContent()
                         }
                         .unredacted()
                         .zIndex(0)
@@ -75,7 +71,10 @@ struct Where42: View {
                         NetworkMonitorView()
                     }
 
-                    if mainViewModel.is42IntraSheetPresented == true && mainViewModel.isLogout == false && networkMonitor.isConnected == true {
+                    if mainViewModel.is42IntraSheetPresented == true &&
+                        mainViewModel.isLogout == false &&
+                        networkMonitor.isConnected == true
+                    {
                         MyWebView(
                             urlToLoad: mainViewModel.intraURL,
                             isPresented: $mainViewModel.is42IntraSheetPresented
@@ -104,7 +103,7 @@ struct Where42: View {
 
         .navigationViewStyle(StackNavigationViewStyle())
 
-        .animation(.easeIn, value: isLogin)
+        .animation(.easeIn, value: mainViewModel.isLogin)
 
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)
@@ -120,13 +119,3 @@ struct Where42: View {
         .environmentObject(API())
         .environmentObject(WhereSceneDelegate())
 }
-
-// struct Previews2: PreviewProvider {
-//    static var previews: some View {
-//        Where42()
-//            .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
-//            .previewDisplayName("iPad Air 5th")
-//            .environmentObject(MainViewModel())
-//            .environmentObject(HomeViewModel())
-//    }
-// }

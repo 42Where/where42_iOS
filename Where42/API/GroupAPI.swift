@@ -45,7 +45,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -95,7 +95,7 @@ class GroupAPI: API {
         }
 
         var request = URLRequest(url: requestURL)
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -153,7 +153,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -207,7 +207,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -266,7 +266,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -327,7 +327,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         do {
@@ -386,7 +386,7 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         do {
@@ -401,7 +401,9 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
+                    DispatchQueue.main.async {
+                        MainViewModel.shared.isLogin = false
+                    }
                     throw NetworkError.Token
                 } else {
                     print("Succeed add one member")
@@ -429,7 +431,7 @@ class GroupAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(GroupAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(GroupAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

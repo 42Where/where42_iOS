@@ -10,7 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @AppStorage("isLogin") var isLogin = false
     
     var body: some View {
         ZStack {
@@ -27,8 +26,10 @@ struct HomeView: View {
                 Button("refresh 만료") {
                     homeViewModel.expireRefreshtoken()
                 }
-//                Button("toast") {
-//                    mainViewModel.toast = Toast(title: "제가 보이시나요?")
+//                Button("search") {
+//                    Task {
+//                        await homeViewModel.searchMemeber()
+//                    }
 //                }
 
                 HomeInfoView(
@@ -57,12 +58,12 @@ struct HomeView: View {
             .disabled(homeViewModel.isLoading)
                 
             .task {
-                if API.sharedAPI.isLogin {
-                    if !homeViewModel.isAPILoaded {
-                        if await homeViewModel.reissue() {
+                if mainViewModel.isLogin {
+                    if await homeViewModel.reissue() {
+                        if !homeViewModel.isAPILoaded {
                             await homeViewModel.getMemberInfo()
                             await homeViewModel.getGroup()
-                            if isLogin == true {
+                            if mainViewModel.isLogin == true {
                                 homeViewModel.isAPILoaded = true
                             }
                             homeViewModel.countAllMembers()

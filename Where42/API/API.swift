@@ -12,11 +12,10 @@ struct ResponseRefreshToken: Codable {
 }
 
 class API: ObservableObject {
-    static let sharedAPI = API()
+    static var sharedAPI = API()
 
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
     @AppStorage("intraId") var intraId: Int = 0
-    @AppStorage("isLogin") var isLogin = false
     @AppStorage("accessToken") var accessToken = ""
     @AppStorage("refreshToken") var refreshToken = ""
 
@@ -86,8 +85,10 @@ class API: ObservableObject {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    API.sharedAPI.isLogin = false
-                    MainViewModel.shared.isLogout = true
+                    DispatchQueue.main.async {
+                        MainViewModel.shared.isLogin = false
+                        MainViewModel.shared.isLogout = true
+                    }
                     throw NetworkError.Reissue
                 } else {
                     let reissueAccessToken = try JSONDecoder().decode(ResponseRefreshToken.self, from: data).refreshToken
@@ -103,7 +104,9 @@ class API: ObservableObject {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        API.sharedAPI.isLogin = false
+                        DispatchQueue.main.async {
+                            MainViewModel.shared.isLogin = false
+                        }
                         throw NetworkError.Reissue
                     }
                 } else {

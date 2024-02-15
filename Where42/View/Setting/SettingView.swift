@@ -11,8 +11,6 @@ struct SettingView: View {
     @StateObject private var settingViewModel: SettingViewModel = .init()
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var mainViewModel: MainViewModel
-    @AppStorage("isLogin") var isLogin: Bool = false
-    @AppStorage("accessToken") var accessToken = ""
 
     var body: some View {
         ZStack {
@@ -76,9 +74,11 @@ struct setButton: PrimitiveButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         Button(configuration)
             .font(.GmarketLight34)
+//            .font(.custom(Font.GmarketLight, size: 20))
             .foregroundStyle(labelColor)
             .padding(.vertical)
             .frame(width: 200)
+//            .frame(width: 140)
             .background(Capsule().fill(BackGroundColor))
     }
 }

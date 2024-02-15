@@ -37,8 +37,8 @@ class MemberAPI: API {
         }
 
         var request = URLRequest(url: requestURL)
-        print("getMemberInfo token: ", MemberAPI.sharedAPI.accessToken)
-        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        print("getMemberInfo token: ", MemberAPI.shared.accessToken)
+        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -98,7 +98,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -147,7 +147,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -205,7 +205,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(MemberAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -217,7 +217,6 @@ class MemberAPI: API {
 
 //            print(String(data: data, encoding: String.Encoding.utf8)!)
 
-            print(response.statusCode)
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
@@ -234,7 +233,6 @@ class MemberAPI: API {
                     if customException.handleError() == false {
                         try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
-//                        return requestURL.absoluteString
                     }
                 } else {
                     throw NetworkError.BadRequest
@@ -249,6 +247,61 @@ class MemberAPI: API {
             throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to update custom location")
+        }
+        return nil
+    }
+
+    func search(keyWord: String) async throws -> [MemberInfo]? {
+        guard let requestURL = URL(string: baseURL + "/search?keyWord=\(keyWord)") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "GET"
+        request.addValue(API.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+            if response.statusCode == 500 {
+                print(String(data: data, encoding: String.Encoding.utf8)!)
+            }
+
+            print(response.statusCode)
+            switch response.statusCode {
+            case 200 ... 299:
+                if response.mimeType == "text/html" {
+                    return nil
+                } else {
+                    print("Succeed search member")
+                    return try JSONDecoder().decode([MemberInfo].self, from: data)
+                }
+
+            case 400 ... 499:
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        try await API.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
+
+            case 500 ... 599:
+                throw NetworkError.ServerError
+
+            default: print("Unknown HTTP Response Status Code")
+            }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
+        } catch {
+            errorPrint(error, message: "Failed to search member")
         }
         return nil
     }

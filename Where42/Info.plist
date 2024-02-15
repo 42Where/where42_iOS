@@ -25,5 +25,10 @@
 		<string>GmarketSansTTFBold.ttf</string>
 		<string>GmarketSansTTFLight.ttf</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>white</string>
+	</dict>
 </dict>
 </plist>

@@ -70,21 +70,30 @@ struct SearchMemberInfoView: View {
 
                 Spacer()
 
-//                if !homeViewModel.friends.members.contains(where: { $0.intraId == userInfo.intraId }) {
-                if homeViewModel.selectedMembers.count == 0 && !isCheck {
-                    Image("Add Friend icon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                } else if homeViewModel.selectedMembers.count > 0 && !isCheck {
-                    Image("Empty Box")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                } else if homeViewModel.selectedMembers.count > 0 {
-                    Image("Checked Box")
-                        .resizable()
-                        .frame(width: 20, height: 20)
+                if !homeViewModel.friends.members.contains(where: { $0.intraId == userInfo.intraId }) {
+                    if homeViewModel.selectedMembers.count == 0 && !isCheck {
+                        Image("Add Friend icon")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                    } else if homeViewModel.selectedMembers.count > 0 && !isCheck {
+                        Image("Empty Box")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                    } else if homeViewModel.selectedMembers.count > 0 {
+                        Image("Checked Box")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                    }
+                } else {
+                    Button {
+//                        isShowModal = true
+                    } label: {
+                        Image("Function icon")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                    }
+                    .unredacted()
                 }
-//                }
             }
             .padding(.vertical, 1)
             .background()

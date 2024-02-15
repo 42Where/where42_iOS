@@ -24,7 +24,6 @@ struct MyWebView: UIViewRepresentable {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var loginViewModel: LoginViewModel
-    @AppStorage("isLogin") var isLogin = false
     
     var urlToLoad: String
     
@@ -78,9 +77,10 @@ struct MyWebView: UIViewRepresentable {
             self.parent = parent
         }
         
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+            print("didCommit")
             if let host = webView.url?.host() {
-                print(host)
+                print("host: ", host)
                 if host == "localhost" {
                     print(webView.url?.absoluteString)
                     print(webView.url?.query()?.split(separator: "&"))
@@ -123,13 +123,13 @@ struct MyWebView: UIViewRepresentable {
                 parent.loginViewModel.isShowAgreementSheet = true
             } else {
                 parent.homeViewModel.isAPILoaded = false
-                parent.isLogin = true
+                parent.mainViewModel.isLogin = true
                 parent.mainViewModel.isLogout = false
             }
-//            print("-------------- Parse --------------")
-//            print(parent.accessToken)
-//            print(parent.refreshToken)
-//            print("------------------------------------")
+            print("-------------- Parse --------------")
+            print(API.sharedAPI.accessToken)
+            print(API.sharedAPI.refreshToken)
+            print("------------------------------------")
         }
     }
 }

@@ -42,7 +42,7 @@ class LoginAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(LoginAPI.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(LoginAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         print(" J O I N ")
         print(intraId)
@@ -64,11 +64,15 @@ class LoginAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    isLogin = false
+                    DispatchQueue.main.async {
+                        MainViewModel.shared.isLogin = false
+                    }
                     throw NetworkError.Token
                 } else {
                     print("Succeed join")
-                    isLogin = true
+                    DispatchQueue.main.async {
+                        MainViewModel.shared.isLogin = true
+                    }
                 }
             case 400 ... 499:
                 throw NetworkError.BadRequest

@@ -11,8 +11,6 @@ struct LoginView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @StateObject var loginViewModel: LoginViewModel = .init()
 
-    @AppStorage("isLogin") var isLogin: Bool = false
-
     var body: some View {
         ZStack {
             VStack {
@@ -23,7 +21,7 @@ struct LoginView: View {
                         Spacer()
 
                         RoundedRectangle(cornerRadius: 150.0)
-                            .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 3.7 / 9)
+                            .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 3.46 / 9)
                     }
                     VStack {
                         Spacer()
@@ -65,6 +63,7 @@ struct LoginView: View {
                 .padding(.vertical)
                 .frame(width: 200, height: 80)
                 .background(Capsule().fill(.whereMediumNavy))
+//                .background(Capsule().fill(.whereDeepNavy))
                 .padding(.bottom, 120.0)
 
                 Spacer()

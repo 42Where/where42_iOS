@@ -11,7 +11,6 @@ struct SettingAlert: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var settingViewModel: SettingViewModel
-    @AppStorage("isLogin") var isLogin: Bool = false
 
     @State private var message: String! = ""
 
@@ -30,8 +29,8 @@ struct SettingAlert: View {
                 API.sharedAPI.accessToken = ""
                 withAnimation {
                     self.settingViewModel.isLogoutAlertPresented = false
-                    self.isLogin = false
-                    self.mainViewModel.isLogout = true
+                    mainViewModel.isLogin = false
+                    mainViewModel.isLogout = true
                 }
             }
         }

@@ -86,7 +86,7 @@ class HomeViewModel: ObservableObject {
             } else {
                 DispatchQueue.main.async {
                     self.myInfo = responseMemberInfo!
-                    API.sharedAPI.isLogin = true
+                    MainViewModel.shared.isLogin = true
                 }
             }
         } catch API.NetworkError.Reissue {
