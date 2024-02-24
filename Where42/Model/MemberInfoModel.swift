@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct MemberInfo: Codable, Hashable {
+struct MemberInfo: Codable, Hashable, Comparable {
     var intraId: Int?
     var intraName: String?
     var grade: String?
@@ -49,6 +49,10 @@ struct MemberInfo: Codable, Hashable {
         self.agree = (try? container.decodeIfPresent(Bool.self, forKey: .agree)) ?? false
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
         self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? "nil"
+    }
+
+    static func < (lhs: MemberInfo, rhs: MemberInfo) -> Bool {
+        return lhs.intraName! < rhs.intraName!
     }
 
     static var empty: MemberInfo {

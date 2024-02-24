@@ -14,23 +14,29 @@ struct SearchMemberInfoView: View {
     @Binding var userInfo: MemberInfo
 
     @State private var isCheck = false
+    @State private var isShowModal = false
+    @State private var modalHeight: CGFloat = 0
 
     var body: some View {
         Button {
-            userInfo.isCheck.toggle()
-            isCheck.toggle()
-            if isCheck {
-                withAnimation {
-                    homeViewModel.selectedMembers.append(userInfo)
-                }
-            } else {
-                if let index = homeViewModel.selectedMembers.firstIndex(
-                    where: { $0.intraId == userInfo.intraId })
-                {
+            if homeViewModel.friends.members.contains(where: { $0.intraId == userInfo.intraId }) == false {
+                userInfo.isCheck.toggle()
+                isCheck.toggle()
+                if isCheck {
                     withAnimation {
-                        homeViewModel.selectedMembers.remove(at: index)
+                        homeViewModel.selectedMembers.append(userInfo)
+                    }
+                } else {
+                    if let index = homeViewModel.selectedMembers.firstIndex(
+                        where: { $0.intraId == userInfo.intraId })
+                    {
+                        withAnimation {
+                            _ = homeViewModel.selectedMembers.remove(at: index)
+                        }
                     }
                 }
+            } else {
+                isShowModal = true
             }
         } label: {
             HStack(spacing: 10) {
@@ -71,7 +77,9 @@ struct SearchMemberInfoView: View {
                 Spacer()
 
                 if !homeViewModel.friends.members.contains(where: { $0.intraId == userInfo.intraId }) {
-                    if homeViewModel.selectedMembers.count == 0 && !isCheck {
+                    if homeViewModel.myInfo.intraId == userInfo.intraId {
+                        EmptyView()
+                    } else if homeViewModel.selectedMembers.count == 0 && !isCheck {
                         Image("Add Friend icon")
                             .resizable()
                             .frame(width: 20, height: 20)
@@ -85,14 +93,10 @@ struct SearchMemberInfoView: View {
                             .frame(width: 20, height: 20)
                     }
                 } else {
-                    Button {
-//                        isShowModal = true
-                    } label: {
-                        Image("Function icon")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                    }
-                    .unredacted()
+                    Image("Function icon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .unredacted()
                 }
             }
             .padding(.vertical, 1)
@@ -107,7 +111,26 @@ struct SearchMemberInfoView: View {
                 homeViewModel.selectedMembers.append(userInfo)
             }
         }
-//        .buttonStyle(ScaleButtonStyle())
+        .onChange(of: userInfo.isCheck) { newValue in
+            print("newValue: ", newValue)
+            withAnimation {
+                isCheck = newValue
+            }
+        }
+        .sheetOrPopOver(isPresented: $isShowModal) {
+            FriendEditModal(
+                userInfo: $userInfo,
+                groupInfo: $homeViewModel.friends,
+                isPresented: $isShowModal,
+                isFriend: true)
+                .readSize()
+                .onPreferenceChange(SizePreferenceKey.self) { size in
+                    if let size {
+                        self.modalHeight = size.height
+                    }
+                }
+                .presentationDetents([.height(modalHeight)])
+        }
     }
 }
 

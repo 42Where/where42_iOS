@@ -111,12 +111,17 @@ class HomeViewModel: ObservableObject {
             let responseGroups = try await groupAPI.getGroup()
             DispatchQueue.main.async {
                 if let responseGroups = responseGroups {
-                    self.myGroups = responseGroups
+                    self.myGroups = responseGroups.map { group in
+                        var sortedGroup = group
+                        sortedGroup.members.sort()
+                        return sortedGroup
+                    }
                     self.friends = self.myGroups[responseGroups.firstIndex(
                         where: {
                             $0.groupId == self.myInfo.defaultGroupId
                         }
                     )!]
+                    self.friends.members.sort()
                     self.friends.groupName = "친구목록"
                     self.friends.isOpen = true
 
@@ -260,6 +265,50 @@ class HomeViewModel: ObservableObject {
                     withAnimation {
                         self.myGroups[selectedIndex!].members = self.selectedGroup.members.filter { member in
                             !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                        }
+                    }
+                }
+
+                self.initNewGroup()
+                self.countAllMembers()
+            }
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                MainViewModel.shared.toast = Toast(title: "잠시 후  다시 시도해 주세요")
+            }
+            return false
+        } catch {
+            print("Failed delete group member")
+        }
+        return true
+    }
+
+    func deleteOneMemberInGroup() async -> Bool {
+        do {
+            let responseStatus = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: [selectedMember])
+            if responseStatus == false {
+                DispatchQueue.main.async {
+                    MainViewModel.shared.is42IntraSheetPresented = true
+                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                }
+                return false
+            }
+
+            DispatchQueue.main.async {
+                if self.selectedGroup.groupName == "친구목록" {
+                    withAnimation {
+                        self.friends.members = self.selectedGroup.members.filter { member in
+                            !(self.selectedMember.intraId == member.intraId)
+                        }
+                    }
+                } else {
+                    let selectedIndex = self.myGroups.firstIndex(where: {
+                        $0.groupId == self.selectedGroup.groupId
+                    })
+
+                    withAnimation {
+                        self.myGroups[selectedIndex!].members = self.selectedGroup.members.filter { member in
+                            !(self.selectedMember.intraId == member.intraId)
                         }
                     }
                 }

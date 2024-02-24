@@ -82,6 +82,8 @@ struct Where42: View {
                         .ignoresSafeArea()
                         .zIndex(-1)
                         ProgressView()
+                            .scaleEffect(2)
+                            .progressViewStyle(.circular)
                             .zIndex(2)
                     }
                 }

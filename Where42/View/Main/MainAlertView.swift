@@ -84,8 +84,9 @@ struct MainAlertView: View {
                 withAnimation {
                     homeViewModel.isFriendDeleteAlertPresented = false
                 }
+                homeViewModel.selectedMembers = []
             } rightButtonAction: {
-                if await homeViewModel.deleteMemberInGroup() {
+                if await homeViewModel.deleteOneMemberInGroup() {
                     withAnimation {
                         self.homeViewModel.isFriendDeleteAlertPresented = false
                     }

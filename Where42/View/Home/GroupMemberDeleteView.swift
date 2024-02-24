@@ -144,8 +144,10 @@ struct GroupMemberDeleteView: View {
             .background(.whereRed)
             .disabled(group.members.count == 0)
         }
-        
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onDisappear {
+            homeViewModel.selectedMembers = []
+        }
     }
 }
 

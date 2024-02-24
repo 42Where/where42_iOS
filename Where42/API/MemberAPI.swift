@@ -32,12 +32,13 @@ class MemberAPI: API {
     override private init() {}
 
     func getMemberInfo() async throws -> MemberInfo? {
-        guard let requestURL = URL(string: baseURL + "/member?intraId=\(API.sharedAPI.intraId)") else {
+        guard let requestURL = URL(string: baseURL + "/member") else {
             throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
         print("getMemberInfo token: ", MemberAPI.shared.accessToken)
+        print(request.url?.absoluteString)
         request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {

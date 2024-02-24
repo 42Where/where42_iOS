@@ -29,7 +29,7 @@ class MainViewModel: ObservableObject {
     @Published var isEditGroupNameAlertPrsented = false
     @Published var isDeleteGroupAlertPrsented = false
 
-    let intraURL: String = "http://13.209.149.15:8080/v3/member?intraId=99760"
+    let intraURL: String = "https://test.where42.kr/v3/member"
     @Published var is42IntraSheetPresented = false
 
     @Published var toast: Toast? = nil

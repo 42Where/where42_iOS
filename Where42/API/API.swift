@@ -82,6 +82,7 @@ class API: ObservableObject {
 
             print("----- reissue -----")
             accessToken = ""
+
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {

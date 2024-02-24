@@ -19,12 +19,6 @@ struct GroupMemberAddView: View {
 
     var body: some View {
         VStack {
-            Button("access 초기화") {
-                homeViewModel.resetAccesstoken()
-            }
-            Button("access 만료") {
-                homeViewModel.expireAccesstoken()
-            }
             Text("\(homeViewModel.selectedGroup.groupName)")
                 .font(.custom(Font.GmarketBold, size: 25))
                 .padding(.top, 40)
@@ -159,6 +153,9 @@ struct GroupMemberAddView: View {
             .disabled(group.members.count == 0)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onDisappear {
+            homeViewModel.selectedMembers = []
+        }
     }
 }
 

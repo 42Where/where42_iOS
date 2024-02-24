@@ -77,14 +77,11 @@ struct MyWebView: UIViewRepresentable {
             self.parent = parent
         }
         
-        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-            print("didCommit")
-            if let host = webView.url?.host() {
-                print("host: ", host)
-                if host == "localhost" {
-                    print(webView.url?.absoluteString)
-                    print(webView.url?.query()?.split(separator: "&"))
-                    if (webView.url?.absoluteString.contains("login-fail")) == true {
+        func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+            if webView.url?.absoluteString.contains("https://test.where42:3000") == true {
+                if let redirectURL = webView.url?.absoluteString {
+                    print(redirectURL)
+                    if redirectURL.contains("login-fail") == true {
                         print("login-fail")
                         parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                         parent.isPresented = false
@@ -104,10 +101,6 @@ struct MyWebView: UIViewRepresentable {
 //                        print("------------------------------------")
                         self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
                         self.parent.isPresented = false
-                        
-//                        await self.parent.homeViewModel.getMemberInfo()
-                        
-//                        self.parent.homeViewModel.getGroup()
                     }
                 }
             }

@@ -78,7 +78,7 @@ struct FriendEditModal: View {
                         homeViewModel.isFriend = false
                     }
                     homeViewModel.selectedGroup = groupInfo
-                    homeViewModel.selectedMembers.append(userInfo)
+//                    homeViewModel.selectedMembers.append(userInfo)
                 }
             } label: {
                 if isFriend {

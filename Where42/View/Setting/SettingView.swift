@@ -57,6 +57,8 @@ struct SettingView: View {
 
             if mainViewModel.is42IntraSheetPresented {
                 ProgressView()
+                    .scaleEffect(2)
+                    .progressViewStyle(.circular)
                     .zIndex(2)
             }
         }
