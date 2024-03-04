@@ -38,7 +38,10 @@ struct SearchView: View {
                 )
                 .padding([.horizontal, .top])
                 
-                SelectedMembersView()
+                if homeViewModel.selectedMembers.count > 0 {
+                    SearchSelectedMembersView()
+                }
+                
                 
                 if searchViewModel.searching.count == 0 && searchViewModel.searchStatus == .waiting {
                     Spacer()
@@ -132,6 +135,7 @@ struct SearchView: View {
             )
         ) { newValue in
             searchViewModel.search(keyWord: newValue)
+            hideKeyboard()
         }
         .onSubmit {
             searchViewModel.search(keyWord: searchViewModel.name)

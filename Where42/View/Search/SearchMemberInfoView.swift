@@ -23,7 +23,7 @@ struct SearchMemberInfoView: View {
                 memberInfo.isCheck.toggle()
                 if memberInfo.isCheck {
                     withAnimation {
-                        homeViewModel.selectedMembers.append(memberInfo)
+                        homeViewModel.selectedMembers.insert(memberInfo, at: 0)
                     }
                 } else {
                     if let index = homeViewModel.selectedMembers.firstIndex(
@@ -103,6 +103,10 @@ struct SearchMemberInfoView: View {
             .background()
         }
         .onAppear {
+            if homeViewModel.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId }) {
+                memberInfo.isCheck = true
+            }
+
             if memberInfo.isCheck &&
                 !homeViewModel.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId })
             {
