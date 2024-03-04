@@ -43,7 +43,9 @@ struct SelectedMembersView: View {
                                                 where: { $0.intraId == homeViewModel.selectedMembers[index].intraId })
                                             {
                                                 withAnimation {
-                                                    if let searchIndex = searchViewModel.searching.firstIndex(where: { $0.intraId == homeViewModel.selectedMembers[index].intraId }) {
+                                                    if let searchIndex = searchViewModel.searching.firstIndex(where: {
+                                                        $0.intraId == homeViewModel.selectedMembers[index].intraId
+                                                    }) {
                                                         searchViewModel.searching[searchIndex].isCheck = false
                                                     }
                                                     _ = homeViewModel.selectedMembers.remove(at: removeIndex)

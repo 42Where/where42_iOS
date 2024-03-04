@@ -14,7 +14,6 @@ struct SearchMemberInfoView: View {
 
     @Binding var memberInfo: MemberInfo
 
-    @State private var isCheck = false
     @State private var isShowModal = false
     @State private var modalHeight: CGFloat = 0
 
@@ -22,8 +21,7 @@ struct SearchMemberInfoView: View {
         Button {
             if homeViewModel.friends.members.contains(where: { $0.intraId == memberInfo.intraId }) == false {
                 memberInfo.isCheck.toggle()
-                isCheck.toggle()
-                if isCheck {
+                if memberInfo.isCheck {
                     withAnimation {
                         homeViewModel.selectedMembers.append(memberInfo)
                     }
@@ -81,11 +79,11 @@ struct SearchMemberInfoView: View {
                 if !homeViewModel.friends.members.contains(where: { $0.intraId == memberInfo.intraId }) {
                     if homeViewModel.myInfo.intraId == memberInfo.intraId {
                         EmptyView()
-                    } else if homeViewModel.selectedMembers.count == 0 && !isCheck {
+                    } else if homeViewModel.selectedMembers.count == 0 && !memberInfo.isCheck {
                         Image("Add Friend icon")
                             .resizable()
                             .frame(width: 20, height: 20)
-                    } else if homeViewModel.selectedMembers.count > 0 && !isCheck {
+                    } else if homeViewModel.selectedMembers.count > 0 && !memberInfo.isCheck {
                         Image("Empty Box")
                             .resizable()
                             .frame(width: 20, height: 20)
@@ -105,21 +103,10 @@ struct SearchMemberInfoView: View {
             .background()
         }
         .onAppear {
-            memberInfo.isCheck = isCheck
-
-            if homeViewModel.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId }) {
-                memberInfo.isCheck = true
-            }
-
-            if isCheck &&
+            if memberInfo.isCheck &&
                 !homeViewModel.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId })
             {
                 homeViewModel.selectedMembers.append(memberInfo)
-            }
-        }
-        .onChange(of: memberInfo.isCheck) { newValue in
-            withAnimation {
-                isCheck = newValue
             }
         }
         .sheetOrPopOver(isPresented: $isShowModal) {

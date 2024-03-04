@@ -13,13 +13,10 @@ struct SelectingFriendInfoView: View {
 
     @Binding var memberInfo: MemberInfo
 
-    @State private var isCheck = false
-
     var body: some View {
         Button {
             memberInfo.isCheck.toggle()
-            isCheck.toggle()
-            if isCheck {
+            if memberInfo.isCheck {
                 homeViewModel.selectedMembers.append(memberInfo)
             } else {
                 if let index = homeViewModel.selectedMembers.firstIndex(
@@ -67,7 +64,7 @@ struct SelectingFriendInfoView: View {
 
                 Spacer()
 
-                if isCheck {
+                if memberInfo.isCheck {
                     Image("Checked Box")
                         .resizable()
                         .frame(width: 20, height: 20)
@@ -80,10 +77,9 @@ struct SelectingFriendInfoView: View {
             .padding(.vertical, 1)
             .background()
         }
-        .onAppear {
-            memberInfo.isCheck = isCheck
+        .onDisappear {
+            memberInfo.isCheck = false
         }
-//        .buttonStyle(ScaleButtonStyle())
     }
 }
 
