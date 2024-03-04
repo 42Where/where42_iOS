@@ -33,7 +33,7 @@ class LoginAPI: API {
 //        }
 //    }
 
-    func join(intraId: String) async {
+    func join(intraId: String) async throws {
         guard let requestURL = URL(string: baseURL + "/join?intra_id=\(intraId)") else {
             return
         }
@@ -75,12 +75,23 @@ class LoginAPI: API {
                     }
                 }
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        try await API.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:
                 print("Failed join")
             }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
         } catch {}
     }
 
@@ -100,7 +111,7 @@ class LoginAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
-            print(String(data: data, encoding: .utf8))
+//            print(String(data: data, encoding: .utf8))
 
             switch response.statusCode {
             case 200 ... 299:
@@ -110,7 +121,16 @@ class LoginAPI: API {
                     print("Succeed logout")
                 }
             case 400 ... 499:
-                throw NetworkError.BadRequest
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        try await API.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
             case 500 ... 599:
                 throw NetworkError.ServerError
             default:

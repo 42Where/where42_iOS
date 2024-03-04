@@ -19,7 +19,7 @@ struct MemberInfo: Codable, Hashable, Comparable {
         }
     }
 
-    var inCluster: Bool? = false
+    var inCluster: Bool?
     var agree: Bool?
     var defaultGroupId: Int?
     var location: String?
@@ -44,11 +44,20 @@ struct MemberInfo: Codable, Hashable, Comparable {
         self.intraName = (try? container.decodeIfPresent(String.self, forKey: .intraName)) ?? "nil"
         self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"
         self.image = (try? container.decodeIfPresent(String.self, forKey: .image)) ?? "nil"
-        self.comment = (try? container.decodeIfPresent(String.self, forKey: .comment)) ?? "nil"
-        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? false
+        self.comment = (try? container.decodeIfPresent(String.self, forKey: .comment)) ?? ""
+        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? nil
         self.agree = (try? container.decodeIfPresent(Bool.self, forKey: .agree)) ?? false
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
-        self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? "nil"
+        self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? nil
+
+        if inCluster == true && location == nil {
+            self.location = "개포"
+        } else if inCluster == false || inCluster == nil && location == nil {
+            self.inCluster = false
+            self.location = "퇴근"
+        } else if inCluster == nil && location != nil {
+            self.inCluster = true
+        }
     }
 
     static func < (lhs: MemberInfo, rhs: MemberInfo) -> Bool {

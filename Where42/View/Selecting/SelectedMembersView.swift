@@ -28,7 +28,8 @@ struct SelectedMembersView: View {
                                                 .frame(width: 45, height: 45)
                                         }
                                         .clipShape(Circle())
-                                        .overlay(Circle().stroke(.whereDeepPink, lineWidth: homeViewModel.selectedMembers[index].location != "퇴근" ? 3 : 0))
+                                        .overlay(Circle().stroke(.whereDeepPink, lineWidth: homeViewModel.selectedMembers[index].inCluster == true ? 3 : 0))
+                                        .overlay(Circle().stroke(.black, lineWidth: homeViewModel.selectedMembers[index].inCluster == false ? 0.1 : 0))
                                         .frame(width: 45, height: 45)
                                         .padding(5)
                                 }

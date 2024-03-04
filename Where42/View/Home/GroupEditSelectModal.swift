@@ -28,6 +28,8 @@ struct GroupEditSelectModal: View {
                     .lineSpacing(5.0)
 
                 HStack {
+                    Spacer(minLength: 1)
+
                     if homeViewModel.selectedGroup.groupName != "친구목록" {
                         Button {
                             homeViewModel.selectedMembers = []
@@ -65,6 +67,8 @@ struct GroupEditSelectModal: View {
                                 RoundedRectangle(cornerRadius: 10)
                             )
                     }
+
+                    Spacer(minLength: 1)
                 }
             }
             .padding(20)

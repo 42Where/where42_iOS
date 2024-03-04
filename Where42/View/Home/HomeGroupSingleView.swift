@@ -18,19 +18,19 @@ struct HomeGroupSingleView: View {
             Section {
                 if group.isOpen && group.totalNum > 0 {
                     ForEach(0 ..< group.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWorkCheked && group.members[index].location == "퇴근") {
+                        if !(homeViewModel.isWorkCheked && group.members[index].inCluster == false) {
                             if UIDevice.idiom == .phone {
-                                HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
+                                HomeFriendInfoView(memberInfo: $group.members[index], groupInfo: $group)
                                     .padding(.horizontal)
                                     .padding(.vertical, 1)
                             } else if UIDevice.idiom == .pad {
                                 if index % 2 == 0 {
                                     HStack {
-                                        HomeFriendInfoView(userInfo: $group.members[index], groupInfo: $group)
+                                        HomeFriendInfoView(memberInfo: $group.members[index], groupInfo: $group)
                                             .padding(.horizontal)
                                             .padding(.vertical, 1)
                                         if index + 1 < group.members.count {
-                                            HomeFriendInfoView(userInfo: $group.members[index + 1], groupInfo: $group)
+                                            HomeFriendInfoView(memberInfo: $group.members[index + 1], groupInfo: $group)
                                                 .padding(.horizontal)
                                                 .padding(.vertical, 1)
                                         } else {

@@ -30,6 +30,15 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
         windowScene = scene as? UIWindowScene
     }
 
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        print("Did Become Active")
+        if MainViewModel.shared.isLogin == true {
+            Task {
+                try await API.sharedAPI.reissue()
+            }
+        }
+    }
+
     func setupToastWindow() {
         guard let windowScene = windowScene else {
             return

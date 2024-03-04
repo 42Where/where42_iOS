@@ -69,7 +69,7 @@ class API: ObservableObject {
         request.httpMethod = "POST"
         request.addValue(API.sharedAPI.refreshToken, forHTTPHeaderField: "Authorization")
 
-        print("API.sharedAPI.refreshToken: ", API.sharedAPI.refreshToken)
+//        print("API.sharedAPI.refreshToken: ", API.sharedAPI.refreshToken)
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

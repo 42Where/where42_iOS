@@ -71,7 +71,7 @@ struct GroupMemberDeleteView: View {
                                 (group.members[index].intraName?.contains(name.lowercased())) == true
                             {
                                 if UIDevice.idiom == .phone {
-                                    SelectingFriendInfoView(userInfo: $group.members[index])
+                                    SelectingFriendInfoView(memberInfo: $group.members[index])
                                         .padding(.top)
                                         .onAppear {
                                             homeViewModel.viewPresentCount += 1
@@ -82,7 +82,7 @@ struct GroupMemberDeleteView: View {
                                 } else if UIDevice.idiom == .pad {
                                     if index % 2 == 0 {
                                         HStack {
-                                            SelectingFriendInfoView(userInfo: $group.members[index])
+                                            SelectingFriendInfoView(memberInfo: $group.members[index])
                                                 .padding([.top, .horizontal])
                                                 .onAppear {
                                                     homeViewModel.viewPresentCount += 1
@@ -91,7 +91,7 @@ struct GroupMemberDeleteView: View {
                                                     homeViewModel.viewPresentCount -= 1
                                                 }
                                             if index + 1 < group.members.count {
-                                                SelectingFriendInfoView(userInfo: $group.members[index + 1])
+                                                SelectingFriendInfoView(memberInfo: $group.members[index + 1])
                                                     .padding([.top, .horizontal])
                                                     .onAppear {
                                                         homeViewModel.viewPresentCount += 1

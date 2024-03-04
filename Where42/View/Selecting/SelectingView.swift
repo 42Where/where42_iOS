@@ -17,6 +17,19 @@ struct SelectingView: View {
     var body: some View {
         VStack {
             HStack {
+                Button(role: .cancel) {
+                    homeViewModel.initNewGroup()
+                    withAnimation {
+                        mainViewModel.isSelectViewPrsented = false
+                    }
+                } label: {
+                    Text(" 취소")
+                }
+                
+                Spacer()
+            }
+            
+            HStack {
                 Image("Search icon M")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -66,7 +79,7 @@ struct SelectingView: View {
                                 name == "" || (homeViewModel.friends.members[index].intraName?.contains(name.lowercased())) == true
                             {
                                 if UIDevice.idiom == .phone {
-                                    SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
+                                    SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
                                         .padding(.top)
                                         .padding(.leading, 3)
                                         .onAppear {
@@ -78,7 +91,7 @@ struct SelectingView: View {
                                 } else if UIDevice.idiom == .pad {
                                     if index % 2 == 0 {
                                         HStack {
-                                            SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
+                                            SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
                                                 .padding([.top, .horizontal])
                                                 .onAppear {
                                                     homeViewModel.viewPresentCount += 1
@@ -87,7 +100,7 @@ struct SelectingView: View {
                                                     homeViewModel.viewPresentCount -= 1
                                                 }
                                             if index + 1 < homeViewModel.friends.members.count {
-                                                SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index + 1])
+                                                SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index + 1])
                                                     .padding([.top, .horizontal])
                                                     .onAppear {
                                                         homeViewModel.viewPresentCount += 1

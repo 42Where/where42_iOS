@@ -59,13 +59,13 @@ struct CustomLocationView: View {
                                                         }
                                                     }
                                                 }
-                                                .frame(width: 135, height: 22)
+                                                .frame(width: UIDevice.idiom == .phone ? 135 : 175, height: 22)
                                                 .background(.black.opacity(0.12))
                                                 .clipShape(RoundedRectangle(cornerRadius: 3.0))
 
                                             } else {
                                                 Text(settingViewModel.defaultFloor[index])
-                                                    .frame(width: 135, height: 22)
+                                                    .frame(width: UIDevice.idiom == .phone ? 135 : 175, height: 22)
                                             }
                                         }
                                         .padding(.bottom, index != 6 ? 13 : 0)
@@ -75,7 +75,7 @@ struct CustomLocationView: View {
                             .font(.custom(Font.GmarketMedium, size: 15))
                             .foregroundStyle(.whereDeepNavy)
                         }
-                        .frame(width: 140)
+                        .frame(width: UIDevice.idiom == .phone ? 140 : 180)
                         .padding(.vertical, 15)
 
                         Divider()
@@ -91,21 +91,20 @@ struct CustomLocationView: View {
                             VStack(spacing: 0) {
                                 ForEach(settingViewModel.defaultLocation[settingViewModel.selectedFloor], id: \.self) { location in
                                     Button {
-//                                        settingViewModel.setCustomLocation(location: location)
+                                        settingViewModel.setCustomLocation()
                                         settingViewModel.selectedLocation = location
                                     } label: {
                                         Group {
                                             if location != settingViewModel.selectedLocation {
                                                 Text(location)
-                                                    .frame(width: 135, height: 22)
+                                                    .frame(width: UIDevice.idiom == .phone ? 135 : 175, height: 22)
                                             } else {
                                                 Text(location)
-                                                    .frame(width: 135, height: 22)
+                                                    .frame(width: UIDevice.idiom == .phone ? 135 : 175, height: 22)
                                                     .background(.black.opacity(0.12))
                                                     .clipShape(RoundedRectangle(cornerRadius: 3.0))
                                             }
                                         }
-                                        .frame(width: 135, height: 22)
                                         .padding(.bottom, location != settingViewModel.defaultLocation[settingViewModel.selectedFloor].last ? 13 : 0)
                                     }
                                 }
@@ -113,7 +112,7 @@ struct CustomLocationView: View {
                             .font(.custom(Font.GmarketMedium, size: 15))
                             .foregroundStyle(.whereDeepNavy)
                         }
-                        .frame(width: 140)
+                        .frame(width: UIDevice.idiom == .phone ? 140 : 180)
                         .padding(.vertical, 15)
                     }
                 }
@@ -165,7 +164,8 @@ struct CustomLocationView: View {
                 .font(.custom(Font.GmarketMedium, size: 15))
                 .padding(.trailing, 10)
             }
-            .frame(width: 300, height: 367)
+//            .frame(width: 300, height: 367)
+            .frame(width: UIDevice.idiom == .phone ? 300 : 380, height: 367)
             .padding()
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))

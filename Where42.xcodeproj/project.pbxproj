@@ -39,6 +39,7 @@
 		A06BAE9A2AF8C1CC00DB5A76 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE992AF8C1CC00DB5A76 /* API.swift */; };
 		A06BAE9C2AF9E7CC00DB5A76 /* HomeInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE9B2AF9E7CC00DB5A76 /* HomeInfoView.swift */; };
 		A06BAE9E2AFA2D4100DB5A76 /* HomeFriendInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE9D2AFA2D4100DB5A76 /* HomeFriendInfoView.swift */; };
+		A06DA4C32B903E9D00960A3F /* HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DA4C22B903E9D00960A3F /* HideKeyboard.swift */; };
 		A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A090A2952AFD1EF8001A1198 /* CustomAlertModal.swift */; };
 		A06DB6452AFDD9A00021263A /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DB6442AFDD9A00021263A /* SettingViewModel.swift */; };
 		A06DB6472AFDDF6C0021263A /* HomeGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DB6462AFDDF6C0021263A /* HomeGroupViewModel.swift */; };
@@ -101,6 +102,7 @@
 		A06BAE992AF8C1CC00DB5A76 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		A06BAE9B2AF9E7CC00DB5A76 /* HomeInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoView.swift; sourceTree = "<group>"; };
 		A06BAE9D2AFA2D4100DB5A76 /* HomeFriendInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFriendInfoView.swift; sourceTree = "<group>"; };
+		A06DA4C22B903E9D00960A3F /* HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboard.swift; sourceTree = "<group>"; };
 		A06DB6442AFDD9A00021263A /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Where42/ViewModel/SettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A06DB6462AFDDF6C0021263A /* HomeGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeGroupViewModel.swift; path = Where42/ViewModel/HomeGroupViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A07518502B218E0E00E1AE7C /* PersonalInfoAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoAgreementView.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */,
 				A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */,
 				A0782B822AFCA00A00A7DDDA /* readSize.swift */,
+				A06DA4C22B903E9D00960A3F /* HideKeyboard.swift */,
 				A0F683992B4AC3A400EEA986 /* SheetOrPopOver.swift */,
 			);
 			path = Utils;
@@ -467,6 +470,7 @@
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
 				A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */,
 				A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */,
+				A06DA4C32B903E9D00960A3F /* HideKeyboard.swift in Sources */,
 				A06810DC2B6A233D0045DC43 /* NetworkMonitorView.swift in Sources */,
 				A06810DE2B6B32860045DC43 /* MyToast.swift in Sources */,
 				A06BAE9A2AF8C1CC00DB5A76 /* API.swift in Sources */,
@@ -521,6 +525,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -587,6 +592,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -651,7 +657,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Where42/Preview Content\"";
 				DEVELOPMENT_TEAM = YXHCDG4N3M;
 				ENABLE_PREVIEWS = YES;
@@ -671,7 +677,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dhyun.Where42;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.where42;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -692,7 +698,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Where42/Preview Content\"";
 				DEVELOPMENT_TEAM = YXHCDG4N3M;
 				ENABLE_PREVIEWS = YES;
@@ -712,7 +718,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dhyun.Where42;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.where42;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

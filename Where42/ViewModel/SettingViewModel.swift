@@ -42,7 +42,6 @@ class SettingViewModel: ObservableObject {
 
         do {
             if let comment = try await memberAPI.updateStatusMessage(statusMessage: inputText) {
-                print(comment)
                 if comment.contains("http") == false {
                     DispatchQueue.main.async {
                         self.newStatusMessage = comment
@@ -71,13 +70,12 @@ class SettingViewModel: ObservableObject {
 
     func setCustomLocation() {
         DispatchQueue.main.async {
-            if self.selectedFloor == 6 || self.selectedLocation == "집현전" || self.selectedLocation == "42LAB" {
+            if self.selectedFloor == 6 || self.selectedLocation == "집현전" || self.selectedLocation == "42LAB" || self.selectedLocation.contains("클러스터") == true {
                 self.customLocation = self.selectedLocation
             } else if self.selectedFloor != 0 && self.selectedLocation != "" {
-                self.customLocation = self.customLocation + " " + self.selectedLocation
+                self.customLocation = self.defaultFloor[self.selectedFloor] + " " + self.selectedLocation
             }
         }
-        print(customLocation)
     }
 
     func UpdateCustomLocation() async -> String? {

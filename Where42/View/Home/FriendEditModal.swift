@@ -11,7 +11,7 @@ import SwiftUI
 struct FriendEditModal: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: MemberInfo
+    @Binding var memberInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
     @Binding var isPresented: Bool
 
@@ -20,7 +20,7 @@ struct FriendEditModal: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 10) {
-                KFImage(URL(string: userInfo.image!)!)
+                KFImage(URL(string: memberInfo.image!)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -28,28 +28,29 @@ struct FriendEditModal: View {
                             .frame(width: 80, height: 80)
                     }
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(.whereDeepPink, lineWidth: userInfo.location != "퇴근" ? 3 : 0))
+                    .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
+                    .overlay(Circle().stroke(.black, lineWidth: memberInfo.inCluster == false ? 0.1 : 0))
                     .frame(width: 80, height: 80)
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text(userInfo.intraName!)
+                        Text(memberInfo.intraName!)
                             .font(.custom(Font.GmarketBold, size: 20))
                             .foregroundStyle(.whereDeepNavy)
 
                         HStack(spacing: 4) {
-                            Text(userInfo.location!)
+                            Text(memberInfo.location!)
                         }
                         .font(.custom(Font.GmarketMedium, size: 15))
                         .padding(5.0)
                         .padding(.horizontal, 2.0)
-                        .background(userInfo.location == "퇴근" ? .white : .whereDeepNavy)
+                        .background(memberInfo.inCluster == false ? .white : .whereDeepNavy)
                         .clipShape(Capsule())
-                        .overlay(userInfo.location == "퇴근" ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
-                        .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
+                        .overlay(memberInfo.inCluster == false ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
+                        .foregroundStyle(memberInfo.inCluster == false ? .whereDeepNavy : .white)
                     }
 
-                    Text(userInfo.comment!)
+                    Text(memberInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 16))
                         .foregroundStyle(.whereMediumNavy)
                 }
@@ -71,7 +72,7 @@ struct FriendEditModal: View {
                 withAnimation {
                     isPresented = false
                     homeViewModel.isFriendDeleteAlertPresented = true
-                    homeViewModel.selectedMember = userInfo
+                    homeViewModel.selectedMember = memberInfo
                     if isFriend {
                         homeViewModel.isFriend = true
                     } else {
@@ -97,6 +98,6 @@ struct FriendEditModal: View {
 }
 
 #Preview {
-    FriendEditModal(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
+    FriendEditModal(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
         .environmentObject(HomeViewModel())
 }

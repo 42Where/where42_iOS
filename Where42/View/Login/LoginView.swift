@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @StateObject var loginViewModel: LoginViewModel = .init()
+    @EnvironmentObject private var loginViewModel: LoginViewModel
 
     var body: some View {
         ZStack {
@@ -53,10 +53,13 @@ struct LoginView: View {
 
                 Spacer()
 
-                Button("L O G I N") {
+                Button {
                     API.sharedAPI.accessToken = ""
                     loginViewModel.isLoginButtonPushed = true
+                    loginViewModel.timer = loginViewModel.timer.upstream.autoconnect()
                     loginViewModel.login()
+                } label: {
+                    Text("L O G I N" + loginViewModel.dots)
                 }
                 .font(.custom("GmarketSansTTFBold", size: 20.0))
                 .foregroundStyle(.white)
@@ -91,17 +94,29 @@ struct LoginView: View {
                     Spacer()
                 }
             }
+
+            if loginViewModel.isShowAgreementSheet {
+                PersonalInfoAgreementView(
+                    isPresent: $loginViewModel.isShowAgreementSheet
+                )
+                .zIndex(1)
+            }
         }
         .onAppear {
             MainViewModel.shared.toast = nil
+            loginViewModel.timer.upstream.connect().cancel()
         }
-
+        .onReceive(loginViewModel.timer) { _ in
+            if loginViewModel.isLoginButtonPushed {
+                if loginViewModel.dots != " . . ." {
+                    loginViewModel.dots += " ."
+                } else {
+                    loginViewModel.dots = ""
+                }
+            }
+        }
         .disabled(loginViewModel.isLoginButtonPushed)
         .foregroundColor(.whereDeepNavy)
-
-        .fullScreenCover(isPresented: $loginViewModel.isShowAgreementSheet) {
-            PersonalInfoAgreementView(isPresent: $loginViewModel.isShowAgreementSheet)
-        }
         .environmentObject(loginViewModel)
     }
 }
@@ -109,6 +124,7 @@ struct LoginView: View {
 #Preview("iPhone 15 Pro") {
     LoginView()
         .environmentObject(HomeViewModel())
+        .environmentObject(LoginViewModel())
 }
 
 // struct ContentView_Previews: PreviewProvider {

@@ -45,8 +45,8 @@ class HomeViewModel: ObservableObject {
         for index in myGroups.indices {
             myGroups[index].totalNum = myGroups[index].members.count
             myGroups[index].onlineNum = 0
-            myGroups[index].members.forEach { user in
-                if user.location != "퇴근" {
+            myGroups[index].members.forEach { member in
+                if member.inCluster == true {
                     myGroups[index].onlineNum += 1
                 }
             }
@@ -56,8 +56,8 @@ class HomeViewModel: ObservableObject {
     func countGroupMembers(group: inout GroupInfo) {
         group.totalNum = group.members.count
         group.onlineNum = 0
-        group.members.forEach { user in
-            if user.location != "퇴근" {
+        group.members.forEach { member in
+            if member.inCluster == true {
                 group.onlineNum += 1
             }
         }
@@ -66,8 +66,8 @@ class HomeViewModel: ObservableObject {
     func countFriends() {
         friends.totalNum = friends.members.count
         friends.onlineNum = 0
-        friends.members.forEach { user in
-            if user.location != "퇴근" {
+        friends.members.forEach { member in
+            if member.inCluster == true {
                 friends.onlineNum += 1
             }
         }
@@ -94,7 +94,7 @@ class HomeViewModel: ObservableObject {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            print("Error getUserInfo: \(error)")
+            print("Error getMemberInfo: \(error)")
         }
     }
 
@@ -419,33 +419,5 @@ class HomeViewModel: ObservableObject {
         do {
             try await loginAPI.logout()
         } catch {}
-    }
-
-    func resetAccesstoken() {
-        DispatchQueue.main.async {
-            API.sharedAPI.accessToken = ""
-            print("access token: ", API.sharedAPI.accessToken)
-        }
-    }
-
-    func expireAccesstoken() {
-        DispatchQueue.main.async {
-            API.sharedAPI.accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
-            print("access token: ", API.sharedAPI.accessToken)
-        }
-    }
-
-    func resetRefreshtoken() {
-        DispatchQueue.main.async {
-            API.sharedAPI.refreshToken = ""
-            print("refresh token: ", API.sharedAPI.refreshToken)
-        }
-    }
-
-    func expireRefreshtoken() {
-        DispatchQueue.main.async {
-            API.sharedAPI.refreshToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
-            print("refresh token: ", API.sharedAPI.refreshToken)
-        }
     }
 }

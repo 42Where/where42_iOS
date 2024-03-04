@@ -38,11 +38,11 @@ struct MyWebView: UIViewRepresentable {
             self.homeViewModel.isAPILoaded = false
         }
         
-//        if homeViewModel.isLogout == true {
-//            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
-//            let date = NSDate(timeIntervalSince1970: 0)
-//            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
-//        }
+        if mainViewModel.isLogout == true {
+            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
+            let date = NSDate(timeIntervalSince1970: 0)
+            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
+        }
         
         let source = "var meta = document.createElement('meta');" +
             "meta.name = 'viewport';" +
@@ -78,7 +78,7 @@ struct MyWebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-            if webView.url?.absoluteString.contains("https://test.where42:3000") == true {
+            if webView.url?.absoluteString.contains("https://test.where42.kr:3000") == true {
                 if let redirectURL = webView.url?.absoluteString {
                     print(redirectURL)
                     if redirectURL.contains("login-fail") == true {

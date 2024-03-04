@@ -26,6 +26,7 @@ struct HomeInfoView: View {
                 }
                 .clipShape(Circle())
                 .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
+                .overlay(Circle().stroke(.black, lineWidth: memberInfo.inCluster == false ? 0.1 : 0))
                 .frame(width: 80, height: 80)
                 
             VStack(alignment: .leading, spacing: 10) {

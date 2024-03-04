@@ -18,7 +18,6 @@ struct PersonalInfoAgreementView: View {
             Color.black
                 .opacity(0.30)
                 .ignoresSafeArea()
-                .onTapGesture {}
 
             VStack(spacing: 20) {
                 Text("개인정보 수집 및 이용 동의서(필수)")
@@ -61,7 +60,9 @@ struct PersonalInfoAgreementView: View {
                     Spacer()
 
                     Button {
-                        isPresent = false
+                        withAnimation {
+                            isPresent = false
+                        }
                     } label: {
                         Text("거절")
                             .padding(.horizontal, 6)
@@ -76,18 +77,27 @@ struct PersonalInfoAgreementView: View {
                     Spacer()
 
                     Button {
-                        loginViewModel.isAgreeButtonPushed = true
-                        loginViewModel.join(intraId: String(API.sharedAPI.intraId))
-                        isPresent = false
-                        mainViewModel.isLogin = true
-                        mainViewModel.isLogout = false
-                        homeViewModel.isAPILoaded = false
+                        Task {
+                            DispatchQueue.main.async {
+                                self.loginViewModel.isAgreeButtonPushed = true
+                            }
+                            if await loginViewModel.join(intraId: String(API.sharedAPI.intraId)) {
+                                DispatchQueue.main.async {
+                                    withAnimation {
+                                        self.isPresent = false
+                                    }
+                                    self.mainViewModel.isLogin = true
+                                    self.mainViewModel.isLogout = false
+                                    self.homeViewModel.isAPILoaded = false
+                                }
+                            }
+                        }
                     } label: {
                         Text("동의")
                             .padding(.horizontal, 6)
                             .padding(4.5)
                             .foregroundStyle(.white)
-                            .background(.whereDeepNavy)
+                            .background(loginViewModel.isAgreeButtonPushed ? .gray : .whereDeepNavy)
                             .clipShape(
                                 RoundedRectangle(cornerRadius: 10)
                             )
@@ -96,9 +106,10 @@ struct PersonalInfoAgreementView: View {
                     Spacer()
                 }
                 .font(.custom(Font.GmarketMedium, size: 16))
+                .disabled(loginViewModel.isAgreeButtonPushed)
             }
             .padding(30)
-            .frame(width: 380)
+            .frame(width: UIDevice.idiom == .phone ? 380 : 480)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }

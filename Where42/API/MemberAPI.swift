@@ -38,7 +38,7 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         print("getMemberInfo token: ", MemberAPI.shared.accessToken)
-        print(request.url?.absoluteString)
+//        print(request.url?.absoluteString)
         request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
@@ -223,7 +223,7 @@ class MemberAPI: API {
                 if response.mimeType == "text/html" {
                     return requestURL.absoluteString
                 } else {
-                    print("Succeed update Custom Location")
+//                    print("Succeed update Custom Location")
                     return try JSONDecoder().decode(UpdateCustomLocationDTO.self, from: data).customLocation
                 }
 
@@ -272,7 +272,6 @@ class MemberAPI: API {
                 print(String(data: data, encoding: String.Encoding.utf8)!)
             }
 
-            print(response.statusCode)
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
@@ -287,8 +286,11 @@ class MemberAPI: API {
                 if response.contains("errorCode") && response.contains("errorMessage") {
                     let customException = parseCustomException(response: response)
                     if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
+                        print(keyWord)
+                        if customException.errorCode != 1300 && customException.errorCode != 1301 {
+                            try await API.sharedAPI.reissue()
+                            throw NetworkError.Reissue
+                        }
                     }
                 } else {
                     throw NetworkError.BadRequest

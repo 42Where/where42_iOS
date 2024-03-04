@@ -20,22 +20,22 @@ struct HomeFriendView: View {
             Section {
                 if friends.isOpen && friends.totalNum > 0 {
                     ForEach(0 ..< friends.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWorkCheked && friends.members[index].location == "퇴근") {
+                        if !(homeViewModel.isWorkCheked && friends.members[index].inCluster == false) {
                             if UIDevice.idiom == .phone {
-                                HomeFriendInfoView(userInfo: $friends.members[index], groupInfo: $friends)
+                                HomeFriendInfoView(memberInfo: $friends.members[index], groupInfo: $friends)
                                     .padding(.horizontal)
                                     .padding(.vertical, 1)
                             } else if UIDevice.idiom == .pad {
                                 if index % 2 == 0 {
                                     HStack {
                                         HomeFriendInfoView(
-                                            userInfo: $friends.members[index],
+                                            memberInfo: $friends.members[index],
                                             groupInfo: $friends)
                                             .padding(.horizontal)
                                             .padding(.vertical, 1)
                                         if index + 1 < friends.members.count {
                                             HomeFriendInfoView(
-                                                userInfo: $friends.members[index + 1],
+                                                memberInfo: $friends.members[index + 1],
                                                 groupInfo: $friends)
                                                 .padding(.horizontal)
                                                 .padding(.vertical, 1)

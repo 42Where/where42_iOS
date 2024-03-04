@@ -12,6 +12,9 @@ class LoginViewModel: ObservableObject {
     @Published var isShowAgreementSheet = false
     @Published var isLoginButtonPushed = false
     @Published var isAgreeButtonPushed = false
+    @Published var dots = ""
+
+    var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     let memberAPI = MemberAPI.shared
     let loginAPI = LoginAPI.shared
@@ -24,6 +27,8 @@ class LoginViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         MainViewModel.shared.is42IntraSheetPresented = true
                         self.isLoginButtonPushed = false
+                        self.dots = ""
+                        self.timer.upstream.connect().cancel()
                     }
                 }
             } catch {
@@ -32,10 +37,19 @@ class LoginViewModel: ObservableObject {
         }
     }
 
-    func join(intraId: String) {
-        Task {
-            await loginAPI.join(intraId: intraId)
-            self.isAgreeButtonPushed = false
-        }
+    func join(intraId: String) async -> Bool {
+        do {
+            try await loginAPI.join(intraId: intraId)
+            DispatchQueue.main.async {
+                self.isAgreeButtonPushed = false
+            }
+            return true
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                self.isAgreeButtonPushed = false
+            }
+            MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+        } catch {}
+        return false
     }
 }

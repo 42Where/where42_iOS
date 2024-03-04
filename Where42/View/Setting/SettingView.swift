@@ -15,9 +15,6 @@ struct SettingView: View {
     var body: some View {
         ZStack {
             VStack {
-                Spacer()
-                    .frame(height: 50)
-
                 Text("환경설정")
                     .font(.GmarketBold34)
 
@@ -31,6 +28,7 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
+                    .frame(height: 70)
 
                 Button("코멘트 설정") {
                     withAnimation {
@@ -40,10 +38,15 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
+                    .frame(height: 70)
 
                 Button("자리 설정") {
-                    withAnimation {
-                        settingViewModel.isCustomLocationAlertPresented = true
+                    if homeViewModel.myInfo.inCluster == true {
+                        withAnimation {
+                            settingViewModel.isCustomLocationAlertPresented = true
+                        }
+                    } else {
+                        mainViewModel.toast = Toast(title: "자리 설정은 클러스터 안에서만 할 수 있습니다")
                     }
                 }
                 .buttonStyle(setButton())
@@ -87,5 +90,7 @@ struct setButton: PrimitiveButtonStyle {
 
 #Preview {
     SettingView()
+        .environmentObject(HomeViewModel())
+        .environmentObject(MainViewModel())
         .environmentObject(HomeViewModel())
 }

@@ -28,7 +28,7 @@ struct MyToast: View {
                 }
                 .foregroundStyle(.whereDeepNavy)
 
-                Spacer(minLength: 10)
+                Spacer(minLength: 1)
 
                 Button {
                     onCancleTapped()
