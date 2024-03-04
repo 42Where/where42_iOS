@@ -32,7 +32,6 @@
 		A04E11D72B4C23560067AA39 /* HomeGroupSingleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E11D62B4C23560067AA39 /* HomeGroupSingleView.swift */; };
 		A05E269D2B1F401C00FD3E22 /* GroupAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */; };
 		A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06000802AFCFCA800CC9A6A /* MainViewModel.swift */; };
-		A06029AE2B961CAA002CABFF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A06029AD2B961CAA002CABFF /* GoogleService-Info.plist */; };
 		A06810DC2B6A233D0045DC43 /* NetworkMonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */; };
 		A06810DE2B6B32860045DC43 /* MyToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06810DD2B6B32860045DC43 /* MyToast.swift */; };
 		A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */; };
@@ -63,6 +62,7 @@
 		A0D836092B5BD736006C18E2 /* CustomLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D836082B5BD736006C18E2 /* CustomLocationView.swift */; };
 		A0E366132B63937800C90D08 /* SearchMemberInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E366122B63937800C90D08 /* SearchMemberInfoView.swift */; };
 		A0ECD5E82B36AAAB0032F46D /* GroupMemberDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ECD5E72B36AAAB0032F46D /* GroupMemberDeleteView.swift */; };
+		A0F05A8B2B838487006A3BA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0F05A8A2B838487006A3BA7 /* GoogleService-Info.plist */; };
 		A0F6839A2B4AC3A400EEA986 /* SheetOrPopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F683992B4AC3A400EEA986 /* SheetOrPopOver.swift */; };
 		A0FD453C2AEB81D70050AB09 /* Where42App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FD453B2AEB81D70050AB09 /* Where42App.swift */; };
 		A0FD453E2AEB81D70050AB09 /* Where42.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FD453D2AEB81D70050AB09 /* Where42.swift */; };
@@ -95,7 +95,6 @@
 		A04E11D62B4C23560067AA39 /* HomeGroupSingleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGroupSingleView.swift; sourceTree = "<group>"; };
 		A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupAPI.swift; sourceTree = "<group>"; };
 		A06000802AFCFCA800CC9A6A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
-		A06029AD2B961CAA002CABFF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "font/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorView.swift; sourceTree = "<group>"; };
 		A06810DD2B6B32860045DC43 /* MyToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyToast.swift; sourceTree = "<group>"; };
 		A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Where42ToolBarContent.swift; sourceTree = "<group>"; };
@@ -130,6 +129,7 @@
 		A0D836082B5BD736006C18E2 /* CustomLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationView.swift; sourceTree = "<group>"; };
 		A0E366122B63937800C90D08 /* SearchMemberInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMemberInfoView.swift; sourceTree = "<group>"; };
 		A0ECD5E72B36AAAB0032F46D /* GroupMemberDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberDeleteView.swift; sourceTree = "<group>"; };
+		A0F05A8A2B838487006A3BA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0F683992B4AC3A400EEA986 /* SheetOrPopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetOrPopOver.swift; sourceTree = "<group>"; };
 		A0FD45382AEB81D70050AB09 /* Where42.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Where42.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0FD453B2AEB81D70050AB09 /* Where42App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Where42App.swift; sourceTree = "<group>"; };
@@ -354,8 +354,8 @@
 			isa = PBXGroup;
 			children = (
 				A0985BC12B8388460008EA7B /* Where42.entitlements */,
+				A0F05A8A2B838487006A3BA7 /* GoogleService-Info.plist */,
 				A01551B92AED5D9E00B9D271 /* Info.plist */,
-				A06029AD2B961CAA002CABFF /* GoogleService-Info.plist */,
 				A01551B82AED5ABF00B9D271 /* font */,
 				A0FD453B2AEB81D70050AB09 /* Where42App.swift */,
 				A02101C62AFB21E100CB2FCD /* ViewModel */,
@@ -451,7 +451,7 @@
 				A01551B52AED5AB800B9D271 /* GmarketSansTTFMedium.ttf in Resources */,
 				A0D5E0352B108B1E00BEE525 /* Settings.bundle in Resources */,
 				A01551B72AED5AB800B9D271 /* GmarketSansTTFBold.ttf in Resources */,
-				A06029AE2B961CAA002CABFF /* GoogleService-Info.plist in Resources */,
+				A0F05A8B2B838487006A3BA7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
