@@ -354,7 +354,6 @@ class GroupAPI: API {
                     if customException.handleError() == false {
                         try await API.sharedAPI.reissue()
                         throw NetworkError.Reissue
-//                        return false
                     }
                 } else {
                     throw NetworkError.BadRequest

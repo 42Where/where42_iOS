@@ -111,7 +111,7 @@ struct LoginView: View {
                 if loginViewModel.dots != " . . ." {
                     loginViewModel.dots += " ."
                 } else {
-                    loginViewModel.dots = ""
+                    loginViewModel.dots = " ."
                 }
             }
         }

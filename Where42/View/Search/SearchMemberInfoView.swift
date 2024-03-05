@@ -21,22 +21,21 @@ struct SearchMemberInfoView: View {
         Button {
             if homeViewModel.friends.members.contains(where: { $0.intraId == memberInfo.intraId }) == false {
                 memberInfo.isCheck.toggle()
-                if memberInfo.isCheck {
-                    withAnimation {
-                        homeViewModel.selectedMembers.insert(memberInfo, at: 0)
-                    }
-                } else {
-                    if let index = homeViewModel.selectedMembers.firstIndex(
-                        where: { $0.intraId == memberInfo.intraId })
-                    {
-                        withAnimation {
-                            _ = homeViewModel.selectedMembers.remove(at: index)
+                withAnimation {
+                    if memberInfo.isCheck {
+                        searchViewModel.selectedMembers.insert(memberInfo, at: 0)
+                    } else {
+                        if let index = searchViewModel.selectedMembers.firstIndex(
+                            where: { $0.intraId == memberInfo.intraId })
+                        {
+                            _ = searchViewModel.selectedMembers.remove(at: index)
                         }
                     }
                 }
             } else {
                 isShowModal = true
             }
+            hideKeyboard()
         } label: {
             HStack(spacing: 10) {
                 KFImage(URL(string: memberInfo.image!)!)
@@ -79,15 +78,15 @@ struct SearchMemberInfoView: View {
                 if !homeViewModel.friends.members.contains(where: { $0.intraId == memberInfo.intraId }) {
                     if homeViewModel.myInfo.intraId == memberInfo.intraId {
                         EmptyView()
-                    } else if homeViewModel.selectedMembers.count == 0 && !memberInfo.isCheck {
+                    } else if searchViewModel.selectedMembers.count == 0 && !memberInfo.isCheck {
                         Image("Add Friend icon")
                             .resizable()
                             .frame(width: 20, height: 20)
-                    } else if homeViewModel.selectedMembers.count > 0 && !memberInfo.isCheck {
+                    } else if searchViewModel.selectedMembers.count > 0 && !memberInfo.isCheck {
                         Image("Empty Box")
                             .resizable()
                             .frame(width: 20, height: 20)
-                    } else if homeViewModel.selectedMembers.count > 0 {
+                    } else if searchViewModel.selectedMembers.count > 0 {
                         Image("Checked Box")
                             .resizable()
                             .frame(width: 20, height: 20)
@@ -101,17 +100,6 @@ struct SearchMemberInfoView: View {
             }
             .padding(.vertical, 1)
             .background()
-        }
-        .onAppear {
-            if homeViewModel.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId }) {
-                memberInfo.isCheck = true
-            }
-
-            if memberInfo.isCheck &&
-                !homeViewModel.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId })
-            {
-                homeViewModel.selectedMembers.append(memberInfo)
-            }
         }
         .sheetOrPopOver(isPresented: $isShowModal) {
             FriendEditModal(

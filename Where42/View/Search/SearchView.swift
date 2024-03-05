@@ -38,17 +38,17 @@ struct SearchView: View {
                 )
                 .padding([.horizontal, .top])
                 
-                if homeViewModel.selectedMembers.count > 0 {
+                if searchViewModel.selectedMembers.count > 0 {
                     SearchSelectedMembersView()
+                        .disabled(searchViewModel.searchStatus != .waiting)
                 }
-                
-                
+                    
                 if searchViewModel.searching.count == 0 && searchViewModel.searchStatus == .waiting {
                     Spacer()
-                    
+                        
                     Text("아무도 없어요...")
                         .font(.custom(Font.GmarketBold, size: 20))
-                    
+                        
                     Spacer()
                 } else {
                     ScrollView {
@@ -59,15 +59,15 @@ struct SearchView: View {
                                 {
                                     if UIDevice.idiom == .phone {
                                         SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
-                                            .padding(index == 0 && homeViewModel.selectedMembers.count != 0 ? [] : .top)
+                                            .padding(index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top)
                                     } else if UIDevice.idiom == .pad {
                                         if index % 2 == 0 {
                                             HStack {
                                                 SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
-                                                    .padding([index == 0 && homeViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
+                                                    .padding([index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
                                                 if index + 1 < searchViewModel.searching.count {
                                                     SearchMemberInfoView(memberInfo: $searchViewModel.searching[index + 1])
-                                                        .padding([index == 0 && homeViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
+                                                        .padding([index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
                                                 } else {
                                                     Spacer()
                                                         .padding()
@@ -79,19 +79,19 @@ struct SearchView: View {
                             }
                         }
                         .padding([.horizontal, .bottom])
-                        .disabled(searchViewModel.searchStatus != .waiting)
                     }
-                    
+                    .disabled(searchViewModel.searchStatus != .waiting)
+                        
                     Spacer()
                 }
-                
-                if homeViewModel.selectedMembers.count > 0 {
+                    
+                if searchViewModel.selectedMembers.count > 0 {
                     HStack {
                         Spacer()
-                        
+                            
                         Button {
                             Task {
-                                if await homeViewModel.addMemberInGroup(groupId: homeViewModel.friends.groupId!) {
+                                if await searchViewModel.addMemberInGroup(groupId: homeViewModel.friends.groupId!) {
                                     searchViewModel.initSearchingAfterAdd()
                                     await homeViewModel.getGroup()
                                 }
@@ -103,13 +103,14 @@ struct SearchView: View {
                         }
                         .clipShape(Rectangle())
                         .padding()
-                        
+                            
                         Spacer()
                     }
                     .background(.whereDeepNavy)
+                    .disabled(searchViewModel.searchStatus != .waiting)
                 }
             }
-            
+                
             if searchViewModel.searchStatus != .waiting {
                 ProgressView()
                     .scaleEffect(2)
@@ -135,19 +136,19 @@ struct SearchView: View {
             )
         ) { newValue in
             searchViewModel.search(keyWord: newValue)
-            hideKeyboard()
         }
         .onSubmit {
+            if searchViewModel.searchStatus == .waiting {
+                searchViewModel.searchStatus = .searching
+            }
             searchViewModel.search(keyWord: searchViewModel.name)
         }
         .submitLabel(.search)
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        .toolbar(homeViewModel.selectedMembers.count > 0 ? .hidden : .visible, for: .tabBar)
+        .toolbar(searchViewModel.selectedMembers.count > 0 ? .hidden : .visible, for: .tabBar)
         .transition(.move(edge: .bottom))
         .contentShape(Rectangle())
-        .onTapGesture {
-            hideKeyboard()
-        }
+        .hideKeyboardOnTap()
     }
 }
 
