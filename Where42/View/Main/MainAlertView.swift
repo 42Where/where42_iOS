@@ -10,6 +10,7 @@ import SwiftUI
 struct MainAlertView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
 
     var body: some View {
         if mainViewModel.isNewGroupAlertPrsented {
@@ -96,6 +97,10 @@ struct MainAlertView: View {
 
         if homeViewModel.isGroupEditSelectAlertPrsented {
             GroupEditSelectModal()
+        }
+
+        if settingViewModel.isCustomLocationAlertPresented {
+            CustomLocationView()
         }
     }
 }

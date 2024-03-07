@@ -17,6 +17,7 @@ struct Where42: View {
     @StateObject var mainViewModel: MainViewModel = .shared
     @StateObject var homeViewModel: HomeViewModel = .init()
     @StateObject var loginViewModel: LoginViewModel = .init()
+    @StateObject var settingViewModel: SettingViewModel = .init()
     @StateObject var networkMonitor: NetworkMonitor = .init()
 
     @Environment(\.horizontalSizeClass) var oldSizeClass
@@ -111,6 +112,7 @@ struct Where42: View {
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)
         .environmentObject(loginViewModel)
+        .environmentObject(settingViewModel)
         .environmentObject(networkMonitor)
     }
 }

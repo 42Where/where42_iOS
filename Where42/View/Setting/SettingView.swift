@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SettingView: View {
-    @StateObject private var settingViewModel: SettingViewModel = .init()
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
 
     var body: some View {
         ZStack {

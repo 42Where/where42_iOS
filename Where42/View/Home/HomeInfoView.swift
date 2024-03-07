@@ -10,6 +10,8 @@ import SwiftUI
 
 struct HomeInfoView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
     
     @Binding var memberInfo: MemberInfo
     @Binding var isWork: Bool
@@ -35,21 +37,31 @@ struct HomeInfoView: View {
                         .font(.custom(Font.GmarketBold, size: 20))
                         .foregroundStyle(.whereDeepNavy)
                         
-                    HStack(spacing: 4) {
-                        Text(memberInfo.getLocation())
-                        if memberInfo.inCluster == true {
-                            Image("Search icon White M")
-                                .resizable()
-                                .frame(width: 18, height: 18)
+                    Button {
+                        if homeViewModel.myInfo.inCluster == true {
+                            withAnimation {
+                                settingViewModel.isCustomLocationAlertPresented = true
+                            }
+                        } else {
+                            mainViewModel.toast = Toast(title: "자리 설정은 클러스터 안에서만 할 수 있습니다")
                         }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text(memberInfo.getLocation())
+                            if memberInfo.inCluster == true {
+                                Image("Search icon White M")
+                                    .resizable()
+                                    .frame(width: 18, height: 18)
+                            }
+                        }
+                        .font(.custom(Font.GmarketMedium, size: 15))
+                        .padding(5.0)
+                        .padding(.horizontal, 2.0)
+                        .background(memberInfo.inCluster == true ? .whereDeepNavy : .white)
+                        .clipShape(Capsule())
+                        .overlay(memberInfo.inCluster == true ? Capsule().stroke(.whereDeepNavy, lineWidth: 0) : Capsule().stroke(.whereDeepNavy, lineWidth: 1))
+                        .foregroundStyle(memberInfo.inCluster == true ? .white : .whereDeepNavy)
                     }
-                    .font(.custom(Font.GmarketMedium, size: 15))
-                    .padding(5.0)
-                    .padding(.horizontal, 2.0)
-                    .background(memberInfo.inCluster == true ? .whereDeepNavy : .white)
-                    .clipShape(Capsule())
-                    .overlay(memberInfo.inCluster == true ? Capsule().stroke(.whereDeepNavy, lineWidth: 0) : Capsule().stroke(.whereDeepNavy, lineWidth: 1))
-                    .foregroundStyle(memberInfo.inCluster == true ? .white : .whereDeepNavy)
                 }
                     
                 Text(memberInfo.comment!)
