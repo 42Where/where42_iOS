@@ -19,7 +19,9 @@ struct SearchMemberInfoView: View {
 
     var body: some View {
         Button {
-            if homeViewModel.friends.members.contains(where: { $0.intraId == memberInfo.intraId }) == false {
+            if memberInfo.intraId != homeViewModel.myInfo.intraId &&
+                homeViewModel.friends.members.contains(where: { $0.intraId == memberInfo.intraId }) == false
+            {
                 memberInfo.isCheck.toggle()
                 withAnimation {
                     if memberInfo.isCheck {
@@ -71,6 +73,7 @@ struct SearchMemberInfoView: View {
                     Text(memberInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 14))
                         .foregroundStyle(.whereMediumNavy)
+                        .lineLimit(2)
                 }
 
                 Spacer()

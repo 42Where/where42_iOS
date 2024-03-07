@@ -46,7 +46,7 @@ class MainViewModel: ObservableObject {
             case "wrongComment":
                 self.toast = Toast(title: "잘못된 코멘트 형식입니다")
             case "longComment":
-                self.toast = Toast(title: "코멘트가 너무 깁니다")
+                self.toast = Toast(title: "코멘트가 너무 깁니다, 40자 이하로 입력해주세요")
             case "reissue":
                 self.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             default:

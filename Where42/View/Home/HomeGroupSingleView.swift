@@ -12,13 +12,20 @@ struct HomeGroupSingleView: View {
     @EnvironmentObject private var homeGroupViewModel: HomeGroupViewModel
 
     @Binding var group: GroupInfo
+
     @State var isPresented = false
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if group.isOpen && group.totalNum > 0 {
-                    ForEach(0 ..< group.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWorkCheked && group.members[index].inCluster == false) {
+                if group.isOpen && group.totalNum >= 0 {
+                    if group.totalNum == 0 || (homeViewModel.isWorkCheked && group.onlineNum == 0) {
+                        Text("아무도 없어요...")
+                            .font(.custom(Font.GmarketMedium, size: 18))
+                            .foregroundStyle(.whereDeepNavy)
+                            .padding()
+                    } else {
+                        ForEach(0 ..< group.members.count, id: \.self) { index in
+//                            if !(homeViewModel.isWorkCheked && group.members[index].inCluster == false) {
                             if UIDevice.idiom == .phone {
                                 HomeFriendInfoView(memberInfo: $group.members[index], groupInfo: $group)
                                     .padding(.horizontal)
@@ -37,6 +44,7 @@ struct HomeGroupSingleView: View {
                                             Spacer()
                                                 .padding()
                                         }
+//                                        }
                                     }
                                 }
                             }
@@ -54,10 +62,6 @@ struct HomeGroupSingleView: View {
                         Spacer()
 
                         HStack {
-//                            Button {} label: {
-//                                Image("Filter icon")
-//                            }
-
                             Button {
                                 isPresented.toggle()
                                 homeViewModel.selectedGroup = group
@@ -82,7 +86,7 @@ struct HomeGroupSingleView: View {
                     .padding(.horizontal)
                     .padding(.vertical, 3)
 
-                    if group.isOpen && group.totalNum > 0 {
+                    if group.isOpen && group.totalNum >= 0 {
                         Divider()
                     }
                 }

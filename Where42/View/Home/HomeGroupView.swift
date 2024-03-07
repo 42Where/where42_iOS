@@ -14,7 +14,7 @@ struct HomeGroupView: View {
 
     var body: some View {
         VStack {
-            ForEach($groups) { $group in
+            ForEach(homeViewModel.isWorkCheked ? $homeViewModel.filteredGroups : $groups) { $group in
                 if group.groupName != "default" {
                     HomeGroupSingleView(group: $group)
 
@@ -26,7 +26,11 @@ struct HomeGroupView: View {
         .background(.white)
         .environmentObject(homeGroupViewModel)
 
-        HomeFriendView(friends: $homeViewModel.friends)
+        if homeViewModel.isWorkCheked {
+            HomeFriendView(friends: $homeViewModel.filteredFriends)
+        } else {
+            HomeFriendView(friends: $homeViewModel.friends)
+        }
     }
 }
 

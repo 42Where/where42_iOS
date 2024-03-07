@@ -53,6 +53,7 @@ struct HomeFriendInfoView: View {
                     Text(memberInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 14))
                         .foregroundStyle(.whereMediumNavy)
+                        .lineLimit(2)
                 }
 
                 Spacer()

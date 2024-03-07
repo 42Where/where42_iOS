@@ -18,27 +18,41 @@ struct HomeFriendView: View {
     var body: some View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
-                if friends.isOpen && friends.totalNum > 0 {
-                    ForEach(0 ..< friends.members.count, id: \.self) { index in
-                        if !(homeViewModel.isWorkCheked && friends.members[index].inCluster == false) {
+                if friends.isOpen && friends.totalNum >= 0 {
+                    if friends.totalNum == 0 || (homeViewModel.isWorkCheked && friends.onlineNum == 0) {
+                        Text("아무도 없어요...")
+                            .font(.custom(Font.GmarketMedium, size: 18))
+                            .foregroundStyle(.whereDeepNavy)
+                            .padding()
+                    } else {
+                        ForEach(Array(zip(
+                            0 ..< friends.members.count,
+                            $friends.members)), id: \.0)
+                        { index, $member in
+
                             if UIDevice.idiom == .phone {
-                                HomeFriendInfoView(memberInfo: $friends.members[index], groupInfo: $friends)
+                                HomeFriendInfoView(
+                                    memberInfo: $member,
+                                    groupInfo: $friends)
                                     .padding(.horizontal)
                                     .padding(.vertical, 1)
+
                             } else if UIDevice.idiom == .pad {
                                 if index % 2 == 0 {
                                     HStack {
                                         HomeFriendInfoView(
-                                            memberInfo: $friends.members[index],
+                                            memberInfo: $member,
                                             groupInfo: $friends)
                                             .padding(.horizontal)
                                             .padding(.vertical, 1)
+
                                         if index + 1 < friends.members.count {
                                             HomeFriendInfoView(
                                                 memberInfo: $friends.members[index + 1],
                                                 groupInfo: $friends)
                                                 .padding(.horizontal)
                                                 .padding(.vertical, 1)
+
                                         } else {
                                             Spacer()
                                                 .padding()
@@ -60,10 +74,6 @@ struct HomeFriendView: View {
                         Spacer()
 
                         HStack {
-//                            Button {} label: {
-//                                Image("Filter icon")
-//                            }
-
                             Button {
                                 isSheetPresent.toggle()
                             } label: {

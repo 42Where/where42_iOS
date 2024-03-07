@@ -53,38 +53,32 @@ struct FriendEditModal: View {
                     Text(memberInfo.comment!)
                         .font(.custom(Font.GmarketMedium, size: 16))
                         .foregroundStyle(.whereMediumNavy)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Spacer()
-
-//                Button {
-//                    //                isShowModal.toggle()
-//                } label: {
-//                    Image("Function icon")
-//                        .resizable()
-//                        .frame(width: 20, height: 20)
-//                }
-//                .padding()
             }
             .padding([.top, .leading])
 
             Button {
-                withAnimation {
-                    isPresented = false
-                    homeViewModel.isFriendDeleteAlertPresented = true
-                    homeViewModel.selectedMember = memberInfo
-                    if isFriend {
-                        homeViewModel.isFriend = true
-                    } else {
-                        homeViewModel.isFriend = false
+                if memberInfo.intraId != homeViewModel.myInfo.intraId {
+                    withAnimation {
+                        isPresented = false
+                        homeViewModel.isFriendDeleteAlertPresented = true
+                        homeViewModel.selectedMember = memberInfo
+                        if isFriend {
+                            homeViewModel.isFriend = true
+                        } else {
+                            homeViewModel.isFriend = false
+                        }
+                        homeViewModel.selectedGroup = groupInfo
+                        //                    homeViewModel.selectedMembers.append(userInfo)
                     }
-                    homeViewModel.selectedGroup = groupInfo
-//                    homeViewModel.selectedMembers.append(userInfo)
                 }
             } label: {
                 if isFriend {
                     Text("친구 삭제하기")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(memberInfo.intraId == homeViewModel.myInfo.intraId ? .gray : .red)
                         .font(.custom(Font.GmarketMedium, size: 16))
                 } else {
                     Text("그룹에서 삭제하기")

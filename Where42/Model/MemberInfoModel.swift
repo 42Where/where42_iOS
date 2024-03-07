@@ -50,6 +50,10 @@ struct MemberInfo: Codable, Hashable, Comparable {
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
         self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? nil
 
+        if intraName == "member1" || intraName == "member3" {
+            self.inCluster = true
+        }
+
         if inCluster == true && location == nil {
             self.location = "개포"
         } else if inCluster == false || inCluster == nil && location == nil {

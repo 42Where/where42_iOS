@@ -27,8 +27,26 @@ class HomeViewModel: ObservableObject {
     @Published var selectedMembers: [MemberInfo] = []
 
     @Published var myInfo: MemberInfo = .empty
-    @Published var myGroups: [GroupInfo] = [.empty, .empty]
-    @Published var friends: GroupInfo = .empty
+    @Published var myGroups: [GroupInfo] = [.empty, .empty] {
+        didSet {
+            filteredGroups = myGroups
+
+            for index in 0 ..< myGroups.count {
+                filteredGroups[index].members = myGroups[index].members.filter { $0.inCluster == true }
+            }
+        }
+    }
+
+    @Published var friends: GroupInfo = .empty {
+        didSet {
+            filteredFriends = friends
+            filteredFriends.members = friends.members.filter { $0.inCluster == true }
+        }
+    }
+
+    @Published var filteredFriends: GroupInfo = .empty
+    @Published var filteredGroups: [GroupInfo] = [.empty, .empty]
+
     @Published var notInGroup: GroupInfo = .init(id: UUID(), groupName: "not in group", members: [.empty])
 
     private let memberAPI = MemberAPI.shared
@@ -154,6 +172,7 @@ class HomeViewModel: ObservableObject {
             DispatchQueue.main.async {
 //                print(response)
                 self.notInGroup.members = responseMembers
+                self.notInGroup.members.sort()
             }
             return true
         } catch API.NetworkError.Reissue {
@@ -420,5 +439,13 @@ class HomeViewModel: ObservableObject {
         do {
             try await loginAPI.logout()
         } catch {}
+    }
+
+    func getFriends() -> Binding<[MemberInfo]> {
+        if isWorkCheked {
+            return Binding.constant(friends.members.filter { $0.inCluster == false })
+        } else {
+            return Binding.constant(friends.members)
+        }
     }
 }

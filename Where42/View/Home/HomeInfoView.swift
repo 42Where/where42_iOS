@@ -48,6 +48,7 @@ struct HomeInfoView: View {
                     } label: {
                         HStack(spacing: 4) {
                             Text(memberInfo.getLocation())
+                                
                             if memberInfo.inCluster == true {
                                 Image("Search icon White M")
                                     .resizable()
@@ -67,7 +68,8 @@ struct HomeInfoView: View {
                 Text(memberInfo.comment!)
                     .font(.custom(Font.GmarketMedium, size: 16))
                     .foregroundStyle(.whereMediumNavy)
-                    
+                    .lineLimit(1)
+
                 HStack {
                     Spacer()
                         
