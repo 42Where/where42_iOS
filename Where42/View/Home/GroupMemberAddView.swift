@@ -19,9 +19,10 @@ struct GroupMemberAddView: View {
 
     var body: some View {
         VStack {
-            Text("\(homeViewModel.selectedGroup.groupName)")
+            Text(homeViewModel.selectedGroup.groupName)
                 .font(.custom(Font.GmarketBold, size: 25))
                 .padding(.top, 40)
+                .lineLimit(1)
             
             HStack {
                 Image("Search icon M")

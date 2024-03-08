@@ -15,7 +15,7 @@ struct HomeInfoView: View {
     
     @Binding var memberInfo: MemberInfo
     @Binding var isWork: Bool
-    @Binding var isNewGroupAlertPrsent: Bool
+    @Binding var isNewGroupAlertPrsented: Bool
 
     var body: some View {
         HStack(spacing: 10) {
@@ -75,7 +75,7 @@ struct HomeInfoView: View {
                         
                     Button {
                         withAnimation {
-                            isNewGroupAlertPrsent.toggle()
+                            isNewGroupAlertPrsented = true
                         }
                         homeViewModel.selectedMembers = []
                     } label: {
@@ -114,7 +114,7 @@ struct HomeInfoView: View {
 }
 
 #Preview {
-    HomeInfoView(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), isWork: .constant(false), isNewGroupAlertPrsent: .constant(false))
+    HomeInfoView(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), isWork: .constant(false), isNewGroupAlertPrsented: .constant(false))
 }
 
 //            AsyncImage(url: URL(string: userInfo.avatar)) { image in

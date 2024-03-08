@@ -17,7 +17,7 @@ struct GroupEditModal: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("\(group.groupName)")
+                Text(group.groupName)
                     .font(.custom(Font.GmarketMedium, size: 16))
 
                 Text("\(group.onlineNum)/\(group.totalNum)")
@@ -35,6 +35,7 @@ struct GroupEditModal: View {
                         withAnimation {
                             isPresented = false
                             homeViewModel.selectedGroup = group
+                            homeViewModel.inputText = group.groupName
                             mainViewModel.isEditGroupNameAlertPrsented.toggle()
                         }
                     } label: {

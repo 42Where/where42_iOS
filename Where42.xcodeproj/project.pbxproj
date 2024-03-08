@@ -230,8 +230,8 @@
 				A02101D32AFB4C9200CB2FCD /* FriendEditModal.swift */,
 				A02101D92AFB56BD00CB2FCD /* GroupEditModal.swift */,
 				A03A748A2B5B9B03003100DF /* GroupEditSelectModal.swift */,
-				A0ECD5E72B36AAAB0032F46D /* GroupMemberDeleteView.swift */,
 				A0D836042B5BB2BE006C18E2 /* GroupMemberAddView.swift */,
+				A0ECD5E72B36AAAB0032F46D /* GroupMemberDeleteView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -657,7 +657,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Where42/Preview Content\"";
 				DEVELOPMENT_TEAM = YXHCDG4N3M;
 				ENABLE_PREVIEWS = YES;
@@ -698,7 +698,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Where42/Preview Content\"";
 				DEVELOPMENT_TEAM = YXHCDG4N3M;
 				ENABLE_PREVIEWS = YES;

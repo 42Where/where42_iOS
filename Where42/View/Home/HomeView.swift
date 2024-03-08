@@ -17,7 +17,7 @@ struct HomeView: View {
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWorkCheked,
-                    isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented
+                    isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented
                 )
 
                 Divider()

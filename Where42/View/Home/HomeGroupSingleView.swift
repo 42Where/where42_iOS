@@ -25,7 +25,7 @@ struct HomeGroupSingleView: View {
                             .padding()
                     } else {
                         ForEach(0 ..< group.members.count, id: \.self) { index in
-//                            if !(homeViewModel.isWorkCheked && group.members[index].inCluster == false) {
+
                             if UIDevice.idiom == .phone {
                                 HomeFriendInfoView(memberInfo: $group.members[index], groupInfo: $group)
                                     .padding(.horizontal)
@@ -44,7 +44,6 @@ struct HomeGroupSingleView: View {
                                             Spacer()
                                                 .padding()
                                         }
-//                                        }
                                     }
                                 }
                             }
@@ -54,8 +53,9 @@ struct HomeGroupSingleView: View {
             } header: {
                 VStack {
                     HStack {
-                        Text("\(group.groupName)")
+                        Text(group.groupName)
                             .font(.custom(Font.GmarketMedium, size: 13))
+                            .lineLimit(1)
                         Text("\(group.onlineNum)/\(group.totalNum)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 

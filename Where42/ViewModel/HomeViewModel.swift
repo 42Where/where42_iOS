@@ -170,7 +170,7 @@ class HomeViewModel: ObservableObject {
             }
 
             DispatchQueue.main.async {
-//                print(response)
+//                print(responseMembers)
                 self.notInGroup.members = responseMembers
                 self.notInGroup.members.sort()
             }
@@ -186,7 +186,7 @@ class HomeViewModel: ObservableObject {
     }
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) -> String? {
-        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
+        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" || inputText.contains("\n") {
             return "wrongGroupName"
         } else if inputText.count > 40 {
             return "longGroupName"
@@ -348,7 +348,7 @@ class HomeViewModel: ObservableObject {
     }
 
     func editGroupName() async -> String? {
-        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
+        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" || inputText.contains("\n") {
             return "wrongGroupName"
         } else if inputText.count > 40 {
             return "longGroupName"

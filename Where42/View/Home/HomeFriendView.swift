@@ -68,6 +68,7 @@ struct HomeFriendView: View {
                     HStack {
                         Text(friends.groupName)
                             .font(.custom(Font.GmarketMedium, size: 13))
+                            .lineLimit(1)
                         Text("\(friends.onlineNum)/\(friends.totalNum)")
                             .font(.custom(Font.GmarketMedium, size: 11))
 
@@ -75,6 +76,7 @@ struct HomeFriendView: View {
 
                         HStack {
                             Button {
+                                homeViewModel.selectedGroup = friends
                                 isSheetPresent.toggle()
                             } label: {
                                 Image("Edit icon")

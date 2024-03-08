@@ -78,9 +78,9 @@ struct SelectingFriendInfoView: View {
             .padding(.vertical, 1)
             .background()
         }
-        .onDisappear {
-            memberInfo.isCheck = false
-        }
+//        .onDisappear {
+//            memberInfo.isCheck = false
+//        }
     }
 }
 
