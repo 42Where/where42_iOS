@@ -30,7 +30,7 @@ struct GroupEditSelectModal: View {
                 HStack {
                     Spacer(minLength: 1)
 
-                    if homeViewModel.selectedGroup.groupName != "친구목록" {
+                    if homeViewModel.selectedGroup.groupId != homeViewModel.friends.groupId {
                         Button {
                             homeViewModel.selectedMembers = []
                             withAnimation {

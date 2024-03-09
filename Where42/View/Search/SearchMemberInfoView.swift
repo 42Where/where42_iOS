@@ -108,8 +108,7 @@ struct SearchMemberInfoView: View {
             FriendEditModal(
                 memberInfo: $memberInfo,
                 groupInfo: $homeViewModel.friends,
-                isPresented: $isShowModal,
-                isFriend: true)
+                isPresented: $isShowModal)
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {

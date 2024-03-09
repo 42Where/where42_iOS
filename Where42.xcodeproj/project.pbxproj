@@ -223,10 +223,10 @@
 			children = (
 				A015518D2AECE51400B9D271 /* HomeView.swift */,
 				A06BAE9B2AF9E7CC00DB5A76 /* HomeInfoView.swift */,
+				A06BAE9D2AFA2D4100DB5A76 /* HomeFriendInfoView.swift */,
 				A02101D52AFB52AB00CB2FCD /* HomeGroupView.swift */,
 				A02101D72AFB53BA00CB2FCD /* HomeFriendView.swift */,
 				A04E11D62B4C23560067AA39 /* HomeGroupSingleView.swift */,
-				A06BAE9D2AFA2D4100DB5A76 /* HomeFriendInfoView.swift */,
 				A02101D32AFB4C9200CB2FCD /* FriendEditModal.swift */,
 				A02101D92AFB56BD00CB2FCD /* GroupEditModal.swift */,
 				A03A748A2B5B9B03003100DF /* GroupEditSelectModal.swift */,

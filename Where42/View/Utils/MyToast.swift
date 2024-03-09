@@ -39,7 +39,7 @@ struct MyToast: View {
             }
             .padding()
         }
-        .frame(minWidth: 350)
+        .frame(minWidth: 350, maxWidth: 400)
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 1)

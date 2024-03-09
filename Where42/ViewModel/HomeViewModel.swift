@@ -17,25 +17,25 @@ class HomeViewModel: ObservableObject {
     @Published var isLoading = true
     @Published var isAPILoaded = false
     @Published var inputText = ""
-
     @Published var isFriend = false
     @Published var viewPresentCount = 0
 
+    @Published var myInfo: MemberInfo = .empty
+    @Published var myGroups: [GroupInfo] = [.empty, .empty]
+
     @Published var newGroup: GroupInfo = .empty
     @Published var selectedMember: MemberInfo = .empty
-    @Published var selectedGroup: GroupInfo = .empty
-    @Published var selectedMembers: [MemberInfo] = []
-
-    @Published var myInfo: MemberInfo = .empty
-    @Published var myGroups: [GroupInfo] = [.empty, .empty] {
-        didSet {
-            filteredGroups = myGroups
-
-            for index in 0 ..< myGroups.count {
-                filteredGroups[index].members = myGroups[index].members.filter { $0.inCluster == true }
+    @Published var selectedGroup: GroupInfo = .empty {
+        didSet(oldValue) {
+            if oldValue.groupId != selectedGroup.groupId || oldValue.members.count != selectedGroup.members.count {
+                if let groupIndex = myGroups.firstIndex(where: { $0.groupId == selectedGroup.groupId }) {
+                    selectedGroup = myGroups[groupIndex]
+                }
             }
         }
     }
+
+    @Published var selectedMembers: [MemberInfo] = []
 
     @Published var friends: GroupInfo = .empty {
         didSet {
@@ -44,7 +44,14 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    @Published var filteredFriends: GroupInfo = .empty
+    @Published var filteredFriends: GroupInfo = .empty {
+        didSet {
+            if filteredFriends.isOpen != friends.isOpen {
+                friends.isOpen = filteredFriends.isOpen
+            }
+        }
+    }
+
     @Published var filteredGroups: [GroupInfo] = [.empty, .empty]
 
     @Published var notInGroup: GroupInfo = .init(id: UUID(), groupName: "not in group", members: [.empty])
@@ -70,6 +77,7 @@ class HomeViewModel: ObservableObject {
                 }
             }
         }
+        setFilteredGroups()
     }
 
     func countGroupMembers(group: inout GroupInfo) {
@@ -242,7 +250,11 @@ class HomeViewModel: ObservableObject {
             } else {
                 DispatchQueue.main.async {
                     if let selectedIndex = self.myGroups.firstIndex(where: { $0.groupId == groupId }) {
-                        self.myGroups[selectedIndex].members += self.selectedMembers
+                        self.myGroups[selectedIndex].members += self.selectedMembers.map { member in
+                            var newMember = member
+                            newMember.isCheck = false
+                            return newMember
+                        }
                         self.countGroupMembers()
                         self.initNewGroup()
                     }
@@ -271,20 +283,20 @@ class HomeViewModel: ObservableObject {
             }
 
             DispatchQueue.main.async {
-                if self.selectedGroup.groupName == "친구목록" {
+                if self.selectedGroup.groupId == self.friends.groupId {
                     withAnimation {
                         self.friends.members = self.selectedGroup.members.filter { member in
                             !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
                         }
                     }
                 } else {
-                    let selectedIndex = self.myGroups.firstIndex(where: {
+                    if let selectedIndex = self.myGroups.firstIndex(where: {
                         $0.groupId == self.selectedGroup.groupId
-                    })
-
-                    withAnimation {
-                        self.myGroups[selectedIndex!].members = self.selectedGroup.members.filter { member in
-                            !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                    }) {
+                        withAnimation {
+                            self.myGroups[selectedIndex].members = self.selectedGroup.members.filter { member in
+                                !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                            }
                         }
                     }
                 }
@@ -315,20 +327,20 @@ class HomeViewModel: ObservableObject {
             }
 
             DispatchQueue.main.async {
-                if self.selectedGroup.groupName == "친구목록" {
+                if self.selectedGroup.groupId == self.friends.groupId {
                     withAnimation {
                         self.friends.members = self.selectedGroup.members.filter { member in
-                            !(self.selectedMember.intraId == member.intraId)
+                            self.selectedMember.intraId != member.intraId
                         }
                     }
                 } else {
-                    let selectedIndex = self.myGroups.firstIndex(where: {
+                    if let selectedIndex = self.myGroups.firstIndex(where: {
                         $0.groupId == self.selectedGroup.groupId
-                    })
-
-                    withAnimation {
-                        self.myGroups[selectedIndex!].members = self.selectedGroup.members.filter { member in
-                            !(self.selectedMember.intraId == member.intraId)
+                    }) {
+                        withAnimation {
+                            self.myGroups[selectedIndex].members = self.selectedGroup.members.filter { member in
+                                self.selectedMember.intraId != member.intraId
+                            }
                         }
                     }
                 }
@@ -441,11 +453,20 @@ class HomeViewModel: ObservableObject {
         } catch {}
     }
 
-    func getFriends() -> Binding<[MemberInfo]> {
-        if isWorkCheked {
-            return Binding.constant(friends.members.filter { $0.inCluster == false })
-        } else {
-            return Binding.constant(friends.members)
+    func setFilteredGroups() {
+        filteredGroups = myGroups
+
+        for index in 0 ..< myGroups.count {
+            filteredGroups[index].members = myGroups[index].members.filter { $0.inCluster == true }
+        }
+    }
+
+    func setIsOpen(groupId: Int, isOpen: Bool) {
+        if let groupIndex = myGroups.firstIndex(where: { $0.groupId == groupId }) {
+            myGroups[groupIndex].isOpen = isOpen
+        }
+        if let groupIndex = filteredGroups.firstIndex(where: { $0.groupId == groupId }) {
+            filteredGroups[groupIndex].isOpen = isOpen
         }
     }
 }

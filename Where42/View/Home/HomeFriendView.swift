@@ -19,7 +19,9 @@ struct HomeFriendView: View {
         LazyVStack(pinnedViews: .sectionHeaders) {
             Section {
                 if friends.isOpen && friends.totalNum >= 0 {
-                    if friends.totalNum == 0 || (homeViewModel.isWorkCheked && friends.onlineNum == 0) {
+                    if friends.totalNum == 0 ||
+                    (homeViewModel.isWorkCheked && friends.onlineNum == 0)
+                    {
                         Text("아무도 없어요...")
                             .font(.custom(Font.GmarketMedium, size: 18))
                             .foregroundStyle(.whereDeepNavy)

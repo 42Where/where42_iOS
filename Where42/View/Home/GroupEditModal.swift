@@ -30,7 +30,7 @@ struct GroupEditModal: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 40) {
-                if group.groupName != "친구목록" {
+                if group.groupId != homeViewModel.friends.groupId {
                     Button {
                         withAnimation {
                             isPresented = false
@@ -49,6 +49,7 @@ struct GroupEditModal: View {
                         if await homeViewModel.getMembersNotInGroup() {
                             withAnimation {
                                 isPresented = false
+//                                homeViewModel.selectedGroup = homeViewModel.myGroups.first(where: { $0.groupId == group.groupId }) ?? group
                                 homeViewModel.selectedGroup = group
                                 homeViewModel.isGroupEditSelectAlertPrsented = true
                             }
@@ -59,7 +60,7 @@ struct GroupEditModal: View {
                         .foregroundStyle(.whereMediumNavy)
                 }
 
-                if group.groupName != "친구목록" {
+                if group.groupId != homeViewModel.friends.groupId {
                     Button {
                         withAnimation {
                             isPresented = false

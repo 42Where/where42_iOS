@@ -9,6 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct HomeFriendInfoView: View {
+    @EnvironmentObject private var homeViewModel: HomeViewModel
     @Binding var memberInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
 
@@ -76,8 +77,7 @@ struct HomeFriendInfoView: View {
             FriendEditModal(
                 memberInfo: $memberInfo,
                 groupInfo: $groupInfo,
-                isPresented: $isShowModal,
-                isFriend: groupInfo.groupName == "친구목록")
+                isPresented: $isShowModal)
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {

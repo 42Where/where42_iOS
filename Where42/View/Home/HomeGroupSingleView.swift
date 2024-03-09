@@ -73,6 +73,7 @@ struct HomeGroupSingleView: View {
                                 withAnimation {
                                     group.isOpen.toggle()
                                 }
+                                homeViewModel.setIsOpen(groupId: group.groupId!, isOpen: group.isOpen)
                             } label: {
                                 if group.isOpen {
                                     Image("Fold icon")
