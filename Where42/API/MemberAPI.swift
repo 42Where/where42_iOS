@@ -194,7 +194,7 @@ class MemberAPI: API {
         return nil
     }
 
-    func updateCustomLocation(customLocation: String) async throws -> String? {
+    func updateCustomLocation(customLocation: String?) async throws -> String? {
         guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(customLocation: customLocation)) else {
             throw NetworkError.invalidRequestBody
         }
@@ -224,7 +224,7 @@ class MemberAPI: API {
                     return requestURL.absoluteString
                 } else {
 //                    print("Succeed update Custom Location")
-                    return try JSONDecoder().decode(UpdateCustomLocationDTO.self, from: data).customLocation
+                    return try JSONDecoder().decode(UpdateCustomLocationDTO.self, from: data).customLocation ?? "개포"
                 }
 
             case 400 ... 499:

@@ -88,7 +88,6 @@ class API: ObservableObject {
                 if response.mimeType == "text/html" {
                     DispatchQueue.main.async {
                         MainViewModel.shared.isLogin = false
-                        MainViewModel.shared.isLogout = true
                     }
                     throw NetworkError.Reissue
                 } else {

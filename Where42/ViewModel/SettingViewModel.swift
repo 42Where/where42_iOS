@@ -11,6 +11,7 @@ class SettingViewModel: ObservableObject {
     @Published var isLogoutAlertPresented = false
     @Published var isStatusMessageAlertPresented = false
     @Published var isCustomLocationAlertPresented = false
+    @Published var isInitCustomLocationAlertPrsented = false
     @Published var inputText = ""
     @Published var newStatusMessage = "수정중..."
     @Published var newLocation = "수정중..."
@@ -86,6 +87,32 @@ class SettingViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.newLocation = responseCustomLocation
                         withAnimation {
+                            self.isCustomLocationAlertPresented = false
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        MainViewModel.shared.is42IntraSheetPresented = true
+                    }
+                    return nil
+                    // 자리를 업데이트 할 수 없습니다
+                }
+                initCustomLocation()
+            }
+        } catch API.NetworkError.Reissue {
+            return "reissue"
+        } catch {}
+        return nil
+    }
+
+    func resetCustomLocation() async -> String? {
+        do {
+            if let responseCustomLocation = try await memberAPI.updateCustomLocation(customLocation: nil) {
+                if responseCustomLocation.contains("http") == false {
+                    DispatchQueue.main.async {
+                        self.newLocation = responseCustomLocation
+                        withAnimation {
+                            self.isInitCustomLocationAlertPrsented = false
                             self.isCustomLocationAlertPresented = false
                         }
                     }

@@ -400,10 +400,7 @@ class GroupAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    DispatchQueue.main.async {
-                        MainViewModel.shared.isLogin = false
-                    }
-                    throw NetworkError.Token
+                    return false
                 } else {
                     print("Succeed add one member")
                     return true

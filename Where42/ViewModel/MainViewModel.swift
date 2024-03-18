@@ -19,7 +19,6 @@ class MainViewModel: ObservableObject {
 //    private init() {}
 
     @AppStorage("isLogin") var isLogin = false
-    @AppStorage("isLogout") var isLogout = true
 
     @Published var tabSelection: String = "Home"
 
@@ -38,13 +37,13 @@ class MainViewModel: ObservableObject {
         DispatchQueue.main.async {
             switch type {
             case "wrongGroupName":
-                self.toast = Toast(title: "잘못된 그룹 이름 형식입니다")
+                self.toast = Toast(title: "잘못된 그룹 이름입니다")
             case "longGroupName":
                 self.toast = Toast(title: "그룹 이름이 너무 깁니다")
             case "duplicateGroupName":
                 self.toast = Toast(title: "이미 존재하는 그룹 이름입니다")
             case "wrongComment":
-                self.toast = Toast(title: "잘못된 코멘트 형식입니다")
+                self.toast = Toast(title: "잘못된 코멘트입니다")
             case "longComment":
                 self.toast = Toast(title: "코멘트가 너무 깁니다, 40자 이하로 입력해주세요")
             case "reissue":

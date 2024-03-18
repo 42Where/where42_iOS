@@ -74,7 +74,6 @@ struct Where42: View {
                     }
 
                     if mainViewModel.is42IntraSheetPresented == true &&
-                        mainViewModel.isLogout == false &&
                         networkMonitor.isConnected == true
                     {
                         MyWebView(
@@ -91,7 +90,7 @@ struct Where42: View {
                 }
                 .disabled(mainViewModel.is42IntraSheetPresented && networkMonitor.isConnected)
             }
-            .fullScreenCover(isPresented: mainViewModel.isLogout == true && networkMonitor.isConnected == true ? $mainViewModel.is42IntraSheetPresented : .constant(false)) {
+            .fullScreenCover(isPresented: networkMonitor.isConnected == true ? $mainViewModel.is42IntraSheetPresented : .constant(false)) {
                 MyWebView(
                     urlToLoad: mainViewModel.intraURL,
                     isPresented: $mainViewModel.is42IntraSheetPresented

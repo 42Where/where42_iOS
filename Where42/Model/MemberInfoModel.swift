@@ -50,8 +50,30 @@ struct MemberInfo: Codable, Hashable, Comparable {
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
         self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? nil
 
-        if intraName == "member1" || intraName == "member3" {
+        if intraName == "dhyun" {
+            self.intraName = "Member"
+            self.image = "https://i.ibb.co/M1wyzZV/IMG-6196.jpg"
             self.inCluster = true
+        }
+        if intraName == "member1" || intraName == "member4" {
+            self.inCluster = true
+        }
+        if intraName == "member1" {
+            self.location = "c1r8s1"
+            self.comment = "반가워요🙌"
+        }
+        if intraName == "member4" {
+            self.location = "탁구대"
+            self.comment = "🏓"
+        }
+        if intraName == "member5" {
+            self.comment = "Hello World!"
+        }
+        if intraName == "member2" {
+            self.comment = "이불 밖은 위험해..."
+        }
+        if intraName == "member3" {
+            self.comment = "🏝️"
         }
 
         if inCluster == true && location == nil {

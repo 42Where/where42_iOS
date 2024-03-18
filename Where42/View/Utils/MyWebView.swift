@@ -38,11 +38,9 @@ struct MyWebView: UIViewRepresentable {
             self.homeViewModel.isAPILoaded = false
         }
         
-        if mainViewModel.isLogout == true {
-            let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
-            let date = NSDate(timeIntervalSince1970: 0)
-            WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
-        }
+        let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
+        let date = NSDate(timeIntervalSince1970: 0)
+        WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
         
         let source = "var meta = document.createElement('meta');" +
             "meta.name = 'viewport';" +
@@ -117,7 +115,6 @@ struct MyWebView: UIViewRepresentable {
             } else {
                 parent.homeViewModel.isAPILoaded = false
                 parent.mainViewModel.isLogin = true
-                parent.mainViewModel.isLogout = false
             }
             print("-------------- Parse --------------")
             print(API.sharedAPI.accessToken)

@@ -126,6 +126,21 @@ struct CustomLocationView: View {
 
                     Button {
                         withAnimation {
+                            settingViewModel.isInitCustomLocationAlertPrsented = true
+                        }
+                    } label: {
+                        Text("초기화")
+                            .padding(.horizontal, 4)
+                            .padding(4)
+                            .foregroundStyle(.red)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.red, lineWidth: 1)
+                            )
+                    }
+
+                    Button {
+                        withAnimation {
                             settingViewModel.isCustomLocationAlertPresented = false
                             settingViewModel.initCustomLocation()
                         }
@@ -145,7 +160,9 @@ struct CustomLocationView: View {
                             let status = await settingViewModel.UpdateCustomLocation()
 
                             if status == nil {
-                                self.homeViewModel.myInfo.location = self.settingViewModel.newLocation
+                                withAnimation {
+                                    self.homeViewModel.myInfo.location = self.settingViewModel.newLocation
+                                }
                             } else {
                                 mainViewModel.setToast(type: status)
                             }
@@ -170,10 +187,37 @@ struct CustomLocationView: View {
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }
+        .onAppear {
+            settingViewModel.customLocation = "지하"
+        }
+
+        if settingViewModel.isInitCustomLocationAlertPrsented {
+            CustomAlert(
+                title: "자리 설정 초기화",
+                message: "수동 자리 설정을 초기화하시겠습니까?",
+                inputText: .constant("")
+            ) {
+                withAnimation {
+                    settingViewModel.isInitCustomLocationAlertPrsented = false
+                }
+            } rightButtonAction: {
+                let status = await settingViewModel.resetCustomLocation()
+
+                if status == nil {
+                    withAnimation {
+                        self.homeViewModel.myInfo.location = self.settingViewModel.newLocation
+                    }
+                } else {
+                    mainViewModel.setToast(type: status)
+                }
+            }
+        }
     }
 }
 
 #Preview {
     CustomLocationView()
+        .environmentObject(HomeViewModel())
+        .environmentObject(MainViewModel())
         .environmentObject(SettingViewModel())
 }

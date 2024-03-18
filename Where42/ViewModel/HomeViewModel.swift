@@ -194,7 +194,7 @@ class HomeViewModel: ObservableObject {
     }
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) -> String? {
-        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" || inputText.contains("\n") {
+        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" || inputText.contains("\n") || inputText.trimmingCharacters(in: .whitespaces) != inputText {
             return "wrongGroupName"
         } else if inputText.count > 40 {
             return "longGroupName"

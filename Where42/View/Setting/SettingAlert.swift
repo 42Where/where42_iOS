@@ -30,7 +30,6 @@ struct SettingAlert: View {
                 withAnimation {
                     self.settingViewModel.isLogoutAlertPresented = false
                     mainViewModel.isLogin = false
-                    mainViewModel.isLogout = true
                 }
             }
         }
