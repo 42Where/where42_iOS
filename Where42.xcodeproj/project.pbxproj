@@ -46,7 +46,6 @@
 		A0782B832AFCA00A00A7DDDA /* readSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0782B822AFCA00A00A7DDDA /* readSize.swift */; };
 		A092EECF2B870E6D002D7B1F /* SearchSelectedMembersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A092EECE2B870E6D002D7B1F /* SearchSelectedMembersView.swift */; };
 		A0938C432B0C6A0D00367E84 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */; };
-		A0A29A222BA800E200E1D23F /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A29A212BA800E200E1D23F /* KeyChainManager.swift */; };
 		A0A351312B565EDF00A826A5 /* CustomExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A351302B565EDF00A826A5 /* CustomExceptions.swift */; };
 		A0BBA7022B01DEDC00C3A8A0 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBA7012B01DEDC00C3A8A0 /* LoginViewModel.swift */; };
 		A0BBA7042B01E09800C3A8A0 /* MyWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */; };
@@ -110,7 +109,6 @@
 		A092EECE2B870E6D002D7B1F /* SearchSelectedMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSelectedMembersView.swift; sourceTree = "<group>"; };
 		A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		A0985BC12B8388460008EA7B /* Where42.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Where42.entitlements; sourceTree = "<group>"; };
-		A0A29A212BA800E200E1D23F /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		A0A351302B565EDF00A826A5 /* CustomExceptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomExceptions.swift; sourceTree = "<group>"; };
 		A0BBA7012B01DEDC00C3A8A0 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWebView.swift; sourceTree = "<group>"; };
@@ -302,14 +300,6 @@
 			path = CustomAlert;
 			sourceTree = "<group>";
 		};
-		A0A29A202BA800B500E1D23F /* keyChain */ = {
-			isa = PBXGroup;
-			children = (
-				A0A29A212BA800E200E1D23F /* KeyChainManager.swift */,
-			);
-			path = keyChain;
-			sourceTree = "<group>";
-		};
 		A0CF06632B733F8800FE2F15 /* multiple layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,7 +343,6 @@
 		A0FD453A2AEB81D70050AB09 /* Where42 */ = {
 			isa = PBXGroup;
 			children = (
-				A0A29A202BA800B500E1D23F /* keyChain */,
 				A0985BC12B8388460008EA7B /* Where42.entitlements */,
 				A0F05A8A2B838487006A3BA7 /* GoogleService-Info.plist */,
 				A01551B92AED5D9E00B9D271 /* Info.plist */,
@@ -505,7 +494,6 @@
 				A0CF06652B7340A300FE2F15 /* WhereSceneDelegate.swift in Sources */,
 				A0CF06692B7346B500FE2F15 /* PassThroughWindow.swift in Sources */,
 				A05E269D2B1F401C00FD3E22 /* GroupAPI.swift in Sources */,
-				A0A29A222BA800E200E1D23F /* KeyChainManager.swift in Sources */,
 				A0FD453E2AEB81D70050AB09 /* Where42.swift in Sources */,
 				A0D836092B5BD736006C18E2 /* CustomLocationView.swift in Sources */,
 				A092EECF2B870E6D002D7B1F /* SearchSelectedMembersView.swift in Sources */,

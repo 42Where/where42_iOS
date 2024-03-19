@@ -14,12 +14,6 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
-                Button("access token") {
-                    API.sharedAPI.accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
-                }
-                Button("refresh token") {
-                    API.sharedAPI.refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcwNjEwMTExNiwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcwNjEwNDcxNn0.1VmKO3KZ5Eze6bKK5S4Rd23HxWYOCu2tJDjCFRS1D6c"
-                }
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWorkCheked,
@@ -46,13 +40,15 @@ struct HomeView: View {
             .task {
                 if mainViewModel.isLogin {
                     if !homeViewModel.isAPILoaded {
-                        await homeViewModel.getMemberInfo()
-                        await homeViewModel.getGroup()
-                        if mainViewModel.isLogin == true {
-                            homeViewModel.isAPILoaded = true
+                        if await homeViewModel.reissue() {
+                            await homeViewModel.getMemberInfo()
+                            await homeViewModel.getGroup()
+                            if mainViewModel.isLogin == true {
+                                homeViewModel.isAPILoaded = true
+                            }
+                            homeViewModel.countAllMembers()
+                            homeViewModel.isLoading = false
                         }
-                        homeViewModel.countAllMembers()
-                        homeViewModel.isLoading = false
                     }
                 }
             }

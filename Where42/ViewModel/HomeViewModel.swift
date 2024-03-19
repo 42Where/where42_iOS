@@ -71,7 +71,7 @@ class HomeViewModel: ObservableObject {
         for index in myGroups.indices {
             myGroups[index].totalNum = myGroups[index].members.count
             myGroups[index].onlineNum = 0
-            myGroups[index].members.forEach { member in
+            for member in myGroups[index].members {
                 if member.inCluster == true {
                     myGroups[index].onlineNum += 1
                 }
@@ -83,7 +83,7 @@ class HomeViewModel: ObservableObject {
     func countGroupMembers(group: inout GroupInfo) {
         group.totalNum = group.members.count
         group.onlineNum = 0
-        group.members.forEach { member in
+        for member in group.members {
             if member.inCluster == true {
                 group.onlineNum += 1
             }
@@ -93,7 +93,7 @@ class HomeViewModel: ObservableObject {
     func countFriends() {
         friends.totalNum = friends.members.count
         friends.onlineNum = 0
-        friends.members.forEach { member in
+        for member in friends.members {
             if member.inCluster == true {
                 friends.onlineNum += 1
             }
@@ -143,6 +143,7 @@ class HomeViewModel: ObservableObject {
                         sortedGroup.members.sort()
                         return sortedGroup
                     }
+
                     self.friends = self.myGroups[responseGroups.firstIndex(
                         where: {
                             $0.groupId == self.myInfo.defaultGroupId
@@ -442,7 +443,9 @@ class HomeViewModel: ObservableObject {
             return true
         } catch {
             print("reissue failed")
-            await logout()
+            DispatchQueue.main.async {
+                MainViewModel.shared.isLogin = false
+            }
             return false
         }
     }
