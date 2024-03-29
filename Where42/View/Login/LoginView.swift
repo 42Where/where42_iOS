@@ -15,7 +15,6 @@ struct LoginView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text(networkMonitor.ㅁㅁㅁ).font(.headline).zIndex(10)
                 Spacer()
 
                 ZStack {

@@ -99,7 +99,6 @@ struct Where42: View {
             }
         }
         .onAppear {
-//            networkMonitor.startMonitoring()
             sceneDelegate.toastState = mainViewModel.toast
         }
 

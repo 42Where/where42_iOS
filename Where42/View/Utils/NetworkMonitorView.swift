@@ -14,25 +14,16 @@ class NetworkMonitor: ObservableObject {
     private let workerQueue = DispatchQueue(label: "Monitor")
 
     @Published var isConnected = false
-    @Published var ㅁㅁㅁ = ""
 
     init() {
         networkMonitor.pathUpdateHandler = { path in
             DispatchQueue.main.async {
                 self.isConnected = path.status == .satisfied
-                self.ㅁㅁㅁ = path.debugDescription
-                print(path.availableInterfaces)
-                print(path.unsatisfiedReason)
+
                 if path.usesInterfaceType(.wifi) {
                     print("Using wifi")
                 } else if path.usesInterfaceType(.cellular) {
                     print("Using cellular")
-                } else if path.usesInterfaceType(.wiredEthernet) {
-                    print("Using wiredEthernet")
-                } else if path.usesInterfaceType(.other) {
-                    print("Using other")
-                } else {
-                    self.isConnected = false
                 }
             }
         }
