@@ -46,6 +46,7 @@ struct Where42ToolBarContent: ToolbarContent {
                     mainViewModel.isEditGroupNameAlertPrsented ||
                     homeViewModel.isGroupEditSelectAlertPrsented ||
                     homeViewModel.isFriendDeleteAlertPresented ||
+                    homeViewModel.isLoading ||
                     !networkMonitor.isConnected)
             }
         }

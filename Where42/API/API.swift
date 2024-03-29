@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ResponseRefreshToken: Codable {
-    var refreshToken: String
+struct reissueDTO: Codable {
+    var accessToken: String
 }
 
 class API: ObservableObject {
@@ -91,7 +91,7 @@ class API: ObservableObject {
                     }
                     throw NetworkError.Reissue
                 } else {
-                    let reissueAccessToken = try JSONDecoder().decode(ResponseRefreshToken.self, from: data).refreshToken
+                    let reissueAccessToken = try JSONDecoder().decode(reissueDTO.self, from: data).accessToken
                     API.sharedAPI.accessToken = "Bearer " + reissueAccessToken
                     return
                 }

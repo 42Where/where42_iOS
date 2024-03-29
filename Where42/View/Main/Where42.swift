@@ -18,7 +18,7 @@ struct Where42: View {
     @StateObject var homeViewModel: HomeViewModel = .init()
     @StateObject var loginViewModel: LoginViewModel = .init()
     @StateObject var settingViewModel: SettingViewModel = .init()
-    @StateObject var networkMonitor: NetworkMonitor = .init()
+    @StateObject var networkMonitor: NetworkMonitor = .shared
 
     @Environment(\.horizontalSizeClass) var oldSizeClass
 
@@ -99,6 +99,7 @@ struct Where42: View {
             }
         }
         .onAppear {
+//            networkMonitor.startMonitoring()
             sceneDelegate.toastState = mainViewModel.toast
         }
 

@@ -10,13 +10,20 @@ import WebKit
 
 class FullScreenWKWebView: WKWebView {
     var accessoryView: UIView?
-    
     override var inputAccessoryView: UIView? {
         return accessoryView
     }
     
     override var safeAreaInsets: UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        let window = UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .map { $0 as? UIWindowScene }
+            .compactMap { $0 }
+            .first?.windows
+            .filter { $0.isKeyWindow }.first
+    
+//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: window?.safeAreaInsets.top ?? 0, left: 0, bottom: 0, right: 0)
     }
 }
 
@@ -76,29 +83,33 @@ struct MyWebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-            if webView.url?.absoluteString.contains("https://test.where42.kr:3000") == true {
+            print(webView.url?.absoluteString as Any)
+            if webView.url?.absoluteString.contains("https://test.where42.kr/") == true {
                 if let redirectURL = webView.url?.absoluteString {
-                    print(redirectURL)
+//                    print(redirectURL)
                     if redirectURL.contains("login-fail") == true {
                         print("login-fail")
                         parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                         parent.isPresented = false
                         return
-                    }
-                    let query = webView.url?.query()?.split(separator: "&")
-                    webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-//                        print("-------------- Cookie --------------")
-                        for cookie in cookies {
-//                            print(cookie.name, cookie.value)
-                            if cookie.name == "accessToken" {
-                                API.sharedAPI.accessToken = "Bearer " + cookie.value
-                            } else if cookie.name == "refreshToken" {
-                                API.sharedAPI.refreshToken = "Bearer " + cookie.value
+                    } else if redirectURL.contains("?intraId=") == true {
+                        let query = webView.url?.query()?.split(separator: "&")
+                        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+//                            print("-------------- Cookie --------------")
+                            for cookie in cookies {
+//                                print("[" + cookie.name + "]", cookie.value)
+                                if cookie.name == "accessToken" {
+//                                    print("Find Access Token")
+                                    API.sharedAPI.accessToken = "Bearer " + cookie.value
+                                } else if cookie.name == "refreshToken" {
+//                                    print("Find Refresh Token")
+                                    API.sharedAPI.refreshToken = "Bearer " + cookie.value
+                                }
                             }
+//                            print("------------------------------------")
+                            self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
+                            self.parent.isPresented = false
                         }
-//                        print("------------------------------------")
-                        self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
-                        self.parent.isPresented = false
                     }
                 }
             }
@@ -126,5 +137,7 @@ struct MyWebView: UIViewRepresentable {
 
 #Preview {
     MyWebView(urlToLoad: "http://13.209.149.15:8080/v3/member?intraId=7", isPresented: .constant(true))
-        .environmentObject(MainViewModel.shared)
+        .environmentObject(HomeViewModel())
+        .environmentObject(MainViewModel())
+        .environmentObject(LoginViewModel())
 }

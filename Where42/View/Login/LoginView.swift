@@ -10,10 +10,12 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var loginViewModel: LoginViewModel
+    @EnvironmentObject private var networkMonitor: NetworkMonitor
 
     var body: some View {
         ZStack {
             VStack {
+                Text(networkMonitor.ㅁㅁㅁ).font(.headline).zIndex(10)
                 Spacer()
 
                 ZStack {

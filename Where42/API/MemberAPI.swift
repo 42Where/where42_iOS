@@ -38,12 +38,13 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         print("getMemberInfo token: ", MemberAPI.shared.accessToken)
-//        print(request.url?.absoluteString)
+
         request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
+//            print(response.url)
 //            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             guard let response = response as? HTTPURLResponse else {
