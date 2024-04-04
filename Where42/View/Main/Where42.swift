@@ -105,6 +105,7 @@ struct Where42: View {
         .toastView(toast: $mainViewModel.toast)
 
         .navigationViewStyle(StackNavigationViewStyle())
+        .navigationBarTitleDisplayMode(.inline)
 
         .animation(.easeIn, value: mainViewModel.isLogin)
 
