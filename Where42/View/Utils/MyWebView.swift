@@ -83,32 +83,41 @@ struct MyWebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-            print(webView.url?.absoluteString as Any)
-            if webView.url?.absoluteString.contains("https://test.where42.kr/") == true {
-                if let redirectURL = webView.url?.absoluteString {
-//                    print(redirectURL)
-                    if redirectURL.contains("login-fail") == true {
-                        print("login-fail")
-                        parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
-                        parent.isPresented = false
-                        return
-                    } else if redirectURL.contains("?intraId=") == true {
-                        let query = webView.url?.query()?.split(separator: "&")
-                        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-//                            print("-------------- Cookie --------------")
-                            for cookie in cookies {
-//                                print("[" + cookie.name + "]", cookie.value)
-                                if cookie.name == "accessToken" {
-//                                    print("Find Access Token")
-                                    API.sharedAPI.accessToken = "Bearer " + cookie.value
-                                } else if cookie.name == "refreshToken" {
-//                                    print("Find Refresh Token")
-                                    API.sharedAPI.refreshToken = "Bearer " + cookie.value
+            if let redirectURL = webView.url?.absoluteString {
+                if redirectURL == "https://profile.intra.42.fr" {
+                    print("intra profile")
+                    parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                    parent.isPresented = false
+                    parent.mainViewModel.isLogin = false
+                    return
+                }
+                if redirectURL.contains("https://test.where42.kr/") == true {
+                    if let redirectURL = webView.url?.absoluteString {
+                        //                    print(redirectURL)
+                        if redirectURL.contains("login-fail") == true {
+                            print("login-fail")
+                            parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                            parent.isPresented = false
+                            parent.mainViewModel.isLogin = false
+                            return
+                        } else if redirectURL.contains("?intraId=") == true {
+                            let query = webView.url?.query()?.split(separator: "&")
+                            webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+                                //                            print("-------------- Cookie --------------")
+                                for cookie in cookies {
+                                    //                                print("[" + cookie.name + "]", cookie.value)
+                                    if cookie.name == "accessToken" {
+                                        //                                    print("Find Access Token")
+                                        API.sharedAPI.accessToken = "Bearer " + cookie.value
+                                    } else if cookie.name == "refreshToken" {
+                                        //                                    print("Find Refresh Token")
+                                        API.sharedAPI.refreshToken = "Bearer " + cookie.value
+                                    }
                                 }
+                                //                            print("------------------------------------")
+                                self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
+                                self.parent.isPresented = false
                             }
-//                            print("------------------------------------")
-                            self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
-                            self.parent.isPresented = false
                         }
                     }
                 }
