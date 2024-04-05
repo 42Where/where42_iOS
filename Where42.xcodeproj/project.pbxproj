@@ -32,6 +32,7 @@
 		A04E11D72B4C23560067AA39 /* HomeGroupSingleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E11D62B4C23560067AA39 /* HomeGroupSingleView.swift */; };
 		A05E269D2B1F401C00FD3E22 /* GroupAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */; };
 		A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06000802AFCFCA800CC9A6A /* MainViewModel.swift */; };
+		A06703E92BBFF49D00F151D7 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06703E82BBFF49D00F151D7 /* SafariView.swift */; };
 		A06810DC2B6A233D0045DC43 /* NetworkMonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */; };
 		A06810DE2B6B32860045DC43 /* MyToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06810DD2B6B32860045DC43 /* MyToast.swift */; };
 		A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */; };
@@ -94,6 +95,7 @@
 		A04E11D62B4C23560067AA39 /* HomeGroupSingleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGroupSingleView.swift; sourceTree = "<group>"; };
 		A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupAPI.swift; sourceTree = "<group>"; };
 		A06000802AFCFCA800CC9A6A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		A06703E82BBFF49D00F151D7 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		A06810DB2B6A233D0045DC43 /* NetworkMonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorView.swift; sourceTree = "<group>"; };
 		A06810DD2B6B32860045DC43 /* MyToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyToast.swift; sourceTree = "<group>"; };
 		A06BAE922AF8B78000DB5A76 /* Where42ToolBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Where42ToolBarContent.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				A01551BC2AEE401C00B9D271 /* SettingView.swift */,
+				A06703E82BBFF49D00F151D7 /* SafariView.swift */,
 				A0D836062B5BD675006C18E2 /* SettingAlert.swift */,
 				A0D836082B5BD736006C18E2 /* CustomLocationView.swift */,
 			);
@@ -466,6 +469,7 @@
 				A0E366132B63937800C90D08 /* SearchMemberInfoView.swift in Sources */,
 				A0BBA7062B01E13C00C3A8A0 /* HelpPage.swift in Sources */,
 				A06DB6452AFDD9A00021263A /* SettingViewModel.swift in Sources */,
+				A06703E92BBFF49D00F151D7 /* SafariView.swift in Sources */,
 				A0782B832AFCA00A00A7DDDA /* readSize.swift in Sources */,
 				A0BBA7042B01E09800C3A8A0 /* MyWebView.swift in Sources */,
 				A06DB6472AFDDF6C0021263A /* HomeGroupViewModel.swift in Sources */,

@@ -55,8 +55,22 @@ struct SettingView: View {
                 Spacer()
                     .frame(height: 70)
 
-                Button("이용 가이드") {}
-                    .buttonStyle(setButton())
+                Button("이용가이드") {
+                    withAnimation {
+                        settingViewModel.isUserGuidePresented = true
+                    }
+                }
+                .buttonStyle(setButton())
+
+                Spacer()
+                    .frame(height: 70)
+
+                Button("앱 피드백") {
+                    withAnimation {
+                        settingViewModel.isAppFeedbackPresented = true
+                    }
+                }
+                .buttonStyle(setButton())
 
                 Spacer()
             }
@@ -74,8 +88,15 @@ struct SettingView: View {
         }
         .zIndex(0)
         .environmentObject(settingViewModel)
-//        .navigationBarBackButtonHidden()
         .disabled(mainViewModel.is42IntraSheetPresented)
+        .fullScreenCover(isPresented: $settingViewModel.isUserGuidePresented) {
+            SafariView(url: URL(string: "https://phodongho.notion.site/Where42-iOS-a7c4e1fae44b47b9bfa6d5a83a929629")!)
+                .ignoresSafeArea()
+        }
+        .fullScreenCover(isPresented: $settingViewModel.isAppFeedbackPresented) {
+            SafariView(url: URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeqHDNP4aWsfSVAa3m57ZgJoZJTohucC0aSK_defZ5TNZWROg/viewform")!)
+                .ignoresSafeArea()
+        }
     }
 }
 

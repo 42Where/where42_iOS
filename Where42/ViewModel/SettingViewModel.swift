@@ -14,6 +14,8 @@ class SettingViewModel: ObservableObject {
     @Published var isCustomLocationAlertPresented = false
     @Published var isCustomLocationAlertPresentedInHome = false
     @Published var isInitCustomLocationAlertPrsented = false
+    @Published var isUserGuidePresented = false
+    @Published var isAppFeedbackPresented = false
     @Published var inputText = ""
     @Published var newComment = "수정중..."
     @Published var newLocation = "수정중..."
