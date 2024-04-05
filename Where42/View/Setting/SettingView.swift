@@ -28,7 +28,7 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
-                    .frame(height: 70)
+                    .frame(height: 40)
 
                 Button("코멘트 설정") {
                     withAnimation {
@@ -39,7 +39,7 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
-                    .frame(height: 70)
+                    .frame(height: 40)
 
                 Button("자리 설정") {
                     if homeViewModel.myInfo.inCluster == true {
@@ -53,7 +53,7 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
-                    .frame(height: 70)
+                    .frame(height: 40)
 
                 Button("이용가이드") {
                     withAnimation {
@@ -63,7 +63,7 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
-                    .frame(height: 70)
+                    .frame(height: 40)
 
                 Button("앱 피드백") {
                     withAnimation {
