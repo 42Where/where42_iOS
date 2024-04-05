@@ -53,6 +53,12 @@ struct SettingView: View {
                 .buttonStyle(setButton())
 
                 Spacer()
+                    .frame(height: 70)
+
+                Button("이용 가이드") {}
+                    .buttonStyle(setButton())
+
+                Spacer()
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
 

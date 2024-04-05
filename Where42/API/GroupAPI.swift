@@ -55,6 +55,8 @@ class GroupAPI: API {
                 throw NetworkError.invalidHTTPResponse
             }
 
+//            print(String(data: data, encoding: .utf8)!)
+
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {

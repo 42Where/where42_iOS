@@ -57,6 +57,8 @@ class API: ObservableObject {
 
         let errorMessage = components[1].replacingOccurrences(of: " errorMessage=", with: "").replacingOccurrences(of: ")\"", with: "").replacingOccurrences(of: ")", with: "")
 
+        print(errorCode, errorMessage)
+
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
     }
 

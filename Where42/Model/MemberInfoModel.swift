@@ -13,12 +13,7 @@ struct MemberInfo: Codable, Hashable, Comparable {
     var intraName: String?
     var grade: String?
     var image: String?
-    var comment: String? {
-        didSet {
-            setComment()
-        }
-    }
-
+    var comment: String?
     var inCluster: Bool?
     var agree: Bool?
     var defaultGroupId: Int?
@@ -73,12 +68,6 @@ struct MemberInfo: Codable, Hashable, Comparable {
             return location!
         } else {
             return "잘못된 위치"
-        }
-    }
-
-    mutating func setComment() {
-        if comment == nil {
-            comment = "코멘트를 입력해주세요"
         }
     }
 }

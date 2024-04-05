@@ -20,15 +20,25 @@ class HomeViewModel: ObservableObject {
     @Published var viewPresentCount = 0
 
     @Published var myInfo: MemberInfo = .empty
-    @Published var myGroups: [GroupInfo] = [.empty, .empty]
+    @Published var myGroups: [GroupInfo] = [.empty, .empty] {
+        didSet {
+            DispatchQueue.main.async {
+                self.setFilteredGroups()
+            }
+        }
+    }
 
     @Published var newGroup: GroupInfo = .empty
     @Published var selectedMember: MemberInfo = .empty
     @Published var selectedGroup: GroupInfo = .empty {
         didSet(oldValue) {
-            if oldValue.groupId != selectedGroup.groupId || oldValue.members.count != selectedGroup.members.count {
-                if let groupIndex = myGroups.firstIndex(where: { $0.groupId == selectedGroup.groupId }) {
-                    selectedGroup = myGroups[groupIndex]
+            if oldValue.members.count != selectedGroup.members.count {
+                if selectedGroup.groupId == friends.groupId {
+                    selectedGroup = friends
+                } else {
+                    if let groupIndex = myGroups.firstIndex(where: { $0.groupId == selectedGroup.groupId }) {
+                        selectedGroup = myGroups[groupIndex]
+                    }
                 }
             }
         }
@@ -288,6 +298,13 @@ class HomeViewModel: ObservableObject {
                         self.friends.members = self.selectedGroup.members.filter { member in
                             !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
                         }
+                        self.myGroups = self.myGroups.map { group in
+                            var newGroup = group
+                            newGroup.members = self.selectedGroup.members.filter { member in
+                                !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                            }
+                            return newGroup
+                        }
                     }
                 } else {
                     if let selectedIndex = self.myGroups.firstIndex(where: {
@@ -331,6 +348,11 @@ class HomeViewModel: ObservableObject {
                     withAnimation {
                         self.friends.members = self.selectedGroup.members.filter { member in
                             self.selectedMember.intraId != member.intraId
+                        }
+                        self.myGroups = self.myGroups.map { group in
+                            var newGroup = group
+                            newGroup.members = group.members.filter { $0.intraId != self.selectedMember.intraId }
+                            return newGroup
                         }
                     }
                 } else {
