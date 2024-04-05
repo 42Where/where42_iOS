@@ -34,26 +34,53 @@ struct SettingAlert: View {
             }
         }
 
-        if settingViewModel.isStatusMessageAlertPresented {
+        if settingViewModel.isCommentAlertPresented {
             CustomAlert(
                 title: "코멘트 변경",
                 inputText: $settingViewModel.inputText,
                 textFieldTitle: "코멘트를 입력해주세요"
             ) {
                 withAnimation {
-                    settingViewModel.isStatusMessageAlertPresented = false
-                    settingViewModel.inputText = ""
+                    settingViewModel.isCommentAlertPresented = false
                 }
             } rightButtonAction: {
-                let status = await settingViewModel.UpdateComment()
+                let status = await settingViewModel.updateComment()
 
                 if status == nil {
                     withAnimation {
-                        settingViewModel.isStatusMessageAlertPresented = false
+                        settingViewModel.isCommentAlertPresented = false
                     }
-                    homeViewModel.myInfo.comment = settingViewModel.newStatusMessage
+                    homeViewModel.myInfo.comment = settingViewModel.newComment
                 } else {
                     mainViewModel.setToast(type: status)
+                }
+            } initButtonAction: {
+                withAnimation {
+                    settingViewModel.isInitCommentAlertPresented = true
+                }
+            }
+        }
+
+        if settingViewModel.isInitCommentAlertPresented {
+            CustomAlert(
+                title: "코멘트 초기화",
+                message: "코멘트를 초기화 하시겠습니까?",
+                inputText: .constant("")
+            ) {
+                withAnimation {
+                    settingViewModel.isInitCommentAlertPresented = false
+                }
+            } rightButtonAction: {
+                let status = await settingViewModel.deleteComment()
+
+                if status == true {
+                    withAnimation {
+                        settingViewModel.isInitCommentAlertPresented = false
+                        settingViewModel.isCommentAlertPresented = false
+                    }
+                    homeViewModel.myInfo.comment = settingViewModel.newComment
+                } else {
+                    mainViewModel.setToast(type: "reissue")
                 }
             }
         }

@@ -20,6 +20,7 @@ struct CustomLocationView: View {
                 .onTapGesture {
                     withAnimation {
                         settingViewModel.isCustomLocationAlertPresented = false
+                        settingViewModel.isCustomLocationAlertPresentedInHome = false
                         settingViewModel.initCustomLocation()
                     }
                 }
@@ -142,6 +143,7 @@ struct CustomLocationView: View {
                     Button {
                         withAnimation {
                             settingViewModel.isCustomLocationAlertPresented = false
+                            settingViewModel.isCustomLocationAlertPresentedInHome = false
                             settingViewModel.initCustomLocation()
                         }
                     } label: {

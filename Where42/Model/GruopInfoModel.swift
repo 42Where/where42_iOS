@@ -15,7 +15,12 @@ struct GroupInfo: Identifiable, Hashable, Codable {
     var totalNum: Int = 0
     var onlineNum: Int = 0
     var isOpen: Bool = false
-    var members: [MemberInfo] = []
+    var members: [MemberInfo] = [] {
+        didSet {
+            totalNum = members.count
+            onlineNum = members.filter { $0.inCluster == true }.count
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case groupId, groupName, members

@@ -32,7 +32,7 @@ struct SettingView: View {
 
                 Button("코멘트 설정") {
                     withAnimation {
-                        settingViewModel.isStatusMessageAlertPresented = true
+                        settingViewModel.isCommentAlertPresented = true
                         settingViewModel.inputText = homeViewModel.myInfo.comment ?? ""
                     }
                 }

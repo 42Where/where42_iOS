@@ -10,6 +10,7 @@ import SwiftUI
 struct Where42ToolBarContent: ToolbarContent {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
     @EnvironmentObject private var networkMonitor: NetworkMonitor
 
 //    @Binding var isShowSheet: Bool
@@ -28,6 +29,7 @@ struct Where42ToolBarContent: ToolbarContent {
                 mainViewModel.isEditGroupNameAlertPrsented ||
                 homeViewModel.isGroupEditSelectAlertPrsented ||
                 homeViewModel.isFriendDeleteAlertPresented ||
+                settingViewModel.isCustomLocationAlertPresentedInHome ||
                 !networkMonitor.isConnected)
         }
 
@@ -46,6 +48,7 @@ struct Where42ToolBarContent: ToolbarContent {
                     mainViewModel.isEditGroupNameAlertPrsented ||
                     homeViewModel.isGroupEditSelectAlertPrsented ||
                     homeViewModel.isFriendDeleteAlertPresented ||
+                    settingViewModel.isCustomLocationAlertPresentedInHome ||
                     homeViewModel.isLoading ||
                     !networkMonitor.isConnected)
             }

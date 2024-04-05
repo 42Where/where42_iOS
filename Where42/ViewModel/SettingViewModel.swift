@@ -9,11 +9,13 @@ import SwiftUI
 
 class SettingViewModel: ObservableObject {
     @Published var isLogoutAlertPresented = false
-    @Published var isStatusMessageAlertPresented = false
+    @Published var isCommentAlertPresented = false
+    @Published var isInitCommentAlertPresented = false
     @Published var isCustomLocationAlertPresented = false
+    @Published var isCustomLocationAlertPresentedInHome = false
     @Published var isInitCustomLocationAlertPrsented = false
     @Published var inputText = ""
-    @Published var newStatusMessage = "수정중..."
+    @Published var newComment = "수정중..."
     @Published var newLocation = "수정중..."
 
     @Published var selectedFloor = 0
@@ -34,18 +36,33 @@ class SettingViewModel: ObservableObject {
     private let memberAPI = MemberAPI.shared
     private let loginAPI = LoginAPI.shared
 
-    func UpdateComment() async -> String? {
-        if inputText == "" || inputText.trimmingCharacters(in: .whitespaces) == "" {
+    func updateComment() async -> String? {
+        if inputText != "" && inputText.trimmingCharacters(in: .whitespaces) == "" {
             return "wrongComment"
         } else if inputText.count > 40 {
             return "longComment"
         }
 
+        if inputText == "" {
+            do {
+                try await memberAPI.deleteComment()
+                DispatchQueue.main.async {
+                    self.newComment = ""
+                }
+                return nil
+            } catch API.NetworkError.Reissue {
+                return "reissue"
+            } catch {
+                print(error.localizedDescription)
+                return nil
+            }
+        }
+
         do {
-            if let comment = try await memberAPI.updateStatusMessage(statusMessage: inputText) {
+            if let comment = try await memberAPI.updateComment(comment: inputText) {
                 if comment.contains("http") == false {
                     DispatchQueue.main.async {
-                        self.newStatusMessage = comment
+                        self.newComment = comment
                         self.inputText = ""
                     }
                 } else {
@@ -58,8 +75,25 @@ class SettingViewModel: ObservableObject {
             }
         } catch API.NetworkError.Reissue {
             return "reissue"
-        } catch {}
+        } catch {
+            print(error.localizedDescription)
+        }
         return nil
+    }
+
+    func deleteComment() async -> Bool? {
+        do {
+            try await memberAPI.deleteComment()
+            DispatchQueue.main.async {
+                self.newComment = ""
+            }
+            return true
+        } catch API.NetworkError.Reissue {
+            return false
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
     }
 
     func initCustomLocation() {
@@ -88,6 +122,7 @@ class SettingViewModel: ObservableObject {
                         self.newLocation = responseCustomLocation
                         withAnimation {
                             self.isCustomLocationAlertPresented = false
+                            self.isCustomLocationAlertPresentedInHome = false
                         }
                     }
                 } else {
@@ -107,13 +142,14 @@ class SettingViewModel: ObservableObject {
 
     func resetCustomLocation() async -> String? {
         do {
-            if let responseCustomLocation = try await memberAPI.updateCustomLocation(customLocation: nil) {
-                if responseCustomLocation.contains("http") == false {
+            if let status = try await memberAPI.deleteCustomLocation() {
+                if status == true {
                     DispatchQueue.main.async {
-                        self.newLocation = responseCustomLocation
+                        self.newLocation = "개포"
                         withAnimation {
                             self.isInitCustomLocationAlertPrsented = false
                             self.isCustomLocationAlertPresented = false
+                            self.isCustomLocationAlertPresentedInHome = false
                         }
                     }
                 } else {

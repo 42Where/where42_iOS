@@ -15,6 +15,7 @@ struct CustomAlert: View {
 
     var leftButtonAction: (() -> Void)?
     var rightButtonAction: (() async -> Void)?
+    var initButtonAction: (() -> Void)?
 
     var body: some View {
         ZStack {
@@ -58,6 +59,21 @@ struct CustomAlert: View {
 
                 HStack {
                     Spacer()
+
+                    if initButtonAction != nil {
+                        Button {
+                            initButtonAction?()
+                        } label: {
+                            Text("초기화")
+                                .padding(.horizontal, 4)
+                                .padding(4)
+                                .foregroundStyle(.red)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.red, lineWidth: 1)
+                                )
+                        }
+                    }
 
                     Button {
                         leftButtonAction?()

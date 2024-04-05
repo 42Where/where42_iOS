@@ -187,7 +187,6 @@
 		A02101C72AFB221900CB2FCD /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A090A2972AFD1EFE001A1198 /* CustomAlert */,
 				A02101D22AFB25F800CB2FCD /* Main */,
 				A02101CE2AFB25B500CB2FCD /* Home */,
 				A02101D02AFB25DC00CB2FCD /* Login */,
@@ -281,6 +280,7 @@
 		A075184F2B217F4D00E1AE7C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A090A2972AFD1EFE001A1198 /* CustomAlert */,
 				A0CF06632B733F8800FE2F15 /* multiple layer */,
 				A06810DD2B6B32860045DC43 /* MyToast.swift */,
 				A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */,

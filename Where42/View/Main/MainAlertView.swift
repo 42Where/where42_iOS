@@ -99,7 +99,7 @@ struct MainAlertView: View {
             GroupEditSelectModal()
         }
 
-        if settingViewModel.isCustomLocationAlertPresented {
+        if settingViewModel.isCustomLocationAlertPresentedInHome {
             CustomLocationView()
         }
     }

@@ -40,7 +40,7 @@ struct HomeInfoView: View {
                     Button {
                         if homeViewModel.myInfo.inCluster == true {
                             withAnimation {
-                                settingViewModel.isCustomLocationAlertPresented = true
+                                settingViewModel.isCustomLocationAlertPresentedInHome = true
                             }
                         } else {
                             mainViewModel.toast = Toast(title: "자리 설정은 클러스터 안에서만 할 수 있습니다")

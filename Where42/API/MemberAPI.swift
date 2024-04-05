@@ -136,8 +136,8 @@ class MemberAPI: API {
         return false
     }
 
-    func updateStatusMessage(statusMessage: String) async throws -> String? {
-        guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(comment: statusMessage)) else {
+    func updateComment(comment: String) async throws -> String? {
+        guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(comment: comment)) else {
             throw NetworkError.invalidRequestBody
         }
 //        print(String(data: requestBody, encoding: String.Encoding.utf8)!)
@@ -195,6 +195,51 @@ class MemberAPI: API {
         return nil
     }
 
+    func deleteComment() async throws {
+        guard let requestURL = URL(string: baseURL + "/member/comment") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+            switch response.statusCode {
+            case 200 ... 299:
+
+                return
+
+            case 400 ... 499:
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        try await API.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
+
+            case 500 ... 599:
+                throw NetworkError.ServerError
+
+            default: print("Unknown HTTP Response Status Code")
+            }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
+        } catch {
+            errorPrint(error, message: "Failed to update status message")
+        }
+    }
+
     func updateCustomLocation(customLocation: String?) async throws -> String? {
         guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(customLocation: customLocation)) else {
             throw NetworkError.invalidRequestBody
@@ -249,6 +294,53 @@ class MemberAPI: API {
             throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to update custom location")
+        }
+        return nil
+    }
+
+    func deleteCustomLocation() async throws -> Bool? {
+        guard let requestURL = URL(string: baseURL + "/location/custom") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            guard let response = response as? HTTPURLResponse else {
+                throw NetworkError.invalidHTTPResponse
+            }
+
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
+
+            switch response.statusCode {
+            case 200 ... 299:
+                return true
+
+            case 400 ... 499:
+                let response = String(data: data, encoding: String.Encoding.utf8)!
+                if response.contains("errorCode") && response.contains("errorMessage") {
+                    let customException = parseCustomException(response: response)
+                    if customException.handleError() == false {
+                        try await API.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+                    }
+                } else {
+                    throw NetworkError.BadRequest
+                }
+
+            case 500 ... 599:
+                throw NetworkError.ServerError
+
+            default: print("Unknown HTTP Response Status Code")
+            }
+        } catch NetworkError.Reissue {
+            throw NetworkError.Reissue
+        } catch {
+            errorPrint(error, message: "Failed to delete custom location")
         }
         return nil
     }
