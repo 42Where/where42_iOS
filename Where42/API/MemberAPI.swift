@@ -37,9 +37,8 @@ class MemberAPI: API {
         }
 
         var request = URLRequest(url: requestURL)
-        print("getMemberInfo token: ", MemberAPI.shared.accessToken)
-
-        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
+        print("getMemberInfo token: ", API.sharedAPI.getAccessToken())
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -100,7 +99,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -149,7 +148,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -202,7 +201,7 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -252,7 +251,7 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(MemberAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         do {
@@ -305,7 +304,7 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
-        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -353,7 +352,7 @@ class MemberAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "GET"
-        request.addValue(API.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

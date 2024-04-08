@@ -14,6 +14,10 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
+                Button("read token") {
+                    let token = KeychainManager.readToken(key: "accessToken")
+                    print(token as Any)
+                }
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWorkCheked,

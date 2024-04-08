@@ -103,18 +103,18 @@ struct MyWebView: UIViewRepresentable {
                         } else if redirectURL.contains("?intraId=") == true {
                             let query = webView.url?.query()?.split(separator: "&")
                             webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                                //                            print("-------------- Cookie --------------")
+//                                print("-------------- Cookie --------------")
                                 for cookie in cookies {
-                                    //                                print("[" + cookie.name + "]", cookie.value)
+//                                    print("[" + cookie.name + "]", cookie.value)
                                     if cookie.name == "accessToken" {
-                                        //                                    print("Find Access Token")
-                                        API.sharedAPI.accessToken = "Bearer " + cookie.value
+//                                        API.sharedAPI.accessToken = "Bearer " + cookie.value
+                                        KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
                                     } else if cookie.name == "refreshToken" {
-                                        //                                    print("Find Refresh Token")
-                                        API.sharedAPI.refreshToken = "Bearer " + cookie.value
+//                                        API.sharedAPI.refreshToken = "Bearer " + cookie.value
+                                        KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
                                     }
                                 }
-                                //                            print("------------------------------------")
+//                                print("------------------------------------")
                                 self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
                                 self.parent.isPresented = false
                             }
@@ -137,8 +137,10 @@ struct MyWebView: UIViewRepresentable {
                 parent.mainViewModel.isLogin = true
             }
             print("-------------- Parse --------------")
-            print(API.sharedAPI.accessToken)
-            print(API.sharedAPI.refreshToken)
+//            print(API.sharedAPI.accessToken)
+//            print(API.sharedAPI.refreshToken)
+            print(KeychainManager.readToken(key: "accessToken") as Any)
+            print(KeychainManager.readToken(key: "refreshToken") as Any)
             print("------------------------------------")
         }
     }

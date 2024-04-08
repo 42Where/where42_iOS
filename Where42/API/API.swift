@@ -16,8 +16,6 @@ class API: ObservableObject {
 
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
     @AppStorage("intraId") var intraId: Int = 0
-    @AppStorage("accessToken") var accessToken = ""
-    @AppStorage("refreshToken") var refreshToken = ""
 
     enum NetworkError: Error {
         case invalidURL
@@ -25,7 +23,7 @@ class API: ObservableObject {
         case invalidHTTPResponse
         case BadRequest
         case ServerError
-        case Token
+        case TokenError
         case Reissue
     }
 
@@ -41,7 +39,7 @@ class API: ObservableObject {
             print("잘못된 요청입니다")
         case NetworkError.ServerError:
             print("서버 에러입니다")
-        case NetworkError.Token:
+        case NetworkError.TokenError:
             print("유효하지 않은 토큰입니다")
         case NetworkError.Reissue:
             print("잠시 후 다시 시도해 주세요")
@@ -62,18 +60,34 @@ class API: ObservableObject {
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
     }
 
+    func getAccessToken() -> String {
+        guard let accessToken = KeychainManager.readToken(key: "accessToken") else {
+            return ""
+        }
+
+        return accessToken
+    }
+
+    func getRefreshToken() -> String {
+        guard let refreshToken = KeychainManager.readToken(key: "refreshToken") else {
+            return ""
+        }
+
+        return refreshToken
+    }
+
     func reissue() async throws {
         guard let requestURL = URL(string: baseURL + "/jwt/reissue") else {
             throw NetworkError.invalidURL
         }
 
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue(API.sharedAPI.refreshToken, forHTTPHeaderField: "Authorization")
+        do {
+            var request = URLRequest(url: requestURL)
+            request.httpMethod = "POST"
+            request.addValue(getRefreshToken(), forHTTPHeaderField: "Authorization")
 
 //        print("API.sharedAPI.refreshToken: ", API.sharedAPI.refreshToken)
 
-        do {
             let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
@@ -83,7 +97,6 @@ class API: ObservableObject {
             //            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             print("----- reissue -----")
-            accessToken = ""
 
             switch response.statusCode {
             case 200 ... 299:
@@ -94,7 +107,8 @@ class API: ObservableObject {
                     throw NetworkError.Reissue
                 } else {
                     let reissueAccessToken = try JSONDecoder().decode(reissueDTO.self, from: data).accessToken
-                    API.sharedAPI.accessToken = "Bearer " + reissueAccessToken
+//                    API.sharedAPI.accessToken = "Bearer " + reissueAccessToken
+                    KeychainManager.updateToken(key: "accessToken", token: "Bearer " + reissueAccessToken)
                     return
                 }
 
@@ -120,7 +134,7 @@ class API: ObservableObject {
 
             default: print("Unknown HTTP Response Status Code")
             }
-        } catch NetworkError.Reissue {
+        } catch NetworkError.Reissue, NetworkError.TokenError {
             throw NetworkError.Reissue
         } catch {
             errorPrint(error, message: "Failed to get member infomation")

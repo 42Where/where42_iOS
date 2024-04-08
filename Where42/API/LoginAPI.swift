@@ -14,39 +14,18 @@ struct joinDTO: Codable {
 class LoginAPI: API {
     static let shared = LoginAPI()
 
-    override private init() {}
-//    func login() async throws -> {
-//        guard let requestURL = URL(string: baseURL + "") else {
-//            throw NetworkError.invalidURL
-//        }
-//
-//        do {
-//            let (data, response) = try await URLSession.shared.data(from: requestURL)
-//
-//            guard let response = response as? HTTPURLResponse else {
-//                throw NetworkError.invalidHTTPResponse
-//            }
-//        } catch {
-//            print(error)
-//            errorPrint(error, message: "Failed Login")
-//            print()
-//        }
-//    }
-
     func join(intraId: String) async throws {
         guard let requestURL = URL(string: baseURL + "/join?intra_id=\(intraId)") else {
             return
         }
 
-//        let intraIdQuery = URLQueryItem(name: "intra_id", value: intraId)
-
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(LoginAPI.shared.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
         print(" J O I N ")
         print(intraId)
-        print(accessToken)
+        print(API.sharedAPI.getAccessToken() as Any)
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -67,7 +46,7 @@ class LoginAPI: API {
                     DispatchQueue.main.async {
                         MainViewModel.shared.isLogin = false
                     }
-                    throw NetworkError.Token
+                    throw NetworkError.TokenError
                 } else {
                     print("Succeed join")
                     DispatchQueue.main.async {
@@ -102,7 +81,7 @@ class LoginAPI: API {
 
         var request = URLRequest(url: requsetURL)
         request.httpMethod = "POST"
-        request.addValue(API.sharedAPI.accessToken, forHTTPHeaderField: "Authorization")
+        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -116,7 +95,7 @@ class LoginAPI: API {
             switch response.statusCode {
             case 200 ... 299:
                 if response.mimeType == "text/html" {
-                    throw NetworkError.Token
+                    throw NetworkError.TokenError
                 } else {
                     print("Succeed logout")
                 }

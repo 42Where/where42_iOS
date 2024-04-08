@@ -55,7 +55,6 @@ struct LoginView: View {
                 Spacer()
 
                 Button {
-                    API.sharedAPI.accessToken = ""
                     loginViewModel.isLoginButtonPushed = true
                     loginViewModel.timer = loginViewModel.timer.upstream.autoconnect()
                     loginViewModel.login()
