@@ -86,6 +86,13 @@ struct HomeGroupSingleView: View {
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 3)
+                    .background(.white)
+                    .onTapGesture {
+                        withAnimation {
+                            group.isOpen.toggle()
+                        }
+                        homeViewModel.setIsOpen(groupId: group.groupId!, isOpen: group.isOpen)
+                    }
 
                     if group.isOpen && group.totalNum >= 0 {
                         Divider()

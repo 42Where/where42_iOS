@@ -60,14 +60,6 @@ struct MemberInfo: Codable, Hashable, Comparable {
     }
 
     static var empty: MemberInfo {
-        MemberInfo(intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false)
-    }
-
-    func getLocation() -> String {
-        if location != nil {
-            return location!
-        } else {
-            return "잘못된 위치"
-        }
+        MemberInfo(intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false, location: "")
     }
 }

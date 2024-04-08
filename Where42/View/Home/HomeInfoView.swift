@@ -47,7 +47,7 @@ struct HomeInfoView: View {
                         }
                     } label: {
                         HStack(spacing: 4) {
-                            Text(memberInfo.getLocation())
+                            Text(memberInfo.location!)
                                 
                             if memberInfo.inCluster == true {
                                 Image("Search icon White M")

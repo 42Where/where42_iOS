@@ -50,6 +50,7 @@ class HomeViewModel: ObservableObject {
         didSet {
             filteredFriends = friends
             filteredFriends.members = friends.members.filter { $0.inCluster == true }
+            filteredFriends.totalNum = friends.totalNum
         }
     }
 
@@ -68,46 +69,6 @@ class HomeViewModel: ObservableObject {
     private let memberAPI = MemberAPI.shared
     private let groupAPI = GroupAPI.shared
     private let loginAPI = LoginAPI.shared
-
-    // Count
-
-    func countAllMembers() {
-        countGroupMembers()
-        countFriends()
-    }
-
-    func countGroupMembers() {
-        for index in myGroups.indices {
-            myGroups[index].totalNum = myGroups[index].members.count
-            myGroups[index].onlineNum = 0
-            for member in myGroups[index].members {
-                if member.inCluster == true {
-                    myGroups[index].onlineNum += 1
-                }
-            }
-        }
-        setFilteredGroups()
-    }
-
-    func countGroupMembers(group: inout GroupInfo) {
-        group.totalNum = group.members.count
-        group.onlineNum = 0
-        for member in group.members {
-            if member.inCluster == true {
-                group.onlineNum += 1
-            }
-        }
-    }
-
-    func countFriends() {
-        friends.totalNum = friends.members.count
-        friends.onlineNum = 0
-        for member in friends.members {
-            if member.inCluster == true {
-                friends.onlineNum += 1
-            }
-        }
-    }
 
     // User
 
@@ -161,8 +122,6 @@ class HomeViewModel: ObservableObject {
                     self.friends.members.sort()
                     self.friends.groupName = "친구목록"
                     self.friends.isOpen = true
-
-                    self.countAllMembers()
                 } else {
                     MainViewModel.shared.is42IntraSheetPresented = true
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
@@ -226,7 +185,6 @@ class HomeViewModel: ObservableObject {
                 }
                 DispatchQueue.main.async {
                     self.newGroup.members = self.selectedMembers
-                    self.countGroupMembers(group: &self.newGroup)
                     self.myGroups.append(self.newGroup)
                 }
             } else if groupId == nil {
@@ -265,7 +223,6 @@ class HomeViewModel: ObservableObject {
                             newMember.isCheck = false
                             return newMember
                         }
-                        self.countGroupMembers()
                         self.initNewGroup()
                     }
                 }
@@ -319,7 +276,6 @@ class HomeViewModel: ObservableObject {
                 }
 
                 self.initNewGroup()
-                self.countAllMembers()
             }
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
@@ -368,7 +324,6 @@ class HomeViewModel: ObservableObject {
                 }
 
                 self.initNewGroup()
-                self.countAllMembers()
             }
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
@@ -482,15 +437,13 @@ class HomeViewModel: ObservableObject {
 
         for index in 0 ..< myGroups.count {
             filteredGroups[index].members = myGroups[index].members.filter { $0.inCluster == true }
+            filteredGroups[index].totalNum = myGroups[index].totalNum
         }
     }
 
     func setIsOpen(groupId: Int, isOpen: Bool) {
         if let groupIndex = myGroups.firstIndex(where: { $0.groupId == groupId }) {
             myGroups[groupIndex].isOpen = isOpen
-        }
-        if let groupIndex = filteredGroups.firstIndex(where: { $0.groupId == groupId }) {
-            filteredGroups[groupIndex].isOpen = isOpen
         }
     }
 }

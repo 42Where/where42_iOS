@@ -20,7 +20,7 @@ struct HomeFriendView: View {
             Section {
                 if friends.isOpen && friends.totalNum >= 0 {
                     if friends.totalNum == 0 ||
-                    (homeViewModel.isWorkCheked && friends.onlineNum == 0)
+                        (homeViewModel.isWorkCheked && friends.onlineNum == 0)
                     {
                         Text("아무도 없어요...")
                             .font(.custom(Font.GmarketMedium, size: 18))
@@ -100,6 +100,12 @@ struct HomeFriendView: View {
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 3)
+                    .background(.white)
+                    .onTapGesture {
+                        withAnimation {
+                            friends.isOpen.toggle()
+                        }
+                    }
 
                     if friends.isOpen && friends.totalNum > 0 {
                         Divider()

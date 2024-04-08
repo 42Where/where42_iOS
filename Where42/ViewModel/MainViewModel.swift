@@ -16,8 +16,6 @@ extension UIDevice {
 class MainViewModel: ObservableObject {
     static let shared = MainViewModel()
 
-//    private init() {}
-
     @AppStorage("isLogin") var isLogin = false
 
     @Published var tabSelection: String = "Home"

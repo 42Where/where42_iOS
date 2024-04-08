@@ -15,7 +15,11 @@ struct GroupInfo: Identifiable, Hashable, Codable {
     var totalNum: Int = 0
     var onlineNum: Int = 0
     var isOpen: Bool = false
-    var members: [MemberInfo] = []
+    var members: [MemberInfo] = [] {
+        didSet {
+            countGroupMembers()
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case groupId, groupName, members
@@ -43,5 +47,15 @@ struct GroupInfo: Identifiable, Hashable, Codable {
 
     static var empty: GroupInfo {
         GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+    }
+
+    mutating func countGroupMembers() {
+        totalNum = members.count
+        onlineNum = 0
+        for member in members {
+            if member.inCluster == true {
+                onlineNum += 1
+            }
+        }
     }
 }

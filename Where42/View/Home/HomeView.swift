@@ -46,7 +46,6 @@ struct HomeView: View {
                             if mainViewModel.isLogin == true {
                                 homeViewModel.isAPILoaded = true
                             }
-                            homeViewModel.countAllMembers()
                             homeViewModel.isLoading = false
                         }
                     }
