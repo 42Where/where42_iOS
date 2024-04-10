@@ -110,6 +110,9 @@ class HomeViewModel: ObservableObject {
                 if let responseGroups = responseGroups {
                     self.myGroups = responseGroups.map { group in
                         var sortedGroup = group
+                        if let index = self.myGroups.firstIndex(where: { $0.groupId == group.groupId }) {
+                            sortedGroup.isOpen = self.myGroups[index].isOpen
+                        }
                         sortedGroup.members.sort()
                         return sortedGroup
                     }
@@ -223,6 +226,7 @@ class HomeViewModel: ObservableObject {
                             newMember.isCheck = false
                             return newMember
                         }
+                        self.myGroups[selectedIndex].members.sort()
                         self.initNewGroup()
                     }
                 }
@@ -441,9 +445,9 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func setIsOpen(groupId: Int, isOpen: Bool) {
-        if let groupIndex = myGroups.firstIndex(where: { $0.groupId == groupId }) {
-            myGroups[groupIndex].isOpen = isOpen
+    func setIsOpen() {
+        for index in 0 ..< myGroups.count {
+            myGroups[index].isOpen = filteredGroups[index].isOpen
         }
     }
 }

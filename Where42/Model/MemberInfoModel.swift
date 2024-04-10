@@ -8,7 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct MemberInfo: Codable, Hashable, Comparable {
+struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
+    var id: UUID
+
     var intraId: Int?
     var intraName: String?
     var grade: String?
@@ -20,7 +22,8 @@ struct MemberInfo: Codable, Hashable, Comparable {
     var location: String?
     var isCheck = false
 
-    init(intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
+    init(id: UUID, intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
+        self.id = id
         self.intraId = intraId
         self.intraName = intraName
         self.grade = grade
@@ -35,6 +38,7 @@ struct MemberInfo: Codable, Hashable, Comparable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        self.id = UUID()
         self.intraId = (try? container.decodeIfPresent(Int.self, forKey: .intraId)) ?? 0
         self.intraName = (try? container.decodeIfPresent(String.self, forKey: .intraName)) ?? "nil"
         self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"
@@ -45,9 +49,9 @@ struct MemberInfo: Codable, Hashable, Comparable {
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
         self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? nil
 
-        if intraName == "dhyun" {
-            self.inCluster = true
-        }
+//        if intraName == "dhyun" {
+//            self.inCluster = true
+//        }
 
         if inCluster == true && location == nil {
             self.location = "개포"
@@ -64,6 +68,6 @@ struct MemberInfo: Codable, Hashable, Comparable {
     }
 
     static var empty: MemberInfo {
-        MemberInfo(intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false, location: "")
+        MemberInfo(id: UUID(), intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false, location: "")
     }
 }

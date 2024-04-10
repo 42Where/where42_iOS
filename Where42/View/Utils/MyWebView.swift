@@ -84,6 +84,7 @@ struct MyWebView: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
             if let redirectURL = webView.url?.absoluteString {
+                print(redirectURL)
                 if redirectURL == "https://profile.intra.42.fr" {
                     print("intra profile")
                     parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
@@ -92,32 +93,29 @@ struct MyWebView: UIViewRepresentable {
                     return
                 }
                 if redirectURL.contains("https://test.where42.kr/") == true {
-                    if let redirectURL = webView.url?.absoluteString {
-                        //                    print(redirectURL)
-                        if redirectURL.contains("login-fail") == true {
-                            print("login-fail")
-                            parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
-                            parent.isPresented = false
-                            parent.mainViewModel.isLogin = false
-                            return
-                        } else if redirectURL.contains("?intraId=") == true {
-                            let query = webView.url?.query()?.split(separator: "&")
-                            webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+                    if redirectURL.contains("login-fail") == true {
+                        print("login-fail")
+                        parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+                        parent.isPresented = false
+                        parent.mainViewModel.isLogin = false
+                        return
+                    } else if redirectURL.contains("?intraId=") == true {
+                        let query = webView.url?.query()?.split(separator: "&")
+                        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
 //                                print("-------------- Cookie --------------")
-                                for cookie in cookies {
+                            for cookie in cookies {
 //                                    print("[" + cookie.name + "]", cookie.value)
-                                    if cookie.name == "accessToken" {
+                                if cookie.name == "accessToken" {
 //                                        API.sharedAPI.accessToken = "Bearer " + cookie.value
-                                        KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
-                                    } else if cookie.name == "refreshToken" {
+                                    KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
+                                } else if cookie.name == "refreshToken" {
 //                                        API.sharedAPI.refreshToken = "Bearer " + cookie.value
-                                        KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
-                                    }
+                                    KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
                                 }
-//                                print("------------------------------------")
-                                self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
-                                self.parent.isPresented = false
                             }
+//                                print("------------------------------------")
+                            self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
+                            self.parent.isPresented = false
                         }
                     }
                 }

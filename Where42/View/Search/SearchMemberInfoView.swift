@@ -121,6 +121,6 @@ struct SearchMemberInfoView: View {
 }
 
 #Preview {
-    SearchMemberInfoView(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
+    SearchMemberInfoView(memberInfo: .constant(MemberInfo(id: UUID(), intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
         .environmentObject(HomeViewModel())
 }

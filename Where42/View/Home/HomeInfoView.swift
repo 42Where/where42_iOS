@@ -89,6 +89,9 @@ struct HomeInfoView: View {
                     Button {
                         withAnimation {
                             isWork.toggle()
+                            if !isWork {
+                                homeViewModel.setIsOpen()
+                            }
                         }
                     } label: {
                         if isWork {
@@ -114,19 +117,5 @@ struct HomeInfoView: View {
 }
 
 #Preview {
-    HomeInfoView(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), isWork: .constant(false), isNewGroupAlertPrsented: .constant(false))
+    HomeInfoView(memberInfo: .constant(MemberInfo(id: UUID(), intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), isWork: .constant(false), isNewGroupAlertPrsented: .constant(false))
 }
-
-//            AsyncImage(url: URL(string: userInfo.avatar)) { image in
-//                VStack {
-//                    image
-//                        .resizable()
-//                        .clipShape(Circle())
-//                        .overlay(Circle().stroke(.whereDeepPink, lineWidth: userInfo.location != "퇴근" ? 3 : 0))
-//                }
-//            } placeholder: {
-//                Image("Profile")
-//                    .resizable()
-//                ProgressView()
-//            }
-//            .frame(width: 80, height: 80)

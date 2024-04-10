@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GroupInfo: Identifiable, Hashable, Codable {
+struct GroupInfo: Identifiable, Equatable, Codable {
     var id: UUID
 
     var groupId: Int?
@@ -38,6 +38,7 @@ struct GroupInfo: Identifiable, Hashable, Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.id = UUID()
         self.groupId = (try? container.decodeIfPresent(Int.self, forKey: .groupId)) ?? 0
         self.groupName = (try? container.decodeIfPresent(String.self, forKey: .groupName)) ?? "nil"
