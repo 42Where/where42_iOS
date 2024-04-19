@@ -33,7 +33,7 @@ struct SearchSelectedMembersView: View {
                         VStack {
                             ZStack {
                                 VStack {
-                                    KFImage(URL(string: searchViewModel.selectedMembers[index].image!)!)
+                                    KFImage(URL(string: searchViewModel.selectedMembers[index].image)!)
                                         .resizable()
                                         .placeholder {
                                             Image("Profile")
@@ -60,7 +60,7 @@ struct SearchSelectedMembersView: View {
                                 .frame(width: 45, height: 45)
                             }
 
-                            Text(searchViewModel.selectedMembers[index].intraName!)
+                            Text(searchViewModel.selectedMembers[index].intraName)
                                 .font(.custom(Font.GmarketMedium, size: 11))
                                 .foregroundStyle(.whereDeepNavy)
                                 .padding(.bottom, 2)

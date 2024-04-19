@@ -253,7 +253,7 @@ class GroupAPI: API {
     }
 
     func deleteGroupMember(groupId: Int, members: [MemberInfo]) async throws -> Bool {
-        let membersIntraId: [Int] = members.map { $0.intraId! }
+        let membersIntraId: [Int] = members.map { $0.intraId }
 
         guard let requestBody = try? JSONEncoder().encode(UpdateGroupMemberDTO(groupId: groupId, members: membersIntraId)) else {
             print("Failed create request Body")
@@ -314,7 +314,7 @@ class GroupAPI: API {
     }
 
     func addMembers(groupId: Int, members: [MemberInfo]) async throws -> Bool {
-        let members: [Int] = members.map { $0.intraId! }
+        let members: [Int] = members.map { $0.intraId }
 
         guard let requsetBody = try? JSONEncoder().encode(UpdateGroupMemberDTO(groupId: groupId, members: members)) else {
             print("failed create requset body")

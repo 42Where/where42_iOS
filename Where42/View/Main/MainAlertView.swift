@@ -78,8 +78,8 @@ struct MainAlertView: View {
             CustomAlert(
                 title: homeViewModel.isFriend ? "친구 삭제" : "멤버 삭제",
                 message: homeViewModel.isFriend ?
-                    " 친구 '\(homeViewModel.selectedMember.intraName!)'님을 친구목록에서 삭제하시겠습니까?" :
-                    " 멤버 '\(homeViewModel.selectedMember.intraName!)'님을 그룹에서 삭제하시겠습니까?",
+                    " 친구 '\(homeViewModel.selectedMember.intraName)'님을 친구목록에서 삭제하시겠습니까?" :
+                    " 멤버 '\(homeViewModel.selectedMember.intraName)'님을 그룹에서 삭제하시겠습니까?",
                 inputText: .constant(""))
             {
                 withAnimation {

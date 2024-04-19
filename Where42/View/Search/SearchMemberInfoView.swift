@@ -40,7 +40,7 @@ struct SearchMemberInfoView: View {
             hideKeyboard()
         } label: {
             HStack(spacing: 10) {
-                KFImage(URL(string: memberInfo.image!)!)
+                KFImage(URL(string: memberInfo.image)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -54,7 +54,7 @@ struct SearchMemberInfoView: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(memberInfo.intraName!)
+                        Text(memberInfo.intraName)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
@@ -70,7 +70,7 @@ struct SearchMemberInfoView: View {
                         .foregroundStyle(memberInfo.inCluster == false ? .whereDeepNavy : .white)
                     }
 
-                    Text(memberInfo.comment!)
+                    Text(memberInfo.comment)
                         .font(.custom(Font.GmarketMedium, size: 14))
                         .foregroundStyle(.whereMediumNavy)
                         .lineLimit(2)
@@ -121,6 +121,6 @@ struct SearchMemberInfoView: View {
 }
 
 #Preview {
-    SearchMemberInfoView(memberInfo: .constant(MemberInfo(id: UUID(), intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
+    SearchMemberInfoView(memberInfo: .constant(MemberInfo(id: UUID(), intraId: 0, intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")))
         .environmentObject(HomeViewModel())
 }

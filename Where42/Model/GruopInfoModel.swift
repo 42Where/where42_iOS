@@ -10,7 +10,7 @@ import Foundation
 struct GroupInfo: Identifiable, Equatable, Codable {
     var id: UUID
 
-    var groupId: Int?
+    var groupId: Int = 0
     var groupName: String
     var totalNum: Int = 0
     var onlineNum: Int = 0
@@ -26,7 +26,7 @@ struct GroupInfo: Identifiable, Equatable, Codable {
         case totalNum = "count"
     }
 
-    init(id: UUID, groupId: Int? = nil, groupName: String, totalNum: Int = 0, onlineNum: Int = 0, isOpen: Bool = false, members: [MemberInfo]) {
+    init(id: UUID, groupId: Int, groupName: String, totalNum: Int = 0, onlineNum: Int = 0, isOpen: Bool = false, members: [MemberInfo]) {
         self.id = id
         self.groupId = groupId
         self.groupName = groupName
@@ -47,7 +47,7 @@ struct GroupInfo: Identifiable, Equatable, Codable {
     }
 
     static var empty: GroupInfo {
-        GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+        GroupInfo(id: UUID(), groupId: 0, groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
     }
 
     mutating func countGroupMembers() {

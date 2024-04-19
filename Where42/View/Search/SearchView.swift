@@ -54,7 +54,7 @@ struct SearchView: View {
                     ScrollView {
                         ForEach(0 ..< searchViewModel.searching.count, id: \.self) { index in
                             if searchViewModel.name == "" ||
-                                (searchViewModel.searching[index].intraName?.contains(searchViewModel.name.lowercased())) == true
+                                (searchViewModel.searching[index].intraName.contains(searchViewModel.name.lowercased())) == true
                             {
                                 if UIDevice.idiom == .phone {
                                     SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
@@ -89,7 +89,7 @@ struct SearchView: View {
                             
                         Button {
                             Task {
-                                if await searchViewModel.addMemberInGroup(groupId: homeViewModel.friends.groupId!) {
+                                if await searchViewModel.addMemberInGroup(groupId: homeViewModel.friends.groupId) {
                                     searchViewModel.initSearchingAfterAdd()
                                     await homeViewModel.getGroup()
                                 }

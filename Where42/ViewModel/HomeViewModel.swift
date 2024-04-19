@@ -64,7 +64,7 @@ class HomeViewModel: ObservableObject {
 
     @Published var filteredGroups: [GroupInfo] = [.empty, .empty]
 
-    @Published var notInGroup: GroupInfo = .init(id: UUID(), groupName: "not in group", members: [.empty])
+    @Published var notInGroup: GroupInfo = .init(id: UUID(), groupId: 0, groupName: "not in group", members: [.empty])
 
     private let memberAPI = MemberAPI.shared
     private let groupAPI = GroupAPI.shared
@@ -141,7 +141,7 @@ class HomeViewModel: ObservableObject {
 
     func getMembersNotInGroup() async -> Bool {
         do {
-            guard let responseMembers = try await groupAPI.getNotInGorupMember(groupId: selectedGroup.groupId!) else {
+            guard let responseMembers = try await groupAPI.getNotInGorupMember(groupId: selectedGroup.groupId) else {
                 DispatchQueue.main.async {
                     MainViewModel.shared.is42IntraSheetPresented = true
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
@@ -180,17 +180,17 @@ class HomeViewModel: ObservableObject {
 
     func createNewGroup() async {
         do {
-            let groupId = try await groupAPI.createGroup(groupName: newGroup.groupName)
-
-            if groupId != nil && selectedMembers.isEmpty == false {
-                if await addMemberInGroup(groupId: groupId!) == false {
-                    return
+            if let groupId = try await groupAPI.createGroup(groupName: newGroup.groupName) {
+                if selectedMembers.isEmpty == false {
+                    if await addMemberInGroup(groupId: groupId) == false {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.newGroup.members = self.selectedMembers
+                        self.myGroups.append(self.newGroup)
+                    }
                 }
-                DispatchQueue.main.async {
-                    self.newGroup.members = self.selectedMembers
-                    self.myGroups.append(self.newGroup)
-                }
-            } else if groupId == nil {
+            } else {
                 DispatchQueue.main.async {
                     MainViewModel.shared.is42IntraSheetPresented = true
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
@@ -244,7 +244,7 @@ class HomeViewModel: ObservableObject {
 
     func deleteMemberInGroup() async -> Bool {
         do {
-            let responseStatus = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: selectedMembers)
+            let responseStatus = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId, members: selectedMembers)
             if responseStatus == false {
                 DispatchQueue.main.async {
                     MainViewModel.shared.is42IntraSheetPresented = true
@@ -294,7 +294,7 @@ class HomeViewModel: ObservableObject {
 
     func deleteOneMemberInGroup() async -> Bool {
         do {
-            let responseStatus = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId!, members: [selectedMember])
+            let responseStatus = try await groupAPI.deleteGroupMember(groupId: selectedGroup.groupId, members: [selectedMember])
             if responseStatus == false {
                 DispatchQueue.main.async {
                     MainViewModel.shared.is42IntraSheetPresented = true
@@ -350,7 +350,7 @@ class HomeViewModel: ObservableObject {
         for index in myGroups.indices {
             if myGroups[index] == selectedGroup {
                 if await updateGroupName(
-                    groupId: myGroups[index].groupId!,
+                    groupId: myGroups[index].groupId,
                     newGroupName: inputText
                 ) {
                     DispatchQueue.main.async {
@@ -390,7 +390,7 @@ class HomeViewModel: ObservableObject {
             if myGroups[index] == selectedGroup {
                 do {
                     if try await groupAPI.deleteGroup(
-                        groupId: myGroups[index].groupId!
+                        groupId: myGroups[index].groupId
                     ) {
                         withAnimation {
                             DispatchQueue.main.async {

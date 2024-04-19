@@ -75,7 +75,7 @@ struct SelectingView: View {
                 LazyVStack {
                     ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
                         if homeViewModel.friends.members[index].isCheck == true ||
-                            name == "" || (homeViewModel.friends.members[index].intraName?.contains(name.lowercased())) == true
+                            name == "" || (homeViewModel.friends.members[index].intraName.contains(name.lowercased())) == true
                         {
                             if UIDevice.idiom == .phone {
                                 SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])

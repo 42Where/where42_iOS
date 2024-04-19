@@ -11,18 +11,18 @@ import SwiftUI
 struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
     var id: UUID
 
-    var intraId: Int?
-    var intraName: String?
-    var grade: String?
-    var image: String?
-    var comment: String?
+    var intraId: Int
+    var intraName: String
+    var grade: String
+    var image: String
+    var comment: String
     var inCluster: Bool?
-    var agree: Bool?
-    var defaultGroupId: Int?
+    var agree: Bool
+    var defaultGroupId: Int
     var location: String?
     var isCheck = false
 
-    init(id: UUID, intraId: Int? = nil, intraName: String? = nil, grade: String? = nil, image: String? = nil, comment: String? = nil, inCluster: Bool? = nil, agree: Bool? = nil, defaultGroupId: Int? = nil, location: String? = nil) {
+    init(id: UUID, intraId: Int = 0, intraName: String, grade: String = "", image: String, comment: String, inCluster: Bool? = nil, agree: Bool = false, defaultGroupId: Int = 0, location: String? = nil) {
         self.id = id
         self.intraId = intraId
         self.intraName = intraName
@@ -44,14 +44,10 @@ struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
         self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"
         self.image = (try? container.decodeIfPresent(String.self, forKey: .image)) ?? "nil"
         self.comment = (try? container.decodeIfPresent(String.self, forKey: .comment)) ?? ""
-        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? nil
+//        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? nil
         self.agree = (try? container.decodeIfPresent(Bool.self, forKey: .agree)) ?? false
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
         self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? nil
-
-//        if intraName == "dhyun" {
-//            self.inCluster = true
-//        }
 
         if inCluster == true && location == nil {
             self.location = "개포"
@@ -64,10 +60,19 @@ struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
     }
 
     static func < (lhs: MemberInfo, rhs: MemberInfo) -> Bool {
-        return lhs.intraName! < rhs.intraName!
+        return lhs.intraName < rhs.intraName
     }
 
     static var empty: MemberInfo {
-        MemberInfo(id: UUID(), intraId: 0, intraName: "Name", grade: "4", image: "https://", comment: "Comment", inCluster: false, location: "")
+        MemberInfo(id: UUID(),
+                   intraId: 0,
+                   intraName: "Name",
+                   grade: "4",
+                   image: "https://",
+                   comment: "Comment",
+                   inCluster: false,
+                   agree: false,
+                   defaultGroupId: 0,
+                   location: "")
     }
 }
