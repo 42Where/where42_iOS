@@ -16,6 +16,7 @@ struct SelectingFriendInfoView: View {
     var body: some View {
         Button {
             memberInfo.isCheck.toggle()
+
             if memberInfo.isCheck {
                 homeViewModel.selectedMembers.append(memberInfo)
             } else {

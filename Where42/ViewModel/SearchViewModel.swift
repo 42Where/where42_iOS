@@ -16,7 +16,17 @@ enum SearchStatus {
 
 class SearchViewModel: ObservableObject {
     @Published var searching: [MemberInfo] = []
-    @Published var selectedMembers: [MemberInfo] = []
+    @Published var selectedMembers: [MemberInfo] = [] {
+        didSet {
+            if selectedMembers.count > 0 {
+                isTabBarPresented = true
+            } else {
+                isTabBarPresented = false
+            }
+        }
+    }
+
+    @Published var isTabBarPresented = false
     @Published var publisher = PassthroughSubject<String, Never>()
     @Published var searchStatus: SearchStatus = .waiting
     @Published var name = ""

@@ -39,16 +39,14 @@ struct HomeFriendInfoView: View {
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
-                        HStack(spacing: 4) {
-                            Text(memberInfo.location!)
-                        }
-                        .font(.custom(Font.GmarketMedium, size: 13))
-                        .padding(5.0)
-                        .padding(.horizontal, 2.0)
-                        .background(memberInfo.inCluster == false ? .white : .whereDeepNavy)
-                        .clipShape(Capsule())
-                        .overlay(memberInfo.inCluster == false ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
-                        .foregroundStyle(memberInfo.inCluster == false ? .whereDeepNavy : .white)
+                        Text(memberInfo.location!)
+                            .font(.custom(Font.GmarketMedium, size: 13))
+                            .padding(5.0)
+                            .padding(.horizontal, 2.0)
+                            .background(memberInfo.inCluster == false ? .white : .whereDeepNavy)
+                            .clipShape(Capsule())
+                            .overlay(memberInfo.inCluster == false ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
+                            .foregroundStyle(memberInfo.inCluster == false ? .whereDeepNavy : .white)
                     }
 
                     Text(memberInfo.comment!)

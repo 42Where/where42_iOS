@@ -25,78 +25,57 @@ struct Where42: View {
     var body: some View {
         NavigationView {
             ZStack {
-                ZStack {
-                    if mainViewModel.isLogin {
-                        VStack {
-                            TabView(selection: $mainViewModel.tabSelection) {
-                                HomeView()
-                                    .tabItem {
-                                        Image("Home icon M")
-                                        Text("⸻")
-                                    }
-                                    .tag("Home")
-                                    .environment(\.horizontalSizeClass, oldSizeClass)
-
-                                SearchView()
-                                    .tabItem {
-                                        VStack {
-                                            Image("Search icon M")
-                                            Text("⸻")
-                                        }
-                                    }
-                                    .tag("Search")
-                                    .environment(\.horizontalSizeClass, oldSizeClass)
+                if mainViewModel.isLogin {
+                    TabView(selection: $mainViewModel.tabSelection) {
+                        HomeView()
+                            .tabItem {
+                                Image("Home icon M")
+                                Text("⸻")
                             }
-                            .environment(\.horizontalSizeClass, .compact)
-                        }
-                        .toolbar {
-                            Where42ToolBarContent()
-                        }
-                        .unredacted()
-                        .zIndex(0)
+                            .tag("Home")
+                            .environment(\.horizontalSizeClass, oldSizeClass)
 
-                        MainAlertView()
-                            .zIndex(1)
+                        SearchView()
+                            .tabItem {
+                                VStack {
+                                    Image("Search icon M")
+                                    Text("⸻")
+                                }
+                            }
+                            .tag("Search")
+                            .environment(\.horizontalSizeClass, oldSizeClass)
+                    }
+                    .environment(\.horizontalSizeClass, .compact)
+                    .toolbar {
+                        Where42ToolBarContent()
+                    }
+                    .unredacted()
+                    .zIndex(0)
 
-                    } else {
-                        VStack {
-                            LoginView()
-                        }
+                    MainAlertView()
+                        .zIndex(1)
+
+                } else {
+                    LoginView()
                         .transition(
                             .asymmetric(
                                 insertion: AnyTransition.move(edge: .bottom),
                                 removal: AnyTransition.move(edge: .bottom)
                             ))
-                    }
-
-                    if networkMonitor.isConnected == false {
-                        NetworkMonitorView()
-                    }
-
-                    if mainViewModel.is42IntraSheetPresented == true &&
-                        networkMonitor.isConnected == true
-                    {
-                        MyWebView(
-                            urlToLoad: mainViewModel.intraURL,
-                            isPresented: $mainViewModel.is42IntraSheetPresented
-                        )
-                        .ignoresSafeArea()
-                        .zIndex(-1)
-                        ProgressView()
-                            .scaleEffect(2)
-                            .progressViewStyle(.circular)
-                            .zIndex(2)
-                    }
                 }
-                .disabled(mainViewModel.is42IntraSheetPresented && networkMonitor.isConnected)
+
+                if homeViewModel.isLoading == false && networkMonitor.isConnected == false {
+                    NetworkMonitorView()
+                }
             }
-            .fullScreenCover(isPresented: networkMonitor.isConnected == true ? $mainViewModel.is42IntraSheetPresented : .constant(false)) {
-                MyWebView(
-                    urlToLoad: mainViewModel.intraURL,
-                    isPresented: $mainViewModel.is42IntraSheetPresented
-                )
-                .ignoresSafeArea()
-            }
+            .disabled(mainViewModel.is42IntraSheetPresented && networkMonitor.isConnected)
+        }
+        .fullScreenCover(isPresented: networkMonitor.isConnected == true ? $mainViewModel.is42IntraSheetPresented : .constant(false)) {
+            MyWebView(
+                urlToLoad: mainViewModel.intraURL,
+                isPresented: $mainViewModel.is42IntraSheetPresented
+            )
+            .ignoresSafeArea()
         }
         .onAppear {
             sceneDelegate.toastState = mainViewModel.toast

@@ -254,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				A01551BC2AEE401C00B9D271 /* SettingView.swift */,
-				A06703E82BBFF49D00F151D7 /* SafariView.swift */,
 				A0D836062B5BD675006C18E2 /* SettingAlert.swift */,
 				A0D836082B5BD736006C18E2 /* CustomLocationView.swift */,
 			);
@@ -294,6 +293,7 @@
 				A0782B822AFCA00A00A7DDDA /* readSize.swift */,
 				A06DA4C22B903E9D00960A3F /* HideKeyboard.swift */,
 				A0F683992B4AC3A400EEA986 /* SheetOrPopOver.swift */,
+				A06703E82BBFF49D00F151D7 /* SafariView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";

@@ -49,7 +49,6 @@ struct GroupEditModal: View {
                         if await homeViewModel.getMembersNotInGroup() {
                             withAnimation {
                                 isPresented = false
-//                                homeViewModel.selectedGroup = homeViewModel.myGroups.first(where: { $0.groupId == group.groupId }) ?? group
                                 homeViewModel.selectedGroup = group
                                 homeViewModel.isGroupEditSelectAlertPrsented = true
                             }

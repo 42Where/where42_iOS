@@ -14,25 +14,22 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            VStack {
-                Spacer()
+            Group {
+                VStack {
+                    Spacer()
 
-                ZStack {
-                    VStack {
-                        Spacer()
-
-                        RoundedRectangle(cornerRadius: 150.0)
-                            .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 3.46 / 9)
-                    }
-                    VStack {
-                        Spacer()
-
-                        Rectangle()
-                            .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 1 / 9)
-                    }
+                    RoundedRectangle(cornerRadius: 150.0)
+                        .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 3.46 / 9)
                 }
-                .frame(maxWidth: UIScreen.main.bounds.width)
+
+                VStack {
+                    Spacer()
+
+                    Rectangle()
+                        .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 1 / 9)
+                }
             }
+            .frame(maxWidth: UIScreen.main.bounds.width)
             .ignoresSafeArea(edges: .bottom)
 
             VStack(spacing: 10) {

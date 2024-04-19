@@ -30,7 +30,7 @@ struct CustomLocationView: View {
                     .font(.custom(Font.GmarketBold, size: 18))
                     .padding(.bottom, 10)
 
-                VStack {
+                Group {
                     HStack(alignment: .top, spacing: 0) {
                         VStack(spacing: 10) {
                             Text("층")

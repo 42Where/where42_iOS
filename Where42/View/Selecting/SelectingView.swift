@@ -71,27 +71,35 @@ struct SelectingView: View {
                     
             Spacer()
         } else {
-            VStack {
-                ScrollView {
-                    LazyVStack {
-                        ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
-                            if homeViewModel.friends.members[index].isCheck == true ||
-                                name == "" || (homeViewModel.friends.members[index].intraName?.contains(name.lowercased())) == true
-                            {
-                                if UIDevice.idiom == .phone {
-                                    SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
-                                        .padding(.top)
-                                        .padding(.leading, 3)
-                                        .onAppear {
-                                            homeViewModel.viewPresentCount += 1
-                                        }
-                                        .onDisappear {
-                                            homeViewModel.viewPresentCount -= 1
-                                        }
-                                } else if UIDevice.idiom == .pad {
-                                    if index % 2 == 0 {
-                                        HStack {
-                                            SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
+            ScrollView {
+                LazyVStack {
+                    ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
+                        if homeViewModel.friends.members[index].isCheck == true ||
+                            name == "" || (homeViewModel.friends.members[index].intraName?.contains(name.lowercased())) == true
+                        {
+                            if UIDevice.idiom == .phone {
+                                SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
+                                    .padding(.top)
+                                    .padding(.leading, 3)
+                                    .onAppear {
+                                        homeViewModel.viewPresentCount += 1
+                                    }
+                                    .onDisappear {
+                                        homeViewModel.viewPresentCount -= 1
+                                    }
+                            } else if UIDevice.idiom == .pad {
+                                if index % 2 == 0 {
+                                    HStack {
+                                        SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
+                                            .padding([.top, .horizontal])
+                                            .onAppear {
+                                                homeViewModel.viewPresentCount += 1
+                                            }
+                                            .onDisappear {
+                                                homeViewModel.viewPresentCount -= 1
+                                            }
+                                        if index + 1 < homeViewModel.friends.members.count {
+                                            SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index + 1])
                                                 .padding([.top, .horizontal])
                                                 .onAppear {
                                                     homeViewModel.viewPresentCount += 1
@@ -99,31 +107,19 @@ struct SelectingView: View {
                                                 .onDisappear {
                                                     homeViewModel.viewPresentCount -= 1
                                                 }
-                                            if index + 1 < homeViewModel.friends.members.count {
-                                                SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index + 1])
-                                                    .padding([.top, .horizontal])
-                                                    .onAppear {
-                                                        homeViewModel.viewPresentCount += 1
-                                                    }
-                                                    .onDisappear {
-                                                        homeViewModel.viewPresentCount -= 1
-                                                    }
-                                            } else {
-                                                Spacer()
-                                                    .padding()
-                                            }
+                                        } else {
+                                            Spacer()
+                                                .padding()
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    .onAppear {
-                        homeViewModel.viewPresentCount = 0
-                    }
                 }
-                
-                Spacer()
+                .onAppear {
+                    homeViewModel.viewPresentCount = 0
+                }
             }
             .padding([.horizontal, .bottom])
         }

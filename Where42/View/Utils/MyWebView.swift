@@ -10,9 +10,10 @@ import WebKit
 
 class FullScreenWKWebView: WKWebView {
     var accessoryView: UIView?
+    
     override var inputAccessoryView: UIView? {
         return accessoryView
-    }
+    } // accessoryView 지우기
     
     override var safeAreaInsets: UIEdgeInsets {
         let window = UIApplication.shared.connectedScenes
@@ -21,10 +22,9 @@ class FullScreenWKWebView: WKWebView {
             .compactMap { $0 }
             .first?.windows
             .filter { $0.isKeyWindow }.first
-    
-//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
         return UIEdgeInsets(top: window?.safeAreaInsets.top ?? 0, left: 0, bottom: 0, right: 0)
-    }
+    } // safeArea 까지 출력
 }
 
 struct MyWebView: UIViewRepresentable {
@@ -49,6 +49,7 @@ struct MyWebView: UIViewRepresentable {
         let date = NSDate(timeIntervalSince1970: 0)
         WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
         
+        // viewport 설정을 통해 사용자가 페이지 확대 축소를 못하도록 고정
         let source = "var meta = document.createElement('meta');" +
             "meta.name = 'viewport';" +
             "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
@@ -84,20 +85,14 @@ struct MyWebView: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
             if let redirectURL = webView.url?.absoluteString {
-                print(redirectURL)
+//                print(redirectURL)
                 if redirectURL == "https://profile.intra.42.fr" {
-                    print("intra profile")
-                    parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
-                    parent.isPresented = false
-                    parent.mainViewModel.isLogin = false
+                    printError(message: "reached intra profile")
                     return
                 }
                 if redirectURL.contains("https://test.where42.kr/") == true {
                     if redirectURL.contains("login-fail") == true {
-                        print("login-fail")
-                        parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
-                        parent.isPresented = false
-                        parent.mainViewModel.isLogin = false
+                        printError(message: "reached login-fail")
                         return
                     } else if redirectURL.contains("?intraId=") == true {
                         let query = webView.url?.query()?.split(separator: "&")
@@ -106,10 +101,8 @@ struct MyWebView: UIViewRepresentable {
                             for cookie in cookies {
 //                                    print("[" + cookie.name + "]", cookie.value)
                                 if cookie.name == "accessToken" {
-//                                        API.sharedAPI.accessToken = "Bearer " + cookie.value
                                     KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
                                 } else if cookie.name == "refreshToken" {
-//                                        API.sharedAPI.refreshToken = "Bearer " + cookie.value
                                     KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
                                 }
                             }
@@ -135,11 +128,16 @@ struct MyWebView: UIViewRepresentable {
                 parent.mainViewModel.isLogin = true
             }
             print("-------------- Parse --------------")
-//            print(API.sharedAPI.accessToken)
-//            print(API.sharedAPI.refreshToken)
             print(KeychainManager.readToken(key: "accessToken") as Any)
             print(KeychainManager.readToken(key: "refreshToken") as Any)
             print("------------------------------------")
+        }
+        
+        func printError(message: String) {
+            print(message)
+            parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+            parent.isPresented = false
+            parent.mainViewModel.isLogin = false
         }
     }
 }

@@ -52,26 +52,24 @@ struct SearchView: View {
                     Spacer()
                 } else {
                     ScrollView {
-                        VStack {
-                            ForEach(0 ..< searchViewModel.searching.count, id: \.self) { index in
-                                if searchViewModel.name == "" ||
-                                    (searchViewModel.searching[index].intraName?.contains(searchViewModel.name.lowercased())) == true
-                                {
-                                    if UIDevice.idiom == .phone {
-                                        SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
-                                            .padding(index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top)
-                                    } else if UIDevice.idiom == .pad {
-                                        if index % 2 == 0 {
-                                            HStack {
-                                                SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
+                        ForEach(0 ..< searchViewModel.searching.count, id: \.self) { index in
+                            if searchViewModel.name == "" ||
+                                (searchViewModel.searching[index].intraName?.contains(searchViewModel.name.lowercased())) == true
+                            {
+                                if UIDevice.idiom == .phone {
+                                    SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
+                                        .padding(index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top)
+                                } else if UIDevice.idiom == .pad {
+                                    if index % 2 == 0 {
+                                        HStack {
+                                            SearchMemberInfoView(memberInfo: $searchViewModel.searching[index])
+                                                .padding([index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
+                                            if index + 1 < searchViewModel.searching.count {
+                                                SearchMemberInfoView(memberInfo: $searchViewModel.searching[index + 1])
                                                     .padding([index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
-                                                if index + 1 < searchViewModel.searching.count {
-                                                    SearchMemberInfoView(memberInfo: $searchViewModel.searching[index + 1])
-                                                        .padding([index == 0 && searchViewModel.selectedMembers.count != 0 ? [] : .top, .horizontal])
-                                                } else {
-                                                    Spacer()
-                                                        .padding()
-                                                }
+                                            } else {
+                                                Spacer()
+                                                    .padding()
                                             }
                                         }
                                     }
@@ -145,7 +143,7 @@ struct SearchView: View {
         }
         .submitLabel(.search)
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        .toolbar(searchViewModel.selectedMembers.count > 0 ? .hidden : .visible, for: .tabBar)
+        .toolbar(searchViewModel.isTabBarPresented ? .hidden : .visible, for: .tabBar)
         .transition(.move(edge: .bottom))
         .contentShape(Rectangle())
         .hideKeyboardOnTap()

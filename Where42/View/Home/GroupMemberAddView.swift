@@ -53,17 +53,15 @@ struct GroupMemberAddView: View {
             if group.members.count == 0 || (name != "" && homeViewModel.viewPresentCount == 0) {
                 Spacer()
                 
-                VStack {
-                    VStack {
-                        if group.members.count == 0 {
-                            Text("추가할 수 있는 멤버가 없습니다")
-                        } else {
-                            Text("존재하지 않는 멤버입니다")
-                        }
+                Group {
+                    if group.members.count == 0 {
+                        Text("추가할 수 있는 멤버가 없습니다")
+                    } else {
+                        Text("존재하지 않는 멤버입니다")
                     }
-                    .font(.custom(Font.GmarketBold, size: 20))
-                    .foregroundStyle(.whereDeepNavy)
                 }
+                .font(.custom(Font.GmarketBold, size: 20))
+                .foregroundStyle(.whereDeepNavy)
                 
                 Spacer()
             } else {

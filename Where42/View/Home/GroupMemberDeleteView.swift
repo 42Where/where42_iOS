@@ -52,7 +52,7 @@ struct GroupMemberDeleteView: View {
             if group.members.count == 0 || (name != "" && homeViewModel.viewPresentCount == 0) {
                 Spacer()
                 
-                VStack {
+                Group {
                     if group.members.count == 0 {
                         Text("삭제할 수 있는 멤버가 없습니다")
                     } else {
