@@ -29,8 +29,6 @@ struct AddOneGroupMemberDTO: Codable {
 class GroupAPI: API {
     static let shared = GroupAPI()
 
-    override private init() {}
-
     func createGroup(groupName: String) async throws -> Int? {
         guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(groupName: groupName)) else {
             print("Failed Create Request Body")
@@ -45,49 +43,40 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
 
 //            print(String(data: data, encoding: .utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return nil
-                } else {
-                    print("Success")
-                    return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupId
-                }
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Success")
+            return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupId
 
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
 //                        return nil
-                    }
-                } else {
-                    throw NetworkError.BadRequest
                 }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed Create Group")
+            } else {
+                throw NetworkError.BadRequest
             }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed Create Group")
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed Create Group")
         }
+
         return nil
     }
 
@@ -97,47 +86,38 @@ class GroupAPI: API {
         }
 
         var request = URLRequest(url: requestURL)
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
 
 //            print(String(data: data, encoding: .utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return nil
-                } else {
-                    print("Succeed get group")
-                    return try JSONDecoder().decode([GroupInfo].self, from: data)
-                }
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed get group")
+            return try JSONDecoder().decode([GroupInfo].self, from: data)
 
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
-                    }
-                } else {
-                    throw NetworkError.BadRequest
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
                 }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed Get Groups")
+            } else {
+                throw NetworkError.BadRequest
             }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed Get Groups")
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed Get Groups")
         }
+
         return nil
     }
 
@@ -155,48 +135,39 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-            print(String(data: data, encoding: .utf8)!)
-
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return nil
-                } else {
-                    print("Succeed update group name")
-                    return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupName
-                }
-
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
-                    }
-                } else {
-                    throw NetworkError.BadRequest
-                }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed update Group name")
-            }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed update group name")
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
         }
+
+        print(String(data: data, encoding: .utf8)!)
+
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed update group name")
+            return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupName
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed update Group name")
+        }
+
         return nil
     }
 
@@ -209,46 +180,38 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
 
 //            print(String(data: data, encoding: .utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return false
-                } else {
-                    print("Succeed delete group")
-                    return true
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed delete group")
+            return true
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
                 }
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
-                    }
-                } else {
-                    throw NetworkError.BadRequest
-                }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed delete group")
+            } else {
+                throw NetworkError.BadRequest
             }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed delete group")
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed delete group")
         }
+
         return false
     }
 
@@ -268,48 +231,40 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
 
 //            print(String(data: data, encoding: .utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return false
-                } else {
-                    print("Succeed delete group")
-                    return true
-                }
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed delete group")
+            return true
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
 //                        return false
-                    }
-                } else {
-                    throw NetworkError.BadRequest
                 }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed delete group")
+            } else {
+                throw NetworkError.BadRequest
             }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed delete group member")
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed delete group")
         }
+
         return false
     }
 
@@ -329,96 +284,39 @@ class GroupAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
 
 //            print(String(data: data, encoding: .utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return false
-                } else {
-                    print("Succeed add members")
-                    return true
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed add members")
+            return true
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
                 }
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
-                    }
-                } else {
-                    throw NetworkError.BadRequest
-                }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed add members")
-            }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed add members")
-        }
-        return false
-    }
-
-    func addOneMember(groupId: Int, groupName: String, intraId: Int) async throws -> Bool {
-        guard let requsetBody = try? JSONEncoder().encode(AddOneGroupMemberDTO(intraId: intraId, groupId: groupId)) else {
-            print("failed create requset body")
-            return false
-        }
-
-        guard let requestURL = URL(string: baseURL + "/group/groupmember/members") else {
-            print("failed create requset URL")
-            return false
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
-        request.httpBody = requsetBody
-
-        do {
-            let (_, response) = try await URLSession.shared.data(for: request)
-
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-//            print(String(data: data, encoding: .utf8)!)
-
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return false
-                } else {
-                    print("Succeed add one member")
-                    return true
-                }
-            case 400 ... 499:
+            } else {
                 throw NetworkError.BadRequest
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed add one member")
             }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed add one member")
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed add members")
         }
+
         return false
     }
 
@@ -429,47 +327,39 @@ class GroupAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
-        request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
 
 //            print(String(data: data, encoding: .utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    return nil
-                } else {
-                    print("Succeed get not in group members")
-                    return try JSONDecoder().decode([MemberInfo].self, from: data)
-                }
-            case 400 ... 499:
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed get not in group members")
+            return try JSONDecoder().decode([MemberInfo].self, from: data)
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
 //                        return nil
-                    }
-                } else {
-                    throw NetworkError.BadRequest
                 }
-            case 500 ... 599:
-                throw NetworkError.ServerError
-            default:
-                print("Failed add members")
+            } else {
+                throw NetworkError.BadRequest
             }
-        } catch NetworkError.Reissue {
-            throw NetworkError.Reissue
-        } catch {
-            errorPrint(error, message: "Failed add members")
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed add members")
         }
+
         return nil
     }
 }

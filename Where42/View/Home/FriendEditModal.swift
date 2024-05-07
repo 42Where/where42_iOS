@@ -79,7 +79,6 @@ struct FriendEditModal: View {
             .padding()
         }
         .onAppear {
-            print(memberInfo.id)
             if groupInfo.groupId == homeViewModel.friends.groupId {
                 homeViewModel.isFriend = true
             } else {

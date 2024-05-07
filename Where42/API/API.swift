@@ -27,7 +27,7 @@ class API: ObservableObject {
         case Reissue
     }
 
-    func errorPrint(_ error: Error, message: String) {
+    static func errorPrint(_ error: Error, message: String) {
         switch error {
         case NetworkError.invalidURL:
             print("URL 생성에 실패했습니다")
@@ -60,9 +60,10 @@ class API: ObservableObject {
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
     }
 
-    func getAccessToken() -> String {
+    func getAccessToken() async throws -> String {
         guard let accessToken = KeychainManager.readToken(key: "accessToken") else {
-            return ""
+            try await API.sharedAPI.reissue()
+            throw NetworkError.Reissue
         }
 
         return accessToken
@@ -137,7 +138,7 @@ class API: ObservableObject {
         } catch NetworkError.Reissue, NetworkError.TokenError {
             throw NetworkError.Reissue
         } catch {
-            errorPrint(error, message: "Failed to get member infomation")
+            API.errorPrint(error, message: "Failed to get member infomation")
         }
     }
 }

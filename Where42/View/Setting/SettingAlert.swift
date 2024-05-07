@@ -26,8 +26,6 @@ struct SettingAlert: View {
                 }
             } rightButtonAction: {
                 await self.settingViewModel.logout()
-                KeychainManager.deleteToken(key: "accessToken")
-                KeychainManager.deleteToken(key: "refreshToken")
                 withAnimation {
                     self.settingViewModel.isLogoutAlertPresented = false
                     mainViewModel.isLogin = false

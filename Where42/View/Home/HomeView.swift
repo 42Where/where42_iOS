@@ -14,6 +14,10 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack {
+                Button("expires") {
+                    KeychainManager.updateToken(key: "accessToken", token: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIiwiaW50cmFJZCI6OTk3NjAsImludHJhTmFtZSI6ImRoeXVuIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwicm9sZXMiOiJDYWRldCIsImlhdCI6MTcxMzQ0NzEwNCwiaXNzIjoid2hlcmU0MiIsImV4cCI6MTcxMzQ1MDcwNH0.JAgxCqm713yRMaYg-6v7GCMeYOWFazR8d3BeUQrw-bU")
+                    print(KeychainManager.readToken(key: "accessToken") as Any)
+                }
                 HomeInfoView(
                     memberInfo: $homeViewModel.myInfo,
                     isWork: $homeViewModel.isWorkCheked,

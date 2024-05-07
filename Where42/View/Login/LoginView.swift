@@ -52,7 +52,6 @@ struct LoginView: View {
                 Spacer()
 
                 Button {
-                    KeychainManager.createToken(key: "accessToken", token: "")
                     loginViewModel.isLoginButtonPushed = true
                     loginViewModel.timer = loginViewModel.timer.upstream.autoconnect()
                     loginViewModel.login()

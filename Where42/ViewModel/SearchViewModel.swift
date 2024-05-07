@@ -91,7 +91,7 @@ class SearchViewModel: ObservableObject {
             }
             return false
         } catch {
-            print("Failed to create new group")
+            API.errorPrint(error, message: "Failed add members")
         }
         return true
     }

@@ -22,17 +22,15 @@ class LoginViewModel: ObservableObject {
     func login() {
         Task {
             do {
-                let response = try await memberAPI.getMemberInfo()
-                if response == nil {
-                    DispatchQueue.main.async {
-                        MainViewModel.shared.is42IntraSheetPresented = true
-                        self.isLoginButtonPushed = false
-                        self.dots = ""
-                        self.timer.upstream.connect().cancel()
-                    }
+                try await loginAPI.login()
+                DispatchQueue.main.async {
+                    MainViewModel.shared.is42IntraSheetPresented = true
+                    self.isLoginButtonPushed = false
+                    self.dots = ""
+                    self.timer.upstream.connect().cancel()
                 }
             } catch {
-                print("Error login: \(error)")
+                API.errorPrint(error, message: "Failed to Login")
             }
         }
     }
@@ -49,7 +47,9 @@ class LoginViewModel: ObservableObject {
                 self.isAgreeButtonPushed = false
             }
             MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
-        } catch {}
+        } catch {
+            API.errorPrint(error, message: "Failed to join")
+        }
         return false
     }
 }

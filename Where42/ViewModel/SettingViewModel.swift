@@ -45,40 +45,25 @@ class SettingViewModel: ObservableObject {
             return "longComment"
         }
 
-        if inputText == "" {
-            do {
+        do {
+            if inputText == "" {
                 try await memberAPI.deleteComment()
                 DispatchQueue.main.async {
                     self.newComment = ""
                 }
                 return nil
-            } catch API.NetworkError.Reissue {
-                return "reissue"
-            } catch {
-                print(error.localizedDescription)
-                return nil
             }
-        }
 
-        do {
             if let comment = try await memberAPI.updateComment(comment: inputText) {
-                if comment.contains("http") == false {
-                    DispatchQueue.main.async {
-                        self.newComment = comment
-                        self.inputText = ""
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        MainViewModel.shared.is42IntraSheetPresented = true
-                    }
-                    return "reissue"
-                    // 상태메세지를 업데이트 할 수 없습니다
+                DispatchQueue.main.async {
+                    self.newComment = comment
+                    self.inputText = ""
                 }
             }
         } catch API.NetworkError.Reissue {
             return "reissue"
         } catch {
-            print(error.localizedDescription)
+            API.errorPrint(error, message: "Failed to update status message")
         }
         return nil
     }
@@ -93,9 +78,9 @@ class SettingViewModel: ObservableObject {
         } catch API.NetworkError.Reissue {
             return false
         } catch {
-            print(error.localizedDescription)
-            return nil
+            API.errorPrint(error, message: "Failed to delete status message")
         }
+        return nil
     }
 
     func initCustomLocation() {
@@ -138,7 +123,9 @@ class SettingViewModel: ObservableObject {
             }
         } catch API.NetworkError.Reissue {
             return "reissue"
-        } catch {}
+        } catch {
+            API.errorPrint(error, message: "Failed to update custom location")
+        }
         return nil
     }
 
@@ -165,13 +152,19 @@ class SettingViewModel: ObservableObject {
             }
         } catch API.NetworkError.Reissue {
             return "reissue"
-        } catch {}
+        } catch {
+            API.errorPrint(error, message: "Failed to delete custom location")
+        }
         return nil
     }
 
     func logout() async {
         do {
             try await loginAPI.logout()
-        } catch {}
+            KeychainManager.deleteToken(key: "accessToken")
+            KeychainManager.deleteToken(key: "refreshToken")
+        } catch {
+            API.errorPrint(error, message: "Failed to logout")
+        }
     }
 }

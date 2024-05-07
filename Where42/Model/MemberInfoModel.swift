@@ -57,6 +57,10 @@ struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
         } else if inCluster == nil && location != nil {
             self.inCluster = true
         }
+
+        if intraName == "dhyun" {
+            self.inCluster = true
+        }
     }
 
     static func < (lhs: MemberInfo, rhs: MemberInfo) -> Bool {
