@@ -12,7 +12,7 @@ class HomeViewModel: ObservableObject {
     @Published var isGroupMemberDeleteViewPrsented = false
     @Published var isGroupMemberAddViewPrsented = false
     @Published var isFriendDeleteAlertPresented = false
-    @Published var isWorkCheked = false
+    @AppStorage("isWorkCheked") var isWorkCheked = false
     @Published var isLoading = true
     @Published var isAPILoaded = false
     @Published var inputText = ""
