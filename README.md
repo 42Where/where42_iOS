@@ -12,5 +12,4 @@
 ## 기술스택
 
 - SwiftUI
-- Alamofire
 - Kingfisher
