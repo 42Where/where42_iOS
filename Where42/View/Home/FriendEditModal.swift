@@ -11,16 +11,14 @@ import SwiftUI
 struct FriendEditModal: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
 
-    @Binding var userInfo: MemberInfo
+    @Binding var memberInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
     @Binding var isPresented: Bool
-
-    @State var isFriend: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 10) {
-                KFImage(URL(string: userInfo.image!)!)
+                KFImage(URL(string: memberInfo.image)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -28,58 +26,49 @@ struct FriendEditModal: View {
                             .frame(width: 80, height: 80)
                     }
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(.whereDeepPink, lineWidth: userInfo.location != "퇴근" ? 3 : 0))
+                    .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
+                    .overlay(Circle().stroke(.black, lineWidth: memberInfo.inCluster == false ? 0.1 : 0))
                     .frame(width: 80, height: 80)
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text(userInfo.intraName!)
+                        Text(memberInfo.intraName)
                             .font(.custom(Font.GmarketBold, size: 20))
                             .foregroundStyle(.whereDeepNavy)
 
-                        HStack(spacing: 4) {
-                            Text(userInfo.location!)
-                        }
-                        .font(.custom(Font.GmarketMedium, size: 15))
-                        .padding(5.0)
-                        .padding(.horizontal, 2.0)
-                        .background(userInfo.location == "퇴근" ? .white : .whereDeepNavy)
-                        .clipShape(Capsule())
-                        .overlay(userInfo.location == "퇴근" ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
-                        .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
+                        Text(memberInfo.location!)
+                            .font(.custom(Font.GmarketMedium, size: 15))
+                            .padding(5.0)
+                            .padding(.horizontal, 2.0)
+                            .background(memberInfo.inCluster == false ? .white : .whereDeepNavy)
+                            .clipShape(Capsule())
+                            .overlay(memberInfo.inCluster == false ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
+                            .foregroundStyle(memberInfo.inCluster == false ? .whereDeepNavy : .white)
                     }
 
-                    Text(userInfo.comment!)
+                    Text(memberInfo.comment)
                         .font(.custom(Font.GmarketMedium, size: 16))
                         .foregroundStyle(.whereMediumNavy)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Spacer()
-
-                Button {
-                    //                isShowModal.toggle()
-                } label: {
-                    Image("Function icon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                .padding()
             }
             .padding([.top, .leading])
 
             Button {
-                withAnimation {
-                    Task {
+                if memberInfo.intraId != homeViewModel.myInfo.intraId {
+                    withAnimation {
+                        isPresented = false
+                        homeViewModel.isFriendDeleteAlertPresented = true
+                        homeViewModel.selectedMember = memberInfo
                         homeViewModel.selectedGroup = groupInfo
-                        homeViewModel.selectedUsers.append(userInfo)
-                        await homeViewModel.deleteUserInGroup()
                     }
-                    isPresented.toggle()
                 }
             } label: {
-                if isFriend {
+                if homeViewModel.isFriend {
                     Text("친구 삭제하기")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(memberInfo.intraId == homeViewModel.myInfo.intraId ? .gray : .red)
                         .font(.custom(Font.GmarketMedium, size: 16))
                 } else {
                     Text("그룹에서 삭제하기")
@@ -89,10 +78,17 @@ struct FriendEditModal: View {
             }
             .padding()
         }
+        .onAppear {
+            if groupInfo.groupId == homeViewModel.friends.groupId {
+                homeViewModel.isFriend = true
+            } else {
+                homeViewModel.isFriend = false
+            }
+        }
     }
 }
 
 #Preview {
-    FriendEditModal(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true), isFriend: true)
+    FriendEditModal(memberInfo: .constant(MemberInfo(id: UUID(), intraId: 0, intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends), isPresented: .constant(true))
         .environmentObject(HomeViewModel())
 }

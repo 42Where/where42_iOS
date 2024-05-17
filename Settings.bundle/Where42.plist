@@ -12,9 +12,113 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Where42/abseil-cpp-binary</string>
+			<key>Title</key>
+			<string>abseil (1.2022062300.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/app-check</string>
+			<key>Title</key>
+			<string>AppCheck (10.18.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/firebase-ios-sdk</string>
+			<key>Title</key>
+			<string>Firebase (10.22.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/GoogleAppMeasurement</string>
+			<key>Title</key>
+			<string>GoogleAppMeasurement (10.22.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/GoogleDataTransport</string>
+			<key>Title</key>
+			<string>GoogleDataTransport (9.4.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/GoogleUtilities</string>
+			<key>Title</key>
+			<string>GoogleUtilities (7.13.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/grpc-binary</string>
+			<key>Title</key>
+			<string>gRPC (1.49.2)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/gtm-session-fetcher</string>
+			<key>Title</key>
+			<string>gtm-session-fetcher (3.3.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/interop-ios-for-google-sdks</string>
+			<key>Title</key>
+			<string>InteropForGoogle (100.0.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Where42/Kingfisher</string>
 			<key>Title</key>
-			<string>Kingfisher (7.10.0)</string>
+			<string>Kingfisher (7.11.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/leveldb</string>
+			<key>Title</key>
+			<string>leveldb (1.22.4)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/nanopb</string>
+			<key>Title</key>
+			<string>nanopb (2.30910.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/promises</string>
+			<key>Title</key>
+			<string>Promises (2.4.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Where42/swift-protobuf</string>
+			<key>Title</key>
+			<string>SwiftProtobuf (1.25.2)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

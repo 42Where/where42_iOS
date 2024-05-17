@@ -7,22 +7,26 @@
 
 import Foundation
 
-struct GroupInfo: Identifiable, Hashable, Codable {
+struct GroupInfo: Identifiable, Equatable, Codable {
     var id: UUID
 
-    var groupId: Int?
+    var groupId: Int = 0
     var groupName: String
-    var totalNum: Int?
-    var onlineNum: Int?
-    var isOpen: Bool? = false
-    var members: [MemberInfo] = []
+    var totalNum: Int = 0
+    var onlineNum: Int = 0
+    var isOpen: Bool = false
+    var members: [MemberInfo] = [] {
+        didSet {
+            countGroupMembers()
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case groupId, groupName, members
         case totalNum = "count"
     }
 
-    init(id: UUID, groupId: Int? = nil, groupName: String, totalNum: Int? = nil, onlineNum: Int? = nil, isOpen: Bool? = nil, members: [MemberInfo]) {
+    init(id: UUID, groupId: Int, groupName: String, totalNum: Int = 0, onlineNum: Int = 0, isOpen: Bool = false, members: [MemberInfo]) {
         self.id = id
         self.groupId = groupId
         self.groupName = groupName
@@ -34,6 +38,7 @@ struct GroupInfo: Identifiable, Hashable, Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.id = UUID()
         self.groupId = (try? container.decodeIfPresent(Int.self, forKey: .groupId)) ?? 0
         self.groupName = (try? container.decodeIfPresent(String.self, forKey: .groupName)) ?? "nil"
@@ -42,6 +47,16 @@ struct GroupInfo: Identifiable, Hashable, Codable {
     }
 
     static var empty: GroupInfo {
-        GroupInfo(id: UUID(), groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+        GroupInfo(id: UUID(), groupId: 0, groupName: "", totalNum: 0, onlineNum: 0, isOpen: false, members: [])
+    }
+
+    mutating func countGroupMembers() {
+        totalNum = members.count
+        onlineNum = 0
+        for member in members {
+            if member.inCluster == true {
+                onlineNum += 1
+            }
+        }
     }
 }

@@ -9,32 +9,27 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @StateObject var loginViewModel: LoginViewModel = .init()
-
-    @AppStorage("isLogin") var isLogin: Bool = false
-    @AppStorage("token ") var token = ""
+    @EnvironmentObject private var loginViewModel: LoginViewModel
+    @EnvironmentObject private var networkMonitor: NetworkMonitor
 
     var body: some View {
         ZStack {
-            VStack {
-                Spacer()
+            Group {
+                VStack {
+                    Spacer()
 
-                ZStack {
-                    VStack {
-                        Spacer()
-
-                        RoundedRectangle(cornerRadius: 150.0)
-                            .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 3.7 / 9)
-                    }
-                    VStack {
-                        Spacer()
-
-                        Rectangle()
-                            .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 1 / 9)
-                    }
+                    RoundedRectangle(cornerRadius: 150.0)
+                        .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 3.46 / 9)
                 }
-                .frame(maxWidth: UIScreen.main.bounds.width)
+
+                VStack {
+                    Spacer()
+
+                    Rectangle()
+                        .frame(width: UIScreen.main.bounds.width * 1.7, height: UIScreen.main.bounds.height * 1 / 9)
+                }
             }
+            .frame(maxWidth: UIScreen.main.bounds.width)
             .ignoresSafeArea(edges: .bottom)
 
             VStack(spacing: 10) {
@@ -56,16 +51,19 @@ struct LoginView: View {
 
                 Spacer()
 
-                Button("L O G I N") {
-                    print(token)
-                    homeViewModel.getMemberInfo()
-//                    isLogin.toggle()
+                Button {
+                    loginViewModel.isLoginButtonPushed = true
+                    loginViewModel.timer = loginViewModel.timer.upstream.autoconnect()
+                    loginViewModel.login()
+                } label: {
+                    Text("L O G I N" + loginViewModel.dots)
                 }
                 .font(.custom("GmarketSansTTFBold", size: 20.0))
                 .foregroundStyle(.white)
                 .padding(.vertical)
                 .frame(width: 200, height: 80)
                 .background(Capsule().fill(.whereMediumNavy))
+//                .background(Capsule().fill(.whereDeepNavy))
                 .padding(.bottom, 120.0)
 
                 Spacer()
@@ -78,7 +76,7 @@ struct LoginView: View {
                 VStack {
                     Button {
                         withAnimation {
-                            loginViewModel.isHelpPagePresent.toggle()
+                            loginViewModel.isHelpPagePresented.toggle()
                         }
                     } label: {
                         Image("Wiki icon")
@@ -86,26 +84,44 @@ struct LoginView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 50)
                     }
-                    .sheet(isPresented: $loginViewModel.isHelpPagePresent, content: {
+                    .sheet(isPresented: $loginViewModel.isHelpPagePresented, content: {
                         HelpPage()
                     })
 
                     Spacer()
                 }
             }
+
+            if loginViewModel.isShowAgreementSheet {
+                PersonalInfoAgreementView(
+                    isPresent: $loginViewModel.isShowAgreementSheet
+                )
+                .zIndex(1)
+            }
         }
+        .onAppear {
+            MainViewModel.shared.toast = nil
+            loginViewModel.timer.upstream.connect().cancel()
+        }
+        .onReceive(loginViewModel.timer) { _ in
+            if loginViewModel.isLoginButtonPushed {
+                if loginViewModel.dots != " . . ." {
+                    loginViewModel.dots += " ."
+                } else {
+                    loginViewModel.dots = " ."
+                }
+            }
+        }
+        .disabled(loginViewModel.isLoginButtonPushed)
         .foregroundColor(.whereDeepNavy)
-        .fullScreenCover(isPresented: $homeViewModel.isShowAgreementSheet) {
-            PersonalInfoAgreementView(isPresent: $homeViewModel.isShowAgreementSheet)
-        }
         .environmentObject(loginViewModel)
     }
 }
 
 #Preview("iPhone 15 Pro") {
-    Group {
-        LoginView()
-    }
+    LoginView()
+        .environmentObject(HomeViewModel())
+        .environmentObject(LoginViewModel())
 }
 
 // struct ContentView_Previews: PreviewProvider {

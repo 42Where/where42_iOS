@@ -13,17 +13,19 @@ struct Where42: View {
         UITabBar.appearance().scrollEdgeAppearance = .init()
     }
 
-    @StateObject var mainViewModel: MainViewModel = .init()
+    @EnvironmentObject private var sceneDelegate: WhereSceneDelegate
+    @StateObject var mainViewModel: MainViewModel = .shared
     @StateObject var homeViewModel: HomeViewModel = .init()
-
-    @AppStorage("isLogin") var isLogin: Bool = false
+    @StateObject var loginViewModel: LoginViewModel = .init()
+    @StateObject var settingViewModel: SettingViewModel = .init()
+    @StateObject var networkMonitor: NetworkMonitor = .shared
 
     @Environment(\.horizontalSizeClass) var oldSizeClass
 
     var body: some View {
-        ZStack {
-            if isLogin {
-                VStack {
+        NavigationView {
+            ZStack {
+                if mainViewModel.isLogin {
                     TabView(selection: $mainViewModel.tabSelection) {
                         HomeView()
                             .tabItem {
@@ -43,34 +45,54 @@ struct Where42: View {
                             .tag("Search")
                             .environment(\.horizontalSizeClass, oldSizeClass)
                     }
-                    .toolbar(.visible, for: .tabBar)
-                    .toolbarBackground(Color.yellow, for: .tabBar)
                     .environment(\.horizontalSizeClass, .compact)
-                }
-                .zIndex(0)
-                .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
-                    SelectingView()
+                    .toolbar {
+                        Where42ToolBarContent()
+                    }
+                    .unredacted()
+                    .zIndex(0)
+
+                    MainAlertView()
+                        .zIndex(1)
+
+                } else {
+                    LoginView()
+                        .transition(
+                            .asymmetric(
+                                insertion: AnyTransition.move(edge: .bottom),
+                                removal: AnyTransition.move(edge: .bottom)
+                            ))
                 }
 
-                MainAlertView()
-                    .zIndex(1)
-            } else {
-                VStack {
-                    LoginView()
+                if homeViewModel.isLoading == false && networkMonitor.isConnected == false {
+                    NetworkMonitorView()
                 }
-                .transition(.asymmetric(insertion: AnyTransition.move(edge: .bottom),
-                                        removal: AnyTransition.move(edge: .bottom)))
             }
+            .disabled(mainViewModel.is42IntraSheetPresented && networkMonitor.isConnected)
         }
-        .fullScreenCover(isPresented: $homeViewModel.isShow42IntraSheet) {
+        .fullScreenCover(isPresented: networkMonitor.isConnected == true ? $mainViewModel.is42IntraSheetPresented : .constant(false)) {
             MyWebView(
-                urlToLoad: homeViewModel.intraURL!,
-                isPresented: $homeViewModel.isShow42IntraSheet)
-                .ignoresSafeArea()
+                urlToLoad: mainViewModel.intraURL,
+                isPresented: $mainViewModel.is42IntraSheetPresented
+            )
+            .ignoresSafeArea()
         }
-        .animation(.easeIn, value: isLogin)
+        .onAppear {
+            sceneDelegate.toastState = mainViewModel.toast
+        }
+
+        .toastView(toast: $mainViewModel.toast)
+
+        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationBarTitleDisplayMode(.inline)
+
+        .animation(.easeIn, value: mainViewModel.isLogin)
+
         .environmentObject(mainViewModel)
         .environmentObject(homeViewModel)
+        .environmentObject(loginViewModel)
+        .environmentObject(settingViewModel)
+        .environmentObject(networkMonitor)
     }
 }
 
@@ -78,14 +100,7 @@ struct Where42: View {
     Where42()
         .environmentObject(MainViewModel())
         .environmentObject(HomeViewModel())
-}
-
-struct Previews2: PreviewProvider {
-    static var previews: some View {
-        Where42()
-            .previewDevice(PreviewDevice(rawValue: DeviceName.iPad_Air_5th_generation.rawValue))
-            .previewDisplayName("iPad Air 5th")
-            .environmentObject(MainViewModel())
-            .environmentObject(HomeViewModel())
-    }
+        .environmentObject(NetworkMonitor())
+        .environmentObject(API())
+        .environmentObject(WhereSceneDelegate())
 }

@@ -29,7 +29,7 @@ struct HelpPage: View {
 
             HStack {
                 Spacer()
-                Text(.init("[Notion](https://www.notion.so/eff5de2f978a4164b52b68ad2ca2e05a)"))
+                Text(.init("[Notion](https://phodongho.notion.site/Where42-iOS-a7c4e1fae44b47b9bfa6d5a83a929629)"))
                 Spacer()
             }
 

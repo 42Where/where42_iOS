@@ -9,13 +9,17 @@ import Kingfisher
 import SwiftUI
 
 struct HomeInfoView: View {
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
+    
     @Binding var memberInfo: MemberInfo
     @Binding var isWork: Bool
-    @Binding var isNewGroupAlertPrsent: Bool
+    @Binding var isNewGroupAlertPrsented: Bool
 
     var body: some View {
         HStack(spacing: 10) {
-            KFImage(URL(string: memberInfo.image!)!)
+            KFImage(URL(string: memberInfo.image)!)
                 .resizable()
                 .placeholder {
                     Image("Profile")
@@ -24,42 +28,56 @@ struct HomeInfoView: View {
                 }
                 .clipShape(Circle())
                 .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
+                .overlay(Circle().stroke(.black, lineWidth: memberInfo.inCluster == false ? 0.1 : 0))
                 .frame(width: 80, height: 80)
                 
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text(memberInfo.intraName!)
+                    Text(memberInfo.intraName)
                         .font(.custom(Font.GmarketBold, size: 20))
                         .foregroundStyle(.whereDeepNavy)
                         
-                    HStack(spacing: 4) {
-                        Text(memberInfo.getLocation())
-                        if memberInfo.inCluster == true {
-                            Image("Search icon White M")
-                                .resizable()
-                                .frame(width: 18, height: 18)
+                    Button {
+                        if homeViewModel.myInfo.inCluster == true {
+                            withAnimation {
+                                settingViewModel.isCustomLocationAlertPresentedInHome = true
+                            }
+                        } else {
+                            mainViewModel.toast = Toast(title: "자리 설정은 클러스터 안에서만 할 수 있습니다")
                         }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text(memberInfo.location!)
+                                
+                            if memberInfo.inCluster == true {
+                                Image("Search icon White M")
+                                    .resizable()
+                                    .frame(width: 18, height: 18)
+                            }
+                        }
+                        .font(.custom(Font.GmarketMedium, size: 15))
+                        .padding(5.0)
+                        .padding(.horizontal, 2.0)
+                        .background(memberInfo.inCluster == true ? .whereDeepNavy : .white)
+                        .clipShape(Capsule())
+                        .overlay(memberInfo.inCluster == true ? Capsule().stroke(.whereDeepNavy, lineWidth: 0) : Capsule().stroke(.whereDeepNavy, lineWidth: 1))
+                        .foregroundStyle(memberInfo.inCluster == true ? .white : .whereDeepNavy)
                     }
-                    .font(.custom(Font.GmarketMedium, size: 15))
-                    .padding(5.0)
-                    .padding(.horizontal, 2.0)
-                    .background(memberInfo.inCluster == true ? .whereDeepNavy : .white)
-                    .clipShape(Capsule())
-                    .overlay(memberInfo.inCluster == true ? Capsule().stroke(.whereDeepNavy, lineWidth: 0) : Capsule().stroke(.whereDeepNavy, lineWidth: 1))
-                    .foregroundStyle(memberInfo.inCluster == true ? .white : .whereDeepNavy)
                 }
                     
-                Text(memberInfo.comment!)
+                Text(memberInfo.comment)
                     .font(.custom(Font.GmarketMedium, size: 16))
                     .foregroundStyle(.whereMediumNavy)
-                    
+                    .lineLimit(1)
+
                 HStack {
                     Spacer()
                         
                     Button {
                         withAnimation {
-                            isNewGroupAlertPrsent.toggle()
+                            isNewGroupAlertPrsented = true
                         }
+                        homeViewModel.selectedMembers = []
                     } label: {
                         Image("Group icon")
                         Text("새 그룹")
@@ -71,6 +89,9 @@ struct HomeInfoView: View {
                     Button {
                         withAnimation {
                             isWork.toggle()
+                            if !isWork {
+                                homeViewModel.setIsOpen()
+                            }
                         }
                     } label: {
                         if isWork {
@@ -96,19 +117,15 @@ struct HomeInfoView: View {
 }
 
 #Preview {
-    HomeInfoView(memberInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), isWork: .constant(false), isNewGroupAlertPrsent: .constant(false))
+    HomeInfoView(
+        memberInfo: .constant(
+            MemberInfo(
+                id: UUID(),
+                intraId: 0,
+                intraName: "dhyun",
+                image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg",
+                comment: "안녕하세요",
+                location: "개포 c2r5s6")),
+        isWork: .constant(false),
+        isNewGroupAlertPrsented: .constant(false))
 }
-
-//            AsyncImage(url: URL(string: userInfo.avatar)) { image in
-//                VStack {
-//                    image
-//                        .resizable()
-//                        .clipShape(Circle())
-//                        .overlay(Circle().stroke(.whereDeepPink, lineWidth: userInfo.location != "퇴근" ? 3 : 0))
-//                }
-//            } placeholder: {
-//                Image("Profile")
-//                    .resizable()
-//                ProgressView()
-//            }
-//            .frame(width: 80, height: 80)

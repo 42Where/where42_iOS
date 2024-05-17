@@ -10,13 +10,14 @@ import SwiftUI
 struct MainAlertView: View {
     @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var mainViewModel: MainViewModel
+    @EnvironmentObject private var settingViewModel: SettingViewModel
 
     var body: some View {
         if mainViewModel.isNewGroupAlertPrsented {
             CustomAlert(
                 title: "새 그룹 만들기",
-                textFieldTitle: "그룹명 지정",
-                inputText: $homeViewModel.inputText)
+                inputText: $homeViewModel.inputText,
+                textFieldTitle: "그룹 이름을 입력해주세요")
             {
                 withAnimation {
                     homeViewModel.initNewGroup()
@@ -24,9 +25,10 @@ struct MainAlertView: View {
                 }
             } rightButtonAction: {
                 withAnimation {
-                    homeViewModel.confirmGroupName(
+                    let status = homeViewModel.confirmGroupName(
                         isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented,
                         isSelectViewPrsented: $mainViewModel.isSelectViewPrsented)
+                    mainViewModel.setToast(type: status)
                 }
             }
         }
@@ -34,17 +36,22 @@ struct MainAlertView: View {
         if mainViewModel.isEditGroupNameAlertPrsented {
             CustomAlert(
                 title: "그룹 이름 수정",
-                textFieldTitle: "그룹 이름을 입력해주세요",
-                inputText: $homeViewModel.inputText)
+                inputText: $homeViewModel.inputText,
+                textFieldTitle: "그룹 이름을 입력해주세요")
             {
                 withAnimation {
-                    mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                    homeViewModel.initNewGroup()
+                    mainViewModel.isEditGroupNameAlertPrsented = false
                 }
             } rightButtonAction: {
-                if await homeViewModel.editGroupName() {
+                let status = await homeViewModel.editGroupName()
+
+                if status == nil {
                     withAnimation {
-                        mainViewModel.isEditGroupNameAlertPrsented.toggle()
+                        mainViewModel.isEditGroupNameAlertPrsented = false
                     }
+                } else {
+                    mainViewModel.setToast(type: status)
                 }
             }
         }
@@ -56,15 +63,44 @@ struct MainAlertView: View {
                 inputText: .constant(""))
             {
                 withAnimation {
-                    mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                    mainViewModel.isDeleteGroupAlertPrsented = false
                 }
             } rightButtonAction: {
                 if await homeViewModel.deleteGroup() {
                     withAnimation {
-                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                        mainViewModel.isDeleteGroupAlertPrsented = false
                     }
                 }
             }
+        }
+
+        if homeViewModel.isFriendDeleteAlertPresented {
+            CustomAlert(
+                title: homeViewModel.isFriend ? "친구 삭제" : "멤버 삭제",
+                message: homeViewModel.isFriend ?
+                    " 친구 '\(homeViewModel.selectedMember.intraName)'님을 친구목록에서 삭제하시겠습니까?" :
+                    " 멤버 '\(homeViewModel.selectedMember.intraName)'님을 그룹에서 삭제하시겠습니까?",
+                inputText: .constant(""))
+            {
+                withAnimation {
+                    homeViewModel.isFriendDeleteAlertPresented = false
+                }
+                homeViewModel.selectedMembers = []
+            } rightButtonAction: {
+                if await homeViewModel.deleteOneMemberInGroup() {
+                    withAnimation {
+                        self.homeViewModel.isFriendDeleteAlertPresented = false
+                    }
+                }
+            }
+        }
+
+        if homeViewModel.isGroupEditSelectAlertPrsented {
+            GroupEditSelectModal()
+        }
+
+        if settingViewModel.isCustomLocationAlertPresentedInHome {
+            CustomLocationView()
         }
     }
 }
@@ -72,5 +108,5 @@ struct MainAlertView: View {
 #Preview {
     MainAlertView()
         .environmentObject(HomeViewModel())
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
 }

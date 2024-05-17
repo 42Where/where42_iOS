@@ -9,16 +9,28 @@ import SwiftUI
 import WebKit
 
 class FullScreenWKWebView: WKWebView {
+    var accessoryView: UIView?
+    
+    override var inputAccessoryView: UIView? {
+        return accessoryView
+    } // accessoryView 지우기
+    
     override var safeAreaInsets: UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    }
+        let window = UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .map { $0 as? UIWindowScene }
+            .compactMap { $0 }
+            .first?.windows
+            .filter { $0.isKeyWindow }.first
+
+        return UIEdgeInsets(top: window?.safeAreaInsets.top ?? 0, left: 0, bottom: 0, right: 0)
+    } // safeArea 까지 출력
 }
 
 struct MyWebView: UIViewRepresentable {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @AppStorage("token") var token = ""
-    @AppStorage("isLogin") var isLogin = false
+    @EnvironmentObject private var loginViewModel: LoginViewModel
     
     var urlToLoad: String
     
@@ -29,6 +41,15 @@ struct MyWebView: UIViewRepresentable {
             return FullScreenWKWebView()
         }
         
+        DispatchQueue.main.async {
+            self.homeViewModel.isAPILoaded = false
+        }
+        
+        let webSiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
+        let date = NSDate(timeIntervalSince1970: 0)
+        WKWebsiteDataStore.default().removeData(ofTypes: webSiteDataTypes as! Set, modifiedSince: date as Date, completionHandler: {})
+        
+        // viewport 설정을 통해 사용자가 페이지 확대 축소를 못하도록 고정
         let source = "var meta = document.createElement('meta');" +
             "meta.name = 'viewport';" +
             "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
@@ -44,7 +65,6 @@ struct MyWebView: UIViewRepresentable {
         
         webView.navigationDelegate = context.coordinator
         webView.scrollView.isScrollEnabled = false
-        
         webView.load(URLRequest(url: url))
         
         return webView
@@ -63,42 +83,68 @@ struct MyWebView: UIViewRepresentable {
             self.parent = parent
         }
         
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            print("didFinish")
-            if let host = webView.url?.host() {
-                print(host)
-                if host == "localhost" {
-//                    print(webView.url?.query()?.split(separator: "&"))
-                    let query = webView.url?.query()?.split(separator: "&")
-                    parseQuery(token: String(query![0]), intraId: String(query![1]), agreement: String(query![2]))
-                    parent.isPresented = false
-//                webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-//                    for cookie in cookies {
-//                        print(cookie.name)
-//                    }
-//                }
+        func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+            if let redirectURL = webView.url?.absoluteString {
+//                print(redirectURL)
+                if redirectURL == "https://profile.intra.42.fr" {
+                    printError(message: "reached intra profile")
+                    return
+                }
+                if redirectURL.contains("https://test.where42.kr/") == true {
+                    if redirectURL.contains("login-fail") == true {
+                        printError(message: "reached login-fail")
+                        return
+                    } else if redirectURL.contains("?intraId=") == true {
+                        let query = webView.url?.query()?.split(separator: "&")
+                        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+//                                print("-------------- Cookie --------------")
+                            for cookie in cookies {
+//                                    print("[" + cookie.name + "]", cookie.value)
+                                if cookie.name == "accessToken" {
+                                    KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
+                                } else if cookie.name == "refreshToken" {
+                                    KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
+                                }
+                            }
+//                                print("------------------------------------")
+                            self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
+                            self.parent.isPresented = false
+                        }
+                    }
                 }
             }
         }
         
-        func parseQuery(token: String, intraId: String, agreement: String) {
-            print(token.components(separatedBy: "=")[1])
-            print(intraId.components(separatedBy: "=")[1])
+        func parseQuery(intraId: String, agreement: String) {
+//            print(intraId.components(separatedBy: "=")[1])
 //            print(agreement.components(separatedBy: "=")[1])
             
-            parent.homeViewModel.intraId = Int(intraId.components(separatedBy: "=")[1])!
-//            parent.homeViewModel.intraId = 6
-            parent.token = "Bearer " + token.components(separatedBy: "=")[1]
+            API.sharedAPI.intraId = Int(intraId.components(separatedBy: "=")[1])!
+            
             if agreement.components(separatedBy: "=")[1] == "false" {
-                parent.homeViewModel.isShowAgreementSheet = true
+                parent.loginViewModel.isShowAgreementSheet = true
             } else {
-                parent.isLogin = true
+                parent.homeViewModel.isAPILoaded = false
+                parent.mainViewModel.isLogin = true
             }
+            print("-------------- Parse --------------")
+            print(KeychainManager.readToken(key: "accessToken") as Any)
+            print(KeychainManager.readToken(key: "refreshToken") as Any)
+            print("------------------------------------")
+        }
+        
+        func printError(message: String) {
+            print(message)
+            parent.mainViewModel.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+            parent.isPresented = false
+            parent.mainViewModel.isLogin = false
         }
     }
 }
 
 #Preview {
     MyWebView(urlToLoad: "http://13.209.149.15:8080/v3/member?intraId=7", isPresented: .constant(true))
+        .environmentObject(HomeViewModel())
         .environmentObject(MainViewModel())
+        .environmentObject(LoginViewModel())
 }

@@ -8,23 +8,48 @@
 import SwiftUI
 
 class LoginViewModel: ObservableObject {
-    @Published var isHelpPagePresent: Bool = false
+    @Published var isHelpPagePresented = false
+    @Published var isShowAgreementSheet = false
+    @Published var isLoginButtonPushed = false
+    @Published var isAgreeButtonPushed = false
+    @Published var dots = ""
 
-    let memberAPI = MemberAPI()
-    let loginAPI = LoginAPI()
+    var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-    func login(isPresent: Binding<Bool>) async {
-//            do {
-//                let (member, url) = try await memberAPI.getMemberInfo(intraId: 6)
-//                if url != nil {}
-//            } catch {
-//                print("Failed to Login")
-//            }
+    let memberAPI = MemberAPI.shared
+    let loginAPI = LoginAPI.shared
+
+    func login() {
+        Task {
+            do {
+                try await loginAPI.login()
+                DispatchQueue.main.async {
+                    MainViewModel.shared.is42IntraSheetPresented = true
+                    self.isLoginButtonPushed = false
+                    self.dots = ""
+                    self.timer.upstream.connect().cancel()
+                }
+            } catch {
+                API.errorPrint(error, message: "Failed to Login")
+            }
+        }
     }
 
-    func join(intraId: String) {
-        Task {
-            await loginAPI.join(intraId: intraId)
+    func join(intraId: String) async -> Bool {
+        do {
+            try await loginAPI.join(intraId: intraId)
+            DispatchQueue.main.async {
+                self.isAgreeButtonPushed = false
+            }
+            return true
+        } catch API.NetworkError.Reissue {
+            DispatchQueue.main.async {
+                self.isAgreeButtonPushed = false
+            }
+            MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+        } catch {
+            API.errorPrint(error, message: "Failed to join")
         }
+        return false
     }
 }

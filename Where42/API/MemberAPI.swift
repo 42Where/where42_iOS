@@ -15,19 +15,11 @@ struct CreateMemberDTO: Codable {
 }
 
 struct UpdateCommentDTO: Codable {
-    var intraId: Int
     var comment: String?
 }
 
 struct UpdateCustomLocationDTO: Codable {
-    var intraId: Int
     var customLocation: String?
-}
-
-struct ResponseCustomLocationDTO: Codable {
-    var intraId: Int
-    var imacLocation: String
-    var customLocation: String
 }
 
 struct DeleteMemberDTO: Codable {
@@ -35,142 +27,57 @@ struct DeleteMemberDTO: Codable {
 }
 
 class MemberAPI: API {
-    func createMember(memberCreateDTO: CreateMemberDTO) async throws -> MemberInfo? {
-        guard let requestBody = try? JSONEncoder().encode(memberCreateDTO) else {
-            throw NetworkError.invalidRequestBody
-        }
+    static let shared = MemberAPI()
 
-        guard let requestURL = URL(string: baseURL + "/member/") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = requestBody
-
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-            switch response.statusCode {
-            case 200 ... 299:
-                return try JSONDecoder().decode(MemberInfo.self, from: data)
-
-            case 400 ... 499:
-                throw NetworkError.BadRequest
-
-            case 500 ... 599:
-                throw NetworkError.ServerError
-
-            default: print("Unknown HTTP Response Status Code")
-            }
-        } catch {
-            print("Failed create Member")
-        }
-        return nil
-    }
-
-    func getMemberInfo(intraId: Int) async throws -> (MemberInfo?, String?) {
-        guard let requestURL = URL(string: baseURL + "/member?intraId=\(intraId)") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        print(token)
-        request.addValue(token, forHTTPHeaderField: "Authorization")
-
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-
-            print(String(data: data, encoding: String.Encoding.utf8)!)
-
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-//                    print(requestURL.absoluteString)
-                    return (nil, requestURL.absoluteString)
-                } else {
-                    return try (JSONDecoder().decode(MemberInfo.self, from: data), nil)
-                }
-            case 300 ... 399:
-                print("Redirect")
-                throw NetworkError.BadRequest
-
-            case 401:
-                return (nil, requestURL.absoluteString)
-
-            case 400 ... 499:
-                throw NetworkError.BadRequest
-
-            case 500 ... 599:
-                throw NetworkError.ServerError
-
-            default: print("Unknown HTTP Response Status Code")
-            }
-        } catch {
-            errorPrint(error, message: "Failed to get member infomation")
-        }
-        return (nil, nil)
-    }
-
-    func deleteMember(intraId: Int) async throws -> Bool {
-        guard let requestBody = try? JSONEncoder().encode(DeleteMemberDTO(intraId: intraId)) else {
-            throw NetworkError.invalidRequestBody
-        }
-
+    func getMemberInfo() async throws -> MemberInfo? {
         guard let requestURL = URL(string: baseURL + "/member") else {
             throw NetworkError.invalidURL
         }
 
         var request = URLRequest(url: requestURL)
-        request.httpMethod = "DELETE"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(token, forHTTPHeaderField: "Authorization")
-        request.httpBody = requestBody
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        try await print("getMemberInfo token: ", API.sharedAPI.getAccessToken())
 
-        do {
-            let (_, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
 
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
-                } else {
-                    return true
-                }
-
-            case 400 ... 499:
-                throw NetworkError.BadRequest
-
-            case 500 ... 599:
-                throw NetworkError.ServerError
-
-            default: print("Unknown HTTP Response Status Code")
-            }
-        } catch {
-            errorPrint(error, message: "Failed to delete member")
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
         }
-        return false
+
+        switch response.statusCode {
+        case 200 ... 299:
+            return try JSONDecoder().decode(MemberInfo.self, from: data)
+
+        case 300 ... 399:
+            throw NetworkError.BadRequest
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+
+        case 500 ... 599:
+            throw NetworkError.ServerError
+
+        default: print("Unknown HTTP Response Status Code")
+        }
+
+        return nil
     }
 
-    func updateStatusMessage(intraId: Int, statusMessage: String) async throws -> String? {
-        guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(intraId: intraId, comment: statusMessage)) else {
+    func updateComment(comment: String) async throws -> String? {
+        guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(comment: comment)) else {
             throw NetworkError.invalidRequestBody
         }
-//        print(String(data: requestBody, encoding: String.Encoding.utf8)!)
 
         guard let requestURL = URL(string: baseURL + "/member/comment") else {
             throw NetworkError.invalidURL
@@ -179,43 +86,83 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            print(String(data: data, encoding: String.Encoding.utf8)!)
+        print(String(data: data, encoding: String.Encoding.utf8)!)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
-                } else {
-                    return try JSONDecoder().decode(MemberInfo.self, from: data).comment
-                }
-
-            case 400 ... 499:
-                throw NetworkError.BadRequest
-
-            case 500 ... 599:
-                throw NetworkError.ServerError
-
-            default: print("Unknown HTTP Response Status Code")
-            }
-        } catch {
-            errorPrint(error, message: "Failed to update status message")
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
         }
+
+        switch response.statusCode {
+        case 200 ... 299:
+            return try JSONDecoder().decode(MemberInfo.self, from: data).comment
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+//                        return requestURL.absoluteString
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+
+        case 500 ... 599:
+            throw NetworkError.ServerError
+
+        default: print("Unknown HTTP Response Status Code")
+        }
+
         return nil
     }
 
-    func updateCustomLocation(intraId: Int, customLocation: String) async throws -> String? {
-        guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(intraId: intraId, customLocation: customLocation)) else {
+    func deleteComment() async throws {
+        guard let requestURL = URL(string: baseURL + "/member/comment") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
+
+        switch response.statusCode {
+        case 200 ... 299:
+            return
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+
+        case 500 ... 599:
+            throw NetworkError.ServerError
+
+        default: print("Unknown HTTP Response Status Code")
+        }
+    }
+
+    func updateCustomLocation(customLocation: String?) async throws -> String? {
+        guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(customLocation: customLocation)) else {
             throw NetworkError.invalidRequestBody
         }
 
@@ -226,36 +173,130 @@ class MemberAPI: API {
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(token, forHTTPHeaderField: "Authorization")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
 
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.invalidHTTPResponse
-            }
-
-            switch response.statusCode {
-            case 200 ... 299:
-                if response.mimeType == "text/html" {
-                    isLogin = false
-                    throw NetworkError.Token
-                } else {
-                    print("Succeed update Custom Location")
-                    return try JSONDecoder().decode(ResponseCustomLocationDTO.self, from: data).customLocation
-                }
-            case 400 ... 499:
-                throw NetworkError.BadRequest
-
-            case 500 ... 599:
-                throw NetworkError.ServerError
-
-            default: print("Unknown HTTP Response Status Code")
-            }
-        } catch {
-            errorPrint(error, message: "Failed to update custom location")
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
         }
+
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
+
+        switch response.statusCode {
+        case 200 ... 299:
+            return try JSONDecoder().decode(UpdateCustomLocationDTO.self, from: data).customLocation ?? "개포"
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+
+        case 500 ... 599:
+            throw NetworkError.ServerError
+
+        default: print("Unknown HTTP Response Status Code")
+        }
+
+        return nil
+    }
+
+    func deleteCustomLocation() async throws -> Bool? {
+        guard let requestURL = URL(string: baseURL + "/location/custom") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
+
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
+
+        switch response.statusCode {
+        case 200 ... 299:
+            return true
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+
+        case 500 ... 599:
+            throw NetworkError.ServerError
+
+        default: print("Unknown HTTP Response Status Code")
+        }
+
+        return nil
+    }
+
+    func search(keyWord: String) async throws -> [MemberInfo]? {
+        print("----- search -----")
+        guard let requestURL = URL(string: baseURL + "/search?keyWord=\(keyWord)") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "GET"
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
+
+        if response.statusCode == 500 {
+            print(String(data: data, encoding: String.Encoding.utf8)!)
+        }
+
+        switch response.statusCode {
+        case 200 ... 299:
+            print("Succeed search member")
+            return try JSONDecoder().decode([MemberInfo].self, from: data)
+
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    print(keyWord)
+                    if customException.errorCode != 1300 && customException.errorCode != 1301 {
+                        try await API.sharedAPI.reissue()
+                        throw NetworkError.Reissue
+                    }
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+
+        case 500 ... 599:
+            throw NetworkError.ServerError
+
+        default: print("Unknown HTTP Response Status Code")
+        }
+
         return nil
     }
 }

@@ -15,73 +15,134 @@ struct SelectingView: View {
     @State private var name: String = ""
 
     var body: some View {
-        NavigationView {
-            VStack {
-                VStack {
-                    HStack {
-                        Image("Search icon M")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20)
-                        TextField("이름을 입력해주세요", text: $name)
+        VStack {
+            HStack {
+                Button(role: .cancel) {
+                    homeViewModel.initNewGroup()
+                    withAnimation {
+                        mainViewModel.isSelectViewPrsented = false
                     }
-                    .padding()
-                    .foregroundStyle(.whereDeepNavy)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.whereDeepNavy, lineWidth: 2)
-                    )
-
+                } label: {
+                    Text(" 취소")
+                }
+                
+                Spacer()
+            }
+            
+            HStack {
+                Image("Search icon M")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20)
+                TextField("이름을 입력해주세요", text: $name)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                
+                Spacer()
+                
+                if name != "" {
+                    Image(systemName: "xmark.circle.fill")
+                        .onTapGesture {
+                            name = ""
+                        }
+                }
+            }
+            .padding()
+            .foregroundStyle(.whereDeepNavy)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(.whereDeepNavy, lineWidth: 2)
+            )
+        }
+        .padding([.horizontal, .top])
+                
+        if homeViewModel.friends.members.count == 0 || (name != "" && homeViewModel.viewPresentCount == 0) {
+            Spacer()
+                    
+            VStack {
+                if homeViewModel.friends.members.count == 0 {
+                    Text("추가할 수 있는 멤버가 없습니다")
+                } else {
+                    Text("존재하지 않는 멤버입니다")
+                }
+            }
+            .font(.custom(Font.GmarketBold, size: 20))
+            .foregroundStyle(.whereDeepNavy)
+                    
+            Spacer()
+        } else {
+            ScrollView {
+                LazyVStack {
                     ForEach(0 ..< homeViewModel.friends.members.count, id: \.self) { index in
-                        if UIDevice.idiom == .phone {
-                            SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
-                                .padding(.top)
-                        } else if UIDevice.idiom == .pad {
-                            if index % 2 == 0 {
-                                HStack {
-                                    SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index])
-                                        .padding([.top, .leading, .trailing])
-                                    if index + 1 < homeViewModel.friends.members.count {
-                                        SelectingFriendInfoView(userInfo: $homeViewModel.friends.members[index + 1])
-                                            .padding([.top, .leading, .trailing])
-                                    } else {
-                                        Spacer()
-                                            .padding()
+                        if homeViewModel.friends.members[index].isCheck == true ||
+                            name == "" || (homeViewModel.friends.members[index].intraName.contains(name.lowercased())) == true
+                        {
+                            if UIDevice.idiom == .phone {
+                                SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
+                                    .padding(.top)
+                                    .padding(.leading, 3)
+                                    .onAppear {
+                                        homeViewModel.viewPresentCount += 1
+                                    }
+                                    .onDisappear {
+                                        homeViewModel.viewPresentCount -= 1
+                                    }
+                            } else if UIDevice.idiom == .pad {
+                                if index % 2 == 0 {
+                                    HStack {
+                                        SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index])
+                                            .padding([.top, .horizontal])
+                                            .onAppear {
+                                                homeViewModel.viewPresentCount += 1
+                                            }
+                                            .onDisappear {
+                                                homeViewModel.viewPresentCount -= 1
+                                            }
+                                        if index + 1 < homeViewModel.friends.members.count {
+                                            SelectingFriendInfoView(memberInfo: $homeViewModel.friends.members[index + 1])
+                                                .padding([.top, .horizontal])
+                                                .onAppear {
+                                                    homeViewModel.viewPresentCount += 1
+                                                }
+                                                .onDisappear {
+                                                    homeViewModel.viewPresentCount -= 1
+                                                }
+                                        } else {
+                                            Spacer()
+                                                .padding()
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
-                    Spacer()
                 }
-                .padding()
-
-                HStack {
-                    Spacer()
-
-                    Button {
-                        Task {
-                            await homeViewModel.createNewGroup(intraId: homeViewModel.intraId)
-                        }
-                        mainViewModel.isSelectViewPrsented = false
-                    } label: {
-                        Text("그룹 추가하기")
-                            .font(.custom(Font.GmarketMedium, size: 20))
-                            .foregroundStyle(.white)
-                    }
-                    .clipShape(Rectangle())
-                    .padding()
-
-                    Spacer()
+                .onAppear {
+                    homeViewModel.viewPresentCount = 0
                 }
-                .background(.whereDeepNavy)
-                .ignoresSafeArea()
             }
-            .toolbar {
-                Where42ToolBarContent(isShowSheet: $isShowSheet, isSettingPresenting: false)
-            }
+            .padding([.horizontal, .bottom])
         }
+        HStack {
+            Spacer()
+                
+            Button {
+                Task {
+                    await homeViewModel.createNewGroup()
+                }
+                mainViewModel.isSelectViewPrsented = false
+            } label: {
+                Text("그룹 추가하기")
+                    .font(.custom(Font.GmarketMedium, size: 20))
+                    .foregroundStyle(.white)
+            }
+            .clipShape(Rectangle())
+            .padding()
+                
+            Spacer()
+        }
+        .background(.whereDeepNavy)
+        .ignoresSafeArea()
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }

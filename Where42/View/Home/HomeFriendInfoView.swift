@@ -9,10 +9,10 @@ import Kingfisher
 import SwiftUI
 
 struct HomeFriendInfoView: View {
-    @Binding var userInfo: MemberInfo
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @Binding var memberInfo: MemberInfo
     @Binding var groupInfo: GroupInfo
 
-    @State private var isWork = false
     @State private var isShowModal = false
     @State private var modalheight: CGFloat = 0
 
@@ -21,7 +21,7 @@ struct HomeFriendInfoView: View {
             isShowModal.toggle()
         } label: {
             HStack(spacing: 10) {
-                KFImage(URL(string: userInfo.image!)!)
+                KFImage(URL(string: memberInfo.image)!)
                     .resizable()
                     .placeholder {
                         Image("Profile")
@@ -29,30 +29,30 @@ struct HomeFriendInfoView: View {
                             .frame(width: 50, height: 50)
                     }
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(.whereDeepPink, lineWidth: userInfo.location != "퇴근" ? 3 : 0))
+                    .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
+                    .overlay(Circle().stroke(.black, lineWidth: memberInfo.inCluster == false ? 0.1 : 0))
                     .frame(width: 50, height: 50)
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(userInfo.intraName!)
+                        Text(memberInfo.intraName)
                             .font(.custom(Font.GmarketBold, size: 16))
                             .foregroundStyle(.whereDeepNavy)
 
-                        HStack(spacing: 4) {
-                            Text(userInfo.location!)
-                        }
-                        .font(.custom(Font.GmarketMedium, size: 13))
-                        .padding(5.0)
-                        .padding(.horizontal, 2.0)
-                        .background(userInfo.location == "퇴근" ? .white : .whereDeepNavy)
-                        .clipShape(Capsule())
-                        .overlay(userInfo.location == "퇴근" ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
-                        .foregroundStyle(userInfo.location == "퇴근" ? .whereDeepNavy : .white)
+                        Text(memberInfo.location!)
+                            .font(.custom(Font.GmarketMedium, size: 13))
+                            .padding(5.0)
+                            .padding(.horizontal, 2.0)
+                            .background(memberInfo.inCluster == false ? .white : .whereDeepNavy)
+                            .clipShape(Capsule())
+                            .overlay(memberInfo.inCluster == false ? Capsule().stroke(.whereDeepNavy, lineWidth: 1) : Capsule().stroke(.whereDeepNavy, lineWidth: 0))
+                            .foregroundStyle(memberInfo.inCluster == false ? .whereDeepNavy : .white)
                     }
 
-                    Text(userInfo.comment!)
+                    Text(memberInfo.comment)
                         .font(.custom(Font.GmarketMedium, size: 14))
                         .foregroundStyle(.whereMediumNavy)
+                        .lineLimit(2)
                 }
 
                 Spacer()
@@ -67,16 +67,16 @@ struct HomeFriendInfoView: View {
                 .unredacted()
             }
             .padding(.vertical, 1)
-            .background()
+            .background(.white)
         }
+
         .buttonStyle(ScaleButtonStyle())
 
         .sheetOrPopOver(isPresented: $isShowModal) {
             FriendEditModal(
-                userInfo: $userInfo,
+                memberInfo: $memberInfo,
                 groupInfo: $groupInfo,
-                isPresented: $isShowModal,
-                isFriend: groupInfo.groupName == "default")
+                isPresented: $isShowModal)
                 .readSize()
                 .onPreferenceChange(SizePreferenceKey.self) { size in
                     if let size {
@@ -88,11 +88,6 @@ struct HomeFriendInfoView: View {
     }
 }
 
-struct ModalSizePreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
-}
-
 struct ScaleButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -102,6 +97,6 @@ struct ScaleButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    HomeFriendInfoView(userInfo: .constant(MemberInfo(intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
+    HomeFriendInfoView(memberInfo: .constant(MemberInfo(id: UUID(), intraId: 0, intraName: "dhyun", image: "https://cdn.intra.42.fr/users/16be1203bb548bd66ed209191ff6d30d/dhyun.jpg", comment: "안녕하세요", location: "개포 c2r5s6")), groupInfo: .constant(HomeViewModel().friends))
         .environmentObject(HomeViewModel())
 }

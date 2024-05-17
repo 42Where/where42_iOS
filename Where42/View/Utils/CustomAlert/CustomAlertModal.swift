@@ -9,19 +9,19 @@ import SwiftUI
 
 struct CustomAlert: View {
     var title: String
-    var textFieldTitle: String?
     var message: String?
-
     @Binding var inputText: String
+    var textFieldTitle: String?
 
     var leftButtonAction: (() -> Void)?
     var rightButtonAction: (() async -> Void)?
+    var initButtonAction: (() -> Void)?
 
     var body: some View {
         ZStack {
             Color.black
                 .opacity(0.30)
-                .ignoresSafeArea()
+                .ignoresSafeArea(.all)
                 .onTapGesture {
                     leftButtonAction?()
                 }
@@ -36,17 +36,6 @@ struct CustomAlert: View {
                     }
                 }
 
-                if let textFieldTitle = textFieldTitle {
-                    TextField(textFieldTitle, text: $inputText)
-                        .font(.custom(Font.GmarketMedium, size: 16))
-                        .padding(4)
-                        .foregroundStyle(.whereDeepNavy)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(.whereDeepNavy, lineWidth: 1)
-                        )
-                }
-
                 if let message = message {
                     Text(message)
                         .font(.custom(Font.GmarketMedium, size: 15))
@@ -54,8 +43,37 @@ struct CustomAlert: View {
                         .lineSpacing(6)
                 }
 
+                if let textFieldTitle = textFieldTitle {
+                    TextField(textFieldTitle, text: $inputText, axis: .vertical)
+                        .font(.custom(Font.GmarketMedium, size: 16))
+                        .padding(4)
+                        .foregroundStyle(.whereDeepNavy)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(.whereDeepNavy, lineWidth: 1)
+                        )
+                        .lineLimit(...5)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                }
+
                 HStack {
                     Spacer()
+
+                    if initButtonAction != nil {
+                        Button {
+                            initButtonAction?()
+                        } label: {
+                            Text("초기화")
+                                .padding(.horizontal, 4)
+                                .padding(4)
+                                .foregroundStyle(.red)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.red, lineWidth: 1)
+                                )
+                        }
+                    }
 
                     Button {
                         leftButtonAction?()
@@ -126,7 +144,7 @@ struct CustomBasicAlert: View {
 }
 
 #Preview {
-//    CustomAlert(title: .constant("상태메시지 변경"), textFieldTitle: .constant("코멘트를 입력해주세요"))
+    CustomAlert(title: "상태메시지 변경", inputText: .constant(""), textFieldTitle: "코멘트 입력 바람")
 //    CustomAlert(title: "로그아웃", textFieldTitle: nil, message: "이 'Group1' 을(를) 삭제하시겠습니까?", inputText: .constant(""))
-    CustomBasicAlert(title: "현재 페이지를 로드할 수 없습니다")
+//    CustomBasicAlert(title: "현재 페이지를 로드할 수 없습니다")
 }

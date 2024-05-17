@@ -13,25 +13,25 @@ struct HomeGroupView: View {
     @Binding var groups: [GroupInfo]
 
     var body: some View {
-        VStack {
-            ForEach($groups) { $group in
+        LazyVStack(pinnedViews: .sectionHeaders) {
+            ForEach(homeViewModel.isWorkCheked ? $homeViewModel.filteredGroups : $groups, id: \.id) { $group in
                 if group.groupName != "default" {
                     HomeGroupSingleView(group: $group)
 
                     Divider()
                 }
             }
+
+            .background(.white)
+            .environmentObject(homeGroupViewModel)
+
+            HomeFriendView(friends: homeViewModel.isWorkCheked ? $homeViewModel.filteredFriends : $homeViewModel.friends)
         }
-
-        .background(.white)
-        .environmentObject(homeGroupViewModel)
-
-        HomeFriendView(friends: $homeViewModel.friends)
     }
 }
 
 #Preview {
-    HomeGroupView(groups: .constant(HomeViewModel().groups))
+    HomeGroupView(groups: .constant(HomeViewModel().myGroups))
         .environmentObject(HomeViewModel())
         .environmentObject(HomeGroupViewModel())
 }

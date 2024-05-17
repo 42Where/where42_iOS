@@ -10,6 +10,7 @@ import SwiftUI
 struct PersonalInfoAgreementView: View {
     @EnvironmentObject private var loginViewModel: LoginViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var mainViewModel: MainViewModel
     @Binding var isPresent: Bool
 
     var body: some View {
@@ -17,16 +18,18 @@ struct PersonalInfoAgreementView: View {
             Color.black
                 .opacity(0.30)
                 .ignoresSafeArea()
-                .onTapGesture {}
 
             VStack(spacing: 20) {
                 Text("개인정보 수집 및 이용 동의서(필수)")
                     .font(.custom(Font.GmarketBold, size: 20))
 
-                Text("(재)이노베이션 아카데미는 『개인정보 보호법』 제15조 등 관련 법령에 따라 서비스 이용자의 개인정보보로를 매우 중시하며, 서비스 제공에 반드시 필요한 개인정보의 수집•이용을 위하여 귀하의 동의를 받고자 합니다.")
-                    .font(.custom(Font.GmarketMedium, size: 15))
-                    .foregroundStyle(.whereMediumNavy)
-                    .multilineTextAlignment(.center)
+                Text("""
+                (재)이노베이션 아카데미는 『개인정보 보호법』
+                제15조 등 관련 법령에 따라 서비스 이용자의 개인정보보로를 매우 중시하며, 서비스 제공에 반드시 필요한 개인정보의 수집•이용을 위하여 귀하의 동의를 받고자 합니다.
+                """)
+                .font(.custom(Font.GmarketMedium, size: 15))
+//                .foregroundStyle(.whereMediumNavy)
+                .multilineTextAlignment(.leading)
 
                 Text("개인정보의 수집 및 이용 목적")
                     .font(.custom(Font.GmarketBold, size: 17))
@@ -34,7 +37,7 @@ struct PersonalInfoAgreementView: View {
                     .font(.custom(Font.GmarketMedium, size: 15))
                     .foregroundStyle(.whereMediumNavy)
 
-                Text("수집하는 개인정보 항목")
+                Text("수집하는 개인정보 항목(필수)")
                     .font(.custom(Font.GmarketBold, size: 17))
                 Text("인트라 로그인 아이디, 클러스터 출입 상태, 입실 시 현재 입실 한 클러스터, 출입카드 마지막 태그 시간")
                     .font(.custom(Font.GmarketMedium, size: 15))
@@ -56,11 +59,24 @@ struct PersonalInfoAgreementView: View {
                     .foregroundStyle(.whereMediumNavy)
                     .multilineTextAlignment(.center)
 
+                Text("(재)이노베이션 아카데미 귀하")
+                    .font(.custom(Font.GmarketMedium, size: 15))
+                    .multilineTextAlignment(.center)
+
+                Text("""
+                (필수 항목) 개인정보 수집 및 이용에
+                동의하시겠습니까?
+                """)
+                .font(.custom(Font.GmarketMedium, size: 17))
+                .multilineTextAlignment(.center)
+
                 HStack {
                     Spacer()
 
                     Button {
-                        isPresent = false
+                        withAnimation {
+                            isPresent = false
+                        }
                     } label: {
                         Text("거절")
                             .padding(.horizontal, 6)
@@ -75,14 +91,26 @@ struct PersonalInfoAgreementView: View {
                     Spacer()
 
                     Button {
-                        loginViewModel.join(intraId: String(homeViewModel.intraId))
-                        isPresent = false
+                        Task {
+                            DispatchQueue.main.async {
+                                self.loginViewModel.isAgreeButtonPushed = true
+                            }
+                            if await loginViewModel.join(intraId: String(API.sharedAPI.intraId)) {
+                                DispatchQueue.main.async {
+                                    withAnimation {
+                                        self.isPresent = false
+                                    }
+                                    self.mainViewModel.isLogin = true
+                                    self.homeViewModel.isAPILoaded = false
+                                }
+                            }
+                        }
                     } label: {
                         Text("동의")
                             .padding(.horizontal, 6)
                             .padding(4.5)
                             .foregroundStyle(.white)
-                            .background(.whereDeepNavy)
+                            .background(loginViewModel.isAgreeButtonPushed ? .gray : .whereDeepNavy)
                             .clipShape(
                                 RoundedRectangle(cornerRadius: 10)
                             )
@@ -91,15 +119,20 @@ struct PersonalInfoAgreementView: View {
                     Spacer()
                 }
                 .font(.custom(Font.GmarketMedium, size: 16))
+                .disabled(loginViewModel.isAgreeButtonPushed)
             }
             .padding(30)
-            .frame(width: 380)
+            .frame(width: UIDevice.idiom == .phone ? 380 : 480)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }
+        .disabled(loginViewModel.isAgreeButtonPushed)
     }
 }
 
 #Preview {
     PersonalInfoAgreementView(isPresent: .constant(true))
+        .environmentObject(HomeViewModel())
+        .environmentObject(MainViewModel())
+        .environmentObject(LoginViewModel())
 }

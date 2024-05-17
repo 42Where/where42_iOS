@@ -17,10 +17,10 @@ struct GroupEditModal: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("\(group.groupName)")
+                Text(group.groupName)
                     .font(.custom(Font.GmarketMedium, size: 16))
 
-                Text("\(group.onlineNum!)/\(group.totalNum!)")
+                Text("\(group.onlineNum)/\(group.totalNum)")
                     .font(.custom(Font.GmarketMedium, size: 13))
 
                 Spacer()
@@ -30,11 +30,12 @@ struct GroupEditModal: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 40) {
-                if group.groupName != "default" {
+                if group.groupId != homeViewModel.friends.groupId {
                     Button {
                         withAnimation {
-                            isPresented.toggle()
+                            isPresented = false
                             homeViewModel.selectedGroup = group
+                            homeViewModel.inputText = group.groupName
                             mainViewModel.isEditGroupNameAlertPrsented.toggle()
                         }
                     } label: {
@@ -44,17 +45,27 @@ struct GroupEditModal: View {
                 }
 
                 Button {
-                    homeViewModel.isGroupEditViewPrsented = true
+                    Task {
+                        if await homeViewModel.getMembersNotInGroup() {
+                            withAnimation {
+                                isPresented = false
+                                homeViewModel.selectedGroup = group
+                                homeViewModel.isGroupEditSelectAlertPrsented = true
+                            }
+                        }
+                    }
                 } label: {
-                    Text("그룹 수정하기")
+                    Text("멤버 수정하기")
                         .foregroundStyle(.whereMediumNavy)
                 }
 
-                if group.groupName != "default" {
+                if group.groupId != homeViewModel.friends.groupId {
                     Button {
-                        isPresented.toggle()
-                        homeViewModel.selectedGroup = group
-                        mainViewModel.isDeleteGroupAlertPrsented.toggle()
+                        withAnimation {
+                            isPresented = false
+                            homeViewModel.selectedGroup = group
+                            mainViewModel.isDeleteGroupAlertPrsented = true
+                        }
                     } label: {
                         Text("그룹 삭제하기")
                             .foregroundStyle(.red)
@@ -65,16 +76,11 @@ struct GroupEditModal: View {
             .padding(.vertical, 20)
         }
         .padding()
-        .sheet(isPresented: $homeViewModel.isGroupEditViewPrsented) {
-            GroupEditView(
-                group: $group,
-                isGroupEditModalPresented: $isPresented)
-        }
     }
 }
 
 #Preview {
     GroupEditModal(group: .constant(HomeViewModel().friends), isPresented: .constant(false))
         .environmentObject(HomeViewModel())
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
 }

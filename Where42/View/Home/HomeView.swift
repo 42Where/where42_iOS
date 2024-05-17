@@ -10,68 +10,74 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
     @EnvironmentObject private var homeViewModel: HomeViewModel
-    @AppStorage("isLogin") var isLogin = false
-    
+
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    HomeInfoView(
-                        memberInfo: $homeViewModel.myInfo,
-                        isWork: $homeViewModel.isWork,
-                        isNewGroupAlertPrsent: $mainViewModel.isNewGroupAlertPrsented)
-                        
-                    Divider()
-                    
-                    ScrollView {
-                        HomeGroupView(groups: $homeViewModel.groups)
-                            
-                        Spacer()
-                        
-                            .toolbar {
-                                Where42ToolBarContent(
-                                    isShowSheet: $homeViewModel.isShowSettingSheet,
-                                    isSettingPresenting: true)
-                            }
-                            .unredacted()
-                    }
-                    .refreshable {
-                        homeViewModel.getMemberInfo()
-                        homeViewModel.getGroup()
+        ZStack {
+            VStack {
+                HomeInfoView(
+                    memberInfo: $homeViewModel.myInfo,
+                    isWork: $homeViewModel.isWorkCheked,
+                    isNewGroupAlertPrsented: $mainViewModel.isNewGroupAlertPrsented
+                )
+
+                Divider()
+
+                ScrollView {
+                    HomeGroupView(groups: $homeViewModel.myGroups)
+
+                    Spacer()
+                }
+                .refreshable {
+                    Task {
+                        await homeViewModel.getMemberInfo()
+                        await homeViewModel.getGroup()
                     }
                 }
-                .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
-                .disabled(homeViewModel.isLoading)
-                
-                .onAppear {
-                    homeViewModel.countOnlineUsers()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        homeViewModel.isLoading = false
-                    }
-                }
-                .task {
+            }
+            .redacted(reason: homeViewModel.isLoading ? .placeholder : [])
+            .disabled(homeViewModel.isLoading)
+
+            .task {
+                if mainViewModel.isLogin {
                     if !homeViewModel.isAPILoaded {
-                        homeViewModel.getMemberInfo()
-                        homeViewModel.getGroup()
-                        if isLogin == true {
-                            homeViewModel.isAPILoaded = true
+                        if await homeViewModel.reissue() {
+                            await homeViewModel.getMemberInfo()
+                            await homeViewModel.getGroup()
+                            if mainViewModel.isLogin == true {
+                                homeViewModel.isAPILoaded = true
+                            }
+                            homeViewModel.isLoading = false
                         }
                     }
                 }
-                
-                if homeViewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(2)
-                        .progressViewStyle(.circular)
-                }
+            }
+
+            if homeViewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(2)
+                    .progressViewStyle(.circular)
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .sheet(isPresented: $homeViewModel.isGroupMemberDeleteViewPrsented) {
+            GroupMemberDeleteView(
+                group: $homeViewModel.selectedGroup,
+                isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
+            )
+        }
+        .sheet(isPresented: $homeViewModel.isGroupMemberAddViewPrsented) {
+            GroupMemberAddView(
+                group: $homeViewModel.notInGroup,
+                isGroupEditModalPresented: $homeViewModel.isGroupEditSelectAlertPrsented
+            )
+        }
+        .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
+            SelectingView()
+        }
     }
 }
 
 #Preview {
     HomeView()
-        .environmentObject(MainViewModel())
+        .environmentObject(MainViewModel.shared)
         .environmentObject(HomeViewModel())
 }
