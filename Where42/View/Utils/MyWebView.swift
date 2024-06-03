@@ -90,7 +90,7 @@ struct MyWebView: UIViewRepresentable {
                     printError(message: "reached intra profile")
                     return
                 }
-                if redirectURL.contains("https://test.where42.kr/") == true {
+                if redirectURL.contains("https://where42.kr/") == true {
                     if redirectURL.contains("login-fail") == true {
                         printError(message: "reached login-fail")
                         return

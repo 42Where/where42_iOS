@@ -18,8 +18,10 @@ class LoginAPI: API {
         guard let requestURL = URL(string: baseURL + "/member") else {
             throw NetworkError.invalidURL
         }
+        
+        print(requestURL.absoluteString);
 
-        var request = URLRequest(url: requestURL)
+        let  request = URLRequest(url: requestURL)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
