@@ -16,17 +16,7 @@ class NetworkMonitor: ObservableObject {
     @Published var isConnected = false
 
     init() {
-        networkMonitor.pathUpdateHandler = { path in
-            DispatchQueue.main.async {
-                self.isConnected = path.status == .satisfied
-
-                if path.usesInterfaceType(.wifi) {
-                    print("Using wifi")
-                } else if path.usesInterfaceType(.cellular) {
-                    print("Using cellular")
-                }
-            }
-        }
+        startMonitoring()
         networkMonitor.start(queue: workerQueue)
     }
 
@@ -41,7 +31,6 @@ class NetworkMonitor: ObservableObject {
                 }
             }
         }
-//        networkMonitor.start(queue: workerQueue)
     }
 }
 
