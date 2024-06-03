@@ -90,7 +90,7 @@ struct SettingView: View {
         .environmentObject(settingViewModel)
         .disabled(mainViewModel.is42IntraSheetPresented)
         .fullScreenCover(isPresented: $settingViewModel.isUserGuidePresented) {
-            SafariView(url: URL(string: "https://phodongho.notion.site/Where42-iOS-a7c4e1fae44b47b9bfa6d5a83a929629")!)
+            SafariView(url: URL(string: "https://hodongho.notion.site/Where42-iOS-a7c4e1fae44b47b9bfa6d5a83a929629?pvs=4")!)
                 .ignoresSafeArea()
         }
         .fullScreenCover(isPresented: $settingViewModel.isAppFeedbackPresented) {

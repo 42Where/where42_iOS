@@ -55,6 +55,7 @@
 		A0CF06672B7343D600FE2F15 /* ToastScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CF06662B7343D600FE2F15 /* ToastScene.swift */; };
 		A0CF06692B7346B500FE2F15 /* PassThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CF06682B7346B500FE2F15 /* PassThroughWindow.swift */; };
 		A0CF066B2B73496400FE2F15 /* WhereAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CF066A2B73496400FE2F15 /* WhereAppDelegate.swift */; };
+		A0D2BE302BF75A9D0098210F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A0D2BE2F2BF75A9D0098210F /* PrivacyInfo.xcprivacy */; };
 		A0D5E0352B108B1E00BEE525 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0D5E0342B108B1E00BEE525 /* Settings.bundle */; };
 		A0D5E0372B15DD9F00BEE525 /* MemberAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D5E0362B15DD9F00BEE525 /* MemberAPI.swift */; };
 		A0D836052B5BB2BE006C18E2 /* GroupMemberAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D836042B5BB2BE006C18E2 /* GroupMemberAddView.swift */; };
@@ -123,6 +124,7 @@
 		A0D275E32B06EACC00A414CD /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		A0D275E42B06EAEB00A414CD /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		A0D275E52B06EB1A00A414CD /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
+		A0D2BE2F2BF75A9D0098210F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A0D5E0342B108B1E00BEE525 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A0D5E0362B15DD9F00BEE525 /* MemberAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberAPI.swift; sourceTree = "<group>"; };
 		A0D836042B5BB2BE006C18E2 /* GroupMemberAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberAddView.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		A0FD452F2AEB81D60050AB09 = {
 			isa = PBXGroup;
 			children = (
+				A0D2BE2F2BF75A9D0098210F /* PrivacyInfo.xcprivacy */,
 				A0D5E0342B108B1E00BEE525 /* Settings.bundle */,
 				A0D275E62B06EB3F00A414CD /* XCConfig */,
 				A0FD453A2AEB81D70050AB09 /* Where42 */,
@@ -446,6 +449,7 @@
 				A01551B52AED5AB800B9D271 /* GmarketSansTTFMedium.ttf in Resources */,
 				A0D5E0352B108B1E00BEE525 /* Settings.bundle in Resources */,
 				A01551B72AED5AB800B9D271 /* GmarketSansTTFBold.ttf in Resources */,
+				A0D2BE302BF75A9D0098210F /* PrivacyInfo.xcprivacy in Resources */,
 				A0F05A8B2B838487006A3BA7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -653,7 +657,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "\"Where42/Preview Content\"";
 				DEVELOPMENT_TEAM = YXHCDG4N3M;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -696,7 +700,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "\"Where42/Preview Content\"";
 				DEVELOPMENT_TEAM = YXHCDG4N3M;
 				ENABLE_HARDENED_RUNTIME = YES;
