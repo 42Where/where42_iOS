@@ -17,6 +17,7 @@ struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
     var image: String
     var comment: String
     var inCluster: Bool?
+    var inOrOut: Bool?
     var agree: Bool
     var defaultGroupId: Int
     var location: String?
@@ -34,7 +35,7 @@ struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
         self.defaultGroupId = defaultGroupId
         self.location = location
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -44,11 +45,16 @@ struct MemberInfo: Identifiable, Equatable, Codable, Comparable {
         self.grade = (try? container.decodeIfPresent(String.self, forKey: .grade)) ?? "nil"
         self.image = (try? container.decodeIfPresent(String.self, forKey: .image)) ?? "nil"
         self.comment = (try? container.decodeIfPresent(String.self, forKey: .comment)) ?? ""
-//        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? nil
+        self.inCluster = (try? container.decodeIfPresent(Bool.self, forKey: .inCluster)) ?? nil
+        self.inOrOut = (try? container.decodeIfPresent(Bool.self, forKey: .inOrOut)) ?? nil
         self.agree = (try? container.decodeIfPresent(Bool.self, forKey: .agree)) ?? false
         self.defaultGroupId = (try? container.decodeIfPresent(Int.self, forKey: .defaultGroupId)) ?? 0
         self.location = (try? container.decodeIfPresent(String.self, forKey: .location)) ?? nil
 
+        if inOrOut == true || inOrOut == false {
+            inCluster = inOrOut
+        }
+        
         if inCluster == true && location == nil {
             self.location = "개포"
         } else if inCluster == false || inCluster == nil && location == nil {
