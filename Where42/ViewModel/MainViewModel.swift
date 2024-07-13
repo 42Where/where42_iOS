@@ -26,7 +26,7 @@ class MainViewModel: ObservableObject {
     @Published var isEditGroupNameAlertPrsented = false
     @Published var isDeleteGroupAlertPrsented = false
 
-    let intraURL: String = "https://where42.kr/v3/member"
+    let intraURL: String = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? "https://api.where42.kr/v3/member"
     @Published var is42IntraSheetPresented = false
 
     @Published var toast: Toast? = nil
