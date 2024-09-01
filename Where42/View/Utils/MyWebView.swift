@@ -102,8 +102,10 @@ struct MyWebView: UIViewRepresentable {
 //                                    print("[" + cookie.name + "]", cookie.value)
                                 if cookie.name == "accessToken" {
                                     KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
+                                    HTTPCookieStorage.shared.setCookie(cookie)
                                 } else if cookie.name == "refreshToken" {
                                     KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
+                                    HTTPCookieStorage.shared.setCookie(cookie)
                                 }
                             }
 //                                print("------------------------------------")

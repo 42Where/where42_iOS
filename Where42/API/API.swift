@@ -88,14 +88,14 @@ class API: ObservableObject {
             request.addValue(getRefreshToken(), forHTTPHeaderField: "Authorization")
 
 //        print("API.sharedAPI.refreshToken: ", API.sharedAPI.refreshToken)
-
+//            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
             let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.invalidHTTPResponse
             }
 
-            //            print(String(data: data, encoding: String.Encoding.utf8)!)
+//            print(String(data: data, encoding: String.Encoding.utf8)!)
 
             print("----- reissue -----")
 
