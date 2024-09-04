@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "어디있니 로고3.svg",
+      "filename" : "Where42Logo3@3x.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "어디있니 로고3@2x.svg",
+      "filename" : "Where42Logo3@2x.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "어디있니 로고3@3x.svg",
+      "filename" : "Where42Logo3.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

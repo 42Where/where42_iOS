@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "펼치기 버튼.svg",
+      "filename" : "Unfold.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "펼치기 버튼@2x.svg",
+      "filename" : "Unfold@2x.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "펼치기 버튼@3x.svg",
+      "filename" : "Unfold@3x.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
