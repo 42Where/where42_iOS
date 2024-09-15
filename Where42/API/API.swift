@@ -25,6 +25,7 @@ class API: ObservableObject {
         case ServerError
         case TokenError
         case Reissue
+        case VersionUpdate
     }
 
     static func errorPrint(_ error: Error, message: String) {

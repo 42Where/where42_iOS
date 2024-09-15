@@ -71,6 +71,7 @@
 		A0FD45402AEB81DB0050AB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0FD453F2AEB81DB0050AB09 /* Assets.xcassets */; };
 		A0FD45432AEB81DB0050AB09 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */; };
 		A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */; };
+		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -141,6 +142,7 @@
 		A0FD453F2AEB81DB0050AB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAlertView.swift; sourceTree = "<group>"; };
+		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +282,7 @@
 				A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */,
 				A01FF5002B4D21B3008F842B /* LoginAPI.swift */,
 				A0A351302B565EDF00A826A5 /* CustomExceptions.swift */,
+				E255D5732C919D9700B65076 /* VersionAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
 				A0CF06672B7343D600FE2F15 /* ToastScene.swift in Sources */,
+				E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */,
 				A01551BD2AEE401C00B9D271 /* SettingView.swift in Sources */,
 				A0CF066B2B73496400FE2F15 /* WhereAppDelegate.swift in Sources */,
 				A019CC482B038E4D007DBA20 /* SelectingFriendInfoView.swift in Sources */,
