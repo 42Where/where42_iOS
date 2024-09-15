@@ -55,7 +55,8 @@ struct Where42: View {
                     MainAlertView()
                         .zIndex(1)
 
-                } else {
+                }
+                else {
                     LoginView()
                         .transition(
                             .asymmetric(

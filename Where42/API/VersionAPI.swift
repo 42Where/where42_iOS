@@ -15,7 +15,7 @@ struct versionDTO: Encodable {
 class VersionAPI: API {
     static let shared = VersionAPI()
 
-    func checkUpdateNeeded(currentVersion: String) async throws {
+    func checkUpdateNeeded() async throws {
         guard let requestURL = URL(string: baseURL + "/version") else {
             throw NetworkError.invalidURL
         }
