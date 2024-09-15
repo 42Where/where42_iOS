@@ -55,7 +55,7 @@ class MainViewModel: ObservableObject {
         }
     }
     
-    func checkVersion() async {
+    @MainActor func checkVersion() async {
         do {
             try await versionAPI.checkUpdateNeeded()
             self.isUpdateNeeded = false
