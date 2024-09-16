@@ -54,13 +54,17 @@ class MainViewModel: ObservableObject {
             }
         }
     }
-    
-    @MainActor func checkVersion() async {
+
+    func checkVersion() async {
         do {
             try await versionAPI.checkUpdateNeeded()
-            self.isUpdateNeeded = false
+            DispatchQueue.main.sync {
+                self.isUpdateNeeded = false
+            }
         } catch API.NetworkError.VersionUpdate {
-            self.isUpdateNeeded = true
+            DispatchQueue.main.sync {
+                self.isUpdateNeeded = true
+            }
         } catch {
             API.errorPrint(error, message: "Failed to check if version update needed")
         }
