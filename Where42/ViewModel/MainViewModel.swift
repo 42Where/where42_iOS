@@ -58,11 +58,11 @@ class MainViewModel: ObservableObject {
     func checkVersion() async {
         do {
             try await versionAPI.checkUpdateNeeded()
-            DispatchQueue.main.sync {
+            DispatchQueue.main.async {
                 self.isUpdateNeeded = false
             }
         } catch API.NetworkError.VersionUpdate {
-            DispatchQueue.main.sync {
+            DispatchQueue.main.async {
                 self.isUpdateNeeded = true
             }
         } catch {
