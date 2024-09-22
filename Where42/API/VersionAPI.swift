@@ -29,6 +29,7 @@ class VersionAPI: API {
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
