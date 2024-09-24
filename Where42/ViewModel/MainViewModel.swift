@@ -25,12 +25,15 @@ class MainViewModel: ObservableObject {
     @Published var isNewGroupAlertPrsented = false
     @Published var isEditGroupNameAlertPrsented = false
     @Published var isDeleteGroupAlertPrsented = false
+    @Published var isUpdateNeeded = false
 
     let intraURL: String = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? "https://api.where42.kr/v3/member"
     @Published var is42IntraSheetPresented = false
 
     @Published var toast: Toast? = nil
 
+    let versionAPI = VersionAPI()
+    
     func setToast(type: String?) {
         DispatchQueue.main.async {
             switch type {
@@ -49,6 +52,21 @@ class MainViewModel: ObservableObject {
             default:
                 return
             }
+        }
+    }
+
+    func checkVersion() async {
+        do {
+            try await versionAPI.checkUpdateNeeded()
+            DispatchQueue.main.async {
+                self.isUpdateNeeded = false
+            }
+        } catch API.NetworkError.VersionUpdate {
+            DispatchQueue.main.async {
+                self.isUpdateNeeded = true
+            }
+        } catch {
+            API.errorPrint(error, message: "Failed to check if version update needed")
         }
     }
 }
