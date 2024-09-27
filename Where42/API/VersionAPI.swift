@@ -37,7 +37,6 @@ class VersionAPI: API {
         try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
-        try await print(API.sharedAPI.getAccessToken())
         print("VERSION : ")
         print(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)
 
