@@ -12,6 +12,10 @@ struct versionDTO: Encodable {
     var version: String
 }
 
+struct checkVersionDTO: Codable {
+    var version: String
+}
+
 class VersionAPI: API {
     static let shared = VersionAPI()
 
@@ -44,7 +48,8 @@ class VersionAPI: API {
         }
 
         switch response.statusCode {
-        case 200...299: 
+        case 200...299:
+            print(try JSONDecoder().decode(checkVersionDTO.self, from: data))
             return
 
         case 300...399:
