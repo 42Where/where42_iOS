@@ -41,6 +41,7 @@ struct SearchSelectedMembersView: View {
                                                 .frame(width: 45, height: 45)
                                         }
                                         .clipShape(Circle())
+                                        .scaledToFill()
                                         .overlay(Circle().stroke(.whereDeepPink, lineWidth: searchViewModel.selectedMembers[index].inCluster == true ? 3 : 0))
                                         .overlay(Circle().stroke(.black, lineWidth: searchViewModel.selectedMembers[index].inCluster == false ? 0.1 : 0))
                                         .frame(width: 45, height: 45)

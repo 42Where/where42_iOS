@@ -26,6 +26,7 @@ struct FriendEditModal: View {
                             .frame(width: 80, height: 80)
                     }
                     .clipShape(Circle())
+                    .scaledToFill()
                     .overlay(Circle().stroke(.whereDeepPink, lineWidth: memberInfo.inCluster == true ? 3 : 0))
                     .overlay(Circle().stroke(.black, lineWidth: memberInfo.inCluster == false ? 0.1 : 0))
                     .frame(width: 80, height: 80)
