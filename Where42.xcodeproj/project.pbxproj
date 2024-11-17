@@ -72,6 +72,7 @@
 		A0FD45432AEB81DB0050AB09 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */; };
 		A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */; };
 		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
+		E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -143,6 +144,7 @@
 		A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAlertView.swift; sourceTree = "<group>"; };
 		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
+		E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 		A02101C72AFB221900CB2FCD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E2C0C19E2CE9E9BF00F01C03 /* Announcement */,
 				A02101D22AFB25F800CB2FCD /* Main */,
 				A02101CE2AFB25B500CB2FCD /* Home */,
 				A02101D02AFB25DC00CB2FCD /* Login */,
@@ -378,6 +381,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		E2C0C19E2CE9E9BF00F01C03 /* Announcement */ = {
+			isa = PBXGroup;
+			children = (
+				E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */,
+			);
+			path = Announcement;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -494,6 +505,7 @@
 				A0D836072B5BD675006C18E2 /* SettingAlert.swift in Sources */,
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
+				E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */,
 				A0CF06672B7343D600FE2F15 /* ToastScene.swift in Sources */,
 				E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */,
 				A01551BD2AEE401C00B9D271 /* SettingView.swift in Sources */,
