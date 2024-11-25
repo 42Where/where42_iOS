@@ -9,7 +9,8 @@ import Foundation
 
 class AnnouncementViewModel: ObservableObject {
 
-  @Published var announcementList: [Announcement] = []
+  @Published var announcementList: [Announcement] = Array(repeating: Announcement(), count: 5)
+  @Published var isListFetched: Bool = false
   
   private let announcementAPI = AnnouncementAPI.shared
   
@@ -18,6 +19,7 @@ class AnnouncementViewModel: ObservableObject {
       let retList = try await announcementAPI.getAnnouncementList()
       DispatchQueue.main.async {
         self.announcementList = retList
+        self.isListFetched = true
       }
     } catch API.NetworkError.Reissue {
       DispatchQueue.main.async {

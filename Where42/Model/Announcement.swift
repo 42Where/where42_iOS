@@ -26,7 +26,18 @@ struct Announcement: Identifiable {
   }
   
   init() {
-    self.id = Int64.random(in: 1...Int64.max)
+    self.id = {
+      let uuid = UUID()
+
+      let uuidData = uuid.uuidString.data(using: .utf8)!
+
+      let uuidBytes = [UInt8](uuidData)
+      let upper64Bits = uuidBytes.prefix(8).reduce(0) { $0 << 8 | UInt64($1) }
+      let lower64Bits = uuidBytes.suffix(8).reduce(0) { $0 << 8 | UInt64($1) }
+
+      let int64Value = Int64(upper64Bits)
+      return int64Value
+    }()
     self.title = ""
     self.content = ""
     self.authorName = ""

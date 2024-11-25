@@ -17,11 +17,12 @@ struct ResponseAnnouncementDTO: Codable {
 }
 
 class AnnouncementAPI: API {
+
   static let shared = AnnouncementAPI()
+  
+  var announcementList = Array(repeating: Announcement(), count: 5)
 
   func getAnnouncementList() async throws -> [Announcement] {
-
-    var announcementList = Array(repeating: Announcement(), count: 5)
 
     for i in 1...5 {
       guard let requestURL = URL(string: baseURL + "/announcement?page=\(i)") else {
@@ -29,7 +30,7 @@ class AnnouncementAPI: API {
       }
 
       var request = URLRequest(url: requestURL)
-      request.httpMethod = "POST"
+      request.httpMethod = "GET"
       request.addValue("application/json", forHTTPHeaderField: "Content-Type")
       try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
 
