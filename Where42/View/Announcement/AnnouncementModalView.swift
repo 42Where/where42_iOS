@@ -32,7 +32,7 @@ struct AnnouncementModalView: View {
           .font(.GmarketLight34)
         Rectangle()
           .fill(Color.clear)
-          .border(Color.whereDeepPink, width: 1)
+          .border(Color.whereDeepNavy, width: 1)
       }
 
       Spacer(minLength: 30)

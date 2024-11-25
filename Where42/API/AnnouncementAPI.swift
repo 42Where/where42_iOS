@@ -18,29 +18,29 @@ struct ResponseAnnouncementDTO: Codable {
 
 class AnnouncementAPI: API {
   static let shared = AnnouncementAPI()
-  
+
   func getAnnouncementList() async throws -> [Announcement] {
-    
+
     var announcementList = Array(repeating: Announcement(), count: 5)
-    
+
     for i in 1...5 {
       guard let requestURL = URL(string: baseURL + "/announcement?page=\(i)") else {
         throw NetworkError.invalidURL
       }
-      
+
       var request = URLRequest(url: requestURL)
       request.httpMethod = "POST"
       request.addValue("application/json", forHTTPHeaderField: "Content-Type")
       try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
-      
+
       let (data, response) = try await URLSession.shared.data(for: request)
-      
+
       guard let response = response as? HTTPURLResponse else {
         throw NetworkError.invalidHTTPResponse
       }
 
       switch response.statusCode {
-        
+
       case 200...299:
         let decodedResponse = try JSONDecoder().decode(ResponseAnnouncementDTO.self, from: data)
         announcementList[i - 1].id = decodedResponse.announcementId
@@ -74,5 +74,5 @@ class AnnouncementAPI: API {
     }
     return announcementList
   }
-  
+
 }

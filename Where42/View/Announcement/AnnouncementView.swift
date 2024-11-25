@@ -10,6 +10,7 @@ import SwiftUI
 struct AnnouncementView: View {
   @State var showModal: Bool = false
   @State var pickedAnnouncement: Announcement? = nil
+  @StateObject var announcementViewModel: AnnouncementViewModel = AnnouncementViewModel()
   var announcementList: [Announcement]
   
   var body: some View {
@@ -35,6 +36,9 @@ struct AnnouncementView: View {
             }
           })
         }
+      }
+      .task {
+        await announcementViewModel.getAnnouncementList()
       }
       .sheet(isPresented: $showModal, content: {
           AnnouncementModalView(showModal: $showModal, announcement: $pickedAnnouncement)

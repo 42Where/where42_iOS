@@ -35,12 +35,8 @@ struct Where42ToolBarContent: ToolbarContent {
     
     if mainViewModel.tabSelection == "Home" {
       ToolbarItem(placement: .topBarTrailing) {
-        //                Button { isShowSheet.toggle() } label: { Image("Setting icon M") }
-        //                    .sheet(isPresented: $isShowSheet) {
-        //                        SettingView()
-        //                    }
         NavigationLink(
-          destination: AnnouncementView(announcementList: Announcement.sampleData), // 수정되어야 하는 부분
+          destination: AnnouncementView(announcementList: Announcement.sampleData),
           label: { Image("Announcement icon M") }
         )
         .disabled(mainViewModel.isDeleteGroupAlertPrsented ||
