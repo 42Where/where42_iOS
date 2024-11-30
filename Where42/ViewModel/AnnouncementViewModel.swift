@@ -9,7 +9,7 @@ import Foundation
 
 class AnnouncementViewModel: ObservableObject {
 
-  @Published var announcementList: [Announcement] = Array(repeating: Announcement(), count: 5)
+  @Published var announcementList: [Announcement] = []
   @Published var isListFetched: Bool = false
   
   private let announcementAPI = AnnouncementAPI.shared
