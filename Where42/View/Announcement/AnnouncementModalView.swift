@@ -29,7 +29,7 @@ struct AnnouncementModalView: View {
       
       ZStack {
         Text(announcement?.content ?? "")
-          .font(.GmarketLight34)
+          .font(.GmarketLight18)
         Rectangle()
           .fill(Color.clear)
           .border(Color.whereDeepNavy, width: 1)

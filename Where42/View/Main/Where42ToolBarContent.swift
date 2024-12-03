@@ -36,7 +36,7 @@ struct Where42ToolBarContent: ToolbarContent {
     if mainViewModel.tabSelection == "Home" {
       ToolbarItem(placement: .topBarTrailing) {
         NavigationLink(
-          destination: AnnouncementView(announcementList: Announcement.sampleData),
+          destination: AnnouncementView(),
           label: { Image("Announcement icon M") }
         )
         .disabled(mainViewModel.isDeleteGroupAlertPrsented ||

@@ -12,7 +12,6 @@ struct AnnouncementView: View {
   @State var showModal: Bool = false
   @State var pickedAnnouncement: Announcement? = nil
   @StateObject var announcementViewModel: AnnouncementViewModel = .init()
-  var announcementList: [Announcement]
   
   var body: some View {
     VStack {
@@ -57,5 +56,5 @@ struct AnnouncementView: View {
 }
 
 #Preview {
-  AnnouncementView(announcementList: Announcement.sampleData)
+  AnnouncementView()
 }
