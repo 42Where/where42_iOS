@@ -52,6 +52,10 @@ class AnnouncementAPI: API {
       let receivedAnnouncements = decodedResponse.announcements
       if receivedAnnouncements.isEmpty { return announcementList }
       
+      if !announcementList.isEmpty {
+        self.announcementList.removeAll()
+      }
+      
       for i in 0..<receivedAnnouncements.count {
         let newAnnouncement = Announcement(
           id: receivedAnnouncements[i].announcementId,
