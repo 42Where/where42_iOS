@@ -3,6 +3,7 @@
 build/
 DerivedData/
 xcuserdata/
+Package.resolved
 
 # Swift Package Manager
 .build/

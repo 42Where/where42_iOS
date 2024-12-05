@@ -7,29 +7,29 @@
 
 import SwiftUI
 
-struct versionDTO: Encodable {
+struct VersionDTO: Encodable {
     var os: String
     var version: String
 }
 
-struct checkVersionDTO: Codable {
+struct CheckVersionDTO: Codable {
     var version: String
 }
 
 class VersionAPI: API {
-    static let shared = VersionAPI()
+//    static let shared = VersionAPI()
 
     func checkUpdateNeeded() async throws {
         guard let requestURL = URL(string: baseURL + "/version") else {
             throw NetworkError.invalidURL
         }
         
-        guard let requestBody = try?JSONEncoder().encode(versionDTO(os: "ios", version: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)) else {
+        guard let requestBody = try?JSONEncoder().encode(VersionDTO(os: "ios", version: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)) else {
             print("Failed Create VersionAPI Request Body")
             throw NetworkError.invalidRequestBody
         }
 
-        print(requestURL.absoluteString)
+//        print(requestURL.absoluteString)
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
@@ -48,7 +48,7 @@ class VersionAPI: API {
 
         switch response.statusCode {
         case 200...299:
-            print(try JSONDecoder().decode(checkVersionDTO.self, from: data))
+            print(try JSONDecoder().decode(CheckVersionDTO.self, from: data))
             return
 
         case 300...399:
