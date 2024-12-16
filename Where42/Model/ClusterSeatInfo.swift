@@ -8,10 +8,11 @@
 import Foundation
 
 struct ClusterSeatInfo {
-    var intraName: String
-    var image: String
-    var cluster: String
-    var row: String
-    var seat: String
-    var isFriend: Bool
+    var isLoggedIn: Bool = false
+    var intraName: String = ""
+    var image: String = ""
+    var cluster: String = ""
+    var row: Int = -1
+    var seat: Int = -1
+    var isFriend: Bool = false
 }

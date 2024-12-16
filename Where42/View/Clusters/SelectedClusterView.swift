@@ -8,8 +8,23 @@
 import SwiftUI
 
 struct SelectedClusterView: View {
+    // example
+    var selectedCluster: Cluster = .c1
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        switch selectedCluster {
+        case .c1:
+            ClusterC1View()
+        case .C2:
+            ClusterC2View()
+        case .C5:
+            ClusterC5View()
+        case .C6:
+            ClusterC6View()
+        case .CX1:
+            ClusterCX1View()
+        case .CX2:
+            ClusterCX2View()
+        }
     }
 }
 
