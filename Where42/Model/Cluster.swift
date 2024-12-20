@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Cluster: String {
+enum Cluster: String, CaseIterable {
     case c1 = "c1"
     case c2 = "c2"
     case c5 = "c5"

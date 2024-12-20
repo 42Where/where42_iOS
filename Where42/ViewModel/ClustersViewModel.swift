@@ -8,5 +8,5 @@
 import Foundation
 
 class ClustersViewModel: ObservableObject {
-    
+    @Published var selectedCluster: Cluster = .c1
 }

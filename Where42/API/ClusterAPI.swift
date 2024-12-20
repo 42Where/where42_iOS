@@ -86,6 +86,9 @@ class ClusterAPI: API {
         default: print("Failed Requesting Recent Version")
             
         }
+        
+        return seatArr
+
     }
     
     func getClusterArr(_ cluster: Cluster) -> [[ClusterSeatInfo]] {

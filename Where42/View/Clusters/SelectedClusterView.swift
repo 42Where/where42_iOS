@@ -14,15 +14,15 @@ struct SelectedClusterView: View {
         switch selectedCluster {
         case .c1:
             ClusterC1View()
-        case .C2:
+        case .c2:
             ClusterC2View()
-        case .C5:
+        case .c5:
             ClusterC5View()
-        case .C6:
+        case .c6:
             ClusterC6View()
-        case .CX1:
+        case .cx1:
             ClusterCX1View()
-        case .CX2:
+        case .cx2:
             ClusterCX2View()
         }
     }
