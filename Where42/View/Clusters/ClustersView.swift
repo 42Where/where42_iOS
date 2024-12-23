@@ -43,11 +43,11 @@ struct ClustersView: View {
                 ClusterC6View()
                     .environmentObject(clustersViewModel)
             case .cx1:
-                //                ClusterCX1View(seatArr: clustersViewModel)
                 ClusterCX1View()
+                    .environmentObject(clustersViewModel)
             case .cx2:
-                //                ClusterCX2View(seatArr: clustersViewModel)
                 ClusterCX2View()
+                    .environmentObject(clustersViewModel)
             }
             
             Spacer()

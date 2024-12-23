@@ -35,6 +35,7 @@ struct ClusterC1View: View {
                                         else {
                                             KFImage(url)
                                                 .resizable()
+                                                .frame(width: 24, height: 24)
                                         }
                                     }
                                 } else {

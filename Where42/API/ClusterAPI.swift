@@ -98,14 +98,18 @@ class ClusterAPI: API {
         var arr: [[ClusterSeatInfo]]
 
         switch cluster {
-        case .c1, .c5:
-            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 7), count: 9)
-        case .c2, .c6:
-            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 8), count: 10)
+        case .c1:
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(cluster: "c1"), count: 7), count: 9)
+        case .c2:
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(cluster: "c2"), count: 8), count: 10)
+        case .c5:
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(cluster: "c5"), count: 7), count: 9)
+        case .c6:
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(cluster: "c6"), count: 8), count: 10)
         case .cx1:
-            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 8), count: 5)
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(cluster: "cx1"), count: 8), count: 5)
         case .cx2:
-            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 10), count: 8)
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(cluster: "cx2"), count: 10), count: 8)
         }
 
         for row in 0..<arr.count {
@@ -116,7 +120,7 @@ class ClusterAPI: API {
             }
         }
         
-        if cluster == .c2 || cluster == .c6 {
+        if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
             for i in 0..<arr.count {
                 arr[i] = arr[i].reversed()
             }

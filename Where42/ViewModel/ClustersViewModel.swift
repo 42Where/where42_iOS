@@ -13,17 +13,28 @@ class ClustersViewModel: ObservableObject {
     func getClusterArr(cluster: Cluster) async -> [[ClusterSeatInfo]] {
         do {
             var arr = try await ClusterAPI.shared.getClusterMembersInfo(cluster)
+            if cluster == .cx2 {
+                arr = ClusterSeatInfo.resizeSeatArr(cluster: .cx2, arr: arr)
+            }
             return arr
         }
         catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
-            return ClusterAPI.shared.getClusterArr(cluster)
+            var arr = ClusterAPI.shared.getClusterArr(cluster)
+            if cluster == .cx2 {
+                arr = ClusterSeatInfo.resizeSeatArr(cluster: .cx2, arr: arr)
+            }
+            return arr
         }
         catch {
             API.errorPrint(error, message: "Failed to get \(cluster.rawValue) ClusterArr")
-            return ClusterAPI.shared.getClusterArr(cluster)
+            var arr = ClusterAPI.shared.getClusterArr(cluster)
+            if cluster == .cx2 {
+                arr = ClusterSeatInfo.resizeSeatArr(cluster: .cx2, arr: arr)
+            }
+            return arr
         }
     }
 }
