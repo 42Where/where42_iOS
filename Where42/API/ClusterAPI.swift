@@ -54,13 +54,15 @@ class ClusterAPI: API {
             for i in 0..<loggedInMembersInfo.count {
                 let r = loggedInMembersInfo[i].row
                 let s = loggedInMembersInfo[i].seat
-                seatArr[r][s].isLoggedIn = true
-                seatArr[r][s].intraName = loggedInMembersInfo[i].intraName
-                seatArr[r][s].image = loggedInMembersInfo[i].image
-                seatArr[r][s].cluster = loggedInMembersInfo[i].cluster
-                seatArr[r][s].row = loggedInMembersInfo[i].row
-                seatArr[r][s].seat = loggedInMembersInfo[i].seat
-                seatArr[r][s].isFriend = loggedInMembersInfo[i].isFriend
+                
+                seatArr[r - 1][s - 1].id = loggedInMembersInfo[i].memberId
+                seatArr[r - 1][s - 1].isLoggedIn = true
+                seatArr[r - 1][s - 1].intraName = loggedInMembersInfo[i].intraName
+                seatArr[r - 1][s - 1].image = loggedInMembersInfo[i].image
+                seatArr[r - 1][s - 1].cluster = loggedInMembersInfo[i].cluster
+                seatArr[r - 1][s - 1].row = loggedInMembersInfo[i].row
+                seatArr[r - 1][s - 1].seat = loggedInMembersInfo[i].seat
+                seatArr[r - 1][s - 1].isFriend = loggedInMembersInfo[i].isFriend
             }
             
             return seatArr
@@ -92,16 +94,35 @@ class ClusterAPI: API {
     }
     
     func getClusterArr(_ cluster: Cluster) -> [[ClusterSeatInfo]] {
+
+        var arr: [[ClusterSeatInfo]]
+
         switch cluster {
         case .c1, .c5:
-            return Array(repeating: Array(repeating: ClusterSeatInfo(), count: 8), count: 10)
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 7), count: 9)
         case .c2, .c6:
-            return Array(repeating: Array(repeating: ClusterSeatInfo(), count: 9), count: 11)
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 8), count: 10)
         case .cx1:
-            return Array(repeating: Array(repeating: ClusterSeatInfo(), count: 9), count: 6)
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 8), count: 5)
         case .cx2:
-            return Array(repeating: Array(repeating: ClusterSeatInfo(), count: 11), count: 9)
+            arr = Array(repeating: Array(repeating: ClusterSeatInfo(), count: 10), count: 8)
         }
+
+        for row in 0..<arr.count {
+            for seat in 0..<arr[row].count {
+                arr[row][seat].id = row * 10 + seat
+                arr[row][seat].row = row + 1
+                arr[row][seat].seat = seat + 1
+            }
+        }
+        
+        if cluster == .c2 || cluster == .c6 {
+            for i in 0..<arr.count {
+                arr[i] = arr[i].reversed()
+            }
+        }
+        
+        return arr
     }
     
 }

@@ -1,20 +1,20 @@
 //
-//  ClusterC2View.swift
+//  ClusterC6View.swift
 //  Where42
 //
-//  Created by ch on 12/16/24.
+//  Created by 이창현 on 12/20/24.
 //
 
 import SwiftUI
 import Kingfisher
 
-struct ClusterC2View: View {
+struct ClusterC6View: View {
     @EnvironmentObject var clustersViewModel: ClustersViewModel
-    @State var c2Arr: [[ClusterSeatInfo]] = [[]]
+    @State var c6Arr: [[ClusterSeatInfo]] = [[]]
     
     var body: some View {
         VStack {
-            if c2Arr.count == 10 {
+            if c6Arr.count == 10 {
                 ForEach(0..<10) { row in
                     HStack {
                         Text("r\(10 - row)")
@@ -23,7 +23,7 @@ struct ClusterC2View: View {
                             .monospaced()
                             .frame(width: 40, alignment: .leading)
                         Spacer()
-                        ForEach(c2Arr[9 - row]) { seat in
+                        ForEach(c6Arr[9 - row]) { seat in
                             VStack {
                                 if seat.isLoggedIn {
                                     if let url = URL(string: seat.image) {
@@ -55,12 +55,12 @@ struct ClusterC2View: View {
             }
         }
         .task {
-            c2Arr = await clustersViewModel.getClusterArr(cluster: .c2)
+            c6Arr = await clustersViewModel.getClusterArr(cluster: .c6)
         }
     }
 }
 
 #Preview {
-    ClusterC2View()
+    ClusterC6View()
         .environmentObject(ClustersViewModel())
 }

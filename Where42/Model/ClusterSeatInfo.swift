@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct ClusterSeatInfo {
+struct ClusterSeatInfo: Identifiable {
+    var id: Int = -1
     var isLoggedIn: Bool = false
     var intraName: String = ""
     var image: String = ""

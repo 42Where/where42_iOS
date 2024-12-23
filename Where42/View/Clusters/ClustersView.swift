@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ClustersView: View {
-    @State private var selectedCluster: Cluster = .c1
+    @ObservedObject private var clustersViewModel = ClustersViewModel()
+    
     var body: some View {
         VStack {
-            Picker("클러스터", selection: $selectedCluster) {
+            Picker("클러스터", selection: $clustersViewModel.selectedCluster) {
                 ForEach(Cluster.allCases, id: \.self) { cluster in
                     Text(cluster.rawValue.uppercased())
                 }
@@ -26,11 +27,32 @@ struct ClustersView: View {
             .cornerRadius(8)
             .tint(.whereDeepNavy)
             
-
             Spacer()
-            SelectedClusterView()
+            
+            switch clustersViewModel.selectedCluster {
+            case .c1:
+                ClusterC1View()
+                    .environmentObject(clustersViewModel)
+            case .c2:
+                ClusterC2View()
+                    .environmentObject(clustersViewModel)
+            case .c5:
+                ClusterC5View()
+                    .environmentObject(clustersViewModel)
+            case .c6:
+                ClusterC6View()
+                    .environmentObject(clustersViewModel)
+            case .cx1:
+                //                ClusterCX1View(seatArr: clustersViewModel)
+                ClusterCX1View()
+            case .cx2:
+                //                ClusterCX2View(seatArr: clustersViewModel)
+                ClusterCX2View()
+            }
+            
             Spacer()
         }
+        .padding(EdgeInsets(top: 16, leading: 50, bottom: 16, trailing: 50))
     }
 }
 

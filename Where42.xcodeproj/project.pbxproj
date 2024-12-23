@@ -74,16 +74,15 @@
 		E2359E9B2CEDDAEE002B82CA /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9A2CEDDAEE002B82CA /* Announcement.swift */; };
 		E2359E9D2CEDDCD1002B82CA /* AnnouncementAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */; };
 		E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */; };
+		E24E06862D15705C00F4C6D9 /* ClusterC5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */; };
+		E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06872D15706300F4C6D9 /* ClusterC6View.swift */; };
 		E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */; };
 		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
 		E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */; };
 		E29BF83E2D104F9B006DC6D0 /* ClusterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */; };
 		E29BF8402D1051BA006DC6D0 /* Cluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83F2D1051BA006DC6D0 /* Cluster.swift */; };
-		E29BF8422D105239006DC6D0 /* SelectedClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8412D105239006DC6D0 /* SelectedClusterView.swift */; };
 		E29BF8442D10529A006DC6D0 /* ClusterC1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */; };
 		E29BF8462D1052A3006DC6D0 /* ClusterC2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */; };
-		E29BF8482D1052AB006DC6D0 /* ClusterC5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8472D1052AB006DC6D0 /* ClusterC5View.swift */; };
-		E29BF84A2D1052B9006DC6D0 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8492D1052B9006DC6D0 /* ClusterC6View.swift */; };
 		E29BF84C2D1052C4006DC6D0 /* ClusterCX1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */; };
 		E29BF84E2D1052D0006DC6D0 /* ClusterCX2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */; };
 		E29BF8502D10549C006DC6D0 /* ClustersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */; };
@@ -162,16 +161,15 @@
 		E2359E9A2CEDDAEE002B82CA /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPI.swift; sourceTree = "<group>"; };
 		E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewModel.swift; sourceTree = "<group>"; };
+		E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC5View.swift; sourceTree = "<group>"; };
+		E24E06872D15706300F4C6D9 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalView.swift; sourceTree = "<group>"; };
 		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
 		E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersView.swift; sourceTree = "<group>"; };
 		E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAPI.swift; sourceTree = "<group>"; };
 		E29BF83F2D1051BA006DC6D0 /* Cluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cluster.swift; sourceTree = "<group>"; };
-		E29BF8412D105239006DC6D0 /* SelectedClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedClusterView.swift; sourceTree = "<group>"; };
 		E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC1View.swift; sourceTree = "<group>"; };
 		E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC2View.swift; sourceTree = "<group>"; };
-		E29BF8472D1052AB006DC6D0 /* ClusterC5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC5View.swift; sourceTree = "<group>"; };
-		E29BF8492D1052B9006DC6D0 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCX1View.swift; sourceTree = "<group>"; };
 		E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCX2View.swift; sourceTree = "<group>"; };
 		E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersViewModel.swift; sourceTree = "<group>"; };
@@ -248,11 +246,10 @@
 		A02101CB2AFB23D400CB2FCD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E24E06842D15675900F4C6D9 /* Cluster */,
 				A02101CC2AFB23F400CB2FCD /* MemberInfoModel.swift */,
 				A02101C92AFB23A500CB2FCD /* GruopInfoModel.swift */,
 				E2359E9A2CEDDAEE002B82CA /* Announcement.swift */,
-				E29BF83F2D1051BA006DC6D0 /* Cluster.swift */,
-				E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -421,15 +418,23 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		E24E06842D15675900F4C6D9 /* Cluster */ = {
+			isa = PBXGroup;
+			children = (
+				E29BF83F2D1051BA006DC6D0 /* Cluster.swift */,
+				E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */,
+			);
+			name = Cluster;
+			sourceTree = "<group>";
+		};
 		E29BF83A2D104D94006DC6D0 /* Clusters */ = {
 			isa = PBXGroup;
 			children = (
 				E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */,
-				E29BF8412D105239006DC6D0 /* SelectedClusterView.swift */,
 				E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */,
 				E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */,
-				E29BF8472D1052AB006DC6D0 /* ClusterC5View.swift */,
-				E29BF8492D1052B9006DC6D0 /* ClusterC6View.swift */,
+				E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */,
+				E24E06872D15706300F4C6D9 /* ClusterC6View.swift */,
 				E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */,
 				E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */,
 			);
@@ -532,12 +537,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0938C432B0C6A0D00367E84 /* SearchViewModel.swift in Sources */,
-				E29BF8482D1052AB006DC6D0 /* ClusterC5View.swift in Sources */,
 				A04E11D72B4C23560067AA39 /* HomeGroupSingleView.swift in Sources */,
 				A01FF5012B4D21B3008F842B /* LoginAPI.swift in Sources */,
 				E29BF8522D106528006DC6D0 /* ClusterSeatInfo.swift in Sources */,
+				E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */,
 				A019CC462B038DBB007DBA20 /* SelectingView.swift in Sources */,
-				E29BF84A2D1052B9006DC6D0 /* ClusterC6View.swift in Sources */,
 				E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */,
 				A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */,
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
@@ -579,6 +583,7 @@
 				A0CF066B2B73496400FE2F15 /* WhereAppDelegate.swift in Sources */,
 				A019CC482B038E4D007DBA20 /* SelectingFriendInfoView.swift in Sources */,
 				A02101CA2AFB23A500CB2FCD /* GruopInfoModel.swift in Sources */,
+				E24E06862D15705C00F4C6D9 /* ClusterC5View.swift in Sources */,
 				A02101CD2AFB23F400CB2FCD /* MemberInfoModel.swift in Sources */,
 				A0F0391C2BC3E78A001CD937 /* KeychainManager.swift in Sources */,
 				A0F6839A2B4AC3A400EEA986 /* SheetOrPopOver.swift in Sources */,
@@ -592,7 +597,6 @@
 				A0FD453E2AEB81D70050AB09 /* Where42.swift in Sources */,
 				E2359E9D2CEDDCD1002B82CA /* AnnouncementAPI.swift in Sources */,
 				A0D836092B5BD736006C18E2 /* CustomLocationView.swift in Sources */,
-				E29BF8422D105239006DC6D0 /* SelectedClusterView.swift in Sources */,
 				E29BF8462D1052A3006DC6D0 /* ClusterC2View.swift in Sources */,
 				A092EECF2B870E6D002D7B1F /* SearchSelectedMembersView.swift in Sources */,
 				A02101D42AFB4C9200CB2FCD /* FriendEditModal.swift in Sources */,
