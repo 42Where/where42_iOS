@@ -12,7 +12,7 @@ struct CurrentLoggedInMembersDTO: Decodable {
 }
 
 struct LoggedInMemberInfoDTO: Decodable {
-    var memberId: Int
+    var intraId: Int
     var intraName: String
     var image: String
     var cluster: String
@@ -32,6 +32,7 @@ class ClusterAPI: API {
         guard let requestURL = URL(string: baseURL + "/cluster/" + cluster.rawValue) else {
             throw NetworkError.invalidURL
         }
+        
         
         var request = URLRequest(url: requestURL)
         request.httpMethod = "GET"
@@ -55,7 +56,7 @@ class ClusterAPI: API {
                 let r = loggedInMembersInfo[i].row
                 let s = loggedInMembersInfo[i].seat
                 
-                seatArr[r - 1][s - 1].id = loggedInMembersInfo[i].memberId
+                seatArr[r - 1][s - 1].id = loggedInMembersInfo[i].intraId
                 seatArr[r - 1][s - 1].isLoggedIn = true
                 seatArr[r - 1][s - 1].intraName = loggedInMembersInfo[i].intraName
                 seatArr[r - 1][s - 1].image = loggedInMembersInfo[i].image
@@ -117,12 +118,6 @@ class ClusterAPI: API {
                 arr[row][seat].id = row * 10 + seat
                 arr[row][seat].row = row + 1
                 arr[row][seat].seat = seat + 1
-            }
-        }
-        
-        if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
-            for i in 0..<arr.count {
-                arr[i] = arr[i].reversed()
             }
         }
         

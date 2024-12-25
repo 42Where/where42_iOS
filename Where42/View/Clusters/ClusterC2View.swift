@@ -27,10 +27,11 @@ struct ClusterC2View: View {
                             VStack {
                                 if seat.isLoggedIn {
                                     if let url = URL(string: seat.image) {
-                                        if !seat.isFriend {
+                                        if seat.isFriend {
                                             KFImage(url)
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
+                                                .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 1))
                                         }
                                         else {
                                             KFImage(url)
@@ -41,7 +42,7 @@ struct ClusterC2View: View {
                                 } else {
                                     Image("Imac icon")
                                         .resizable()
-                                        .frame(width: 10, height: 10)
+                                        .frame(width: 24, height: 24)
                                 }
                                 Text("\(seat.seat)")
                                     .foregroundStyle(.whereDeepNavy)

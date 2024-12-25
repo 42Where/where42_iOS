@@ -74,6 +74,8 @@
 		E2359E9B2CEDDAEE002B82CA /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9A2CEDDAEE002B82CA /* Announcement.swift */; };
 		E2359E9D2CEDDCD1002B82CA /* AnnouncementAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */; };
 		E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */; };
+		E23A34F52D1C421A00450AA0 /* Cx1R1R2R3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23A34F42D1C421A00450AA0 /* Cx1R1R2R3View.swift */; };
+		E23A34F72D1C424500450AA0 /* Cx1R4R5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23A34F62D1C424500450AA0 /* Cx1R4R5View.swift */; };
 		E24E06862D15705C00F4C6D9 /* ClusterC5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */; };
 		E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06872D15706300F4C6D9 /* ClusterC6View.swift */; };
 		E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */; };
@@ -88,6 +90,7 @@
 		E29BF8502D10549C006DC6D0 /* ClustersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */; };
 		E29BF8522D106528006DC6D0 /* ClusterSeatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */; };
 		E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */; };
+		E2CA19F12D1C517400D2D461 /* Seat+SeatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -161,6 +164,8 @@
 		E2359E9A2CEDDAEE002B82CA /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPI.swift; sourceTree = "<group>"; };
 		E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewModel.swift; sourceTree = "<group>"; };
+		E23A34F42D1C421A00450AA0 /* Cx1R1R2R3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cx1R1R2R3View.swift; sourceTree = "<group>"; };
+		E23A34F62D1C424500450AA0 /* Cx1R4R5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cx1R4R5View.swift; sourceTree = "<group>"; };
 		E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC5View.swift; sourceTree = "<group>"; };
 		E24E06872D15706300F4C6D9 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalView.swift; sourceTree = "<group>"; };
@@ -175,6 +180,7 @@
 		E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersViewModel.swift; sourceTree = "<group>"; };
 		E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterSeatInfo.swift; sourceTree = "<group>"; };
 		E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementView.swift; sourceTree = "<group>"; };
+		E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seat+SeatTextView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,6 +424,16 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		E23A34F82D1C424A00450AA0 /* ClusterCx1 */ = {
+			isa = PBXGroup;
+			children = (
+				E23A34F42D1C421A00450AA0 /* Cx1R1R2R3View.swift */,
+				E23A34F62D1C424500450AA0 /* Cx1R4R5View.swift */,
+				E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */,
+			);
+			path = ClusterCx1;
+			sourceTree = "<group>";
+		};
 		E24E06842D15675900F4C6D9 /* Cluster */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,13 +446,14 @@
 		E29BF83A2D104D94006DC6D0 /* Clusters */ = {
 			isa = PBXGroup;
 			children = (
+				E23A34F82D1C424A00450AA0 /* ClusterCx1 */,
 				E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */,
 				E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */,
 				E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */,
 				E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */,
 				E24E06872D15706300F4C6D9 /* ClusterC6View.swift */,
-				E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */,
 				E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */,
+				E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */,
 			);
 			path = Clusters;
 			sourceTree = "<group>";
@@ -537,6 +554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0938C432B0C6A0D00367E84 /* SearchViewModel.swift in Sources */,
+				E23A34F52D1C421A00450AA0 /* Cx1R1R2R3View.swift in Sources */,
 				A04E11D72B4C23560067AA39 /* HomeGroupSingleView.swift in Sources */,
 				A01FF5012B4D21B3008F842B /* LoginAPI.swift in Sources */,
 				E29BF8522D106528006DC6D0 /* ClusterSeatInfo.swift in Sources */,
@@ -575,6 +593,7 @@
 				E29BF8442D10529A006DC6D0 /* ClusterC1View.swift in Sources */,
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
+				E23A34F72D1C424500450AA0 /* Cx1R4R5View.swift in Sources */,
 				E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */,
 				A0CF06672B7343D600FE2F15 /* ToastScene.swift in Sources */,
 				E2359E9B2CEDDAEE002B82CA /* Announcement.swift in Sources */,
@@ -590,6 +609,7 @@
 				A0A351312B565EDF00A826A5 /* CustomExceptions.swift in Sources */,
 				A0BBA7022B01DEDC00C3A8A0 /* LoginViewModel.swift in Sources */,
 				A02101D82AFB53BA00CB2FCD /* HomeFriendView.swift in Sources */,
+				E2CA19F12D1C517400D2D461 /* Seat+SeatTextView.swift in Sources */,
 				A02101C52AFB21D800CB2FCD /* HomeViewModel.swift in Sources */,
 				A0CF06652B7340A300FE2F15 /* WhereSceneDelegate.swift in Sources */,
 				A0CF06692B7346B500FE2F15 /* PassThroughWindow.swift in Sources */,
