@@ -25,43 +25,7 @@ struct ClusterCX2View: View {
                         Spacer()
                         ForEach(cx2Arr[7 - row]) { seat in
                             if seat.isValidSeat() {
-                                VStack {
-                                    if seat.isLoggedIn {
-                                        if let url = URL(string: seat.image) {
-                                            if seat.isFriend {
-                                                KFImage(url)
-                                                    .resizable()
-                                                    .placeholder {
-                                                        Image("Imac icon")
-                                                            .resizable()
-                                                            .frame(width: 24, height: 24)
-                                                    }
-                                                    .scaledToFit()
-                                                    .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 1))
-                                                    .frame(width: 22, height: 22)
-                                            }
-                                            else {
-                                                KFImage(url)
-                                                    .resizable()
-                                                    .placeholder {
-                                                        Image("Imac icon")
-                                                            .resizable()
-                                                            .frame(width: 24, height: 24)
-                                                    }
-                                                    .scaledToFit()
-                                                    .frame(width: 22, height: 22)
-                                            }
-                                        }
-                                    } else {
-                                        Image("Imac icon")
-                                            .resizable()
-                                            .frame(width: 22, height: 22)
-                                    }
-                                    Text("\(seat.seat)")
-                                        .foregroundStyle(.whereDeepNavy)
-                                        .font(.GmarketMedium14)
-                                        .monospaced()
-                                }
+                                Seat_SeatTextView(seat: seat)
                                 .frame(width: 22, height: 40)
                             } else {
                                 Text("")

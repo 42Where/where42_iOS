@@ -24,43 +24,7 @@ struct ClusterC5View: View {
                             .frame(width: 40, alignment: .leading)
                         Spacer()
                         ForEach(c5Arr[8 - row]) { seat in
-                            VStack {
-                                if seat.isLoggedIn {
-                                    if let url = URL(string: seat.image) {
-                                        if seat.isFriend {
-                                            KFImage(url)
-                                                .resizable()
-                                                .placeholder {
-                                                    Image("Imac icon")
-                                                        .resizable()
-                                                        .frame(width: 24, height: 24)
-                                                }
-                                                .scaledToFit()
-                                                .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 1))
-                                                .frame(width: 24, height: 24)
-                                        }
-                                        else {
-                                            KFImage(url)
-                                                .resizable()
-                                                .placeholder {
-                                                    Image("Imac icon")
-                                                        .resizable()
-                                                        .frame(width: 24, height: 24)
-                                                }
-                                                .scaledToFit()
-                                                .frame(width: 24, height: 24)
-                                        }
-                                    }
-                                } else {
-                                    Image("Imac icon")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
-                                }
-                                Text("\(seat.seat)")
-                                    .foregroundStyle(.whereDeepNavy)
-                                    .font(.GmarketMedium14)
-                                    .monospaced()
-                            }
+                            Seat_SeatTextView(seat: seat)
                             .frame(width: 30, height: 40)
                             Spacer()
                         }

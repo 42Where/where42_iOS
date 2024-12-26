@@ -10,7 +10,13 @@ import Kingfisher
 
 struct Seat_SeatTextView: View {
     
-    var seat: ClusterSeatInfo = ClusterSeatInfo()
+    var seat: ClusterSeatInfo
+    var frameWidth: CGFloat
+
+    init(seat: ClusterSeatInfo = ClusterSeatInfo(), frameWidth: CGFloat = 24) {
+        self.seat = seat
+        self.frameWidth = frameWidth
+    }
     
     var body: some View {
         VStack {
@@ -22,11 +28,11 @@ struct Seat_SeatTextView: View {
                             .placeholder {
                                 Image("Imac icon")
                                     .resizable()
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: frameWidth, height: frameWidth)
                             }
                             .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 2))
-                            .scaledToFill()
-                            .frame(width: 21, height: 21)
+                            .scaledToFit()
+                            .frame(width: frameWidth, height: frameWidth)
                     }
                     else {
                         KFImage(url)
@@ -34,16 +40,16 @@ struct Seat_SeatTextView: View {
                             .placeholder {
                                 Image("Imac icon")
                                     .resizable()
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: frameWidth, height: frameWidth)
                             }
-                            .scaledToFill()
-                            .frame(width: 21, height: 21)
+                            .scaledToFit()
+                            .frame(width: frameWidth, height: frameWidth)
                     }
                 }
             } else {
                 Image("Imac icon")
                     .resizable()
-                    .frame(width: 21, height: 21)
+                    .frame(width: frameWidth, height: frameWidth)
             }
             Text("\(seat.seat)")
                 .foregroundStyle(.whereDeepNavy)
