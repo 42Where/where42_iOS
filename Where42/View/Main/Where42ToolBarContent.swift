@@ -50,7 +50,9 @@ struct Where42ToolBarContent: ToolbarContent {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink(
-                    destination: ClustersView(),
+                    destination: ClustersView()
+                        .environmentObject(homeViewModel)
+                    ,
                     label: { Image("Clusters icon") }
                 )
                 .disabled(mainViewModel.isDeleteGroupAlertPrsented ||

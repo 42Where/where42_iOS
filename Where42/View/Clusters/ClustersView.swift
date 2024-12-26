@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ClustersView: View {
-    @ObservedObject private var clustersViewModel = ClustersViewModel()
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @StateObject private var clustersViewModel = ClustersViewModel()
     
     var body: some View {
         VStack {
@@ -53,6 +54,12 @@ struct ClustersView: View {
             Spacer()
         }
         .padding(EdgeInsets(top: 16, leading: 50, bottom: 16, trailing: 50))
+        .sheet(isPresented: $clustersViewModel.isModalPresented, content: {
+            ClusterUserSelectedModalView()
+                .presentationDetents([.height(100)])
+                .environmentObject(homeViewModel)
+                .environmentObject(clustersViewModel)
+        })
     }
 }
 

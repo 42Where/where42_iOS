@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Cx1R4R5View: View {
     
+    @EnvironmentObject var clustersViewModel: ClustersViewModel
     var seats: [ClusterSeatInfo] = Array(repeating: ClusterSeatInfo(), count: 8)
     
     var body: some View {
@@ -24,27 +25,35 @@ struct Cx1R4R5View: View {
                 .stroke(Color.black, lineWidth: 2)
             }
             Seat_SeatTextView(seat: seats[7], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: geometry.size.width, y: geometry.size.height * 0.3)
             Seat_SeatTextView(seat: seats[6], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: geometry.size.width * 0.7, y: geometry.size.height * 0.15)
             Seat_SeatTextView(seat: seats[5], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: geometry.size.width * 0.3, y: geometry.size.height * 0.15)
             Seat_SeatTextView(seat: seats[4], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: 0, y: geometry.size.height * 0.3)
             Seat_SeatTextView(seat: seats[3], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: geometry.size.width, y: geometry.size.height * 0.7)
             Seat_SeatTextView(seat: seats[2], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: geometry.size.width * 0.7, y: geometry.size.height * 0.95)
             Seat_SeatTextView(seat: seats[1], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: geometry.size.width * 0.3, y: geometry.size.height * 0.95)
             Seat_SeatTextView(seat: seats[0], frameWidth: 21)
+                .environmentObject(clustersViewModel)
                 .frame(width: 21, height: 30)
                 .position(x: 0, y: geometry.size.height * 0.7)
         }

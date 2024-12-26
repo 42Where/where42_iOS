@@ -9,12 +9,11 @@ import SwiftUI
 import Kingfisher
 
 struct ClusterCX1View: View {
-    @EnvironmentObject var clustersViewModel: ClustersViewModel
-    @State var cx1Arr: [[ClusterSeatInfo]] = [[]]
+    @EnvironmentObject private var clustersViewModel: ClustersViewModel
     
     var body: some View {
         VStack {
-            if cx1Arr.count == 5 {
+            if clustersViewModel.cx1Arr.count == 5 {
                 // r3
                 Spacer()
                 HStack {
@@ -24,7 +23,8 @@ struct ClusterCX1View: View {
                             .font(.GmarketMedium18)
                             .monospaced()
                             .frame(width: 30, alignment: .leading)
-                        Cx1R1R2R3View(seats: cx1Arr[2])
+                        Cx1R1R2R3View(seats: clustersViewModel.cx1Arr[2])
+                            .environmentObject(clustersViewModel)
                             .frame(width: 70, height: 140)
                         Text("")
                             .frame(width: 180, height: 140)
@@ -41,11 +41,13 @@ struct ClusterCX1View: View {
                             .font(.GmarketMedium18)
                             .monospaced()
                             .frame(width: 30, alignment: .leading)
-                        Cx1R1R2R3View(seats: cx1Arr[1])
+                        Cx1R1R2R3View(seats: clustersViewModel.cx1Arr[1])
+                            .environmentObject(clustersViewModel)
                             .frame(width: 70, height: 140)
                         Text("")
                             .frame(width: 30)
-                        Cx1R4R5View(seats: cx1Arr[4])
+                        Cx1R4R5View(seats: clustersViewModel.cx1Arr[4])
+                            .environmentObject(clustersViewModel)
                             .frame(width: 120, height: 140)
                         Text("r5")
                             .foregroundStyle(.whereDeepNavy)
@@ -65,11 +67,13 @@ struct ClusterCX1View: View {
                             .font(.GmarketMedium18)
                             .monospaced()
                             .frame(width: 30, alignment: .leading)
-                        Cx1R1R2R3View(seats: cx1Arr[0])
+                        Cx1R1R2R3View(seats: clustersViewModel.cx1Arr[0])
+                            .environmentObject(clustersViewModel)
                             .frame(width: 70, height: 140)
                         Text("")
                             .frame(width: 30)
-                        Cx1R4R5View(seats: cx1Arr[3])
+                        Cx1R4R5View(seats: clustersViewModel.cx1Arr[3])
+                            .environmentObject(clustersViewModel)
                             .frame(width: 120, height: 140)
                         Text("r4")
                             .foregroundStyle(.whereDeepNavy)
@@ -82,7 +86,7 @@ struct ClusterCX1View: View {
             }
         }
         .task {
-            cx1Arr = await clustersViewModel.getClusterArr(cluster: .cx1)
+            clustersViewModel.cx1Arr = await clustersViewModel.getClusterArr(cluster: .cx1)
         }
     }
 }

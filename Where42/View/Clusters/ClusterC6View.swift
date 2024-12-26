@@ -9,12 +9,11 @@ import SwiftUI
 import Kingfisher
 
 struct ClusterC6View: View {
-    @EnvironmentObject var clustersViewModel: ClustersViewModel
-    @State var c6Arr: [[ClusterSeatInfo]] = [[]]
+    @EnvironmentObject private var clustersViewModel: ClustersViewModel
     
     var body: some View {
         VStack {
-            if c6Arr.count == 10 {
+            if clustersViewModel.c6Arr.count == 10 {
                 ForEach(0..<10) { row in
                     HStack {
                         Text("r\(10 - row)")
@@ -23,7 +22,7 @@ struct ClusterC6View: View {
                             .monospaced()
                             .frame(width: 40, alignment: .leading)
                         Spacer()
-                        ForEach(c6Arr[9 - row]) { seat in
+                        ForEach(clustersViewModel.c6Arr[9 - row]) { seat in
                             Seat_SeatTextView(seat: seat)
                                 .frame(width: 25, height: 40)
                             Spacer()
@@ -33,7 +32,7 @@ struct ClusterC6View: View {
             }
         }
         .task {
-            c6Arr = await clustersViewModel.getClusterArr(cluster: .c6)
+            clustersViewModel.c6Arr = await clustersViewModel.getClusterArr(cluster: .c6)
         }
     }
 }
