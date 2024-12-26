@@ -74,9 +74,24 @@
 		E2359E9B2CEDDAEE002B82CA /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9A2CEDDAEE002B82CA /* Announcement.swift */; };
 		E2359E9D2CEDDCD1002B82CA /* AnnouncementAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */; };
 		E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */; };
+		E23A34F52D1C421A00450AA0 /* Cx1R1R2R3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23A34F42D1C421A00450AA0 /* Cx1R1R2R3View.swift */; };
+		E23A34F72D1C424500450AA0 /* Cx1R4R5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23A34F62D1C424500450AA0 /* Cx1R4R5View.swift */; };
+		E24E06862D15705C00F4C6D9 /* ClusterC5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */; };
+		E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06872D15706300F4C6D9 /* ClusterC6View.swift */; };
 		E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */; };
 		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
+		E2793FA12D1D619400BAA1AB /* ClusterUserSelectedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */; };
+		E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */; };
+		E29BF83E2D104F9B006DC6D0 /* ClusterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */; };
+		E29BF8402D1051BA006DC6D0 /* Cluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83F2D1051BA006DC6D0 /* Cluster.swift */; };
+		E29BF8442D10529A006DC6D0 /* ClusterC1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */; };
+		E29BF8462D1052A3006DC6D0 /* ClusterC2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */; };
+		E29BF84C2D1052C4006DC6D0 /* ClusterCX1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */; };
+		E29BF84E2D1052D0006DC6D0 /* ClusterCX2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */; };
+		E29BF8502D10549C006DC6D0 /* ClustersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */; };
+		E29BF8522D106528006DC6D0 /* ClusterSeatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */; };
 		E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */; };
+		E2CA19F12D1C517400D2D461 /* Seat+SeatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -150,9 +165,24 @@
 		E2359E9A2CEDDAEE002B82CA /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPI.swift; sourceTree = "<group>"; };
 		E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewModel.swift; sourceTree = "<group>"; };
+		E23A34F42D1C421A00450AA0 /* Cx1R1R2R3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cx1R1R2R3View.swift; sourceTree = "<group>"; };
+		E23A34F62D1C424500450AA0 /* Cx1R4R5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cx1R4R5View.swift; sourceTree = "<group>"; };
+		E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC5View.swift; sourceTree = "<group>"; };
+		E24E06872D15706300F4C6D9 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalView.swift; sourceTree = "<group>"; };
 		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
+		E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterUserSelectedModalView.swift; sourceTree = "<group>"; };
+		E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersView.swift; sourceTree = "<group>"; };
+		E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAPI.swift; sourceTree = "<group>"; };
+		E29BF83F2D1051BA006DC6D0 /* Cluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cluster.swift; sourceTree = "<group>"; };
+		E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC1View.swift; sourceTree = "<group>"; };
+		E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC2View.swift; sourceTree = "<group>"; };
+		E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCX1View.swift; sourceTree = "<group>"; };
+		E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCX2View.swift; sourceTree = "<group>"; };
+		E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersViewModel.swift; sourceTree = "<group>"; };
+		E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterSeatInfo.swift; sourceTree = "<group>"; };
 		E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementView.swift; sourceTree = "<group>"; };
+		E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seat+SeatTextView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +230,7 @@
 				A06DB6442AFDD9A00021263A /* SettingViewModel.swift */,
 				A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */,
 				E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */,
+				E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -207,6 +238,7 @@
 		A02101C72AFB221900CB2FCD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E29BF83A2D104D94006DC6D0 /* Clusters */,
 				E2C0C19E2CE9E9BF00F01C03 /* Announcement */,
 				A02101D22AFB25F800CB2FCD /* Main */,
 				A02101CE2AFB25B500CB2FCD /* Home */,
@@ -222,6 +254,7 @@
 		A02101CB2AFB23D400CB2FCD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E24E06842D15675900F4C6D9 /* Cluster */,
 				A02101CC2AFB23F400CB2FCD /* MemberInfoModel.swift */,
 				A02101C92AFB23A500CB2FCD /* GruopInfoModel.swift */,
 				E2359E9A2CEDDAEE002B82CA /* Announcement.swift */,
@@ -297,6 +330,7 @@
 				A0A351302B565EDF00A826A5 /* CustomExceptions.swift */,
 				E255D5732C919D9700B65076 /* VersionAPI.swift */,
 				E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */,
+				E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -390,6 +424,41 @@
 				A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E23A34F82D1C424A00450AA0 /* ClusterCx1 */ = {
+			isa = PBXGroup;
+			children = (
+				E23A34F42D1C421A00450AA0 /* Cx1R1R2R3View.swift */,
+				E23A34F62D1C424500450AA0 /* Cx1R4R5View.swift */,
+				E29BF84B2D1052C4006DC6D0 /* ClusterCX1View.swift */,
+			);
+			path = ClusterCx1;
+			sourceTree = "<group>";
+		};
+		E24E06842D15675900F4C6D9 /* Cluster */ = {
+			isa = PBXGroup;
+			children = (
+				E29BF83F2D1051BA006DC6D0 /* Cluster.swift */,
+				E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */,
+			);
+			name = Cluster;
+			sourceTree = "<group>";
+		};
+		E29BF83A2D104D94006DC6D0 /* Clusters */ = {
+			isa = PBXGroup;
+			children = (
+				E23A34F82D1C424A00450AA0 /* ClusterCx1 */,
+				E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */,
+				E29BF8432D10529A006DC6D0 /* ClusterC1View.swift */,
+				E29BF8452D1052A3006DC6D0 /* ClusterC2View.swift */,
+				E24E06852D15705C00F4C6D9 /* ClusterC5View.swift */,
+				E24E06872D15706300F4C6D9 /* ClusterC6View.swift */,
+				E29BF84D2D1052D0006DC6D0 /* ClusterCX2View.swift */,
+				E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */,
+				E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */,
+			);
+			path = Clusters;
 			sourceTree = "<group>";
 		};
 		E2C0C19E2CE9E9BF00F01C03 /* Announcement */ = {
@@ -488,12 +557,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0938C432B0C6A0D00367E84 /* SearchViewModel.swift in Sources */,
+				E23A34F52D1C421A00450AA0 /* Cx1R1R2R3View.swift in Sources */,
 				A04E11D72B4C23560067AA39 /* HomeGroupSingleView.swift in Sources */,
 				A01FF5012B4D21B3008F842B /* LoginAPI.swift in Sources */,
+				E29BF8522D106528006DC6D0 /* ClusterSeatInfo.swift in Sources */,
+				E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */,
 				A019CC462B038DBB007DBA20 /* SelectingView.swift in Sources */,
 				E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */,
 				A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */,
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
+				E29BF8502D10549C006DC6D0 /* ClustersViewModel.swift in Sources */,
 				A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */,
 				A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */,
 				A06DA4C32B903E9D00960A3F /* HideKeyboard.swift in Sources */,
@@ -508,30 +581,39 @@
 				A0BBA7042B01E09800C3A8A0 /* MyWebView.swift in Sources */,
 				A06DB6472AFDDF6C0021263A /* HomeGroupViewModel.swift in Sources */,
 				A01551AA2AECE56400B9D271 /* SearchView.swift in Sources */,
+				E29BF84E2D1052D0006DC6D0 /* ClusterCX2View.swift in Sources */,
 				A0D5E0372B15DD9F00BEE525 /* MemberAPI.swift in Sources */,
 				A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */,
 				A06BAE9E2AFA2D4100DB5A76 /* HomeFriendInfoView.swift in Sources */,
 				A04756722AEEB714000872B9 /* LoginView.swift in Sources */,
+				E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */,
 				A06BAE9C2AF9E7CC00DB5A76 /* HomeInfoView.swift in Sources */,
 				A0D836052B5BB2BE006C18E2 /* GroupMemberAddView.swift in Sources */,
+				E29BF83E2D104F9B006DC6D0 /* ClusterAPI.swift in Sources */,
 				A02101DA2AFB56BD00CB2FCD /* GroupEditModal.swift in Sources */,
+				E29BF84C2D1052C4006DC6D0 /* ClusterCX1View.swift in Sources */,
 				A0D836072B5BD675006C18E2 /* SettingAlert.swift in Sources */,
+				E29BF8442D10529A006DC6D0 /* ClusterC1View.swift in Sources */,
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
+				E23A34F72D1C424500450AA0 /* Cx1R4R5View.swift in Sources */,
 				E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */,
 				A0CF06672B7343D600FE2F15 /* ToastScene.swift in Sources */,
+				E2793FA12D1D619400BAA1AB /* ClusterUserSelectedModalView.swift in Sources */,
 				E2359E9B2CEDDAEE002B82CA /* Announcement.swift in Sources */,
 				E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */,
 				A01551BD2AEE401C00B9D271 /* SettingView.swift in Sources */,
 				A0CF066B2B73496400FE2F15 /* WhereAppDelegate.swift in Sources */,
 				A019CC482B038E4D007DBA20 /* SelectingFriendInfoView.swift in Sources */,
 				A02101CA2AFB23A500CB2FCD /* GruopInfoModel.swift in Sources */,
+				E24E06862D15705C00F4C6D9 /* ClusterC5View.swift in Sources */,
 				A02101CD2AFB23F400CB2FCD /* MemberInfoModel.swift in Sources */,
 				A0F0391C2BC3E78A001CD937 /* KeychainManager.swift in Sources */,
 				A0F6839A2B4AC3A400EEA986 /* SheetOrPopOver.swift in Sources */,
 				A0A351312B565EDF00A826A5 /* CustomExceptions.swift in Sources */,
 				A0BBA7022B01DEDC00C3A8A0 /* LoginViewModel.swift in Sources */,
 				A02101D82AFB53BA00CB2FCD /* HomeFriendView.swift in Sources */,
+				E2CA19F12D1C517400D2D461 /* Seat+SeatTextView.swift in Sources */,
 				A02101C52AFB21D800CB2FCD /* HomeViewModel.swift in Sources */,
 				A0CF06652B7340A300FE2F15 /* WhereSceneDelegate.swift in Sources */,
 				A0CF06692B7346B500FE2F15 /* PassThroughWindow.swift in Sources */,
@@ -539,10 +621,12 @@
 				A0FD453E2AEB81D70050AB09 /* Where42.swift in Sources */,
 				E2359E9D2CEDDCD1002B82CA /* AnnouncementAPI.swift in Sources */,
 				A0D836092B5BD736006C18E2 /* CustomLocationView.swift in Sources */,
+				E29BF8462D1052A3006DC6D0 /* ClusterC2View.swift in Sources */,
 				A092EECF2B870E6D002D7B1F /* SearchSelectedMembersView.swift in Sources */,
 				A02101D42AFB4C9200CB2FCD /* FriendEditModal.swift in Sources */,
 				A0ECD5E82B36AAAB0032F46D /* GroupMemberDeleteView.swift in Sources */,
 				A03A748B2B5B9B03003100DF /* GroupEditSelectModal.swift in Sources */,
+				E29BF8402D1051BA006DC6D0 /* Cluster.swift in Sources */,
 				E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */,
 				A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */,
 				A0FD453C2AEB81D70050AB09 /* Where42App.swift in Sources */,

@@ -362,4 +362,45 @@ class GroupAPI: API {
 
         return nil
     }
+    
+    func addFriend(intraId: Int) async throws -> Bool {
+
+        guard let requestURL = URL(string: baseURL + "/group/groupmember?intraId=\(intraId)") else {
+            print("Failed create URL")
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.invalidHTTPResponse
+        }
+        
+        switch response.statusCode {
+        case 200 ... 299:
+            return true
+        case 400 ... 499:
+            let response = String(data: data, encoding: String.Encoding.utf8)!
+            if response.contains("errorCode") && response.contains("errorMessage") {
+                let customException = parseCustomException(response: response)
+                if customException.handleError() == false {
+                    try await API.sharedAPI.reissue()
+                    throw NetworkError.Reissue
+                }
+            } else {
+                throw NetworkError.BadRequest
+            }
+        case 500 ... 599:
+            throw NetworkError.ServerError
+        default:
+            print("Failed add friend")
+            return false
+        }
+        return false
+    }
 }
