@@ -31,12 +31,24 @@ struct ClusterCX2View: View {
                                             if seat.isFriend {
                                                 KFImage(url)
                                                     .resizable()
-                                                    .frame(width: 22, height: 22)
+                                                    .placeholder {
+                                                        Image("Imac icon")
+                                                            .resizable()
+                                                            .frame(width: 24, height: 24)
+                                                    }
+                                                    .scaledToFit()
                                                     .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 1))
+                                                    .frame(width: 22, height: 22)
                                             }
                                             else {
                                                 KFImage(url)
                                                     .resizable()
+                                                    .placeholder {
+                                                        Image("Imac icon")
+                                                            .resizable()
+                                                            .frame(width: 24, height: 24)
+                                                    }
+                                                    .scaledToFit()
                                                     .frame(width: 22, height: 22)
                                             }
                                         }

@@ -30,12 +30,24 @@ struct ClusterC5View: View {
                                         if seat.isFriend {
                                             KFImage(url)
                                                 .resizable()
-                                                .frame(width: 24, height: 24)
+                                                .placeholder {
+                                                    Image("Imac icon")
+                                                        .resizable()
+                                                        .frame(width: 24, height: 24)
+                                                }
+                                                .scaledToFit()
                                                 .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 1))
+                                                .frame(width: 24, height: 24)
                                         }
                                         else {
                                             KFImage(url)
                                                 .resizable()
+                                                .placeholder {
+                                                    Image("Imac icon")
+                                                        .resizable()
+                                                        .frame(width: 24, height: 24)
+                                                }
+                                                .scaledToFit()
                                                 .frame(width: 24, height: 24)
                                         }
                                     }

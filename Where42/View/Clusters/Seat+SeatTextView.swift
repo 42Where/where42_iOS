@@ -19,12 +19,24 @@ struct Seat_SeatTextView: View {
                     if seat.isFriend {
                         KFImage(url)
                             .resizable()
+                            .placeholder {
+                                Image("Imac icon")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                            }
+                            .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 2))
+                            .scaledToFill()
                             .frame(width: 21, height: 21)
-                            .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 1))
                     }
                     else {
                         KFImage(url)
                             .resizable()
+                            .placeholder {
+                                Image("Imac icon")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                            }
+                            .scaledToFill()
                             .frame(width: 21, height: 21)
                     }
                 }
