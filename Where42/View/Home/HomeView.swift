@@ -54,6 +54,8 @@ struct HomeView: View {
                     
                     await mainViewModel.checkVersion()
                     if mainViewModel.isUpdateNeeded {
+                        await mainViewModel.logout()
+                        mainViewModel.isLogin = false
                         self.showUpdateAlert = true
                     }
                 }
@@ -86,9 +88,6 @@ struct HomeView: View {
                    UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)
                 }
-                KeychainManager.deleteToken(key: "accessToken")
-                KeychainManager.deleteToken(key: "refreshToken")
-                mainViewModel.isLogin = false
             }
         }
     }

@@ -32,7 +32,8 @@ class MainViewModel: ObservableObject {
 
     @Published var toast: Toast? = nil
 
-    let versionAPI = VersionAPI()
+    private let loginAPI = LoginAPI.shared
+    private let versionAPI = VersionAPI()
     
     func setToast(type: String?) {
         DispatchQueue.main.async {
@@ -67,6 +68,16 @@ class MainViewModel: ObservableObject {
             }
         } catch {
             API.errorPrint(error, message: "Failed to check if version update needed")
+        }
+    }
+    
+    func logout() async {
+        do {
+            try await loginAPI.logout()
+            KeychainManager.deleteToken(key: "accessToken")
+            KeychainManager.deleteToken(key: "refreshToken")
+        } catch {
+            API.errorPrint(error, message: "Failed to logout")
         }
     }
 }
