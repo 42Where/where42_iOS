@@ -88,6 +88,9 @@ struct HomeView: View {
                    UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)
                 }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    exit(0)
+                }
             }
         }
     }
