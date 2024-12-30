@@ -89,7 +89,7 @@ struct HomeView: View {
                     UIApplication.shared.open(url)
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    exit(0)
+                    UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
                 }
             }
         }
