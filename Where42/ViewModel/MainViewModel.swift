@@ -76,6 +76,7 @@ class MainViewModel: ObservableObject {
             try await loginAPI.logout()
             KeychainManager.deleteToken(key: "accessToken")
             KeychainManager.deleteToken(key: "refreshToken")
+            self.isLogin = false
         } catch {
             API.errorPrint(error, message: "Failed to logout")
         }
