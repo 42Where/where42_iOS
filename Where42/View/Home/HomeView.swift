@@ -54,6 +54,7 @@ struct HomeView: View {
                     
                     await mainViewModel.checkVersion()
                     if mainViewModel.isUpdateNeeded {
+                        await mainViewModel.logout()
                         self.showUpdateAlert = true
                     }
                 }
@@ -80,15 +81,12 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $mainViewModel.isSelectViewPrsented) {
             SelectingView()
         }
-        .alert("새로운 버전이 출시되었습니다. 업데이트를 위해 이동합니다.", isPresented: $showUpdateAlert) {
+        .alert("새로운 버전이 출시되었습니다. 업데이트 후 이용해주세요.", isPresented: $showUpdateAlert) {
             Button("예") {
                 if let url = URL(string: "itms-apps://itunes.apple.com/app/6478480891"),
                    UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)
                 }
-                KeychainManager.deleteToken(key: "accessToken")
-                KeychainManager.deleteToken(key: "refreshToken")
-                mainViewModel.isLogin = false
             }
         }
     }

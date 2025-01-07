@@ -11,6 +11,10 @@ struct reissueDTO: Codable {
     var accessToken: String
 }
 
+struct reissueRequestDTO: Codable {
+    var intraId: String
+}
+
 class API: ObservableObject {
     static var sharedAPI = API()
 
@@ -70,12 +74,20 @@ class API: ObservableObject {
         return accessToken
     }
 
-    func getRefreshToken() -> String {
-        guard let refreshToken = KeychainManager.readToken(key: "refreshToken") else {
-            return ""
+//    func getRefreshToken() -> String {
+//        guard let refreshToken = KeychainManager.readToken(key: "refreshToken") else {
+//            return ""
+//        }
+//
+//        return refreshToken
+//    }
+    
+    func getIntraId() -> String {
+        guard let intraId = KeychainManager.readToken(key: "intraId") else {
+            print("getIntraId method returned 0")
+            return "0"
         }
-
-        return refreshToken
+        return intraId
     }
 
     func reissue() async throws {
@@ -86,7 +98,15 @@ class API: ObservableObject {
         do {
             var request = URLRequest(url: requestURL)
             request.httpMethod = "POST"
-            request.addValue(getRefreshToken(), forHTTPHeaderField: "Authorization")
+
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            guard let requestBody = try?JSONEncoder().encode(reissueRequestDTO(intraId: getIntraId())) else {
+                print("Failed Create Reissue Request body")
+                throw NetworkError.invalidRequestBody
+            }
+            
+            request.httpBody = requestBody
+//            request.addValue(getRefreshToken(), forHTTPHeaderField: "Authorization")
 
 //        print("API.sharedAPI.refreshToken: ", API.sharedAPI.refreshToken)
 //            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)

@@ -90,11 +90,22 @@ struct MyWebView: UIViewRepresentable {
                     printError(message: "reached intra profile")
                     return
                 }
-                if redirectURL.contains("https://where42.kr/") == true {
+                if redirectURL.contains("https://dev.where42.kr/") == true {
                     if redirectURL.contains("login-fail") == true {
                         printError(message: "reached login-fail")
                         return
                     } else if redirectURL.contains("?intraId=") == true {
+                        if let url = URL(string: redirectURL),
+                           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                           let queryItems = components.queryItems {
+                            if let intraIdStr = queryItems.first(where: { $0.name == "intraId" })?.value {
+                                KeychainManager.createToken(key: "intraId", token: intraIdStr)
+                            } else {
+                                print("intraId가 존재하지 않습니다.")
+                            }
+                        } else {
+                            print("URL을 파싱할 수 없습니다.")
+                        }
                         let query = webView.url?.query()?.split(separator: "&")
                         webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
 //                                print("-------------- Cookie --------------")
@@ -103,10 +114,11 @@ struct MyWebView: UIViewRepresentable {
                                 if cookie.name == "accessToken" {
                                     KeychainManager.createToken(key: "accessToken", token: "Bearer " + cookie.value)
                                     HTTPCookieStorage.shared.setCookie(cookie)
-                                } else if cookie.name == "refreshToken" {
-                                    KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
-                                    HTTPCookieStorage.shared.setCookie(cookie)
                                 }
+//                                else if cookie.name == "refreshToken" {
+//                                    KeychainManager.createToken(key: "refreshToken", token: "Bearer " + cookie.value)
+//                                    HTTPCookieStorage.shared.setCookie(cookie)
+//                                }
                             }
 //                                print("------------------------------------")
                             self.parseQuery(intraId: String(query![0]), agreement: String(query![1]))
@@ -131,7 +143,8 @@ struct MyWebView: UIViewRepresentable {
             }
             print("-------------- Parse --------------")
             print(KeychainManager.readToken(key: "accessToken") as Any)
-            print(KeychainManager.readToken(key: "refreshToken") as Any)
+            print(KeychainManager.readToken(key: "intraId") as Any)
+//            print(KeychainManager.readToken(key: "refreshToken") as Any)
             print("------------------------------------")
         }
         
