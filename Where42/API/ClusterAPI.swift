@@ -56,6 +56,8 @@ class ClusterAPI: API {
                 let r = loggedInMembersInfo[i].row
                 let s = loggedInMembersInfo[i].seat
                 
+                if r > seatArr.count || s > seatArr[0].count { continue }
+                
                 seatArr[r - 1][s - 1].id = loggedInMembersInfo[i].intraId
                 seatArr[r - 1][s - 1].isLoggedIn = true
                 seatArr[r - 1][s - 1].intraName = loggedInMembersInfo[i].intraName
