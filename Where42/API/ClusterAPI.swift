@@ -29,7 +29,7 @@ class ClusterAPI: API {
         
         var seatArr = getClusterArr(cluster)
         
-        guard let requestURL = URL(string: baseURL + "/cluster/" + cluster.rawValue) else {
+        guard let requestURL = URL(string: baseURL + "/location/active/" + cluster.rawValue) else {
             throw NetworkError.invalidURL
         }
         
