@@ -12,7 +12,7 @@ struct reissueDTO: Codable {
 }
 
 struct reissueRequestDTO: Codable {
-    var intraId: Int
+    var intraId: String
 }
 
 class API: ObservableObject {
@@ -81,6 +81,14 @@ class API: ObservableObject {
 //
 //        return refreshToken
 //    }
+    
+    func getIntraId() -> String {
+        guard let intraId = KeychainManager.readToken(key: "intraId") else {
+            print("getIntraId method returned 0")
+            return "0"
+        }
+        return intraId
+    }
 
     func reissue() async throws {
         guard let requestURL = URL(string: baseURL + "/jwt/reissue") else {
@@ -92,7 +100,7 @@ class API: ObservableObject {
             request.httpMethod = "POST"
 
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            guard let requestBody = try?JSONEncoder().encode(reissueRequestDTO(intraId: LoginInfo.intraId)) else {
+            guard let requestBody = try?JSONEncoder().encode(reissueRequestDTO(intraId: getIntraId())) else {
                 print("Failed Create Reissue Request body")
                 throw NetworkError.invalidRequestBody
             }

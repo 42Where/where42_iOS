@@ -162,6 +162,9 @@ class SettingViewModel: ObservableObject {
         do {
             try await loginAPI.logout()
             KeychainManager.deleteToken(key: "accessToken")
+            if let _ = KeychainManager.readToken(key: "intraId") {
+                KeychainManager.deleteToken(key: "intraId")
+            }
         } catch {
             API.errorPrint(error, message: "Failed to logout")
         }

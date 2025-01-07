@@ -95,18 +95,11 @@ struct MyWebView: UIViewRepresentable {
                         printError(message: "reached login-fail")
                         return
                     } else if redirectURL.contains("?intraId=") == true {
-                        print("MYTEST : \(redirectURL)")
                         if let url = URL(string: redirectURL),
                            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
                            let queryItems = components.queryItems {
                             if let intraIdStr = queryItems.first(where: { $0.name == "intraId" })?.value {
-                                if let intraId = Int(intraIdStr) {
-                                    print("intraId: \(intraId)")
-                                    LoginInfo.intraId = intraId
-                                } else {
-                                    print("intraId 형변환을 실패했습니다!")
-                                    return
-                                }
+                                KeychainManager.createToken(key: "intraId", token: intraIdStr)
                             } else {
                                 print("intraId가 존재하지 않습니다.")
                             }
@@ -150,6 +143,7 @@ struct MyWebView: UIViewRepresentable {
             }
             print("-------------- Parse --------------")
             print(KeychainManager.readToken(key: "accessToken") as Any)
+            print(KeychainManager.readToken(key: "intraId") as Any)
 //            print(KeychainManager.readToken(key: "refreshToken") as Any)
             print("------------------------------------")
         }
