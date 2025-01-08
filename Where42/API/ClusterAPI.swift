@@ -14,7 +14,7 @@ struct CurrentLoggedInMembersDTO: Decodable {
 struct LoggedInMemberInfoDTO: Decodable {
     var intraId: Int
     var intraName: String
-    var image: String
+    var image: String?
     var cluster: String
     var row: Int
     var seat: Int
@@ -61,7 +61,7 @@ class ClusterAPI: API {
                 seatArr[r - 1][s - 1].id = loggedInMembersInfo[i].intraId
                 seatArr[r - 1][s - 1].isLoggedIn = true
                 seatArr[r - 1][s - 1].intraName = loggedInMembersInfo[i].intraName
-                seatArr[r - 1][s - 1].image = loggedInMembersInfo[i].image
+                seatArr[r - 1][s - 1].image = loggedInMembersInfo[i].image ?? "nil"
                 seatArr[r - 1][s - 1].cluster = loggedInMembersInfo[i].cluster
                 seatArr[r - 1][s - 1].row = loggedInMembersInfo[i].row
                 seatArr[r - 1][s - 1].seat = loggedInMembersInfo[i].seat

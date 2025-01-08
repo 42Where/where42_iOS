@@ -31,9 +31,15 @@ struct Seat_SeatTextView: View {
                             KFImage(url)
                                 .resizable()
                                 .placeholder {
-                                    Image("Imac icon")
-                                        .resizable()
-                                        .frame(width: frameWidth, height: frameWidth)
+                                    if seat.image == "nil" {
+                                        Image("Profile")
+                                            .resizable()
+                                            .frame(width: frameWidth, height: frameWidth)
+                                    } else {
+                                        Image("Imac icon")
+                                            .resizable()
+                                            .frame(width: frameWidth, height: frameWidth)
+                                    }
                                 }
                                 .overlay(Rectangle().stroke(.whereDeepPink, lineWidth: 2))
                                 .scaledToFit()
@@ -43,9 +49,15 @@ struct Seat_SeatTextView: View {
                             KFImage(url)
                                 .resizable()
                                 .placeholder {
-                                    Image("Imac icon")
-                                        .resizable()
-                                        .frame(width: frameWidth, height: frameWidth)
+                                    if seat.image == "nil" {
+                                        Image("Profile")
+                                            .resizable()
+                                            .frame(width: frameWidth, height: frameWidth)
+                                    } else {
+                                        Image("Imac icon")
+                                            .resizable()
+                                            .frame(width: frameWidth, height: frameWidth)
+                                    }
                                 }
                                 .scaledToFit()
                                 .frame(width: frameWidth, height: frameWidth)
