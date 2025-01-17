@@ -22,7 +22,7 @@ struct AnnouncementDTO: Decodable {
   var updateAt: String
 }
 
-class AnnouncementAPI: API {
+final class AnnouncementAPI: API {
   
   static let shared = AnnouncementAPI()
   

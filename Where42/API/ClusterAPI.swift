@@ -21,7 +21,7 @@ struct LoggedInMemberInfoDTO: Decodable {
     var isFriend: Bool
 }
 
-class ClusterAPI: API {
+final class ClusterAPI: API {
     
     static let shared = ClusterAPI()
     

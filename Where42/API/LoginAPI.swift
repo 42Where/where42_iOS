@@ -11,7 +11,7 @@ struct joinDTO: Codable {
     var accessToken: String
 }
 
-class LoginAPI: API {
+final class LoginAPI: API {
     static let shared = LoginAPI()
 
     func login() async throws {

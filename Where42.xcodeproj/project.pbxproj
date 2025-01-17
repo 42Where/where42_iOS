@@ -80,6 +80,7 @@
 		E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06872D15706300F4C6D9 /* ClusterC6View.swift */; };
 		E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */; };
 		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
+		E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */; };
 		E2793FA12D1D619400BAA1AB /* ClusterUserSelectedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */; };
 		E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */; };
 		E29BF83E2D104F9B006DC6D0 /* ClusterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */; };
@@ -171,6 +172,7 @@
 		E24E06872D15706300F4C6D9 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalView.swift; sourceTree = "<group>"; };
 		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
+		E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatAPI.swift; sourceTree = "<group>"; };
 		E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterUserSelectedModalView.swift; sourceTree = "<group>"; };
 		E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersView.swift; sourceTree = "<group>"; };
 		E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAPI.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				E255D5732C919D9700B65076 /* VersionAPI.swift */,
 				E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */,
 				E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */,
+				E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				E29BF8402D1051BA006DC6D0 /* Cluster.swift in Sources */,
 				E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */,
 				A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */,
+				E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */,
 				A0FD453C2AEB81D70050AB09 /* Where42App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

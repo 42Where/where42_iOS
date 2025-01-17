@@ -26,7 +26,7 @@ struct AddOneGroupMemberDTO: Codable {
     var groupId: Int
 }
 
-class GroupAPI: API {
+final class GroupAPI: API {
     static let shared = GroupAPI()
 
     func createGroup(groupName: String) async throws -> Int? {
