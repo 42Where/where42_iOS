@@ -70,25 +70,10 @@ final class ClusterAPI: API {
             
             return seatArr
             
-        case 300...399:
-            throw NetworkError.BadRequest
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
             
-        case 400...499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-            
-        case 500...599:
-            throw NetworkError.ServerError
-            
-        default: print("Failed Requesting Recent Version")
+        default: print("Failed Requesting ClusterAPI")
             
         }
         
