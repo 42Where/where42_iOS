@@ -8,8 +8,24 @@
 import SwiftUI
 
 struct StatView: View {
+
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+    @StateObject var statViewModel: StatViewModel = .init()
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            VStack {
+                HStack {
+                    Text("클러스터 실시간 현황")
+                    Spacer()
+                }
+                ClusterUsageView()
+                IMacUsageView()
+                UserSeatHistoryView()
+                PopularImacView()
+            }
+        }
+        .padding(EdgeInsets(top: 40, leading: 40, bottom: 40, trailing: 40))
     }
 }
 

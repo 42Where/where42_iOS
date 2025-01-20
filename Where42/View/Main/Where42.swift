@@ -44,6 +44,16 @@ struct Where42: View {
                             }
                             .tag("Search")
                             .environment(\.horizontalSizeClass, oldSizeClass)
+                        
+                        StatView()
+                            .tabItem {
+                                VStack {
+                                    Image("Stat icon M")
+                                    Text("⸻")
+                                }
+                            }
+                            .tag("Stat")
+                            .environment(\.horizontalSizeClass, oldSizeClass)
                     }
                     .environment(\.horizontalSizeClass, .compact)
                     .toolbar {
