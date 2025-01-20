@@ -19,7 +19,7 @@ struct SearchView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20)
-                    TextField("2글자 이상 입력해주세요", text: $searchViewModel.name)
+                    TextField("3글자 이상 입력해주세요", text: $searchViewModel.name)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
@@ -118,7 +118,7 @@ struct SearchView: View {
         .environmentObject(searchViewModel)
         .onChange(of: searchViewModel.name) { newValue in
             Task {
-                if newValue.count >= 2 && newValue.count < 10 {
+                if newValue.count >= 3 && newValue.count < 10 {
                     searchViewModel.publisher.send(newValue)
                     searchViewModel.searchStatus = .searching
                 } else {
