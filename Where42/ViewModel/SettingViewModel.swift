@@ -48,14 +48,16 @@ class SettingViewModel: ObservableObject {
         do {
             if inputText == "" {
                 try await memberAPI.deleteComment()
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.newComment = ""
                 }
                 return nil
             }
 
             if let comment = try await memberAPI.updateComment(comment: inputText) {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.newComment = comment
                     self.inputText = ""
                 }
@@ -71,7 +73,8 @@ class SettingViewModel: ObservableObject {
     func deleteComment() async -> Bool? {
         do {
             try await memberAPI.deleteComment()
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.newComment = ""
             }
             return true
@@ -84,14 +87,16 @@ class SettingViewModel: ObservableObject {
     }
 
     func initCustomLocation() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.selectedFloor = 0
             self.selectedLocation = ""
         }
     }
 
     func setCustomLocation() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             if self.selectedFloor == 6 || self.selectedLocation == "집현전" || self.selectedLocation == "42LAB" || self.selectedLocation.contains("클러스터") == true {
                 self.customLocation = self.selectedLocation
             } else if self.selectedFloor != 0 && self.selectedLocation != "" {
@@ -105,7 +110,8 @@ class SettingViewModel: ObservableObject {
             setCustomLocation()
             if let responseCustomLocation = try await memberAPI.updateCustomLocation(customLocation: customLocation) {
                 if responseCustomLocation.contains("http") == false {
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
                         self.newLocation = responseCustomLocation
                         withAnimation {
                             self.isCustomLocationAlertPresented = false
@@ -133,7 +139,8 @@ class SettingViewModel: ObservableObject {
         do {
             if let status = try await memberAPI.deleteCustomLocation() {
                 if status == true {
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
                         self.newLocation = "개포"
                         withAnimation {
                             self.isInitCustomLocationAlertPrsented = false
