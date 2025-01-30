@@ -10,10 +10,26 @@ import Foundation
 // MARK: - DTOs
 
 struct SingleClusterUsage: Codable {
+    // MARK: - Properties
     var name: String
     var usageRate: Int
     var usingImacCount: Int
     var totalImacCount: Int
+    
+    // MARK: - Initializers
+    init(name: String, usageRate: Int, usingImacCount: Int, totalImacCount: Int) {
+        self.name = name
+        self.usageRate = usageRate
+        self.usingImacCount = usingImacCount
+        self.totalImacCount = totalImacCount
+    }
+    
+    init(name: String) {
+        self.name = name
+        self.usageRate = 0
+        self.usingImacCount = 0
+        self.totalImacCount = 0
+    }
 }
 struct ClusterUsageDTO: Codable {
     var clusters: [SingleClusterUsage]
@@ -22,6 +38,7 @@ struct ClusterUsageDTO: Codable {
 struct IMacUsageDTO: Codable {
     var usageRate: Int
     var usingImacUserCount: Int
+    var totalUserCount: Int
 }
 
 struct SingleUserSeatHistory: Codable {
@@ -125,13 +142,13 @@ extension StatAPI {
             print("Failed Requesting StatAPI")
         }
         
-        return IMacUsageDTO(usageRate: -1, usingImacUserCount: -1)
+        return IMacUsageDTO(usageRate: -1, usingImacUserCount: -1, totalUserCount: -1)
     }
 }
 
 // MARK: - User Seat History
 extension StatAPI {
-    func getUserSeatHistory() async throws -> SingleUserSeatHistory {
+    func getUserSeatHistory() async throws -> [SingleUserSeatHistory] {
         
         let request = try await generateURLRequest(.userSeatHistory)
         
@@ -144,14 +161,14 @@ extension StatAPI {
         switch response.statusCode {
         case 200...299:
             let singleUserSeatHistory = try JSONDecoder().decode(UserSeatHistoryDTO.self, from: data)
-            return singleUserSeatHistory.seats[0]
+            return singleUserSeatHistory.seats
         case 300...599:
             try await handleAPIError(response: response, data: data)
         default:
             print("Failed Requesting StatAPI")
         }
         
-        return SingleUserSeatHistory(seat: "", usingTimeHour: -1, usingTimeMinute: -1, usingTimeSecond: -1, usingCount: -1)
+        return [SingleUserSeatHistory(seat: "", usingTimeHour: -1, usingTimeMinute: -1, usingTimeSecond: -1, usingCount: -1)]
     }
 }
 
