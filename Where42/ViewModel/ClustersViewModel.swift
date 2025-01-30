@@ -24,27 +24,33 @@ class ClustersViewModel: ObservableObject {
         let arr = await getClusterArr(cluster: cluster)
         switch cluster {
         case .c1:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.c1Arr = arr
             }
         case .c2:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.c2Arr = arr
             }
         case .c5:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.c5Arr = arr
             }
         case .c6:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.c6Arr = arr
             }
         case .cx1:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.cx1Arr = arr
             }
         case .cx2:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.cx2Arr = arr
             }
         }
