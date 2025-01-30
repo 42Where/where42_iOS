@@ -31,11 +31,21 @@ extension StatViewModel {
     // MARK: - Method
     func fetchData() async {
         do {
-            clusterUsages = try await statAPI.getClusterUsage()
-            iMacUsage = try await statAPI.getIMacUsage()
-            userSeatHistory = try await statAPI.getUserSeatHistory()
-            popularIMacs = try await statAPI.getPopularIMac()
-            isLoaded = true
+            let tmpClusterUsages = try await statAPI.getClusterUsage()
+            let tmpIMacUsage = try await statAPI.getIMacUsage()
+            let tmpUserSeatHistory = try await statAPI.getUserSeatHistory()
+            let tmpPopularIMacs = try await statAPI.getPopularIMac()
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+
+                self.clusterUsages = tmpClusterUsages
+                self.iMacUsage = tmpIMacUsage
+                self.userSeatHistory = tmpUserSeatHistory
+                self.popularIMacs = tmpPopularIMacs
+                self.isLoaded = true
+            }
+
         } catch API.NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")

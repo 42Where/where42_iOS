@@ -57,7 +57,7 @@ struct SinglePopularIMac: Codable {
     var usingTimeHour: Int
     var usingTimeMinute: Int
     var usingTimeSecond: Int
-    var usingCount: Int
+    var usingUserCount: Int
 }
 struct PopularIMacDTO: Codable {
     var seats: [SinglePopularIMac]
@@ -72,7 +72,7 @@ final class StatAPI: API {
     private enum StatURL: String {
         case clusterUsage = "/location/cluster/usage"
         case imacUsage = "/location/cluster/imacUsage"
-        case userSeatHistory = "/analytics/user-seat-history?count=1"
+        case userSeatHistory = "/analytics/seat-history?count=1"
         case popularImacCount = "/analytics/popular-imac?count=5"
     }
     
@@ -194,6 +194,6 @@ extension StatAPI {
             print("Failed Requesting StatAPI")
         }
         
-        return [SinglePopularIMac(seat: "", usingTimeHour: -1, usingTimeMinute: -1, usingTimeSecond: -1, usingCount: -1)]
+        return [SinglePopularIMac(seat: "", usingTimeHour: -1, usingTimeMinute: -1, usingTimeSecond: -1, usingUserCount: -1)]
     }
 }

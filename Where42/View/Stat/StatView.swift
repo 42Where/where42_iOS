@@ -17,9 +17,9 @@ struct StatView: View {
     }
     
     var body: some View {
-        if 1 == 1 {
-            ScrollView {
-                LazyVStack(spacing: 20) {
+        ScrollView {
+            LazyVStack(spacing: 20) {
+                if statViewModel.isLoaded {
                     Section {
                         ClusterUsageView()
                             .environmentObject(statViewModel)
@@ -32,7 +32,6 @@ struct StatView: View {
                             Spacer()
                         }
                     }
-
                     Section {
                         UserSeatHistoryView()
                             .environmentObject(statViewModel)
@@ -43,7 +42,6 @@ struct StatView: View {
                             Spacer()
                         }
                     }
-                    
                     Section {
                         PopularImacView()
                             .environmentObject(statViewModel)
@@ -54,40 +52,21 @@ struct StatView: View {
                             Spacer()
                         }
                     }
+                } else {
+                    ProgressView()
                 }
             }
             .padding(EdgeInsets(top: 40, leading: 20, bottom: 40, trailing: 20))
-            .onAppear {
-                statViewModel.isLoaded = true
-                statViewModel.clusterUsages[0].usageRate = 1
-                statViewModel.clusterUsages[0].totalImacCount = 63
-                statViewModel.clusterUsages[0].usingImacCount = 6
-                statViewModel.clusterUsages[1].usageRate = 30
-                statViewModel.clusterUsages[1].totalImacCount = 80
-                statViewModel.clusterUsages[1].usingImacCount = 24
-                statViewModel.clusterUsages[2].usageRate = 30
-                statViewModel.clusterUsages[2].totalImacCount = 63
-                statViewModel.clusterUsages[2].usingImacCount = 19
-                statViewModel.clusterUsages[3].usageRate = 30
-                statViewModel.clusterUsages[3].totalImacCount = 80
-                statViewModel.clusterUsages[3].usingImacCount = 24
-                statViewModel.clusterUsages[4].usageRate = 30
-                statViewModel.clusterUsages[4].totalImacCount = 28
-                statViewModel.clusterUsages[4].usingImacCount = 8
-                statViewModel.clusterUsages[5].usageRate = 30
-                statViewModel.clusterUsages[5].totalImacCount = 56
-                statViewModel.clusterUsages[5].usingImacCount = 17
-                statViewModel.iMacUsage.totalUserCount = 230
-                statViewModel.iMacUsage.usingImacUserCount = 228
-                statViewModel.userSeatHistory.append(SingleUserSeatHistory(seat: "c2r6s1", usingTimeHour: 9, usingTimeMinute: 9, usingTimeSecond: 9, usingCount: 9))
-                statViewModel.popularIMacs.append(SinglePopularIMac(seat: "c1r1s1", usingTimeHour: 0, usingTimeMinute: 0, usingTimeSecond: 0, usingCount: 0))
-                statViewModel.popularIMacs.append(SinglePopularIMac(seat: "c2r2s2", usingTimeHour: 0, usingTimeMinute: 0, usingTimeSecond: 0, usingCount: 0))
-                statViewModel.popularIMacs.append(SinglePopularIMac(seat: "c3r3s3", usingTimeHour: 0, usingTimeMinute: 0, usingTimeSecond: 0, usingCount: 0))
-                statViewModel.popularIMacs.append(SinglePopularIMac(seat: "c4r4s4", usingTimeHour: 0, usingTimeMinute: 0, usingTimeSecond: 0, usingCount: 0))
-                statViewModel.popularIMacs.append(SinglePopularIMac(seat: "c5r5s5", usingTimeHour: 0, usingTimeMinute: 0, usingTimeSecond: 0, usingCount: 0))
+            .task {
+                if !statViewModel.isLoaded {
+                    await statViewModel.fetchData()
+                }
             }
-        } else {
-            ProgressView()
+        }
+        .refreshable {
+            Task {
+                await statViewModel.fetchData()
+            }
         }
     }
 }
