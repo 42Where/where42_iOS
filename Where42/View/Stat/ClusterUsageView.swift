@@ -40,21 +40,23 @@ struct ClusterUsageView: View {
                     SingleClusterUsageView(curIdx: 3)
                         .environmentObject(statViewModel)
                 }
-                //            HStack {
-                //                VStack {
-                //                    Circle()
-                //                        .frame(width: 20)
-                //                        .foregroundStyle(.whereLightNavy)
-                //                    Text("수용 인원")
-                //                }
-                //                Divider()
-                //                VStack {
-                //                    Circle()
-                //                        .frame(width: 20)
-                //                        .foregroundStyle(.whereDeepNavy)
-                //                    Text("출석 인원")
-                //                }
-                //            }
+                HStack {
+                    VStack {
+                        Circle()
+                            .frame(width: 10)
+                            .foregroundStyle(.whereLightNavy)
+                        Text("사용 가능 자리")
+                            .font(.GmarketLight14)
+                    }
+                    Divider()
+                    VStack {
+                        Circle()
+                            .frame(width: 10)
+                            .foregroundStyle(.whereDeepNavy)
+                        Text("사용 중인 자리")
+                            .font(.GmarketLight14)
+                    }
+                }
             }
         }
         .padding(EdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20))
