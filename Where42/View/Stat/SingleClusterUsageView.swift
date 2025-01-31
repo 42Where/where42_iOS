@@ -10,7 +10,7 @@ import SwiftUI
 struct SingleClusterUsageView: View {
     
     @EnvironmentObject var statViewModel: StatViewModel
-    var curIdx: Int = 0
+    @State var clusterName: String = ""
     
     var body: some View {
         VStack(spacing: 2) {
@@ -20,12 +20,12 @@ struct SingleClusterUsageView: View {
                     .frame(width: 60, height: 60)
                     .foregroundStyle(.whereLightNavy)
                 Circle()
-                    .trim(from: 0.0, to: CGFloat(statViewModel.clusterUsages[curIdx].usageRate) / 100.0)
+                    .trim(from: 0.0, to: CGFloat(statViewModel.clusterUsagesDic[clusterName]?.usageRate ?? 0) / 100.0)
                     .stroke(style: StrokeStyle(lineWidth: 60, lineCap: .butt, lineJoin: .round))
                     .frame(width: 60, height: 60)
                     .foregroundColor(.whereDeepNavy)
                     .rotationEffect(.degrees(-90))
-                    .animation(.easeInOut(duration: 1), value: Double(statViewModel.clusterUsages[curIdx].usageRate) / 100.0)
+                    .animation(.easeInOut(duration: 1), value: Double(statViewModel.clusterUsagesDic[clusterName]?.usageRate ?? 0) / 100.0)
             }
             
             Rectangle()
@@ -44,11 +44,13 @@ struct SingleClusterUsageView: View {
     }
     
     private func getClusterNameString() -> String {
-        return statViewModel.clusterUsages[curIdx].name.uppercased()
+        return clusterName.uppercased()
     }
     
     private func getUsageRateText() -> String {
-        return "(\(statViewModel.clusterUsages[curIdx].usingImacCount) / \(statViewModel.clusterUsages[curIdx].totalImacCount))"
+        let usingImacCount = statViewModel.clusterUsagesDic[clusterName]?.usingImacCount ?? 0
+        let totalImacCount = statViewModel.clusterUsagesDic[clusterName]?.totalImacCount ?? 0
+        return "(\(usingImacCount) / \(totalImacCount))"
     }
 }
 

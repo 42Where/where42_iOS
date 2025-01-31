@@ -12,14 +12,14 @@ final class StatViewModel: ObservableObject {
 
     // MARK: - Published Properties
     @Published var isLoaded: Bool = false
-    @Published var clusterUsages: [SingleClusterUsage] = []
     @Published var iMacUsage: IMacUsageDTO = .init(usageRate: -1, usingImacUserCount: -1, totalUserCount: -1)
     @Published var userSeatHistory: [SingleUserSeatHistory] = []
     @Published var popularIMacs: [SinglePopularIMac] = []
-    private var clusterUsagesDic: [String: SingleClusterUsage] = [:]
+    @Published var clusterUsagesDic: [String: SingleClusterUsage] = [:]
     
     // MARK: - Properties
     private let statAPI = StatAPI.shared
+    private var clusterUsagesArr: [SingleClusterUsage] = []
     
     // MARK: - Intializers
     init() {
@@ -32,7 +32,7 @@ extension StatViewModel {
     // MARK: - Method
     func fetchData() async {
         do {
-            clusterUsagesDic = try await statAPI.getClusterUsage()
+            clusterUsagesArr = try await statAPI.getClusterUsage()
             let tmpIMacUsage = try await statAPI.getIMacUsage()
             let tmpUserSeatHistory = try await statAPI.getUserSeatHistory()
             let tmpPopularIMacs = try await statAPI.getPopularIMac()
@@ -58,13 +58,9 @@ extension StatViewModel {
     func makeDefaultClusterUsages() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-
-            if self.clusterUsages.count != 0 {
-                self.clusterUsages.removeAll()
-            }
             
             for cluster in Cluster.allCases {
-                clusterUsages.append(SingleClusterUsage(name: cluster.rawValue))
+                self.clusterUsagesDic[cluster.rawValue] = SingleClusterUsage(name: cluster.rawValue)
             }
         }
     }
@@ -74,10 +70,8 @@ extension StatViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            for i in 0..<clusterUsages.count {
-                self.clusterUsages[i].usageRate = self.clusterUsagesDic[clusterUsages[i].name]?.usageRate ?? 0
-                self.clusterUsages[i].totalImacCount = self.clusterUsagesDic[clusterUsages[i].name]?.totalImacCount ?? 0
-                self.clusterUsages[i].usingImacCount = self.clusterUsagesDic[clusterUsages[i].name]?.usingImacCount ?? 0
+            for i in 0..<clusterUsagesArr.count {
+                self.clusterUsagesDic[clusterUsagesArr[i].name] = self.clusterUsagesArr[i]
             }
         }
     }

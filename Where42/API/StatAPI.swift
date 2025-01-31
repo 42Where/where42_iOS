@@ -92,7 +92,7 @@ final class StatAPI: API {
 
 // MARK: - Cluster Usage
 extension StatAPI {
-    func getClusterUsage() async throws -> [String: SingleClusterUsage] {
+    func getClusterUsage() async throws -> [SingleClusterUsage] {
 
         let request = try await generateURLRequest(.clusterUsage)
         
@@ -107,11 +107,7 @@ extension StatAPI {
         case 200...299:
             let clustersUsage = try JSONDecoder().decode(ClusterUsageDTO.self, from: data)
             let clusterUsageArr = clustersUsage.clusters
-            var dic: [String: SingleClusterUsage] = [:]
-            for elem in clusterUsageArr {
-                dic[elem.name] = elem
-            }
-            return dic
+            return clusterUsageArr
 
         case 300...599:
             try await handleAPIError(response: response, data: data)
@@ -120,7 +116,7 @@ extension StatAPI {
             print("Failed Requesting StatAPI")
         }
 
-        return ["": SingleClusterUsage(name: "", usageRate: -1, usingImacCount: -1, totalImacCount: -1)]
+        return [SingleClusterUsage(name: "", usageRate: -1, usingImacCount: -1, totalImacCount: -1)]
     }
 }
 

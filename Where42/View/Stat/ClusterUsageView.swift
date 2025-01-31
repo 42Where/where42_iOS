@@ -15,47 +15,42 @@ struct ClusterUsageView: View {
         LazyVStack(spacing: 40) {
             Text("클러스터 별 이용률")
                 .font(.GmarketMedium18)
-            if statViewModel.clusterUsages.count != 6 {
-                Text("정상적인 데이터를 수신하지 못했습니다")
-                    .font(.GmarketLight18)
-            } else {
-                HStack {
-                    SingleClusterUsageView(curIdx: 0)
-                        .environmentObject(statViewModel)
-                    Spacer()
-                    SingleClusterUsageView(curIdx: 1)
-                        .environmentObject(statViewModel)
+            HStack {
+                SingleClusterUsageView(clusterName: Cluster.c1.rawValue)
+                    .environmentObject(statViewModel)
+                Spacer()
+                SingleClusterUsageView(clusterName: Cluster.c2.rawValue)
+                    .environmentObject(statViewModel)
+            }
+            HStack {
+                SingleClusterUsageView(clusterName: Cluster.c5.rawValue)
+                    .environmentObject(statViewModel)
+                Spacer()
+                SingleClusterUsageView(clusterName: Cluster.c6.rawValue)
+                    .environmentObject(statViewModel)
+            }
+            HStack {
+                SingleClusterUsageView(clusterName: Cluster.cx1.rawValue)
+                    .environmentObject(statViewModel)
+                Spacer()
+                SingleClusterUsageView(clusterName: Cluster.cx2.rawValue)
+                    .environmentObject(statViewModel)
+            }
+            HStack {
+                VStack {
+                    Circle()
+                        .frame(width: 10)
+                        .foregroundStyle(.whereLightNavy)
+                    Text("사용 가능 자리")
+                        .font(.GmarketLight14)
                 }
-                HStack {
-                    SingleClusterUsageView(curIdx: 2)
-                        .environmentObject(statViewModel)
-                    Spacer()
-                    SingleClusterUsageView(curIdx: 3)
-                        .environmentObject(statViewModel)
-                }
-                HStack {
-                    SingleClusterUsageView(curIdx: 4)
-                        .environmentObject(statViewModel)
-                    Spacer()
-                    SingleClusterUsageView(curIdx: 5)
-                        .environmentObject(statViewModel)
-                }
-                HStack {
-                    VStack {
-                        Circle()
-                            .frame(width: 10)
-                            .foregroundStyle(.whereLightNavy)
-                        Text("사용 가능 자리")
-                            .font(.GmarketLight14)
-                    }
-                    Divider()
-                    VStack {
-                        Circle()
-                            .frame(width: 10)
-                            .foregroundStyle(.whereDeepNavy)
-                        Text("사용 중인 자리")
-                            .font(.GmarketLight14)
-                    }
+                Divider()
+                VStack {
+                    Circle()
+                        .frame(width: 10)
+                        .foregroundStyle(.whereDeepNavy)
+                    Text("사용 중인 자리")
+                        .font(.GmarketLight14)
                 }
             }
         }
