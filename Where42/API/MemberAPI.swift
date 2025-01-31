@@ -26,7 +26,7 @@ struct DeleteMemberDTO: Codable {
     var intraId: Int
 }
 
-class MemberAPI: API {
+final class MemberAPI: API {
     static let shared = MemberAPI()
 
     func getMemberInfo() async throws -> MemberInfo? {

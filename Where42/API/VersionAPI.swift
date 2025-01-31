@@ -16,7 +16,7 @@ struct CheckVersionDTO: Codable {
     var version: String
 }
 
-class VersionAPI: API {
+final class VersionAPI: API {
 //    static let shared = VersionAPI()
 
     func checkUpdateNeeded() async throws {

@@ -36,7 +36,10 @@ class MainViewModel: ObservableObject {
     private let versionAPI = VersionAPI()
     
     func setToast(type: String?) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+
+            guard let self = self else { return }
+
             switch type {
             case "wrongGroupName":
                 self.toast = Toast(title: "잘못된 그룹 이름입니다")
@@ -59,11 +62,13 @@ class MainViewModel: ObservableObject {
     func checkVersion() async {
         do {
             try await versionAPI.checkUpdateNeeded()
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.isUpdateNeeded = false
             }
         } catch API.NetworkError.VersionUpdate {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.isUpdateNeeded = true
             }
         } catch {

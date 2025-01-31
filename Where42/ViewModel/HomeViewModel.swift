@@ -22,7 +22,8 @@ class HomeViewModel: ObservableObject {
     @Published var myInfo: MemberInfo = .empty
     @Published var myGroups: [GroupInfo] = [.empty, .empty] {
         didSet {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.setFilteredGroups()
             }
         }
@@ -81,7 +82,8 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return}
                     self.myInfo = responseMemberInfo!
                     MainViewModel.shared.isLogin = true
                 }
@@ -106,7 +108,8 @@ class HomeViewModel: ObservableObject {
     func getGroup() async {
         do {
             let responseGroups = try await groupAPI.getGroup()
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 if let responseGroups = responseGroups {
                     self.myGroups = responseGroups.map { group in
                         var sortedGroup = group
@@ -149,7 +152,8 @@ class HomeViewModel: ObservableObject {
                 return false
             }
 
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
 //                print(responseMembers)
                 self.notInGroup.members = responseMembers
                 self.notInGroup.members.sort()
@@ -186,7 +190,8 @@ class HomeViewModel: ObservableObject {
                     if await addMemberInGroup(groupId: groupId) == false {
                         return
                     }
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
                         self.newGroup.members = self.selectedMembers
                         self.myGroups.append(self.newGroup)
                     }
@@ -205,7 +210,8 @@ class HomeViewModel: ObservableObject {
             API.errorPrint(error, message: "Failed Create Group")
         }
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.initNewGroup()
         }
         await getGroup()
@@ -220,7 +226,8 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     if let selectedIndex = self.myGroups.firstIndex(where: { $0.groupId == groupId }) {
                         self.myGroups[selectedIndex].members += self.selectedMembers.map { member in
                             var newMember = member
@@ -254,7 +261,8 @@ class HomeViewModel: ObservableObject {
                 return false
             }
 
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 if self.selectedGroup.groupId == self.friends.groupId {
                     withAnimation {
                         self.friends.members = self.selectedGroup.members.filter { member in
@@ -304,7 +312,8 @@ class HomeViewModel: ObservableObject {
                 return false
             }
 
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 if self.selectedGroup.groupId == self.friends.groupId {
                     withAnimation {
                         self.friends.members = self.selectedGroup.members.filter { member in
@@ -354,7 +363,8 @@ class HomeViewModel: ObservableObject {
                     groupId: myGroups[index].groupId,
                     newGroupName: inputText
                 ) {
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
                         self.myGroups[index].groupName = self.inputText
                         self.inputText = ""
                         self.selectedGroup = .empty
@@ -393,7 +403,8 @@ class HomeViewModel: ObservableObject {
                         groupId: myGroups[index].groupId
                     ) {
                         withAnimation {
-                            DispatchQueue.main.async {
+                            DispatchQueue.main.async { [weak self] in
+                                guard let self = self else { return }
                                 self.myGroups.remove(at: index)
                             }
                         }

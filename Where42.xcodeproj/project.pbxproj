@@ -71,6 +71,13 @@
 		A0FD45402AEB81DB0050AB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0FD453F2AEB81DB0050AB09 /* Assets.xcassets */; };
 		A0FD45432AEB81DB0050AB09 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */; };
 		A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */; };
+		E20953432D3E3AA6001F43B8 /* StatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20953422D3E3AA6001F43B8 /* StatView.swift */; };
+		E20953452D3E438E001F43B8 /* ClusterUsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20953442D3E438E001F43B8 /* ClusterUsageView.swift */; };
+		E20953472D3E44C1001F43B8 /* IMacUsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20953462D3E44C1001F43B8 /* IMacUsageView.swift */; };
+		E20953492D3E44E1001F43B8 /* UserSeatHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20953482D3E44E1001F43B8 /* UserSeatHistoryView.swift */; };
+		E209534B2D3E44EC001F43B8 /* PopularImacView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E209534A2D3E44EC001F43B8 /* PopularImacView.swift */; };
+		E209534D2D3E5FD8001F43B8 /* StatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E209534C2D3E5FD8001F43B8 /* StatViewModel.swift */; };
+		E209534F2D3E6FF3001F43B8 /* SingleClusterUsageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E209534E2D3E6FF3001F43B8 /* SingleClusterUsageView.swift */; };
 		E2359E9B2CEDDAEE002B82CA /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9A2CEDDAEE002B82CA /* Announcement.swift */; };
 		E2359E9D2CEDDCD1002B82CA /* AnnouncementAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */; };
 		E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */; };
@@ -80,6 +87,7 @@
 		E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06872D15706300F4C6D9 /* ClusterC6View.swift */; };
 		E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */; };
 		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
+		E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */; };
 		E2793FA12D1D619400BAA1AB /* ClusterUserSelectedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */; };
 		E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */; };
 		E29BF83E2D104F9B006DC6D0 /* ClusterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */; };
@@ -162,6 +170,13 @@
 		A0FD453F2AEB81DB0050AB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A0FDC54E2B08B2C300B3D49E /* MainAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAlertView.swift; sourceTree = "<group>"; };
+		E20953422D3E3AA6001F43B8 /* StatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatView.swift; sourceTree = "<group>"; };
+		E20953442D3E438E001F43B8 /* ClusterUsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterUsageView.swift; sourceTree = "<group>"; };
+		E20953462D3E44C1001F43B8 /* IMacUsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMacUsageView.swift; sourceTree = "<group>"; };
+		E20953482D3E44E1001F43B8 /* UserSeatHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeatHistoryView.swift; sourceTree = "<group>"; };
+		E209534A2D3E44EC001F43B8 /* PopularImacView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularImacView.swift; sourceTree = "<group>"; };
+		E209534C2D3E5FD8001F43B8 /* StatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatViewModel.swift; sourceTree = "<group>"; };
+		E209534E2D3E6FF3001F43B8 /* SingleClusterUsageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleClusterUsageView.swift; sourceTree = "<group>"; };
 		E2359E9A2CEDDAEE002B82CA /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPI.swift; sourceTree = "<group>"; };
 		E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewModel.swift; sourceTree = "<group>"; };
@@ -171,6 +186,7 @@
 		E24E06872D15706300F4C6D9 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalView.swift; sourceTree = "<group>"; };
 		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
+		E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatAPI.swift; sourceTree = "<group>"; };
 		E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterUserSelectedModalView.swift; sourceTree = "<group>"; };
 		E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersView.swift; sourceTree = "<group>"; };
 		E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAPI.swift; sourceTree = "<group>"; };
@@ -231,6 +247,7 @@
 				A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */,
 				E2359E9E2CEE140A002B82CA /* AnnouncementViewModel.swift */,
 				E29BF84F2D10549C006DC6D0 /* ClustersViewModel.swift */,
+				E209534C2D3E5FD8001F43B8 /* StatViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -238,6 +255,7 @@
 		A02101C72AFB221900CB2FCD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E20953412D3E3A92001F43B8 /* Stat */,
 				E29BF83A2D104D94006DC6D0 /* Clusters */,
 				E2C0C19E2CE9E9BF00F01C03 /* Announcement */,
 				A02101D22AFB25F800CB2FCD /* Main */,
@@ -331,6 +349,7 @@
 				E255D5732C919D9700B65076 /* VersionAPI.swift */,
 				E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */,
 				E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */,
+				E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -424,6 +443,19 @@
 				A0FD45422AEB81DB0050AB09 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E20953412D3E3A92001F43B8 /* Stat */ = {
+			isa = PBXGroup;
+			children = (
+				E20953422D3E3AA6001F43B8 /* StatView.swift */,
+				E209534E2D3E6FF3001F43B8 /* SingleClusterUsageView.swift */,
+				E20953442D3E438E001F43B8 /* ClusterUsageView.swift */,
+				E20953462D3E44C1001F43B8 /* IMacUsageView.swift */,
+				E20953482D3E44E1001F43B8 /* UserSeatHistoryView.swift */,
+				E209534A2D3E44EC001F43B8 /* PopularImacView.swift */,
+			);
+			path = Stat;
 			sourceTree = "<group>";
 		};
 		E23A34F82D1C424A00450AA0 /* ClusterCx1 */ = {
@@ -567,6 +599,7 @@
 				A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */,
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
 				E29BF8502D10549C006DC6D0 /* ClustersViewModel.swift in Sources */,
+				E209534F2D3E6FF3001F43B8 /* SingleClusterUsageView.swift in Sources */,
 				A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */,
 				A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */,
 				A06DA4C32B903E9D00960A3F /* HideKeyboard.swift in Sources */,
@@ -580,12 +613,14 @@
 				A0782B832AFCA00A00A7DDDA /* readSize.swift in Sources */,
 				A0BBA7042B01E09800C3A8A0 /* MyWebView.swift in Sources */,
 				A06DB6472AFDDF6C0021263A /* HomeGroupViewModel.swift in Sources */,
+				E20953472D3E44C1001F43B8 /* IMacUsageView.swift in Sources */,
 				A01551AA2AECE56400B9D271 /* SearchView.swift in Sources */,
 				E29BF84E2D1052D0006DC6D0 /* ClusterCX2View.swift in Sources */,
 				A0D5E0372B15DD9F00BEE525 /* MemberAPI.swift in Sources */,
 				A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */,
 				A06BAE9E2AFA2D4100DB5A76 /* HomeFriendInfoView.swift in Sources */,
 				A04756722AEEB714000872B9 /* LoginView.swift in Sources */,
+				E20953492D3E44E1001F43B8 /* UserSeatHistoryView.swift in Sources */,
 				E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */,
 				A06BAE9C2AF9E7CC00DB5A76 /* HomeInfoView.swift in Sources */,
 				A0D836052B5BB2BE006C18E2 /* GroupMemberAddView.swift in Sources */,
@@ -593,6 +628,7 @@
 				A02101DA2AFB56BD00CB2FCD /* GroupEditModal.swift in Sources */,
 				E29BF84C2D1052C4006DC6D0 /* ClusterCX1View.swift in Sources */,
 				A0D836072B5BD675006C18E2 /* SettingAlert.swift in Sources */,
+				E20953452D3E438E001F43B8 /* ClusterUsageView.swift in Sources */,
 				E29BF8442D10529A006DC6D0 /* ClusterC1View.swift in Sources */,
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
@@ -604,7 +640,9 @@
 				E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */,
 				A01551BD2AEE401C00B9D271 /* SettingView.swift in Sources */,
 				A0CF066B2B73496400FE2F15 /* WhereAppDelegate.swift in Sources */,
+				E20953432D3E3AA6001F43B8 /* StatView.swift in Sources */,
 				A019CC482B038E4D007DBA20 /* SelectingFriendInfoView.swift in Sources */,
+				E209534D2D3E5FD8001F43B8 /* StatViewModel.swift in Sources */,
 				A02101CA2AFB23A500CB2FCD /* GruopInfoModel.swift in Sources */,
 				E24E06862D15705C00F4C6D9 /* ClusterC5View.swift in Sources */,
 				A02101CD2AFB23F400CB2FCD /* MemberInfoModel.swift in Sources */,
@@ -624,11 +662,13 @@
 				E29BF8462D1052A3006DC6D0 /* ClusterC2View.swift in Sources */,
 				A092EECF2B870E6D002D7B1F /* SearchSelectedMembersView.swift in Sources */,
 				A02101D42AFB4C9200CB2FCD /* FriendEditModal.swift in Sources */,
+				E209534B2D3E44EC001F43B8 /* PopularImacView.swift in Sources */,
 				A0ECD5E82B36AAAB0032F46D /* GroupMemberDeleteView.swift in Sources */,
 				A03A748B2B5B9B03003100DF /* GroupEditSelectModal.swift in Sources */,
 				E29BF8402D1051BA006DC6D0 /* Cluster.swift in Sources */,
 				E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */,
 				A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */,
+				E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */,
 				A0FD453C2AEB81D70050AB09 /* Where42App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

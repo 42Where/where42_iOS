@@ -40,7 +40,8 @@ class SearchViewModel: ObservableObject {
             searchStatus = .apiCalled
             Task {
                 await searchMemeber(keyWord: keyWord)
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.searchStatus = .waiting
                     if self.name == "" {
                         self.searching = []
@@ -53,7 +54,8 @@ class SearchViewModel: ObservableObject {
     func searchMemeber(keyWord: String) async {
         do {
             if let searchingMember = try await memberAPI.search(keyWord: keyWord) {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     if self.searchStatus == .apiCalled {
                         self.searching = searchingMember.map { memberInfo in
                             var member = memberInfo
@@ -81,7 +83,8 @@ class SearchViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.initSearchingAfterAdd()
                 }
             }

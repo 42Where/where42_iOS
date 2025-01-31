@@ -23,7 +23,8 @@ class LoginViewModel: ObservableObject {
         Task {
             do {
                 try await loginAPI.login()
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     MainViewModel.shared.is42IntraSheetPresented = true
                     self.isLoginButtonPushed = false
                     self.dots = ""
@@ -38,12 +39,14 @@ class LoginViewModel: ObservableObject {
     func join(intraId: String) async -> Bool {
         do {
             try await loginAPI.join(intraId: intraId)
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.isAgreeButtonPushed = false
             }
             return true
         } catch API.NetworkError.Reissue {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.isAgreeButtonPushed = false
             }
             MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")

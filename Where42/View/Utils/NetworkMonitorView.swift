@@ -22,7 +22,8 @@ class NetworkMonitor: ObservableObject {
 
     func startMonitoring() {
         networkMonitor.pathUpdateHandler = { path in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.isConnected = path.status == .satisfied
                 if path.usesInterfaceType(.wifi) {
                     print("Using wifi")

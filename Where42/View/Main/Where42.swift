@@ -19,6 +19,7 @@ struct Where42: View {
     @StateObject var loginViewModel: LoginViewModel = .init()
     @StateObject var settingViewModel: SettingViewModel = .init()
     @StateObject var networkMonitor: NetworkMonitor = .shared
+    @State private var isStatViewLoaded: Bool = false
 
     @Environment(\.horizontalSizeClass) var oldSizeClass
 
@@ -44,11 +45,28 @@ struct Where42: View {
                             }
                             .tag("Search")
                             .environment(\.horizontalSizeClass, oldSizeClass)
+                        
+                        StatView()
+                            .tabItem {
+                                VStack {
+                                    Image("Stat icon M")
+                                    Text("⸻")
+                                }
+                            }
+                            .onAppear() {
+                                isStatViewLoaded = true
+                            }
+                            .onDisappear() {
+                                isStatViewLoaded = false
+                            }
+                            .tag("Stat")
+                            .environment(\.horizontalSizeClass, oldSizeClass)
                     }
                     .environment(\.horizontalSizeClass, .compact)
                     .toolbar {
                         Where42ToolBarContent()
                     }
+                    .toolbarBackground(isStatViewLoaded ? .visible : .hidden, for: .navigationBar)
                     .unredacted()
                     .zIndex(0)
 
