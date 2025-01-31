@@ -15,7 +15,7 @@ struct ClusterUsageView: View {
         LazyVStack(spacing: 40) {
             Text("클러스터 별 이용률")
                 .font(.GmarketMedium18)
-            if statViewModel.clusterUsages.count != 8 {
+            if statViewModel.clusterUsages.count != 6 {
                 Text("정상적인 데이터를 수신하지 못했습니다")
                     .font(.GmarketLight18)
             } else {
@@ -27,17 +27,17 @@ struct ClusterUsageView: View {
                         .environmentObject(statViewModel)
                 }
                 HStack {
-                    SingleClusterUsageView(curIdx: 6)
-                        .environmentObject(statViewModel)
-                    Spacer()
-                    SingleClusterUsageView(curIdx: 7)
-                        .environmentObject(statViewModel)
-                }
-                HStack {
                     SingleClusterUsageView(curIdx: 2)
                         .environmentObject(statViewModel)
                     Spacer()
                     SingleClusterUsageView(curIdx: 3)
+                        .environmentObject(statViewModel)
+                }
+                HStack {
+                    SingleClusterUsageView(curIdx: 4)
+                        .environmentObject(statViewModel)
+                    Spacer()
+                    SingleClusterUsageView(curIdx: 5)
                         .environmentObject(statViewModel)
                 }
                 HStack {

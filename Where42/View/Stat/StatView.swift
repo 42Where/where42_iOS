@@ -60,12 +60,16 @@ struct StatView: View {
             .task {
                 if !statViewModel.isLoaded {
                     await statViewModel.fetchData()
+                    statViewModel.setClusterUsages()
                 }
             }
         }
         .refreshable {
             Task {
                 await statViewModel.fetchData()
+                statViewModel.makeDefaultClusterUsages()
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                statViewModel.setClusterUsages()
             }
         }
     }
