@@ -253,7 +253,7 @@ final class MemberAPI: API {
 
     func search(keyWord: String) async throws -> [MemberInfo]? {
         print("----- search -----")
-        guard let requestURL = URL(string: baseURL + "/search?keyWord=\(keyWord)") else {
+        guard let requestURL = URL(string: baseURL + "/search/new?keyWord=\(keyWord)") else {
             throw NetworkError.invalidURL
         }
 
