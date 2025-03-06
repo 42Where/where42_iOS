@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-struct reissueDTO: Codable {
-    var accessToken: String
-}
-
-struct reissueRequestDTO: Codable {
-    var intraId: String
-}
-
 class API: ObservableObject {
     static var sharedAPI = API()
 
@@ -123,7 +115,7 @@ class API: ObservableObject {
             request.httpMethod = "POST"
 
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            guard let requestBody = try?JSONEncoder().encode(reissueRequestDTO(intraId: getIntraId())) else {
+            guard let requestBody = try?JSONEncoder().encode(ReissueRequestDTO(intraId: getIntraId())) else {
                 print("Failed Create Reissue Request body")
                 throw NetworkError.invalidRequestBody
             }
@@ -151,7 +143,7 @@ class API: ObservableObject {
                     }
                     throw NetworkError.Reissue
                 } else {
-                    let reissueAccessToken = try JSONDecoder().decode(reissueDTO.self, from: data).accessToken
+                    let reissueAccessToken = try JSONDecoder().decode(ReissueDTO.self, from: data).accessToken
 //                    API.sharedAPI.accessToken = "Bearer " + reissueAccessToken
                     KeychainManager.updateToken(key: "accessToken", token: "Bearer " + reissueAccessToken)
                     return

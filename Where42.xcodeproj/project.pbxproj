@@ -87,6 +87,14 @@
 		E24E06882D15706300F4C6D9 /* ClusterC6View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E06872D15706300F4C6D9 /* ClusterC6View.swift */; };
 		E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */; };
 		E255D5742C919D9700B65076 /* VersionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E255D5732C919D9700B65076 /* VersionAPI.swift */; };
+		E25907AF2D799E2A0093121C /* ReissueDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907AE2D799E2A0093121C /* ReissueDTO.swift */; };
+		E25907B12D799E5A0093121C /* MemberDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907B02D799E5A0093121C /* MemberDTO.swift */; };
+		E25907B32D799E820093121C /* GroupDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907B22D799E820093121C /* GroupDTO.swift */; };
+		E25907B52D799E9D0093121C /* JoinDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907B42D799E9D0093121C /* JoinDTO.swift */; };
+		E25907B72D799EC50093121C /* VersionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907B62D799EC50093121C /* VersionDTO.swift */; };
+		E25907B92D799EF10093121C /* AnnouncementDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907B82D799EF10093121C /* AnnouncementDTO.swift */; };
+		E25907BB2D799F160093121C /* ClusterDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907BA2D799F160093121C /* ClusterDTO.swift */; };
+		E25907BD2D799F400093121C /* StatDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907BC2D799F400093121C /* StatDTO.swift */; };
 		E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */; };
 		E2793FA12D1D619400BAA1AB /* ClusterUserSelectedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */; };
 		E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */; };
@@ -186,6 +194,14 @@
 		E24E06872D15706300F4C6D9 /* ClusterC6View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterC6View.swift; sourceTree = "<group>"; };
 		E25001D02CF07DF400042E1D /* AnnouncementModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementModalView.swift; sourceTree = "<group>"; };
 		E255D5732C919D9700B65076 /* VersionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionAPI.swift; sourceTree = "<group>"; };
+		E25907AE2D799E2A0093121C /* ReissueDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReissueDTO.swift; sourceTree = "<group>"; };
+		E25907B02D799E5A0093121C /* MemberDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberDTO.swift; sourceTree = "<group>"; };
+		E25907B22D799E820093121C /* GroupDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDTO.swift; sourceTree = "<group>"; };
+		E25907B42D799E9D0093121C /* JoinDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinDTO.swift; sourceTree = "<group>"; };
+		E25907B62D799EC50093121C /* VersionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionDTO.swift; sourceTree = "<group>"; };
+		E25907B82D799EF10093121C /* AnnouncementDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDTO.swift; sourceTree = "<group>"; };
+		E25907BA2D799F160093121C /* ClusterDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterDTO.swift; sourceTree = "<group>"; };
+		E25907BC2D799F400093121C /* StatDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatDTO.swift; sourceTree = "<group>"; };
 		E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatAPI.swift; sourceTree = "<group>"; };
 		E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterUserSelectedModalView.swift; sourceTree = "<group>"; };
 		E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersView.swift; sourceTree = "<group>"; };
@@ -338,20 +354,14 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		A060007F2AFCF78300CC9A6A /* API */ = {
+		A060007F2AFCF78300CC9A6A /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				A06BAE992AF8C1CC00DB5A76 /* API.swift */,
-				A0D5E0362B15DD9F00BEE525 /* MemberAPI.swift */,
-				A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */,
-				A01FF5002B4D21B3008F842B /* LoginAPI.swift */,
 				A0A351302B565EDF00A826A5 /* CustomExceptions.swift */,
-				E255D5732C919D9700B65076 /* VersionAPI.swift */,
-				E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */,
-				E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */,
-				E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */,
+				E25907BE2D799F8F0093121C /* API */,
+				E25907AB2D799D980093121C /* DTO */,
 			);
-			path = API;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		A075184F2B217F4D00E1AE7C /* Utils */ = {
@@ -430,7 +440,7 @@
 				A02101C62AFB21E100CB2FCD /* ViewModel */,
 				A02101C72AFB221900CB2FCD /* View */,
 				A02101CB2AFB23D400CB2FCD /* Model */,
-				A060007F2AFCF78300CC9A6A /* API */,
+				A060007F2AFCF78300CC9A6A /* Network */,
 				A0FD453F2AEB81DB0050AB09 /* Assets.xcassets */,
 				A0FD45412AEB81DB0050AB09 /* Preview Content */,
 			);
@@ -475,6 +485,36 @@
 				E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */,
 			);
 			name = Cluster;
+			sourceTree = "<group>";
+		};
+		E25907AB2D799D980093121C /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				E25907AE2D799E2A0093121C /* ReissueDTO.swift */,
+				E25907B02D799E5A0093121C /* MemberDTO.swift */,
+				E25907B22D799E820093121C /* GroupDTO.swift */,
+				E25907B42D799E9D0093121C /* JoinDTO.swift */,
+				E25907B62D799EC50093121C /* VersionDTO.swift */,
+				E25907B82D799EF10093121C /* AnnouncementDTO.swift */,
+				E25907BA2D799F160093121C /* ClusterDTO.swift */,
+				E25907BC2D799F400093121C /* StatDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		E25907BE2D799F8F0093121C /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A06BAE992AF8C1CC00DB5A76 /* API.swift */,
+				A0D5E0362B15DD9F00BEE525 /* MemberAPI.swift */,
+				A05E269C2B1F401C00FD3E22 /* GroupAPI.swift */,
+				A01FF5002B4D21B3008F842B /* LoginAPI.swift */,
+				E255D5732C919D9700B65076 /* VersionAPI.swift */,
+				E2359E9C2CEDDCD1002B82CA /* AnnouncementAPI.swift */,
+				E29BF83D2D104F9B006DC6D0 /* ClusterAPI.swift */,
+				E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		E29BF83A2D104D94006DC6D0 /* Clusters */ = {
@@ -598,13 +638,18 @@
 				E25001D12CF07DF400042E1D /* AnnouncementModalView.swift in Sources */,
 				A06DB6432AFD24700021263A /* CustomAlertModal.swift in Sources */,
 				A0FDC54F2B08B2C300B3D49E /* MainAlertView.swift in Sources */,
+				E25907B32D799E820093121C /* GroupDTO.swift in Sources */,
 				E29BF8502D10549C006DC6D0 /* ClustersViewModel.swift in Sources */,
 				E209534F2D3E6FF3001F43B8 /* SingleClusterUsageView.swift in Sources */,
 				A027B9512AFD23BD00AB7B10 /* Font.swift in Sources */,
+				E25907B12D799E5A0093121C /* MemberDTO.swift in Sources */,
 				A07518512B218E0E00E1AE7C /* PersonalInfoAgreementView.swift in Sources */,
 				A06DA4C32B903E9D00960A3F /* HideKeyboard.swift in Sources */,
 				A06810DC2B6A233D0045DC43 /* NetworkMonitorView.swift in Sources */,
+				E25907B92D799EF10093121C /* AnnouncementDTO.swift in Sources */,
+				E25907AF2D799E2A0093121C /* ReissueDTO.swift in Sources */,
 				A06810DE2B6B32860045DC43 /* MyToast.swift in Sources */,
+				E25907B72D799EC50093121C /* VersionDTO.swift in Sources */,
 				A06BAE9A2AF8C1CC00DB5A76 /* API.swift in Sources */,
 				A0E366132B63937800C90D08 /* SearchMemberInfoView.swift in Sources */,
 				A0BBA7062B01E13C00C3A8A0 /* HelpPage.swift in Sources */,
@@ -621,6 +666,7 @@
 				A06BAE9E2AFA2D4100DB5A76 /* HomeFriendInfoView.swift in Sources */,
 				A04756722AEEB714000872B9 /* LoginView.swift in Sources */,
 				E20953492D3E44E1001F43B8 /* UserSeatHistoryView.swift in Sources */,
+				E25907BB2D799F160093121C /* ClusterDTO.swift in Sources */,
 				E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */,
 				A06BAE9C2AF9E7CC00DB5A76 /* HomeInfoView.swift in Sources */,
 				A0D836052B5BB2BE006C18E2 /* GroupMemberAddView.swift in Sources */,
@@ -651,6 +697,7 @@
 				A0A351312B565EDF00A826A5 /* CustomExceptions.swift in Sources */,
 				A0BBA7022B01DEDC00C3A8A0 /* LoginViewModel.swift in Sources */,
 				A02101D82AFB53BA00CB2FCD /* HomeFriendView.swift in Sources */,
+				E25907BD2D799F400093121C /* StatDTO.swift in Sources */,
 				E2CA19F12D1C517400D2D461 /* Seat+SeatTextView.swift in Sources */,
 				A02101C52AFB21D800CB2FCD /* HomeViewModel.swift in Sources */,
 				A0CF06652B7340A300FE2F15 /* WhereSceneDelegate.swift in Sources */,
@@ -666,6 +713,7 @@
 				A0ECD5E82B36AAAB0032F46D /* GroupMemberDeleteView.swift in Sources */,
 				A03A748B2B5B9B03003100DF /* GroupEditSelectModal.swift in Sources */,
 				E29BF8402D1051BA006DC6D0 /* Cluster.swift in Sources */,
+				E25907B52D799E9D0093121C /* JoinDTO.swift in Sources */,
 				E2359E9F2CEE140A002B82CA /* AnnouncementViewModel.swift in Sources */,
 				A06000812AFCFCA800CC9A6A /* MainViewModel.swift in Sources */,
 				E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */,

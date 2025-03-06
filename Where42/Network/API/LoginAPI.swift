@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-struct joinDTO: Codable {
-    var accessToken: String
-}
-
 final class LoginAPI: API {
     static let shared = LoginAPI()
 

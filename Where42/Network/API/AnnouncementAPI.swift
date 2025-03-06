@@ -7,21 +7,6 @@
 
 import Foundation
 
-struct ResponseAnnouncementsDTO: Decodable {
-  var announcements: [AnnouncementDTO]
-  var totalPages: Int
-  var totalElements: Int
-}
-
-struct AnnouncementDTO: Decodable {
-  var announcementId: Int64
-  var title: String
-  var content: String
-  var authorName: String
-  var createAt: String
-  var updateAt: String
-}
-
 final class AnnouncementAPI: API {
   
   static let shared = AnnouncementAPI()

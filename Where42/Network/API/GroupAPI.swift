@@ -7,25 +7,6 @@
 
 import SwiftUI
 
-struct CreateGroupDTO: Codable {
-    var groupName: String
-}
-
-struct UpdateGroupDTO: Codable {
-    var groupId: Int
-    var groupName: String
-}
-
-struct UpdateGroupMemberDTO: Codable {
-    var groupId: Int
-    var members: [Int]
-}
-
-struct AddOneGroupMemberDTO: Codable {
-    var intraId: Int
-    var groupId: Int
-}
-
 final class GroupAPI: API {
     static let shared = GroupAPI()
 

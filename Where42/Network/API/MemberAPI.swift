@@ -7,25 +7,6 @@
 
 import SwiftUI
 
-struct CreateMemberDTO: Codable {
-    var intraId: Int
-    var intraName: String?
-    var grade: Int?
-    var image: String?
-}
-
-struct UpdateCommentDTO: Codable {
-    var comment: String?
-}
-
-struct UpdateCustomLocationDTO: Codable {
-    var customLocation: String?
-}
-
-struct DeleteMemberDTO: Codable {
-    var intraId: Int
-}
-
 final class MemberAPI: API {
     static let shared = MemberAPI()
 

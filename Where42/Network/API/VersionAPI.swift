@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-struct VersionDTO: Encodable {
-    var os: String
-    var version: String
-}
-
-struct CheckVersionDTO: Codable {
-    var version: String
-}
-
 final class VersionAPI: API {
 //    static let shared = VersionAPI()
 
