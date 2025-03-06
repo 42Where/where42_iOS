@@ -7,22 +7,11 @@
 
 import SwiftUI
 
-class API: ObservableObject {
+class API {
     static var sharedAPI = API()
 
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
     @AppStorage("intraId") var intraId: Int = 0
-
-    enum NetworkError: Error {
-        case invalidURL
-        case invalidRequestBody
-        case invalidHTTPResponse
-        case BadRequest
-        case ServerError
-        case TokenError
-        case Reissue
-        case VersionUpdate
-    }
 
     static func errorPrint(_ error: Error, message: String) {
         switch error {

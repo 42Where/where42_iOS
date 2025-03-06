@@ -95,6 +95,7 @@
 		E25907B92D799EF10093121C /* AnnouncementDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907B82D799EF10093121C /* AnnouncementDTO.swift */; };
 		E25907BB2D799F160093121C /* ClusterDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907BA2D799F160093121C /* ClusterDTO.swift */; };
 		E25907BD2D799F400093121C /* StatDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907BC2D799F400093121C /* StatDTO.swift */; };
+		E25907C02D79A8A20093121C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25907BF2D79A8A20093121C /* NetworkError.swift */; };
 		E271CFA12D3A1FBB0036BF29 /* StatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */; };
 		E2793FA12D1D619400BAA1AB /* ClusterUserSelectedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */; };
 		E29BF83C2D104DAB006DC6D0 /* ClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */; };
@@ -202,6 +203,7 @@
 		E25907B82D799EF10093121C /* AnnouncementDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDTO.swift; sourceTree = "<group>"; };
 		E25907BA2D799F160093121C /* ClusterDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterDTO.swift; sourceTree = "<group>"; };
 		E25907BC2D799F400093121C /* StatDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatDTO.swift; sourceTree = "<group>"; };
+		E25907BF2D79A8A20093121C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatAPI.swift; sourceTree = "<group>"; };
 		E2793FA02D1D619400BAA1AB /* ClusterUserSelectedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterUserSelectedModalView.swift; sourceTree = "<group>"; };
 		E29BF83B2D104DAB006DC6D0 /* ClustersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClustersView.swift; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A351302B565EDF00A826A5 /* CustomExceptions.swift */,
+				E25907BF2D79A8A20093121C /* NetworkError.swift */,
 				E25907BE2D799F8F0093121C /* API */,
 				E25907AB2D799D980093121C /* DTO */,
 			);
@@ -664,6 +667,7 @@
 				A0D5E0372B15DD9F00BEE525 /* MemberAPI.swift in Sources */,
 				A06BAE932AF8B78000DB5A76 /* Where42ToolBarContent.swift in Sources */,
 				A06BAE9E2AFA2D4100DB5A76 /* HomeFriendInfoView.swift in Sources */,
+				E25907C02D79A8A20093121C /* NetworkError.swift in Sources */,
 				A04756722AEEB714000872B9 /* LoginView.swift in Sources */,
 				E20953492D3E44E1001F43B8 /* UserSeatHistoryView.swift in Sources */,
 				E25907BB2D799F160093121C /* ClusterDTO.swift in Sources */,

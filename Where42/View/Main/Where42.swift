@@ -120,6 +120,5 @@ struct Where42: View {
         .environmentObject(MainViewModel())
         .environmentObject(HomeViewModel())
         .environmentObject(NetworkMonitor())
-        .environmentObject(API())
         .environmentObject(WhereSceneDelegate())
 }
