@@ -88,7 +88,7 @@ class SearchViewModel: ObservableObject {
                     self.initSearchingAfterAdd()
                 }
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }

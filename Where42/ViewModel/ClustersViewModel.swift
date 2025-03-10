@@ -64,7 +64,7 @@ class ClustersViewModel: ObservableObject {
             }
             return arr
         }
-        catch API.NetworkError.Reissue {
+        catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
@@ -91,7 +91,7 @@ class ClustersViewModel: ObservableObject {
             let addFriendResult = try await GroupAPI.shared.addFriend(intraId: clusterSeat.id)
             return addFriendResult
         }
-        catch API.NetworkError.Reissue {
+        catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }

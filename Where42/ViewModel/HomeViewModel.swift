@@ -88,7 +88,7 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.isLogin = true
                 }
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
@@ -133,7 +133,7 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
@@ -159,7 +159,7 @@ class HomeViewModel: ObservableObject {
                 self.notInGroup.members.sort()
             }
             return true
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
@@ -202,7 +202,7 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
@@ -239,7 +239,7 @@ class HomeViewModel: ObservableObject {
                     }
                 }
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
@@ -290,7 +290,7 @@ class HomeViewModel: ObservableObject {
 
                 self.initNewGroup()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후  다시 시도해 주세요")
             }
@@ -339,7 +339,7 @@ class HomeViewModel: ObservableObject {
 
                 self.initNewGroup()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후  다시 시도해 주세요")
             }
@@ -386,7 +386,7 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     MainViewModel.shared.is42IntraSheetPresented = true
                 }
-                throw API.NetworkError.Reissue
+                throw NetworkError.Reissue
             }
             return true
         } catch {
@@ -416,7 +416,7 @@ class HomeViewModel: ObservableObject {
                         }
                         return false
                     }
-                } catch API.NetworkError.Reissue {
+                } catch NetworkError.Reissue {
                     DispatchQueue.main.async {
                         MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }

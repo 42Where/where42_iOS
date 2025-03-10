@@ -62,7 +62,7 @@ class SettingViewModel: ObservableObject {
                     self.inputText = ""
                 }
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return "reissue"
         } catch {
             API.errorPrint(error, message: "Failed to update status message")
@@ -78,7 +78,7 @@ class SettingViewModel: ObservableObject {
                 self.newComment = ""
             }
             return true
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return false
         } catch {
             API.errorPrint(error, message: "Failed to delete status message")
@@ -127,7 +127,7 @@ class SettingViewModel: ObservableObject {
                 }
                 initCustomLocation()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return "reissue"
         } catch {
             API.errorPrint(error, message: "Failed to update custom location")
@@ -157,7 +157,7 @@ class SettingViewModel: ObservableObject {
                 }
                 initCustomLocation()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return "reissue"
         } catch {
             API.errorPrint(error, message: "Failed to delete custom location")

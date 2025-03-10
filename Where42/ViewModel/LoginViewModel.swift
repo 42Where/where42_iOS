@@ -44,7 +44,7 @@ class LoginViewModel: ObservableObject {
                 self.isAgreeButtonPushed = false
             }
             return true
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.isAgreeButtonPushed = false

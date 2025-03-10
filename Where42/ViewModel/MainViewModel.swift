@@ -66,7 +66,7 @@ class MainViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.isUpdateNeeded = false
             }
-        } catch API.NetworkError.VersionUpdate {
+        } catch NetworkError.VersionUpdate {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.isUpdateNeeded = true
