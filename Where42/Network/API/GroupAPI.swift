@@ -40,20 +40,8 @@ final class GroupAPI: API {
             print("Success")
             return try JSONDecoder().decode(UpdateGroupDTO.self, from: data).groupId
 
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-//                        return nil
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed Create Group")
         }

@@ -41,29 +41,10 @@ final class VersionAPI: API {
         case 200...299:
             print(try JSONDecoder().decode(CheckVersionDTO.self, from: data))
             return
-
-        case 300...399:
-            throw NetworkError.BadRequest
-
-        case 400...499:
-            if response.statusCode == 426 {
-                throw NetworkError.VersionUpdate
-            } else {
-                let response = String(data: data, encoding: String.Encoding.utf8)!
-                if response.contains("errorCode") && response.contains("errorMessage") {
-                    let customException = parseCustomException(response: response)
-                    if customException.handleError() == false {
-                        try await API.sharedAPI.reissue()
-                        throw NetworkError.Reissue
-                    }
-                } else {
-                    throw NetworkError.BadRequest
-                }
-            }
-
-        case 500...599:
-            throw NetworkError.ServerError
-
+        case 426:
+            throw NetworkError.VersionUpdate
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default: print("Failed Requesting Recent Version")
         }
     } 
