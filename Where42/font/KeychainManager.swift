@@ -8,8 +8,8 @@
 import Security
 import SwiftUI
 
-class KeychainManager {
-    class func createToken(key: String, token: String) {
+final class KeychainManager {
+    static func createToken(key: String, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
@@ -21,7 +21,7 @@ class KeychainManager {
         assert(status == noErr, "failed to save Token")
     }
 
-    class func readToken(key: String) -> String? {
+    static func readToken(key: String) -> String? {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
@@ -42,7 +42,7 @@ class KeychainManager {
         }
     }
 
-    class func updateToken(key: String, token: String) {
+    static func updateToken(key: String, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key
@@ -57,7 +57,7 @@ class KeychainManager {
         assert(status == noErr, "failed to update the value, status code = \(status)")
     }
 
-    class func deleteToken(key: String) {
+    static func deleteToken(key: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key
