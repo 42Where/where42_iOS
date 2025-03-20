@@ -9,8 +9,6 @@ import Foundation
 
 final class ClusterAPI: API {
     
-    static let shared = ClusterAPI()
-    
     func getClusterMembersInfo(_ cluster: Cluster) async throws -> [[ClusterSeatInfo]] {
         
         var seatArr = getClusterArr(cluster)

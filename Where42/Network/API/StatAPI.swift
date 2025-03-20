@@ -9,8 +9,6 @@ import Foundation
 
 final class StatAPI: API {
     
-    static let shared = StatAPI()
-    
     private enum StatURL: String {
         case clusterUsage = "/location/cluster/usage"
         case imacUsage = "/location/cluster/imacUsage"

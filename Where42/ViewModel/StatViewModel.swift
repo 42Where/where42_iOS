@@ -18,7 +18,7 @@ final class StatViewModel: ObservableObject {
     @Published var clusterUsagesDic: [String: SingleClusterUsage] = [:]
     
     // MARK: - Properties
-    private let statAPI = StatAPI.shared
+    private let statAPI = StatAPI()
     private var clusterUsagesArr: [SingleClusterUsage] = []
     
     // MARK: - Intializers
