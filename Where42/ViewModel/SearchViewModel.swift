@@ -94,7 +94,7 @@ class SearchViewModel: ObservableObject {
             }
             return false
         } catch {
-            API.errorPrint(error, message: "Failed add members")
+            ErrorHandler.errorPrint(error, message: "Failed add members")
         }
         return true
     }

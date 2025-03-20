@@ -75,7 +75,7 @@ class ClustersViewModel: ObservableObject {
             return arr
         }
         catch {
-            API.errorPrint(error, message: "Failed to get \(cluster.rawValue) ClusterArr")
+            ErrorHandler.errorPrint(error, message: "Failed to get \(cluster.rawValue) ClusterArr")
             var arr = ClusterAPI.shared.getClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
@@ -97,7 +97,7 @@ class ClustersViewModel: ObservableObject {
             }
         }
         catch {
-            API.errorPrint(error, message: "Failed to add friend")
+            ErrorHandler.errorPrint(error, message: "Failed to add friend")
         }
         return false
     }

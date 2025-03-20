@@ -93,7 +93,7 @@ class HomeViewModel: ObservableObject {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to get member infomation")
+            ErrorHandler.errorPrint(error, message: "Failed to get member infomation")
         }
     }
 
@@ -138,7 +138,7 @@ class HomeViewModel: ObservableObject {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed Get Groups")
+            ErrorHandler.errorPrint(error, message: "Failed Get Groups")
         }
     }
 
@@ -165,7 +165,7 @@ class HomeViewModel: ObservableObject {
             }
             return false
         } catch {
-            API.errorPrint(error, message: "Failed add members")
+            ErrorHandler.errorPrint(error, message: "Failed add members")
             return false
         }
     }
@@ -207,7 +207,7 @@ class HomeViewModel: ObservableObject {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed Create Group")
+            ErrorHandler.errorPrint(error, message: "Failed Create Group")
         }
 
         DispatchQueue.main.async { [weak self] in
@@ -245,7 +245,7 @@ class HomeViewModel: ObservableObject {
             }
             return false
         } catch {
-            API.errorPrint(error, message: "Failed add members")
+            ErrorHandler.errorPrint(error, message: "Failed add members")
         }
         return true
     }
@@ -296,7 +296,7 @@ class HomeViewModel: ObservableObject {
             }
             return false
         } catch {
-            API.errorPrint(error, message: "Failed delete group member")
+            ErrorHandler.errorPrint(error, message: "Failed delete group member")
         }
         return true
     }
@@ -345,7 +345,7 @@ class HomeViewModel: ObservableObject {
             }
             return false
         } catch {
-            API.errorPrint(error, message: "Failed delete group member")
+            ErrorHandler.errorPrint(error, message: "Failed delete group member")
         }
         return true
     }
@@ -390,7 +390,7 @@ class HomeViewModel: ObservableObject {
             }
             return true
         } catch {
-            API.errorPrint(error, message: "Failed update group name")
+            ErrorHandler.errorPrint(error, message: "Failed update group name")
             return false
         }
     }
@@ -421,7 +421,7 @@ class HomeViewModel: ObservableObject {
                         MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                     }
                 } catch {
-                    API.errorPrint(error, message: "Failed delete group")
+                    ErrorHandler.errorPrint(error, message: "Failed delete group")
                     return false
                 }
             }

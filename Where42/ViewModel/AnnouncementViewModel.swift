@@ -27,7 +27,7 @@ class AnnouncementViewModel: ObservableObject {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to get announcement list")
+            ErrorHandler.errorPrint(error, message: "Failed to get announcement list")
         }
     }
 }

@@ -31,7 +31,7 @@ class LoginViewModel: ObservableObject {
                     self.timer.upstream.connect().cancel()
                 }
             } catch {
-                API.errorPrint(error, message: "Failed to Login")
+                ErrorHandler.errorPrint(error, message: "Failed to Login")
             }
         }
     }
@@ -51,7 +51,7 @@ class LoginViewModel: ObservableObject {
             }
             MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
         } catch {
-            API.errorPrint(error, message: "Failed to join")
+            ErrorHandler.errorPrint(error, message: "Failed to join")
         }
         return false
     }

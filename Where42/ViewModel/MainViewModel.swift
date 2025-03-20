@@ -72,7 +72,7 @@ class MainViewModel: ObservableObject {
                 self.isUpdateNeeded = true
             }
         } catch {
-            API.errorPrint(error, message: "Failed to check if version update needed")
+            ErrorHandler.errorPrint(error, message: "Failed to check if version update needed")
         }
     }
     
@@ -85,7 +85,7 @@ class MainViewModel: ObservableObject {
             }
             self.isLogin = false
         } catch {
-            API.errorPrint(error, message: "Failed to logout")
+            ErrorHandler.errorPrint(error, message: "Failed to logout")
         }
     }
 }

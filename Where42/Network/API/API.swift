@@ -8,32 +8,13 @@
 import SwiftUI
 
 class API {
+    // MARK: - Properties
     static var sharedAPI = API()
     
     let baseURL = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
     @AppStorage("intraId") var intraId: Int = 0
-    
-    static func errorPrint(_ error: Error, message: String) {
-        switch error {
-        case NetworkError.invalidURL:
-            print("URL 생성에 실패했습니다")
-        case NetworkError.invalidRequestBody:
-            print("Request Body 생성에 실패했습니다")
-        case NetworkError.invalidHTTPResponse:
-            print("잘못된 HTTP Response 입니다")
-        case NetworkError.BadRequest:
-            print("잘못된 요청입니다")
-        case NetworkError.ServerError:
-            print("서버 에러입니다")
-        case NetworkError.TokenError:
-            print("유효하지 않은 토큰입니다")
-        case NetworkError.Reissue:
-            print("잠시 후 다시 시도해 주세요")
-        default:
-            print(message + ": " + error.localizedDescription)
-        }
-    }
-    
+
+    // MARK: - Methods
     func handleAPIError(response: HTTPURLResponse, data: Data) async throws {
         switch response.statusCode {
         case 300...399:
@@ -69,6 +50,18 @@ class API {
         return CustomException(errorCode: errorCode, errorMessage: errorMessage)
     }
     
+    func getURLRequest(subURL: String) throws -> URLRequest {
+        guard let requestURL = URL(string: baseURL + subURL) else {
+            throw NetworkError.invalidURL
+        }
+        
+        let request = URLRequest(url: requestURL)
+        return request
+    }
+}
+
+// MARK: - Methods For Authenticate & Authorize
+extension API {
     func getAccessToken() async throws -> String {
         guard let accessToken = KeychainManager.readToken(key: "accessToken") else {
             try await API.sharedAPI.reissue()
@@ -144,7 +137,7 @@ class API {
         } catch NetworkError.Reissue, NetworkError.TokenError {
             throw NetworkError.Reissue
         } catch {
-            API.errorPrint(error, message: "Failed to get member infomation")
+            ErrorHandler.errorPrint(error, message: "Failed to get member infomation")
         }
     }
 }

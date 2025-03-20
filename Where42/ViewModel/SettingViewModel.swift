@@ -65,7 +65,7 @@ class SettingViewModel: ObservableObject {
         } catch NetworkError.Reissue {
             return "reissue"
         } catch {
-            API.errorPrint(error, message: "Failed to update status message")
+            ErrorHandler.errorPrint(error, message: "Failed to update status message")
         }
         return nil
     }
@@ -81,7 +81,7 @@ class SettingViewModel: ObservableObject {
         } catch NetworkError.Reissue {
             return false
         } catch {
-            API.errorPrint(error, message: "Failed to delete status message")
+            ErrorHandler.errorPrint(error, message: "Failed to delete status message")
         }
         return nil
     }
@@ -130,7 +130,7 @@ class SettingViewModel: ObservableObject {
         } catch NetworkError.Reissue {
             return "reissue"
         } catch {
-            API.errorPrint(error, message: "Failed to update custom location")
+            ErrorHandler.errorPrint(error, message: "Failed to update custom location")
         }
         return nil
     }
@@ -160,7 +160,7 @@ class SettingViewModel: ObservableObject {
         } catch NetworkError.Reissue {
             return "reissue"
         } catch {
-            API.errorPrint(error, message: "Failed to delete custom location")
+            ErrorHandler.errorPrint(error, message: "Failed to delete custom location")
         }
         return nil
     }
@@ -173,7 +173,7 @@ class SettingViewModel: ObservableObject {
                 KeychainManager.deleteToken(key: "intraId")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to logout")
+            ErrorHandler.errorPrint(error, message: "Failed to logout")
         }
     }
 }

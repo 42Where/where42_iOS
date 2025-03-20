@@ -51,7 +51,7 @@ extension StatViewModel {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to fetch data from StatAPI")
+            ErrorHandler.errorPrint(error, message: "Failed to fetch data from StatAPI")
         }
     }
     
