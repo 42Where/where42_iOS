@@ -109,6 +109,7 @@
 		E29BF8522D106528006DC6D0 /* ClusterSeatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */; };
 		E2C0C1A02CE9E9D400F01C03 /* AnnouncementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */; };
 		E2CA19F12D1C517400D2D461 /* Seat+SeatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */; };
+		E2EF7C792D8C3A6B009B8ADB /* HTTPMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EF7C782D8C3A6B009B8ADB /* HTTPMethods.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -217,6 +218,7 @@
 		E29BF8512D106528006DC6D0 /* ClusterSeatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterSeatInfo.swift; sourceTree = "<group>"; };
 		E2C0C19F2CE9E9D400F01C03 /* AnnouncementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementView.swift; sourceTree = "<group>"; };
 		E2CA19F02D1C517400D2D461 /* Seat+SeatTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seat+SeatTextView.swift"; sourceTree = "<group>"; };
+		E2EF7C782D8C3A6B009B8ADB /* HTTPMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethods.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +361,7 @@
 		A060007F2AFCF78300CC9A6A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E2EF7C782D8C3A6B009B8ADB /* HTTPMethods.swift */,
 				A0A351302B565EDF00A826A5 /* CustomExceptions.swift */,
 				E25907BF2D79A8A20093121C /* NetworkError.swift */,
 				E25907BE2D799F8F0093121C /* API */,
@@ -679,6 +682,7 @@
 				E29BF84C2D1052C4006DC6D0 /* ClusterCX1View.swift in Sources */,
 				A0D836072B5BD675006C18E2 /* SettingAlert.swift in Sources */,
 				E20953452D3E438E001F43B8 /* ClusterUsageView.swift in Sources */,
+				E2EF7C792D8C3A6B009B8ADB /* HTTPMethods.swift in Sources */,
 				E29BF8442D10529A006DC6D0 /* ClusterC1View.swift in Sources */,
 				A02101D62AFB52AB00CB2FCD /* HomeGroupView.swift in Sources */,
 				A015518E2AECE51400B9D271 /* HomeView.swift in Sources */,
