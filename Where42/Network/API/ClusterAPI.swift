@@ -10,7 +10,7 @@ import Foundation
 final class ClusterAPI: API {
     
     func getClusterArr(_ cluster: Cluster) async throws -> [[ClusterSeatInfo]] {
-        var request = try await getURLRequest(subURL: "/location/active/", needContentType: true, needAccessToken: true)
+        var request = try await getURLRequest(subURL: "/location/active/\(cluster.rawValue)", needContentType: true, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
