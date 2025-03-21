@@ -17,15 +17,7 @@ final class StatAPI: API {
     }
     
     private func generateURLRequest(_ statURL: StatURL) async throws -> URLRequest {
-
-        guard let requestURL = URL(string: baseURL + statURL.rawValue) else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "GET"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
-        
+        let request = try await getURLRequest(subURL: statURL.rawValue, needContentType: false, needAccessToken: true)
         return request
     }
 }

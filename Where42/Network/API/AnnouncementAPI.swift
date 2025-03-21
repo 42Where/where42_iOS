@@ -9,20 +9,10 @@ import Foundation
 
 final class AnnouncementAPI: API {
     
-    static let shared = AnnouncementAPI()
-    
     var announcementList: [Announcement] = []
     
     func getAnnouncementList() async throws -> [Announcement] {
-        
-        guard let requestURL = URL(string: baseURL + "/announcement?page=0&size=5") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/announcement?page=0&size=5", needContentType: true, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         

@@ -79,7 +79,9 @@ class MainViewModel: ObservableObject {
     func logout() async {
         do {
             try await loginAPI.logout()
-            KeychainManager.deleteToken(key: "accessToken")
+            if let _ = KeychainManager.readToken(key: "accessToken") {
+                KeychainManager.deleteToken(key: "accessToken")
+            }
             if let _ = KeychainManager.readToken(key: "intraId") {
                 KeychainManager.deleteToken(key: "intraId")
             }

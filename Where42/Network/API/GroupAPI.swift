@@ -11,20 +11,13 @@ final class GroupAPI: API {
     static let shared = GroupAPI()
 
     func createGroup(groupName: String) async throws -> Int? {
+        var request = try await getURLRequest(subURL: "/group", needContentType: true, needAccessToken: true, httpMethod: .post)
+        
         guard let requestBody = try? JSONEncoder().encode(CreateGroupDTO(groupName: groupName)) else {
             print("Failed Create Request Body")
             return nil
         }
 
-        guard let requestURL = URL(string: baseURL + "/group") else {
-            print("Missing URL")
-            return nil
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -32,8 +25,6 @@ final class GroupAPI: API {
         guard let response = response as? HTTPURLResponse else {
             throw NetworkError.invalidHTTPResponse
         }
-
-//            print(String(data: data, encoding: .utf8)!)
 
         switch response.statusCode {
         case 200 ... 299:
@@ -50,20 +41,13 @@ final class GroupAPI: API {
     }
 
     func getGroup() async throws -> [GroupInfo]? {
-        guard let requestURL = URL(string: baseURL + "/group") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/group", needContentType: false, needAccessToken: true)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
         guard let response = response as? HTTPURLResponse else {
             throw NetworkError.invalidHTTPResponse
         }
-
-//            print(String(data: data, encoding: .utf8)!)
 
         switch response.statusCode {
         case 200 ... 299:
@@ -91,20 +75,13 @@ final class GroupAPI: API {
     }
 
     func updateGroupName(groupId: Int, newGroupName: String) async throws -> String? {
+        var request = try await getURLRequest(subURL: "/group/name", needContentType: true, needAccessToken: true, httpMethod: .post)
+        
         guard let requestBody = try? JSONEncoder().encode(UpdateGroupDTO(groupId: groupId, groupName: newGroupName)) else {
             print("Failed Create request Body")
             throw NetworkError.invalidURL
         }
 
-        guard let requestURL = URL(string: baseURL + "/group/name") else {
-            print("Missing Error")
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -112,8 +89,6 @@ final class GroupAPI: API {
         guard let response = response as? HTTPURLResponse else {
             throw NetworkError.invalidHTTPResponse
         }
-
-        print(String(data: data, encoding: .utf8)!)
 
         switch response.statusCode {
         case 200 ... 299:
@@ -141,15 +116,7 @@ final class GroupAPI: API {
     }
 
     func deleteGroup(groupId: Int) async throws -> Bool {
-        guard let requestURL = URL(string: baseURL + "/group?groupId=\(groupId)") else {
-            print("Failed encode requestURL")
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "DELETE"
-        request.addValue("applicaion/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/group?groupId=\(groupId)", needContentType: true, needAccessToken: true, httpMethod: .delete)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -157,26 +124,12 @@ final class GroupAPI: API {
             throw NetworkError.invalidHTTPResponse
         }
 
-//            print(String(data: data, encoding: .utf8)!)
-
         switch response.statusCode {
         case 200 ... 299:
             print("Succeed delete group")
             return true
-
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed delete group")
         }
@@ -185,22 +138,14 @@ final class GroupAPI: API {
     }
 
     func deleteGroupMember(groupId: Int, members: [MemberInfo]) async throws -> Bool {
+        var request = try await getURLRequest(subURL: "/group/groupmember", needContentType: true, needAccessToken: true, httpMethod: .put)
+        
         let membersIntraId: [Int] = members.map { $0.intraId }
-
         guard let requestBody = try? JSONEncoder().encode(UpdateGroupMemberDTO(groupId: groupId, members: membersIntraId)) else {
             print("Failed create request Body")
             throw NetworkError.invalidRequestBody
         }
 
-        guard let requestURL = URL(string: baseURL + "/group/groupmember") else {
-            print("Failed create URL")
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "PUT"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -209,27 +154,12 @@ final class GroupAPI: API {
             throw NetworkError.invalidHTTPResponse
         }
 
-//            print(String(data: data, encoding: .utf8)!)
-
         switch response.statusCode {
         case 200 ... 299:
             print("Succeed delete group")
             return true
-
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-//                        return false
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed delete group")
         }
@@ -238,22 +168,14 @@ final class GroupAPI: API {
     }
 
     func addMembers(groupId: Int, members: [MemberInfo]) async throws -> Bool {
+        var request = try await getURLRequest(subURL: "/group/groupmember/members", needContentType: true, needAccessToken: true, httpMethod: .post)
+        
         let members: [Int] = members.map { $0.intraId }
-
         guard let requsetBody = try? JSONEncoder().encode(UpdateGroupMemberDTO(groupId: groupId, members: members)) else {
             print("failed create requset body")
             return false
         }
 
-        guard let requestURL = URL(string: baseURL + "/group/groupmember/members") else {
-            print("failed create requset URL")
-            return false
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requsetBody
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -262,26 +184,13 @@ final class GroupAPI: API {
             throw NetworkError.invalidHTTPResponse
         }
 
-//            print(String(data: data, encoding: .utf8)!)
-
         switch response.statusCode {
         case 200 ... 299:
             print("Succeed add members")
             return true
 
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed add members")
         }
@@ -289,14 +198,8 @@ final class GroupAPI: API {
         return false
     }
 
-    func getNotInGorupMember(groupId: Int) async throws -> [MemberInfo]? {
-        guard let requestURL = URL(string: baseURL + "/group/groupmember/not-ingroup?groupId=\(groupId)") else {
-            return nil
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+    func getNotInGroupMember(groupId: Int) async throws -> [MemberInfo]? {
+        var request = try await getURLRequest(subURL: "/group/groupmember/not-ingroup?groupId=\(groupId)", needContentType: false, needAccessToken: true, httpMethod: .post)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -311,20 +214,8 @@ final class GroupAPI: API {
             print("Succeed get not in group members")
             return try JSONDecoder().decode([MemberInfo].self, from: data)
 
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-//                        return nil
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed add members")
         }
@@ -333,16 +224,7 @@ final class GroupAPI: API {
     }
     
     func addFriend(intraId: Int) async throws -> Bool {
-
-        guard let requestURL = URL(string: baseURL + "/group/groupmember?intraId=\(intraId)") else {
-            print("Failed create URL")
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/group/groupmember?intraId=\(intraId)", needContentType: true, needAccessToken: true, httpMethod: .post)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -353,19 +235,8 @@ final class GroupAPI: API {
         switch response.statusCode {
         case 200 ... 299:
             return true
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed add friend")
             return false

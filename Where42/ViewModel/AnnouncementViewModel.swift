@@ -12,7 +12,7 @@ class AnnouncementViewModel: ObservableObject {
     @Published var announcementList: [Announcement] = []
     @Published var isListFetched: Bool = false
     
-    private let announcementAPI = AnnouncementAPI.shared
+    private let announcementAPI = AnnouncementAPI()
     
     func getAnnouncementList() async {
         do {

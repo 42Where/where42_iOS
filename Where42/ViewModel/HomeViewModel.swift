@@ -144,7 +144,7 @@ class HomeViewModel: ObservableObject {
 
     func getMembersNotInGroup() async -> Bool {
         do {
-            guard let responseMembers = try await groupAPI.getNotInGorupMember(groupId: selectedGroup.groupId) else {
+            guard let responseMembers = try await groupAPI.getNotInGroupMember(groupId: selectedGroup.groupId) else {
                 DispatchQueue.main.async {
                     MainViewModel.shared.is42IntraSheetPresented = true
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")

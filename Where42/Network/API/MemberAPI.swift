@@ -11,13 +11,7 @@ final class MemberAPI: API {
     static let shared = MemberAPI()
     
     func getMemberInfo() async throws -> MemberInfo? {
-        guard let requestURL = URL(string: baseURL + "/member") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
-        try await print("getMemberInfo token: ", API.sharedAPI.getAccessToken())
+        var request = try await getURLRequest(subURL: "/member", needContentType: false, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -39,18 +33,11 @@ final class MemberAPI: API {
     }
     
     func updateComment(comment: String) async throws -> String? {
+        var request = try await getURLRequest(subURL: "/member/comment", needContentType: true, needAccessToken: true, httpMethod: .post)
+
         guard let requestBody = try? JSONEncoder().encode(UpdateCommentDTO(comment: comment)) else {
             throw NetworkError.invalidRequestBody
         }
-        
-        guard let requestURL = URL(string: baseURL + "/member/comment") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
         
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -73,13 +60,7 @@ final class MemberAPI: API {
     }
     
     func deleteComment() async throws {
-        guard let requestURL = URL(string: baseURL + "/member/comment") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "DELETE"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/member/comment", needContentType: false, needAccessToken: true, httpMethod: .delete)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -98,18 +79,11 @@ final class MemberAPI: API {
     }
     
     func updateCustomLocation(customLocation: String?) async throws -> String? {
+        var request = try await getURLRequest(subURL: "/location/custom", needContentType: true, needAccessToken: true, httpMethod: .post)
+
         guard let requestBody = try? JSONEncoder().encode(UpdateCustomLocationDTO(customLocation: customLocation)) else {
             throw NetworkError.invalidRequestBody
         }
-        
-        guard let requestURL = URL(string: baseURL + "/location/custom") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = requestBody
         
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -132,13 +106,7 @@ final class MemberAPI: API {
     }
     
     func deleteCustomLocation() async throws -> Bool? {
-        guard let requestURL = URL(string: baseURL + "/location/custom") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "DELETE"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/location/custom", needContentType: false, needAccessToken: true, httpMethod: .delete)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -161,13 +129,7 @@ final class MemberAPI: API {
     
     func search(keyWord: String) async throws -> [MemberInfo]? {
         print("----- search -----")
-        guard let requestURL = URL(string: baseURL + "/search/new?keyWord=\(keyWord)") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "GET"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        var request = try await getURLRequest(subURL: "/search/new?keyWord=\(keyWord)", needContentType: false, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         

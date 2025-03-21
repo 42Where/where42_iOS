@@ -60,7 +60,7 @@ class ClustersViewModel: ObservableObject {
     
     func getClusterArr(cluster: Cluster) async -> [[ClusterSeatInfo]] {
         do {
-            var arr = try await clusterAPI.getClusterMembersInfo(cluster)
+            var arr = try await clusterAPI.getClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
             }
@@ -70,7 +70,7 @@ class ClustersViewModel: ObservableObject {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
-            var arr = clusterAPI.getClusterArr(cluster)
+            var arr = clusterAPI.getDefaultClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
             }
@@ -78,7 +78,7 @@ class ClustersViewModel: ObservableObject {
         }
         catch {
             ErrorHandler.errorPrint(error, message: "Failed to get \(cluster.rawValue) ClusterArr")
-            var arr = clusterAPI.getClusterArr(cluster)
+            var arr = clusterAPI.getDefaultClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
             }
