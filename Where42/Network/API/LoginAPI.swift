@@ -31,7 +31,7 @@ final class LoginAPI: API {
     }
 
     func join(intraId: String) async throws {
-        var request = try await getURLRequest(subURL: "/join?intra_id=\(intraId)", needContentType: false, needAccessToken: true, httpMethod: .post)
+        let request = try await getURLRequest(subURL: "/join?intra_id=\(intraId)", needContentType: false, needAccessToken: true, httpMethod: .post)
 
         print(" J O I N ")
         print(intraId)
