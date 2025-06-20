@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct HomeView: View {
     @EnvironmentObject private var mainViewModel: MainViewModel
@@ -57,6 +58,7 @@ struct HomeView: View {
                         await mainViewModel.logout()
                         self.showUpdateAlert = true
                     }
+                    Analytics.logEvent("home_view", parameters: [:])
                 }
             }
 

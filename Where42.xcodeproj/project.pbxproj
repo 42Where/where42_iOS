@@ -117,7 +117,7 @@
 		A01551B22AED5AB700B9D271 /* GmarketSansTTFMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GmarketSansTTFMedium.ttf; sourceTree = "<group>"; };
 		A01551B32AED5AB800B9D271 /* GmarketSansTTFLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GmarketSansTTFLight.ttf; sourceTree = "<group>"; };
 		A01551B42AED5AB800B9D271 /* GmarketSansTTFBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GmarketSansTTFBold.ttf; sourceTree = "<group>"; };
-		A01551B92AED5D9E00B9D271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A01551B92AED5D9E00B9D271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01551BA2AED5E7800B9D271 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A01551BC2AEE401C00B9D271 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		A019CC452B038DBB007DBA20 /* SelectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectingView.swift; sourceTree = "<group>"; };
@@ -150,7 +150,6 @@
 		A090A2952AFD1EF8001A1198 /* CustomAlertModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertModal.swift; sourceTree = "<group>"; };
 		A092EECE2B870E6D002D7B1F /* SearchSelectedMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSelectedMembersView.swift; sourceTree = "<group>"; };
 		A0938C422B0C6A0D00367E84 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		A0985BC12B8388460008EA7B /* Where42.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Where42.entitlements; sourceTree = "<group>"; };
 		A0A351302B565EDF00A826A5 /* CustomExceptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomExceptions.swift; sourceTree = "<group>"; };
 		A0BBA7012B01DEDC00C3A8A0 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A0BBA7032B01E09800C3A8A0 /* MyWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWebView.swift; sourceTree = "<group>"; };
@@ -395,8 +394,6 @@
 		A0CF06632B733F8800FE2F15 /* multiple layer */ = {
 			isa = PBXGroup;
 			children = (
-				A0CF066A2B73496400FE2F15 /* WhereAppDelegate.swift */,
-				A0CF06642B7340A300FE2F15 /* WhereSceneDelegate.swift */,
 				A0CF06682B7346B500FE2F15 /* PassThroughWindow.swift */,
 				A0CF06662B7343D600FE2F15 /* ToastScene.swift */,
 			);
@@ -436,11 +433,9 @@
 		A0FD453A2AEB81D70050AB09 /* Where42 */ = {
 			isa = PBXGroup;
 			children = (
-				A0985BC12B8388460008EA7B /* Where42.entitlements */,
-				E29221BE2E056BF700B6DC0D /* GoogleService-Info.plist */,
-				A01551B92AED5D9E00B9D271 /* Info.plist */,
+				E29221D82E056FEA00B6DC0D /* SupportingFiles */,
+				E29221D72E056FC700B6DC0D /* App */,
 				A01551B82AED5ABF00B9D271 /* font */,
-				A0FD453B2AEB81D70050AB09 /* Where42App.swift */,
 				A02101C62AFB21E100CB2FCD /* ViewModel */,
 				A02101C72AFB221900CB2FCD /* View */,
 				A02101CB2AFB23D400CB2FCD /* Model */,
@@ -519,6 +514,25 @@
 				E271CFA02D3A1FBB0036BF29 /* StatAPI.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		E29221D72E056FC700B6DC0D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A0FD453B2AEB81D70050AB09 /* Where42App.swift */,
+				A0CF066A2B73496400FE2F15 /* WhereAppDelegate.swift */,
+				A0CF06642B7340A300FE2F15 /* WhereSceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E29221D82E056FEA00B6DC0D /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				E29221BE2E056BF700B6DC0D /* GoogleService-Info.plist */,
+				A01551B92AED5D9E00B9D271 /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		E29BF83A2D104D94006DC6D0 /* Clusters */ = {
@@ -804,7 +818,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
-				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
@@ -814,7 +827,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTING_SEARCH_PATHS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Where42/Info.plist;
+				INFOPLIST_FILE = Where42/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -916,7 +929,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
-				CODE_SIGN_ENTITLEMENTS = Where42/Where42.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
@@ -926,7 +938,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTING_SEARCH_PATHS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Where42/Info.plist;
+				INFOPLIST_FILE = Where42/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
