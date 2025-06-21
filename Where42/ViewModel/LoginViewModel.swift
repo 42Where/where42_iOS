@@ -20,39 +20,46 @@ class LoginViewModel: ObservableObject {
     let loginAPI = LoginAPI.shared
 
     func login() {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 try await loginAPI.login()
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    MainViewModel.shared.is42IntraSheetPresented = true
-                    self.isLoginButtonPushed = false
-                    self.dots = ""
-                    self.timer.upstream.connect().cancel()
-                }
+                await initLoginField()
             } catch {
-                API.errorPrint(error, message: "Failed to Login")
+                ErrorHandler.errorPrint(error, message: "Failed to Login")
             }
         }
+    }
+    
+    @MainActor
+    private func initLoginField() {
+        MainViewModel.shared.is42IntraSheetPresented = true
+        self.isLoginButtonPushed = false
+        self.dots = ""
+        self.timer.upstream.connect().cancel()
     }
 
     func join(intraId: String) async -> Bool {
         do {
             try await loginAPI.join(intraId: intraId)
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isAgreeButtonPushed = false
-            }
+            await disableAgreeButtonPushed()
             return true
-        } catch API.NetworkError.Reissue {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isAgreeButtonPushed = false
-            }
-            MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+        } catch NetworkError.Reissue {
+            await disableAgreeButtonPushed()
+            await setToast()
         } catch {
-            API.errorPrint(error, message: "Failed to join")
+            ErrorHandler.errorPrint(error, message: "Failed to join")
         }
         return false
+    }
+    
+    @MainActor
+    private func disableAgreeButtonPushed() {
+        self.isAgreeButtonPushed = false
+    }
+    
+    @MainActor
+    private func setToast() {
+        MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
     }
 }

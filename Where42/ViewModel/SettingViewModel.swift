@@ -48,40 +48,41 @@ class SettingViewModel: ObservableObject {
         do {
             if inputText == "" {
                 try await memberAPI.deleteComment()
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.newComment = ""
-                }
+                await initNewComment()
                 return nil
             }
 
             if let comment = try await memberAPI.updateComment(comment: inputText) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.newComment = comment
-                    self.inputText = ""
-                }
+                await setNewCommentOnUI(comment)
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return "reissue"
         } catch {
-            API.errorPrint(error, message: "Failed to update status message")
+            ErrorHandler.errorPrint(error, message: "Failed to update status message")
         }
         return nil
+    }
+    
+    @MainActor
+    private func initNewComment() {
+        self.newComment = ""
+    }
+    
+    @MainActor
+    private func setNewCommentOnUI(_ comment: String) {
+        self.newComment = comment
+        self.inputText = ""
     }
 
     func deleteComment() async -> Bool? {
         do {
             try await memberAPI.deleteComment()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.newComment = ""
-            }
+            await initNewComment()
             return true
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return false
         } catch {
-            API.errorPrint(error, message: "Failed to delete status message")
+            ErrorHandler.errorPrint(error, message: "Failed to delete status message")
         }
         return nil
     }
@@ -105,19 +106,12 @@ class SettingViewModel: ObservableObject {
         }
     }
 
-    func UpdateCustomLocation() async -> String? {
+    func updateCustomLocation() async -> String? {
         do {
             setCustomLocation()
             if let responseCustomLocation = try await memberAPI.updateCustomLocation(customLocation: customLocation) {
                 if responseCustomLocation.contains("http") == false {
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.newLocation = responseCustomLocation
-                        withAnimation {
-                            self.isCustomLocationAlertPresented = false
-                            self.isCustomLocationAlertPresentedInHome = false
-                        }
-                    }
+                    await updateCustomLocationOnUI(responseCustomLocation)
                 } else {
                     DispatchQueue.main.async {
                         MainViewModel.shared.is42IntraSheetPresented = true
@@ -127,27 +121,28 @@ class SettingViewModel: ObservableObject {
                 }
                 initCustomLocation()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return "reissue"
         } catch {
-            API.errorPrint(error, message: "Failed to update custom location")
+            ErrorHandler.errorPrint(error, message: "Failed to update custom location")
         }
         return nil
     }
 
+    @MainActor
+    func updateCustomLocationOnUI(_ responseCustomLocation: String) {
+        self.newLocation = responseCustomLocation
+        withAnimation {
+            self.isCustomLocationAlertPresented = false
+            self.isCustomLocationAlertPresentedInHome = false
+        }
+    }
+    
     func resetCustomLocation() async -> String? {
         do {
             if let status = try await memberAPI.deleteCustomLocation() {
                 if status == true {
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.newLocation = "개포"
-                        withAnimation {
-                            self.isInitCustomLocationAlertPrsented = false
-                            self.isCustomLocationAlertPresented = false
-                            self.isCustomLocationAlertPresentedInHome = false
-                        }
-                    }
+                    await initCustomLocationOnUI()
                 } else {
                     DispatchQueue.main.async {
                         MainViewModel.shared.is42IntraSheetPresented = true
@@ -157,12 +152,22 @@ class SettingViewModel: ObservableObject {
                 }
                 initCustomLocation()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             return "reissue"
         } catch {
-            API.errorPrint(error, message: "Failed to delete custom location")
+            ErrorHandler.errorPrint(error, message: "Failed to delete custom location")
         }
         return nil
+    }
+    
+    @MainActor
+    private func initCustomLocationOnUI() {
+        self.newLocation = "개포"
+        withAnimation {
+            self.isInitCustomLocationAlertPrsented = false
+            self.isCustomLocationAlertPresented = false
+            self.isCustomLocationAlertPresentedInHome = false
+        }
     }
 
     func logout() async {
@@ -173,7 +178,7 @@ class SettingViewModel: ObservableObject {
                 KeychainManager.deleteToken(key: "intraId")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to logout")
+            ErrorHandler.errorPrint(error, message: "Failed to logout")
         }
     }
 }

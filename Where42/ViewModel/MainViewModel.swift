@@ -62,30 +62,31 @@ class MainViewModel: ObservableObject {
     func checkVersion() async {
         do {
             try await versionAPI.checkUpdateNeeded()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isUpdateNeeded = false
-            }
-        } catch API.NetworkError.VersionUpdate {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isUpdateNeeded = true
-            }
+            await setUpdateNeeded(false)
+        } catch NetworkError.VersionUpdate {
+            await setUpdateNeeded(true)
         } catch {
-            API.errorPrint(error, message: "Failed to check if version update needed")
+            ErrorHandler.errorPrint(error, message: "Failed to check if version update needed")
         }
+    }
+    
+    @MainActor
+    private func setUpdateNeeded(_ isNeeded: Bool) {
+        self.isUpdateNeeded = isNeeded
     }
     
     func logout() async {
         do {
             try await loginAPI.logout()
-            KeychainManager.deleteToken(key: "accessToken")
+            if let _ = KeychainManager.readToken(key: "accessToken") {
+                KeychainManager.deleteToken(key: "accessToken")
+            }
             if let _ = KeychainManager.readToken(key: "intraId") {
                 KeychainManager.deleteToken(key: "intraId")
             }
             self.isLogin = false
         } catch {
-            API.errorPrint(error, message: "Failed to logout")
+            ErrorHandler.errorPrint(error, message: "Failed to logout")
         }
     }
 }

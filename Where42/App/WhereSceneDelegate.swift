@@ -34,7 +34,11 @@ final class WhereSceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableOb
         print("Did Become Active")
         if MainViewModel.shared.isLogin == true {
             Task {
-                try await API.sharedAPI.reissue()
+                do {
+                    try await API.sharedAPI.reissue()
+                } catch {
+                    print("reissue failed")
+                }
             }
         }
     }

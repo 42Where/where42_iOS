@@ -7,14 +7,13 @@
 
 import Foundation
 
+// MARK: - Cluster Usage
 struct SingleClusterUsage: Codable {
-    // MARK: - Properties
     var name: String
     var usageRate: Int
     var usingImacCount: Int
     var totalImacCount: Int
     
-    // MARK: - Initializers
     init(name: String, usageRate: Int, usingImacCount: Int, totalImacCount: Int) {
         self.name = name
         self.usageRate = usageRate
@@ -29,16 +28,19 @@ struct SingleClusterUsage: Codable {
         self.totalImacCount = 0
     }
 }
+
 struct ClusterUsageDTO: Codable {
     var clusters: [SingleClusterUsage]
 }
 
+// MARK: - iMac Usage
 struct IMacUsageDTO: Codable {
     var usageRate: Int
     var usingImacUserCount: Int
     var totalUserCount: Int
 }
 
+// MARK: - Single User Seat History
 struct SingleUserSeatHistory: Codable {
     var seat: String
     var usingTimeHour: Int
@@ -50,6 +52,7 @@ struct UserSeatHistoryDTO: Codable {
     var seats: [SingleUserSeatHistory]
 }
 
+// MARK: - Popular iMac
 struct SinglePopularIMac: Codable {
     var seat: String
     var usingTimeHour: Int

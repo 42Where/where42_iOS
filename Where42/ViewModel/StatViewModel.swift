@@ -18,7 +18,7 @@ final class StatViewModel: ObservableObject {
     @Published var clusterUsagesDic: [String: SingleClusterUsage] = [:]
     
     // MARK: - Properties
-    private let statAPI = StatAPI.shared
+    private let statAPI = StatAPI()
     private var clusterUsagesArr: [SingleClusterUsage] = []
     
     // MARK: - Intializers
@@ -37,22 +37,28 @@ extension StatViewModel {
             let tmpUserSeatHistory = try await statAPI.getUserSeatHistory()
             let tmpPopularIMacs = try await statAPI.getPopularIMac()
             
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-
-                self.iMacUsage = tmpIMacUsage
-                self.userSeatHistory = tmpUserSeatHistory
-                self.popularIMacs = tmpPopularIMacs
-                self.isLoaded = true
-            }
-
-        } catch API.NetworkError.Reissue {
+            await updateStatDataOnUI(tmpIMacUsage: tmpIMacUsage,
+                                     tmpUserSeatHistory: tmpUserSeatHistory,
+                                     tmpPopularIMacs: tmpPopularIMacs)
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to fetch data from StatAPI")
+            ErrorHandler.errorPrint(error, message: "Failed to fetch data from StatAPI")
         }
+    }
+    
+    @MainActor
+    private func updateStatDataOnUI(
+        tmpIMacUsage: IMacUsageDTO,
+        tmpUserSeatHistory: [SingleUserSeatHistory],
+        tmpPopularIMacs: [SinglePopularIMac]
+    ) {
+        self.iMacUsage = tmpIMacUsage
+        self.userSeatHistory = tmpUserSeatHistory
+        self.popularIMacs = tmpPopularIMacs
+        self.isLoaded = true
     }
     
     func makeDefaultClusterUsages() {

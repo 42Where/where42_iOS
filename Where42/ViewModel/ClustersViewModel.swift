@@ -19,64 +19,52 @@ class ClustersViewModel: ObservableObject {
     @Published var cx1Arr: [[ClusterSeatInfo]] = [[]]
     @Published var cx2Arr: [[ClusterSeatInfo]] = [[]]
     
+    let clusterAPI = ClusterAPI()
+    
     func updateClusterArr(cluster: Cluster) async {
-
         let arr = await getClusterArr(cluster: cluster)
+        await updateClusterArrOnUI(cluster: cluster, arr: arr)
+    }
+    
+    @MainActor
+    private func updateClusterArrOnUI(cluster: Cluster, arr: [[ClusterSeatInfo]]) {
         switch cluster {
         case .c1:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c1Arr = arr
-            }
+            self.c1Arr = arr
         case .c2:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c2Arr = arr
-            }
+            self.c2Arr = arr
         case .c5:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c5Arr = arr
-            }
+            self.c5Arr = arr
         case .c6:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c6Arr = arr
-            }
+            self.c6Arr = arr
         case .cx1:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.cx1Arr = arr
-            }
+            self.cx1Arr = arr
         case .cx2:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.cx2Arr = arr
-            }
+            self.cx2Arr = arr
         }
     }
     
     func getClusterArr(cluster: Cluster) async -> [[ClusterSeatInfo]] {
         do {
-            var arr = try await ClusterAPI.shared.getClusterMembersInfo(cluster)
+            var arr = try await clusterAPI.getClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
             }
             return arr
         }
-        catch API.NetworkError.Reissue {
+        catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
-            var arr = ClusterAPI.shared.getClusterArr(cluster)
+            var arr = clusterAPI.getDefaultClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
             }
             return arr
         }
         catch {
-            API.errorPrint(error, message: "Failed to get \(cluster.rawValue) ClusterArr")
-            var arr = ClusterAPI.shared.getClusterArr(cluster)
+            ErrorHandler.errorPrint(error, message: "Failed to get \(cluster.rawValue) ClusterArr")
+            var arr = clusterAPI.getDefaultClusterArr(cluster)
             if cluster == .c2 || cluster == .c6 || cluster == .cx2 {
                 arr = ClusterSeatInfo.resizeSeatArr(cluster: cluster, arr: arr)
             }
@@ -91,13 +79,13 @@ class ClustersViewModel: ObservableObject {
             let addFriendResult = try await GroupAPI.shared.addFriend(intraId: clusterSeat.id)
             return addFriendResult
         }
-        catch API.NetworkError.Reissue {
+        catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         }
         catch {
-            API.errorPrint(error, message: "Failed to add friend")
+            ErrorHandler.errorPrint(error, message: "Failed to add friend")
         }
         return false
     }

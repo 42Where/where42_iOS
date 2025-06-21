@@ -12,22 +12,24 @@ class AnnouncementViewModel: ObservableObject {
     @Published var announcementList: [Announcement] = []
     @Published var isListFetched: Bool = false
     
-    private let announcementAPI = AnnouncementAPI.shared
+    private let announcementAPI = AnnouncementAPI()
     
     func getAnnouncementList() async {
         do {
             let retList = try await announcementAPI.getAnnouncementList()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.announcementList = retList
-                self.isListFetched = true
-            }
-        } catch API.NetworkError.Reissue {
+            await setAnnouncementListOnUI(retList)
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
-            API.errorPrint(error, message: "Failed to get announcement list")
+            ErrorHandler.errorPrint(error, message: "Failed to get announcement list")
         }
+    }
+    
+    @MainActor
+    private func setAnnouncementListOnUI(_ retList: [Announcement]) {
+        self.announcementList = retList
+        self.isListFetched = true
     }
 }

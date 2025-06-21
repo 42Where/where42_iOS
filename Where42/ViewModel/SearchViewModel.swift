@@ -7,6 +7,7 @@
 
 import Combine
 import SwiftUI
+import Firebase
 
 enum SearchStatus {
     case waiting
@@ -40,36 +41,43 @@ class SearchViewModel: ObservableObject {
             searchStatus = .apiCalled
             Task {
                 await searchMemeber(keyWord: keyWord)
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.searchStatus = .waiting
-                    if self.name == "" {
-                        self.searching = []
-                    }
-                }
+                await setSearchUI()
             }
+        }
+    }
+    
+    @MainActor
+    private func setSearchUI() {
+        self.searchStatus = .waiting
+        if self.name == "" {
+            self.searching = []
         }
     }
 
     func searchMemeber(keyWord: String) async {
         do {
             if let searchingMember = try await memberAPI.search(keyWord: keyWord) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if self.searchStatus == .apiCalled {
-                        self.searching = searchingMember.map { memberInfo in
-                            var member = memberInfo
-                            if self.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId }) {
-                                member.isCheck = true
-                            }
-                            return member
-                        }
-                    }
-                }
+                await setSearchedMembersUI(searchingMember)
             }
         } catch {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
+            }
+        }
+    }
+    
+    @MainActor
+    private func setSearchedMembersUI(_ searchingMember: [MemberInfo]) {
+        if self.searchStatus == .apiCalled {
+            self.searching = searchingMember.map { memberInfo in
+                var member = memberInfo
+                if self.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId }) {
+                    member.isCheck = true
+                }
+                Analytics.logEvent("search", parameters: [
+                    "searched_id": member.intraName as NSObject
+                ])
+                return member
             }
         }
     }
@@ -83,22 +91,20 @@ class SearchViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.initSearchingAfterAdd()
-                }
+                await initSearchingAfterAdd()
             }
-        } catch API.NetworkError.Reissue {
+        } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
             return false
         } catch {
-            API.errorPrint(error, message: "Failed add members")
+            ErrorHandler.errorPrint(error, message: "Failed add members")
         }
         return true
     }
 
+    @MainActor
     func initSearchingAfterAdd() {
         withAnimation {
             searching = searching.map { member in

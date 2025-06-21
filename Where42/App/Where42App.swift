@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Where42App: App {
-    @UIApplicationDelegateAdaptor var delegate: WhereAppDelegate
+    @UIApplicationDelegateAdaptor(WhereAppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {

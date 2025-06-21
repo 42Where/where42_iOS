@@ -6,10 +6,9 @@
 //
 
 import FirebaseCore
-import FirebaseMessaging
 import SwiftUI
 
-final class WhereAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
+final class WhereAppDelegate: NSObject, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
@@ -22,25 +21,14 @@ final class WhereAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificatio
         return sceneConfig
     }
 
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-//        FirebaseApp.configure()
-//
-//        UNUserNotificationCenter.current().delegate = self
-//
-//        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//        UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in })
-//        application.registerForRemoteNotifications()
-//
-//        Messaging.messaging().delegate = self
-//
-//        Messaging.messaging().isAutoInitEnabled = true
-//
-//        return true
-//    }
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        FirebaseApp.configure()
 
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Messaging.messaging().apnsToken = deviceToken
+        return true
     }
+
+//    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+//    }
 
 //    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
 //        print("Firebase registration token: \(String(describing: fcmToken))")

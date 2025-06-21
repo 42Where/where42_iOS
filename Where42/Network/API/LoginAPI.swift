@@ -11,13 +11,7 @@ final class LoginAPI: API {
     static let shared = LoginAPI()
 
     func login() async throws {
-        guard let requestURL = URL(string: baseURL + "/member") else {
-            throw NetworkError.invalidURL
-        }
-        
-        print(requestURL.absoluteString);
-
-        let  request = URLRequest(url: requestURL)
+        let request = try await getURLRequest(subURL: "/member", needContentType: false, needAccessToken: false)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -29,36 +23,15 @@ final class LoginAPI: API {
         case 200 ... 299:
             return
 
-        case 300 ... 399:
-            throw NetworkError.BadRequest
-
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
 
         default: print("Unknown HTTP Response Status Code")
         }
     }
 
     func join(intraId: String) async throws {
-        guard let requestURL = URL(string: baseURL + "/join?intra_id=\(intraId)") else {
-            return
-        }
-
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        let request = try await getURLRequest(subURL: "/join?intra_id=\(intraId)", needContentType: false, needAccessToken: true, httpMethod: .post)
 
         print(" J O I N ")
         print(intraId)
@@ -83,32 +56,15 @@ final class LoginAPI: API {
                 MainViewModel.shared.isLogin = true
             }
 
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed join")
         }
     }
 
     func logout() async throws {
-        guard let requsetURL = URL(string: baseURL + "/logout") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: requsetURL)
-        request.httpMethod = "POST"
-        try await request.addValue(API.sharedAPI.getAccessToken(), forHTTPHeaderField: "Authorization")
+        let request = try await getURLRequest(subURL: "/logout", needContentType: false, needAccessToken: true, httpMethod: .post)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -116,25 +72,12 @@ final class LoginAPI: API {
             throw NetworkError.invalidHTTPResponse
         }
 
-//            print(String(data: data, encoding: .utf8))
-
         switch response.statusCode {
         case 200 ... 299:
             print("Succeed logout")
 
-        case 400 ... 499:
-            let response = String(data: data, encoding: String.Encoding.utf8)!
-            if response.contains("errorCode") && response.contains("errorMessage") {
-                let customException = parseCustomException(response: response)
-                if customException.handleError() == false {
-                    try await API.sharedAPI.reissue()
-                    throw NetworkError.Reissue
-                }
-            } else {
-                throw NetworkError.BadRequest
-            }
-        case 500 ... 599:
-            throw NetworkError.ServerError
+        case 300...599:
+            try await handleAPIError(response: response, data: data)
         default:
             print("Failed logout")
         }
