@@ -62,18 +62,17 @@ class MainViewModel: ObservableObject {
     func checkVersion() async {
         do {
             try await versionAPI.checkUpdateNeeded()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isUpdateNeeded = false
-            }
+            await setUpdateNeeded(false)
         } catch NetworkError.VersionUpdate {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isUpdateNeeded = true
-            }
+            await setUpdateNeeded(true)
         } catch {
             ErrorHandler.errorPrint(error, message: "Failed to check if version update needed")
         }
+    }
+    
+    @MainActor
+    private func setUpdateNeeded(_ isNeeded: Bool) {
+        self.isUpdateNeeded = isNeeded
     }
     
     func logout() async {

@@ -82,11 +82,7 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return}
-                    self.myInfo = responseMemberInfo!
-                    MainViewModel.shared.isLogin = true
-                }
+                await setToLogin(responseMemberInfo)
             }
         } catch NetworkError.Reissue {
             DispatchQueue.main.async {
@@ -96,9 +92,15 @@ class HomeViewModel: ObservableObject {
             ErrorHandler.errorPrint(error, message: "Failed to get member infomation")
         }
     }
+    
+    @MainActor
+    private func setToLogin(_ responseMemberInfo: MemberInfo?) {
+        self.myInfo = responseMemberInfo ?? MemberInfo(id: UUID(), intraName: "", image: "", comment: "")
+        MainViewModel.shared.isLogin = true
+    }
 
     // Group
-
+    @MainActor
     func initNewGroup() {
         inputText = ""
         selectedMembers = []
@@ -108,37 +110,39 @@ class HomeViewModel: ObservableObject {
     func getGroup() async {
         do {
             let responseGroups = try await groupAPI.getGroup()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                if let responseGroups = responseGroups {
-                    self.myGroups = responseGroups.map { group in
-                        var sortedGroup = group
-                        if let index = self.myGroups.firstIndex(where: { $0.groupId == group.groupId }) {
-                            sortedGroup.isOpen = self.myGroups[index].isOpen
-                        }
-                        sortedGroup.members.sort()
-                        return sortedGroup
-                    }
-
-                    self.friends = self.myGroups[responseGroups.firstIndex(
-                        where: {
-                            $0.groupId == self.myInfo.defaultGroupId
-                        }
-                    )!]
-                    self.friends.members.sort()
-                    self.friends.groupName = "친구목록"
-                    self.friends.isOpen = true
-                } else {
-                    MainViewModel.shared.is42IntraSheetPresented = true
-                    MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
-                }
-            }
+            await setGroupUI(responseGroups)
         } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
             }
         } catch {
             ErrorHandler.errorPrint(error, message: "Failed Get Groups")
+        }
+    }
+    
+    @MainActor
+    private func setGroupUI(_ responseGroups: [GroupInfo]?) {
+        if let responseGroups = responseGroups {
+            self.myGroups = responseGroups.map { group in
+                var sortedGroup = group
+                if let index = self.myGroups.firstIndex(where: { $0.groupId == group.groupId }) {
+                    sortedGroup.isOpen = self.myGroups[index].isOpen
+                }
+                sortedGroup.members.sort()
+                return sortedGroup
+            }
+            
+            self.friends = self.myGroups[responseGroups.firstIndex(
+                where: {
+                    $0.groupId == self.myInfo.defaultGroupId
+                }
+            )!]
+            self.friends.members.sort()
+            self.friends.groupName = "친구목록"
+            self.friends.isOpen = true
+        } else {
+            MainViewModel.shared.is42IntraSheetPresented = true
+            MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
         }
     }
 
@@ -151,13 +155,7 @@ class HomeViewModel: ObservableObject {
                 }
                 return false
             }
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-//                print(responseMembers)
-                self.notInGroup.members = responseMembers
-                self.notInGroup.members.sort()
-            }
+            await setNotInGroupUI(responseMembers)
             return true
         } catch NetworkError.Reissue {
             DispatchQueue.main.async {
@@ -168,6 +166,12 @@ class HomeViewModel: ObservableObject {
             ErrorHandler.errorPrint(error, message: "Failed add members")
             return false
         }
+    }
+    
+    @MainActor
+    private func setNotInGroupUI(_ responseMembers: [MemberInfo]) {
+        self.notInGroup.members = responseMembers
+        self.notInGroup.members.sort()
     }
 
     func confirmGroupName(isNewGroupAlertPrsented: Binding<Bool>, isSelectViewPrsented: Binding<Bool>) -> String? {
@@ -190,11 +194,7 @@ class HomeViewModel: ObservableObject {
                     if await addMemberInGroup(groupId: groupId) == false {
                         return
                     }
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.newGroup.members = self.selectedMembers
-                        self.myGroups.append(self.newGroup)
-                    }
+                    await self.addNewGroup()
                 }
             } else {
                 DispatchQueue.main.async {
@@ -210,11 +210,14 @@ class HomeViewModel: ObservableObject {
             ErrorHandler.errorPrint(error, message: "Failed Create Group")
         }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.initNewGroup()
-        }
+        await initNewGroup()
         await getGroup()
+    }
+    
+    @MainActor
+    private func addNewGroup() {
+        self.newGroup.members = self.selectedMembers
+        self.myGroups.append(self.newGroup)
     }
 
     func addMemberInGroup(groupId: Int) async -> Bool {
@@ -226,18 +229,7 @@ class HomeViewModel: ObservableObject {
                     MainViewModel.shared.toast = Toast(title: "잠시 후 다시 시도해 주세요")
                 }
             } else {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if let selectedIndex = self.myGroups.firstIndex(where: { $0.groupId == groupId }) {
-                        self.myGroups[selectedIndex].members += self.selectedMembers.map { member in
-                            var newMember = member
-                            newMember.isCheck = false
-                            return newMember
-                        }
-                        self.myGroups[selectedIndex].members.sort()
-                        self.initNewGroup()
-                    }
-                }
+                await setNewMemberInGroupToUI(groupId)
             }
         } catch NetworkError.Reissue {
             DispatchQueue.main.async {
@@ -248,6 +240,19 @@ class HomeViewModel: ObservableObject {
             ErrorHandler.errorPrint(error, message: "Failed add members")
         }
         return true
+    }
+    
+    @MainActor
+    private func setNewMemberInGroupToUI(_ groupId: Int) {
+        if let selectedIndex = self.myGroups.firstIndex(where: { $0.groupId == groupId }) {
+            self.myGroups[selectedIndex].members += self.selectedMembers.map { member in
+                var newMember = member
+                newMember.isCheck = false
+                return newMember
+            }
+            self.myGroups[selectedIndex].members.sort()
+            self.initNewGroup()
+        }
     }
 
     func deleteMemberInGroup() async -> Bool {
@@ -261,35 +266,7 @@ class HomeViewModel: ObservableObject {
                 return false
             }
 
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                if self.selectedGroup.groupId == self.friends.groupId {
-                    withAnimation {
-                        self.friends.members = self.selectedGroup.members.filter { member in
-                            !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
-                        }
-                        self.myGroups = self.myGroups.map { group in
-                            var newGroup = group
-                            newGroup.members = self.selectedGroup.members.filter { member in
-                                !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
-                            }
-                            return newGroup
-                        }
-                    }
-                } else {
-                    if let selectedIndex = self.myGroups.firstIndex(where: {
-                        $0.groupId == self.selectedGroup.groupId
-                    }) {
-                        withAnimation {
-                            self.myGroups[selectedIndex].members = self.selectedGroup.members.filter { member in
-                                !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
-                            }
-                        }
-                    }
-                }
-
-                self.initNewGroup()
-            }
+            await deleteMemberInGroupToUI()
         } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후  다시 시도해 주세요")
@@ -299,6 +276,35 @@ class HomeViewModel: ObservableObject {
             ErrorHandler.errorPrint(error, message: "Failed delete group member")
         }
         return true
+    }
+    
+    @MainActor
+    private func deleteMemberInGroupToUI() {
+        if self.selectedGroup.groupId == self.friends.groupId {
+            withAnimation {
+                self.friends.members = self.selectedGroup.members.filter { member in
+                    !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                }
+                self.myGroups = self.myGroups.map { group in
+                    var newGroup = group
+                    newGroup.members = self.selectedGroup.members.filter { member in
+                        !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                    }
+                    return newGroup
+                }
+            }
+        } else {
+            if let selectedIndex = self.myGroups.firstIndex(where: {
+                $0.groupId == self.selectedGroup.groupId
+            }) {
+                withAnimation {
+                    self.myGroups[selectedIndex].members = self.selectedGroup.members.filter { member in
+                        !self.selectedMembers.contains(where: { $0.intraId == member.intraId })
+                    }
+                }
+            }
+        }
+        self.initNewGroup()
     }
 
     func deleteOneMemberInGroup() async -> Bool {
@@ -311,34 +317,7 @@ class HomeViewModel: ObservableObject {
                 }
                 return false
             }
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                if self.selectedGroup.groupId == self.friends.groupId {
-                    withAnimation {
-                        self.friends.members = self.selectedGroup.members.filter { member in
-                            self.selectedMember.intraId != member.intraId
-                        }
-                        self.myGroups = self.myGroups.map { group in
-                            var newGroup = group
-                            newGroup.members = group.members.filter { $0.intraId != self.selectedMember.intraId }
-                            return newGroup
-                        }
-                    }
-                } else {
-                    if let selectedIndex = self.myGroups.firstIndex(where: {
-                        $0.groupId == self.selectedGroup.groupId
-                    }) {
-                        withAnimation {
-                            self.myGroups[selectedIndex].members = self.selectedGroup.members.filter { member in
-                                self.selectedMember.intraId != member.intraId
-                            }
-                        }
-                    }
-                }
-
-                self.initNewGroup()
-            }
+            await deleteOneMemberInGroupToUI()
         } catch NetworkError.Reissue {
             DispatchQueue.main.async {
                 MainViewModel.shared.toast = Toast(title: "잠시 후  다시 시도해 주세요")
@@ -348,6 +327,33 @@ class HomeViewModel: ObservableObject {
             ErrorHandler.errorPrint(error, message: "Failed delete group member")
         }
         return true
+    }
+    
+    @MainActor
+    private func deleteOneMemberInGroupToUI() {
+        if self.selectedGroup.groupId == self.friends.groupId {
+            withAnimation {
+                self.friends.members = self.selectedGroup.members.filter { member in
+                    self.selectedMember.intraId != member.intraId
+                }
+                self.myGroups = self.myGroups.map { group in
+                    var newGroup = group
+                    newGroup.members = group.members.filter { $0.intraId != self.selectedMember.intraId }
+                    return newGroup
+                }
+            }
+        } else {
+            if let selectedIndex = self.myGroups.firstIndex(where: {
+                $0.groupId == self.selectedGroup.groupId
+            }) {
+                withAnimation {
+                    self.myGroups[selectedIndex].members = self.selectedGroup.members.filter { member in
+                        self.selectedMember.intraId != member.intraId
+                    }
+                }
+            }
+        }
+        self.initNewGroup()
     }
 
     func editGroupName() async -> String? {
@@ -363,18 +369,20 @@ class HomeViewModel: ObservableObject {
                     groupId: myGroups[index].groupId,
                     newGroupName: inputText
                 ) {
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.myGroups[index].groupName = self.inputText
-                        self.inputText = ""
-                        self.selectedGroup = .empty
-                    }
+                    await editGroupNameOnUI(index)
                 } else {
                     return "reissue"
                 }
             }
         }
         return nil
+    }
+    
+    @MainActor
+    private func editGroupNameOnUI(_ index: Int) {
+        self.myGroups[index].groupName = self.inputText
+        self.inputText = ""
+        self.selectedGroup = .empty
     }
 
     func updateGroupName(groupId: Int, newGroupName: String) async -> Bool {
@@ -402,12 +410,7 @@ class HomeViewModel: ObservableObject {
                     if try await groupAPI.deleteGroup(
                         groupId: myGroups[index].groupId
                     ) {
-                        withAnimation {
-                            DispatchQueue.main.async { [weak self] in
-                                guard let self = self else { return }
-                                self.myGroups.remove(at: index)
-                            }
-                        }
+                        await deleteGroupOnUI(index)
                         return true
                     } else {
                         DispatchQueue.main.async {
@@ -427,6 +430,13 @@ class HomeViewModel: ObservableObject {
             }
         }
         return false
+    }
+    
+    @MainActor
+    private func deleteGroupOnUI(_ index: Int) {
+        withAnimation {
+            _ = self.myGroups.remove(at: index)
+        }
     }
 
     func reissue() async -> Bool {

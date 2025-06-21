@@ -159,7 +159,7 @@ struct CustomLocationView: View {
 
                     Button {
                         Task {
-                            let status = await settingViewModel.UpdateCustomLocation()
+                            let status = await settingViewModel.updateCustomLocation()
 
                             if status == nil {
                                 withAnimation {

@@ -64,7 +64,7 @@ final class LoginAPI: API {
     }
 
     func logout() async throws {
-        var request = try await getURLRequest(subURL: "/logout", needContentType: false, needAccessToken: true, httpMethod: .post)
+        let request = try await getURLRequest(subURL: "/logout", needContentType: false, needAccessToken: true, httpMethod: .post)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 

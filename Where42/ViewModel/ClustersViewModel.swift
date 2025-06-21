@@ -22,39 +22,25 @@ class ClustersViewModel: ObservableObject {
     let clusterAPI = ClusterAPI()
     
     func updateClusterArr(cluster: Cluster) async {
-
         let arr = await getClusterArr(cluster: cluster)
+        await updateClusterArrOnUI(cluster: cluster, arr: arr)
+    }
+    
+    @MainActor
+    private func updateClusterArrOnUI(cluster: Cluster, arr: [[ClusterSeatInfo]]) {
         switch cluster {
         case .c1:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c1Arr = arr
-            }
+            self.c1Arr = arr
         case .c2:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c2Arr = arr
-            }
+            self.c2Arr = arr
         case .c5:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c5Arr = arr
-            }
+            self.c5Arr = arr
         case .c6:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.c6Arr = arr
-            }
+            self.c6Arr = arr
         case .cx1:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.cx1Arr = arr
-            }
+            self.cx1Arr = arr
         case .cx2:
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.cx2Arr = arr
-            }
+            self.cx2Arr = arr
         }
     }
     
