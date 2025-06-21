@@ -7,6 +7,7 @@
 
 import Combine
 import SwiftUI
+import Firebase
 
 enum SearchStatus {
     case waiting
@@ -73,6 +74,9 @@ class SearchViewModel: ObservableObject {
                 if self.selectedMembers.contains(where: { $0.intraId == memberInfo.intraId }) {
                     member.isCheck = true
                 }
+                Analytics.logEvent("search", parameters: [
+                    "searched_id": member.intraName as NSObject
+                ])
                 return member
             }
         }
