@@ -12,7 +12,7 @@ final class AnnouncementAPI: API {
     var announcementList: [Announcement] = []
     
     func getAnnouncementList() async throws -> [Announcement] {
-        var request = try await getURLRequest(subURL: "/announcement?page=0&size=5", needContentType: true, needAccessToken: true)
+        let request = try await getURLRequest(subURL: "/announcement?page=0&size=5", needContentType: true, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         

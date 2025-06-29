@@ -11,7 +11,7 @@ final class MemberAPI: API {
     static let shared = MemberAPI()
     
     func getMemberInfo() async throws -> MemberInfo? {
-        var request = try await getURLRequest(subURL: "/member", needContentType: false, needAccessToken: true)
+        let request = try await getURLRequest(subURL: "/member", needContentType: false, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -60,7 +60,7 @@ final class MemberAPI: API {
     }
     
     func deleteComment() async throws {
-        var request = try await getURLRequest(subURL: "/member/comment", needContentType: false, needAccessToken: true, httpMethod: .delete)
+        let request = try await getURLRequest(subURL: "/member/comment", needContentType: false, needAccessToken: true, httpMethod: .delete)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -106,7 +106,7 @@ final class MemberAPI: API {
     }
     
     func deleteCustomLocation() async throws -> Bool? {
-        var request = try await getURLRequest(subURL: "/location/custom", needContentType: false, needAccessToken: true, httpMethod: .delete)
+        let request = try await getURLRequest(subURL: "/location/custom", needContentType: false, needAccessToken: true, httpMethod: .delete)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -129,7 +129,7 @@ final class MemberAPI: API {
     
     func search(keyWord: String) async throws -> [MemberInfo]? {
         print("----- search -----")
-        var request = try await getURLRequest(subURL: "/search/new?keyWord=\(keyWord)", needContentType: false, needAccessToken: true)
+        let request = try await getURLRequest(subURL: "/search/new?keyWord=\(keyWord)", needContentType: false, needAccessToken: true)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         

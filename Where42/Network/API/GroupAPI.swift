@@ -41,7 +41,7 @@ final class GroupAPI: API {
     }
 
     func getGroup() async throws -> [GroupInfo]? {
-        var request = try await getURLRequest(subURL: "/group", needContentType: false, needAccessToken: true)
+        let request = try await getURLRequest(subURL: "/group", needContentType: false, needAccessToken: true)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -116,7 +116,7 @@ final class GroupAPI: API {
     }
 
     func deleteGroup(groupId: Int) async throws -> Bool {
-        var request = try await getURLRequest(subURL: "/group?groupId=\(groupId)", needContentType: true, needAccessToken: true, httpMethod: .delete)
+        let request = try await getURLRequest(subURL: "/group?groupId=\(groupId)", needContentType: true, needAccessToken: true, httpMethod: .delete)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -199,7 +199,7 @@ final class GroupAPI: API {
     }
 
     func getNotInGroupMember(groupId: Int) async throws -> [MemberInfo]? {
-        var request = try await getURLRequest(subURL: "/group/groupmember/not-ingroup?groupId=\(groupId)", needContentType: false, needAccessToken: true, httpMethod: .post)
+        let request = try await getURLRequest(subURL: "/group/groupmember/not-ingroup?groupId=\(groupId)", needContentType: false, needAccessToken: true, httpMethod: .post)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -224,7 +224,7 @@ final class GroupAPI: API {
     }
     
     func addFriend(intraId: Int) async throws -> Bool {
-        var request = try await getURLRequest(subURL: "/group/groupmember?intraId=\(intraId)", needContentType: true, needAccessToken: true, httpMethod: .post)
+        let request = try await getURLRequest(subURL: "/group/groupmember?intraId=\(intraId)", needContentType: true, needAccessToken: true, httpMethod: .post)
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
