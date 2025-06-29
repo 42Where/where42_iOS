@@ -76,11 +76,7 @@ struct Where42: View {
                 }
                 else {
                     LoginView()
-                        .transition(
-                            .asymmetric(
-                                insertion: AnyTransition.move(edge: .bottom),
-                                removal: AnyTransition.move(edge: .bottom)
-                            ))
+                        .transition(AnyTransition.move(edge: .bottom))
                 }
 
                 if homeViewModel.isLoading == false && networkMonitor.isConnected == false {
