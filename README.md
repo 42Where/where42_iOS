@@ -1,6 +1,6 @@
 # Where42 iOS - 42 서울 교육생 실시간 위치 정보 서비스
 
-<div align="center">
+<div>
 <img width="200" height="400" alt="image" src="https://github.com/user-attachments/assets/a45bbe57-bcd4-4682-8b0c-1c2aee11679b">
 <img width="200" height="400" alt="image" src="https://github.com/user-attachments/assets/27b101bb-ae56-4321-b49f-f0f47d5b83a5">
 <img width="200" height="400" alt="image" src="https://github.com/user-attachments/assets/5830b32c-aca2-41bc-870f-fd011a3bc87e">
@@ -81,7 +81,7 @@ https://hodongho.notion.site/976bf116290a4e55891aee69facc22ba?pvs=4
 <img height="500" alt="image" src="https://github.com/user-attachments/assets/85e356b8-6500-4818-9088-80dcab4b53a8"></br>
 
 # 🐛 TestFlight
-<div align=center>
+<div>
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/13118d45-fc65-4891-affe-f71a45fa3bab">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/574fb3bd-9db1-40a2-9687-21fb7dd2e1dc"></br>
 </div>
