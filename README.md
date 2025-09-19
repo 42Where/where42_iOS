@@ -19,7 +19,7 @@
   SwiftUI 기반으로 최소 iOS 버전은 iOS16 입니다.</br>
   
 - [프로젝트 팀 구성] : Backend, Frontend(Web), iOS, Android </br>
-- [기술 스택] : SwiftUI, Kingfisher + Figma, Discord, Confluence, Swagger<br/>
+- [기술 스택] : SwiftUI, Kingfisher, Combine, Figma, Confluence, Swagger<br/>
 
 # 📆 수행 기간
 - 2023.10.27 ~ 2024.08.13 - dhyun 현동호 (개발)
